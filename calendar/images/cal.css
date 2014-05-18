@@ -1,0 +1,75 @@
+
+tr.topdays {
+	background-color: #B7B7B7; font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 11px; color : #000000; 
+}
+
+.toprightnumber {
+	 font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+	 font-size: 50px;
+	 font-weight: bold;
+	 position: absolute;
+     opacity: 0.1;
+}
+.eventinbox {
+	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 10px;	
+}
+.currentdate {
+	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 17px; font-weight: bold;	
+}
+
+table { 
+	border-collapse: separate;
+	border-spacing: 1px; 
+	}
+
+
+td.beforedayboxes {
+	background-color: #EDEDED; color: #000000;
+}
+td.dayboxes {
+	background-color: #D3D3D3;
+	color: #000000;
+	border: 1px;
+	border-spacing: 2px;
+	padding: 2px;
+}
+td.dayboxes-weekend {
+	background-color: #C6C6C6;
+	color: #000000;
+	border: 1px;
+	border-spacing: 2px;
+	padding: 2px;
+}
+
+td.afterdayboxes {
+	background-color: #EDEDED; color: #000000;
+}
+td.highlighteddayboxes {
+	background-color: #B5B5B5; color: #000000;
+}
+.event {
+	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 12px; font-weight: bold;
+}
+.eventdetail {
+	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 11px;
+}
+.eventwhen {
+	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 15px; font-weight: bold;
+}
+.addevent {
+	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 12px; font-weight: bold;
+}
+.addeventextrainfo {
+	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 10px;
+}
+
+td.vyksta {
+	border: 3px solid green;
+}
+
+td.nevyksta {
+	border: 3px solid red;
+}
+td.svente {
+	border: 3px solid orange;
+}
