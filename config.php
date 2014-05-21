@@ -14,7 +14,13 @@ define( "CLASS_PATH", "classes" );
 define( "TEMPLATE_PATH", "templates" );
 define( "HOMEPAGE_NUM_ARTICLES", 5 );
 
-// removed db settings.
+// DB
+define( "DB_DSN", "mysql:host=localhost;dbname=zadmin_vanza2;charset=utf8" );
+define('DB_DRIVER', 'mysql');
+define('DB_HOSTNAME', 'localhost');
+define('DB_USERNAME', 'vanza2');
+define('DB_PASSWORD', '');
+define('DB_DATABASE', 'zadmin_vanza2');
 
 require( CLASS_PATH . "/news.php" );
 require( CLASS_PATH . "/bookings.php" );
