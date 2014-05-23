@@ -28,10 +28,9 @@ IF(isset($_POST['submit']))
 
 	$id = mysql_query("INSERT INTO $db_table ( `event_id` , `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES ('', '".addslashes($event_date)."', '".addslashes($_POST['day'])."', '".addslashes($_POST['month'])."', '".addslashes($_POST['year'])."', '".addslashes($_POST['hour'].":".$_POST['minute'])."', '".addslashes($_POST['title'])."', '".addslashes($_POST['description'])."', '".addslashes($_SESSION['user']['id'])."')");
 	$_POST['month'] = $_POST['month'] + 1;
-	
-	//log it
-    mysql_query("INSERT INTO log (`user`, `event`, `param`) VALUES ('".$_SESSION['user']['username']."','Registers','".mysql_insert_id()."')");
-
+	$user = $_SESSION['user']['username'];
+	$BookingId = mysql_insert_id();
+		
 	//redirect
 	header( 'Location: ../index.php?action=calendar' ) ;
 }

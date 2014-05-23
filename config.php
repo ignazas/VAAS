@@ -14,11 +14,14 @@ define( "CLASS_PATH", "classes" );
 define( "TEMPLATE_PATH", "templates" );
 define( "HOMEPAGE_NUM_ARTICLES", 5 );
 
-// removed db settings.
 
-require( CLASS_PATH . "/news.php" );
-require( CLASS_PATH . "/bookings.php" );
-
+// DB del mysql query
+define('DB_DSN', 'mysql:host=localhost;dbname=zadmin_vanza2;charset=utf8' );
+define('DB_DRIVER', 'mysql');
+define('DB_HOSTNAME', 'localhost');
+define('DB_USERNAME', 'vanza2');
+define('DB_PASSWORD', 'e9yje9uja');
+define('DB_DATABASE', 'zadmin_vanza2');
 
 function handleException( $exception ) {
   echo "Sorry, a problem occurred. Please try later.";
@@ -26,4 +29,7 @@ function handleException( $exception ) {
 }
  
 set_exception_handler( 'handleException' );
+
+
+
 ?>

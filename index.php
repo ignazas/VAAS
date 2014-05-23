@@ -1,9 +1,8 @@
 <?php
 
-
 	require "config.php";
-	require "classes/user.php";
-
+	require "functions.php";
+	
 	$con=mysql_connect(DB_HOSTNAME,DB_USERNAME,DB_PASSWORD);
 	if (mysqli_connect_errno($con)) { echo "Failed to connect to MySQL: " . mysql_connect_error();} 
 	$db_selected = mysql_select_db(DB_DATABASE, $con);
@@ -53,6 +52,7 @@
 	}
 	
 	function news() {
+		require( CLASS_PATH . "/news.php" );
 	  $results = array();
 	  $data = Article::getList();
 	  $results['articles'] = $data['results'];
@@ -61,11 +61,13 @@
 	}
  	
  	function singleNews() {
+ 		require( CLASS_PATH . "/news.php" );
 		if ( isset($_GET["articleId"])) {
 		  $results = array();
 		  $results['article'] = Article::getById( (int)$_GET["articleId"] );
-	}
-	  require( TEMPLATE_PATH . "/singleNews.php" );
+		}
+		
+		require( TEMPLATE_PATH . "/singleNews.php" );
 	}
 
  	function finance() {
@@ -85,8 +87,8 @@
     $sql = "SELECT * FROM calendar_events LEFT JOIN days ON calendar_events.event_date=days.day ORDER by calendar_events.event_date";
     $st = $conn->prepare( $sql );
     $st->execute();
+	
     $BookingList = array();
- 
     while ( $row = $st->fetch() ) {
 		$BookingList['bookings'][$row['event_id']]['event_id'] = $row['event_id'];
 		$BookingList['bookings'][$row['event_id']]['event_time'] = $row['event_time'];
@@ -112,16 +114,18 @@
 	
 	function delete_booking($booking_id) {
  
-    // Does the Article object have an ID?
+    // Does the Booking object have an ID?
     if ( is_null( $booking_id ) ) trigger_error ( "Attempt to delete an Booking object that does not have its ID property set.", E_USER_ERROR );
  
-    // Delete the Article
+    // Delete the Booking
     $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
     $st = $conn->prepare ( "DELETE FROM calendar_events WHERE event_id = :event_id LIMIT 1" );
     $st->bindValue( ":event_id", $booking_id, PDO::PARAM_INT );
     $st->execute();
     $conn = null;
     
+	log_event('User','BookingDeleted',$booking_id);
+
     header( "Location: index.php?action=my_bookings&status=eventDeleted" );
   }
 
@@ -129,25 +133,27 @@
  	function contact() {
 	  require( TEMPLATE_PATH . "/contact.php" );
 }
-	 	function user() {
+	function user() {
 	  require( TEMPLATE_PATH . "/user.php" );
 }
- 
 	function home() {
 	  require( TEMPLATE_PATH . "/home.php" );
-	}
+}
 	function off() {
 	  require( TEMPLATE_PATH . "/off.php" );
-	}
+}
 	function on() {
 	  require( TEMPLATE_PATH . "/on.php" );
-	}
+}
 	function svecias() {
 	  require( TEMPLATE_PATH . "/svecias.php" );
-	}
+}
 	function logbook() {
 	  require( TEMPLATE_PATH . "/logbook.php" );
-	}
+}
+	
+
+	
 mysql_close($con);
 
 ?>
