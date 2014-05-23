@@ -13,10 +13,10 @@ switch($savaites_diena)
 {
 	case "Monday":    $savaites_diena = "Pirmadienis";  break;
 	case "Tuesday":   $savaites_diena = "Antradienis"; break;
-	case "Wednesday": $savaites_diena = "Treèiadienis";  break;
+	case "Wednesday": $savaites_diena = "TreÄiadienis";  break;
 	case "Thursday":  $savaites_diena = "Ketvirtadienis"; break;
 	case "Friday":    $savaites_diena = "Penktadienis";  break;
-	case "Saturday":  $savaites_diena = "Ğeğtadienis";  break;
+	case "Saturday":  $savaites_diena = "Å eÅ¡tadienis";  break;
 	case "Sunday":    $savaites_diena = "Sekmadienis";  break;
 	default:          $savaites_diena = "-"; break;
 }

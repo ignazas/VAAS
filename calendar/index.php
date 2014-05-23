@@ -173,9 +173,11 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			
 			echo "<span class=\"toprightnumber\">$i </span><div align=\"right\">
 			<a class=\"add\" href=\"?day=$i&amp;month=$link_month&amp;year=$_GET[year]\"> + </a>";
+			echo "<a class=\"show_day\" href=\"?day=$langelio_data\">S</a>";
+			
 			if($admin){
-
-			echo "<a class=\"show_day\" href=\"?day=$langelio_data\">S</a><a class=\"add_day\" href=\"?day=$langelio_data\">D</a>";
+			echo "<a class=\"add_day\" href=\"?day=$langelio_data\">D</a>";
+			
 			}
 			echo "</div>";
 			IF(isset($events[$i])){
