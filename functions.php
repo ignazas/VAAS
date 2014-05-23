@@ -11,12 +11,19 @@ function log_event($user, $event, $param) {
 
 
 function send_mail($recipient, $title, $content) {
-	IF(!$recipient) {$recipient = "info@paupio29a.lt";};
+	IF(!$recipient) {$recipient = "magazin@audiounit.lt";};
 	$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=UTF-8\r\n";
 	$headers .= "From: aeroklubas@sklandymas.lt\r\n";
 	$mail = $content . "<br /><br />Išsiųsta iš Vilniaus Aeroklubo narių administravimo sistemos (VAAS)";
-	mail($recipient, "VAAS: " . $title , $mail, $headers);
+	IF(is_array($recipient)) {
+		foreach($recipient['email'] as $address){
+			mail($address, "VAAS: " . $title , $mail, $headers);
+		}
+	} ELSE {
+		mail($recipient, "VAAS: " . $title , $mail, $headers);
+	}
+	
 	
 }
 ?>

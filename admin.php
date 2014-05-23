@@ -216,11 +216,23 @@ function addDay($day, $status, $reason) {
 	$confirmed = $_SESSION['user']['name'];
     // Add day status
     $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-    $st = $conn->prepare ( "INSERT INTO days (day, status, reason, confirmed) VALUES ('$day', '$status', '$reason', '$confirmed') on duplicate key update status=values(status), reason=values(reason), confirmed=values(confirmed)" );
+    $st = $conn->prepare ( "INSERT INTO days (day, status, reason, confirmed) VALUES ('$day', '$status', '$reason', '$confirmed') on duplicate key UPDATE status=values(status), reason=values(reason), confirmed=values(confirmed)" );
     if($status=='delete') {$st = $conn->prepare ( "DELETE FROM days WHERE day='$day'");};
     $st->execute();
+    $st = $conn->prepare ( "SELECT user_id, email FROM calendar_events LEFT JOIN jos_users ON user_id = id WHERE event_date = '" . $day ."'" );
+    $st->execute();
+	$RelatedEmails = array();
+	while ( $row = $st->fetch() ) {
+		$RelatedEmails = $row['email'];
+    }
+	send_mail($RelatedEmails,"Dienos statusas: " . $day, "Dienos statusas, kuriai Jūs buvote užsiregistravę skrydžiams, pasikeitė<br />
+	Dabartinis statusas: " . $status . "<br />" .
+	"Pastaba: " . $reason . "<br />"
+	);
     $conn = null;
-    log_event("Admin", "DayAdded", $day);   
+    log_event("Admin", "DayAdded", $day);
+	
+    
     header( "Location: index.php?action=calendar&status=dayAdded" );
 }
 function working_days() {
