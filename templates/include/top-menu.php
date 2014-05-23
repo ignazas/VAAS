@@ -9,7 +9,7 @@
     	$on = TRUE;
 		
 		//adminas
-		IF($_SESSION['user']['usertype']=="Administrator") {
+		IF($_SESSION['user']['usertype']=="Administrator" || $_SESSION['user']['usertype']=="Super Administrator") {
 			 $admin = TRUE;	
 		} 
     }

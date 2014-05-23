@@ -1,7 +1,7 @@
 ﻿   
 	<div id="footer">
 		<div class="container">
-        	<p class="text-muted">2014 VAAS, Ignas Galuškinas. Built-2014/05/12@1500 </p>
+        	<p class="text-muted">2014 VAAS, Ignas Galuškinas. Built-2014/05/23@1300 </p>
       	</div>
     </div>
 	<!-- Bootstrap core JavaScript
