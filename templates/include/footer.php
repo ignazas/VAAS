@@ -16,7 +16,7 @@
     Modifikuoti kodą ar diegti priedus galima tik gavus autoriaus sutikimą.
     
     <pre>
-  		<?php print_r($RelatedUsers);?>
+  		<?php print_r($_SESSION);?>
   	</pre>
   	-->
   </body>
