@@ -31,7 +31,7 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li <?php if ($action=="news"){echo "class=\"active\"";} ?>><a href="index.php?action=news">Pranešimai</a></li>
-            <!--<li <?php if ($action=="finance"){echo "class=\"active\"";} ?>><a href="index.php?action=finance">Finansai</a></li>-->
+            <li <?php if ($action=="finance"){echo "class=\"active\"";} ?>><a href="index.php?action=finance">Finansai</a></li>
             <!--<li <?php if ($action=="logbook"){echo "class=\"active\"";} ?>><a href="index.php?action=logbook">LogBook</a></li>-->
             <li <?php if ($action=="calendar"||$action=="booking"||$action=="my_bookings"){echo "class=\"active\"";} ?>class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kalendorius <b class="caret"></b></a>
