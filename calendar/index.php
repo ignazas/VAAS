@@ -184,7 +184,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 				echo "<div align=\"left\"><span class=\"eventinbox\">\n";
 				while (list($key, $value) = each ($events[$i])) {
 					$vardas = explode(" ", $event_info[$value][0]);
-					echo "&nbsp;<a class=\"registracija\" href=\"?id=$value\">" . $event_info[$value]['1'] . " " . $vardas[0][0] . ". " . $vardas[1]  . "</a>\n<br>\n";
+					echo "&nbsp;<a class=\"registracija\" href=\"?id=$value\">" . $event_info[$value]['1'] . " " . $vardas[0][0] . ". " . $vardas[1]  . "</a><br />";
 				}
 				echo "</span></div>\n";
 			}

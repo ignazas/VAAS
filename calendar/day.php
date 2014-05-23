@@ -25,7 +25,8 @@ switch($savaites_diena)
 $result = DB::query("SELECT * FROM calendar_events WHERE event_date='$day' ORDER by event_time");
 
 echo "<h2>" . $day . ", " . $savaites_diena . "</h2>";
-$sarasas = [];
+
+$sarasas = array();
 while ($row = mysql_fetch_array($result)){
 	$sarasas[] = $row;
 };

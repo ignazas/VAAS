@@ -83,3 +83,8 @@ form.calendar table {
 }
 
 #registruotis .b-ajax-wrapper {width: 580px;}
+
+td.p {
+	padding: 0 0 0 0;
+	
+}
