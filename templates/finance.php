@@ -78,6 +78,10 @@
         <tr>
 		  <td><b>Likutis</b></td>
 		  <td><b><?php echo $balance;?> Lt</b></td>
+		 </tr> 
+		 <tr>
+		  <td><b>Duomenu data</b></td>
+		  <td><b><?php echo $row['fee_last_updated'];?></b></td>
 		 </tr>       
         </table>
 
