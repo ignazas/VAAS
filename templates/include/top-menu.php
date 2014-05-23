@@ -27,7 +27,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php?action=">Vilniaus Aeroklubas</a>
+          <a class="navbar-brand" href="index.php?action=">VAAS</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">

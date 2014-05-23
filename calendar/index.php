@@ -25,7 +25,7 @@ while ($info = mysql_fetch_array($query_result))
     $day = $info['event_day'];
     $event_id = $info['event_id'];
     $events[$day][] = $info['event_id'];
-    $event_info[$event_id]['0'] = substr($info['event_title'], 0, 18);
+    $event_info[$event_id]['0'] = substr($info['event_title'], 0, 25);
     $event_info[$event_id]['1'] = $info['event_time'];
 }
 
