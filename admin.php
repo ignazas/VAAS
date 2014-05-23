@@ -208,8 +208,12 @@ function deleteDay($day) {
     $st->execute();
     log_event("Admin", "DayDeleted", $day);
     $conn = null;
-    
-    header( "Location: admin.php?action=admin/working_days&status=dayDeleted" );
+	
+    $exploded_date = explode("-", $day);
+	IF(substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
+	$exploded_date[1] += 1;
+	
+    header( "Location: admin.php?action=admin/working_days&status=dayDeleted&month=" . $exploded_date[1] . "&year=" . $exploded_date[0] );
 }
 
 function addDay($day, $status, $reason) {
@@ -232,8 +236,10 @@ function addDay($day, $status, $reason) {
     $conn = null;
     log_event("Admin", "DayAdded", $day);
 	
-    
-    header( "Location: index.php?action=calendar&status=dayAdded" );
+	$exploded_date = explode("-", $day);
+	IF(substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
+	$exploded_date[1] += 1;
+    header( "Location: index.php?action=calendar&status=dayAdded&month=" . $exploded_date[1] . "&year=" . $exploded_date[0] );
 }
 function working_days() {
 	$conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
