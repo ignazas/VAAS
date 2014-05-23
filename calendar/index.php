@@ -181,7 +181,8 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			IF(isset($events[$i])){
 				echo "<div align=\"left\"><span class=\"eventinbox\">\n";
 				while (list($key, $value) = each ($events[$i])) {
-					echo "&nbsp;<a class=\"registracija\" href=\"?id=$value\">" . $event_info[$value]['1'] . " " . $event_info[$value]['0']  . "</a>\n<br>\n";
+					$vardas = explode(" ", $event_info[$value][0]);
+					echo "&nbsp;<a class=\"registracija\" href=\"?id=$value\">" . $event_info[$value]['1'] . " " . $vardas[0][0] . ". " . $vardas[1]  . "</a>\n<br>\n";
 				}
 				echo "</span></div>\n";
 			}

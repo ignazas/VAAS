@@ -16,7 +16,7 @@ function send_mail($recipient, $title, $content) {
 	$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=UTF-8\r\n";
 	$headers .= "From: aeroklubas@sklandymas.lt\r\n";
-	$mail = $content . "<br /><br />I�siųsta i� Vilniaus Aeroklubo narių administravimo sistemos (VAAS)";
+	$mail = $content . "<br /><br />Išsiųsta iš Vilniaus Aeroklubo narių administravimo sistemos (VAAS)";
 	IF(is_array($recipient)) {
 		foreach($recipient['email'] as $address){
 			mail($address, "VAAS: " . $title , $mail, $headers);
