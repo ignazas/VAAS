@@ -73,3 +73,12 @@ td.nevyksta {
 td.svente {
 	border: 3px solid orange;
 }
+
+form.calendar {
+	width: 500px;
+}
+form.calendar table {
+	width: 100%;
+}
+
+#registruotis .b-ajax-wrapper {width: 580px;}

@@ -1,17 +1,11 @@
-
 <?
-require_once("includes/config.php");
+require_once dirname(__FILE__) . '/../functions.php';
+require_once dirname(__FILE__) . '/const.inc';
 
 session_start();
 
-$db_connection = mysql_connect ($DBHost, $DBUser, $DBPass) OR die (mysql_error());  
-$db_select = mysql_select_db ($DBName) or die (mysql_error());
-mysql_set_charset('utf8',$db_connection);
-
-IF(isset($_POST['submit']))
+if (isset($_POST['submit']))
 {
-	$db_table = $TBL_PR . "events";
-	
 	$_POST['description'] = substr($_POST['description'],0,500);
 	$_POST['title'] = substr($_POST['title'],0,30);
 
@@ -25,8 +19,7 @@ IF(isset($_POST['submit']))
 	
 	$event_date = $_POST['year']."-".$menesis."-".$diena;
 
-
-	$id = mysql_query("INSERT INTO $db_table ( `event_id` , `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES ('', '".addslashes($event_date)."', '".addslashes($_POST['day'])."', '".addslashes($_POST['month'])."', '".addslashes($_POST['year'])."', '".addslashes($_POST['hour'].":".$_POST['minute'])."', '".addslashes($_POST['title'])."', '".addslashes($_POST['description'])."', '".addslashes($_SESSION['user']['id'])."')");
+	$id = DB::query("INSERT INTO " . TBL_EVENTS . " ( `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES ('".addslashes($event_date)."', '".addslashes($_POST['day'])."', '".addslashes($_POST['month'])."', '".addslashes($_POST['year'])."', '".addslashes($_POST['hour'].":".$_POST['minute'])."', '".addslashes($_POST['title'])."', '".addslashes($_POST['description'])."', '".addslashes($_SESSION['user']['id'])."')");
 	$_POST['month'] = $_POST['month'] + 1;
 	$user = $_SESSION['user']['username'];
 	$BookingId = mysql_insert_id();
@@ -34,7 +27,7 @@ IF(isset($_POST['submit']))
 	//redirect
 	header( 'Location: ../index.php?action=calendar' ) ;
 }
-ELSE 
+else 
 {
 	
 	$menesis = $_GET['month'];
@@ -48,8 +41,8 @@ ELSE
 ?>
 
 <a class="b-close">[X]<a/>
-<form name="form1" method="post" action="calendar/event_add.php">
-  <table width="500" border="0" cellspacing="0" cellpadding="0">
+<form name="form1" method="post" action="calendar/event_add.php" class="calendar">
+  <table border="0" cellspacing="0" cellpadding="0">
   	
     <tr> 
       <td width="200" height="40" valign="top"><span class="addevent">Atvykimo diena:</span><br> 
@@ -83,6 +76,5 @@ ELSE
   <input name="month" type="hidden" value="<? echo $_GET['month']; ?>">
   <input name="day" type="hidden" value="<? echo $_GET['day']; ?>">
 </form>
-<? 
+<?php 
 } 
-?>

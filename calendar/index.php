@@ -1,10 +1,6 @@
 ﻿<?
-require_once("includes/config.php");
-
-$db_connection = mysql_connect ($DBHost, $DBUser, $DBPass) OR die (mysql_error());
-mysql_set_charset('utf8',$db_connection);
-$db_select = mysql_select_db ($DBName) or die (mysql_error());
-$db_table = $TBL_PR . "events";
+require_once dirname(__FILE__) . '/../functions.php';
+require_once dirname(__FILE__) . '/const.inc';
 
 function getmicrotime(){ 
     list($usec, $sec) = explode(" ",microtime()); 
@@ -23,8 +19,7 @@ IF(!isset($_GET['month'])){
 $month = addslashes($_GET['month'] - 1);
 $year = addslashes($_GET['year']);
 
-$query = "SELECT event_id,event_title,event_day,event_time FROM $db_table WHERE event_month='$month' AND event_year='$year' ORDER BY event_time";
-$query_result = mysql_query ($query);
+$query_result = DB::query("SELECT event_id,event_title,event_day,event_time FROM " . TBL_EVENTS . " WHERE event_month='$month' AND event_year='$year' ORDER BY event_time");
 while ($info = mysql_fetch_array($query_result))
 {
     $day = $info['event_day'];

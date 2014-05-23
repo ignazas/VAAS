@@ -3,6 +3,7 @@
     // user status
     $on = '';
 	$admin = '';
+    $action = isset($action) ? $action : NULL;
     IF(!empty($_SESSION['user'])) {
     		
 		//prisijunges	

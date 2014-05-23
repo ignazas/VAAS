@@ -1,13 +1,9 @@
 <a class="b-close">[X]<a/>
 <?
-require_once("includes/config.php");
-$db_connection = mysql_connect ($DBHost, $DBUser, $DBPass) OR die (mysql_error());
-mysql_set_charset('utf8',$db_connection);
-$db_select = mysql_select_db ($DBName) or die (mysql_error());
-$db_table = $TBL_PR . "events";
+require_once dirname(__FILE__) . '/../functions.php';
+require_once dirname(__FILE__) . '/const.inc';
 
-$query = "SELECT * FROM $db_table WHERE event_id='$_GET[id]' LIMIT 1";
-$query_result = mysql_query ($query);
+$query_result = DB::query("SELECT * FROM " . TBL_EVENTS . " WHERE event_id='$_GET[id]' LIMIT 1");
 while ($info = mysql_fetch_array($query_result)){
     $date =  $info['event_date'];
     $time_array = split(":", $info['event_time']);
