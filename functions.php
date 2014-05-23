@@ -9,4 +9,14 @@ function log_event($user, $event, $param) {
 	$conn = null;
 }
 
+
+function send_mail($recipient, $title, $content) {
+	IF(!$recipient) {$recipient = "info@paupio29a.lt";};
+	$headers  = "MIME-Version: 1.0\r\n";
+	$headers .= "Content-type: text/html; charset=UTF-8\r\n";
+	$headers .= "From: aeroklubas@sklandymas.lt\r\n";
+	$mail = $content . "<br /><br />Išsiųsta iš Vilniaus Aeroklubo narių administravimo sistemos (VAAS)";
+	mail($recipient, "VAAS: " . $title , $mail, $headers);
+	
+}
 ?>

@@ -128,11 +128,7 @@ class Article
     $this->id = $conn->lastInsertId();
     $conn = null;
 	
-	$headers  = "MIME-Version: 1.0\r\n";
-	$headers .= "Content-type: text/html; charset=UTF-8\r\n";
-	$headers .= "From: aeroklubas@sklandymas.lt\r\n";
-	$mail = $this->content . "<br /><br />Išsiųsta iš Vilniaus Aeroklubo narių administravimo sistemos (VAAS)";
-	mail("ignas@igfe.eu", "VAAS: " . $this->title, $mail, $headers);
+	send_mail("", $this->title, $this->content);
 	
   }
  

@@ -1,6 +1,7 @@
 
 <?
 require_once("includes/config.php");
+require("../functions.php");
 
 session_start();
 
@@ -24,12 +25,16 @@ IF(isset($_POST['submit']))
 	if($diena<10) {$diena = str_pad($diena, 2, "0", STR_PAD_LEFT);}
 	
 	$event_date = $_POST['year']."-".$menesis."-".$diena;
+	$event_time = $_POST['hour'] . ":" . $_POST['minute'];
 
-
-	$id = mysql_query("INSERT INTO $db_table ( `event_id` , `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES ('', '".addslashes($event_date)."', '".addslashes($_POST['day'])."', '".addslashes($_POST['month'])."', '".addslashes($_POST['year'])."', '".addslashes($_POST['hour'].":".$_POST['minute'])."', '".addslashes($_POST['title'])."', '".addslashes($_POST['description'])."', '".addslashes($_SESSION['user']['id'])."')");
+	$id = mysql_query("INSERT INTO $db_table ( `event_id` , `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) 
+	VALUES ('', '".addslashes($event_date)."', '".addslashes($_POST['day'])."', '".addslashes($_POST['month'])."', '".addslashes($_POST['year'])."', '".addslashes($_POST['hour'].":".$_POST['minute'])."', '".addslashes($_POST['title'])."', '".addslashes($_POST['description'])."', '".addslashes($_SESSION['user']['id'])."')");
 	$_POST['month'] = $_POST['month'] + 1;
+	$pranesimas = "Jūs užsiregistravote skrydziams " . $event_date . " dieną, " . $event_time . " valandą.<br />Jūsų pastaba: " . $_POST[description];
+	$meilas = $_SESSION['user']['email'];
 	$user = $_SESSION['user']['username'];
 	$BookingId = mysql_insert_id();
+	send_mail($meilas,"Jūsų registracija skrydžiams",$pranesimas);
 		
 	//redirect
 	header( 'Location: ../index.php?action=calendar' ) ;
