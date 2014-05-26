@@ -34,13 +34,7 @@ class DB {
 		return $result;
     }    
 
-	
-	public static function escape($variable) {
- 	        DB::connect();
- 	        return mysql_real_escape_string($variable);
- 	    }
-
-	
+		
 	public static function close() {
         if (DB::$conn != NULL) {
             mysql_close(DB::$conn);

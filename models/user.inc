@@ -13,7 +13,7 @@ class User {
                 LEFT JOIN jos_contxtd_details
                 ON jos_users.id = jos_contxtd_details.user_id
                 WHERE
-                    jos_users.id = " . DB::escape($id));
+                    jos_users.id = ".$id);
         }
         return NULL;
     }
@@ -28,7 +28,7 @@ class User {
                 LEFT JOIN jos_contxtd_details
                 ON jos_users.id = jos_contxtd_details.user_id
                 WHERE
-                    jos_users.username = '" . DB::escape($username) . "' OR jos_users.email = '" . DB::escape($username) . "'");
+                    jos_users.username = '" . $username . "' OR jos_users.email = '" . $username . "'");
         }
         return NULL;
     }
@@ -40,16 +40,16 @@ class User {
             foreach ($values as $key => $value) {
                 if (in_array($key, array('name', 'username', 'email', 'password', 'usertype', 'block', 'sendEmail',
                                          'gid', 'registerDate', 'lastvisitDate', 'activation', 'params')))
-                    $query_user .= (!empty($query_user) ? ',' : NULL) . "`$key`='" . DB::escape($value) . "'";
+                    $query_user .= (!empty($query_user) ? ',' : NULL) . "`$key`='" . $value . "'";
                 else                
-                    $query_context .= (!empty($query_context) ? ',' : NULL) . "`$key`='" . DB::escape($value) . "'";                
+                    $query_context .= (!empty($query_context) ? ',' : NULL) . "`$key`='" . $value . "'";                
             }
 
             if ($query_user)
-                DB::query("UPDATE `jos_users` SET $query_user WHERE `id`=" . DB::escape($id));
+                DB::query("UPDATE `jos_users` SET $query_user WHERE `id`=" . $id);
             
             if ($query_context)
-                DB::query("UPDATE `jos_contxtd_details` SET $query_context WHERE `user_id`=" . DB::escape($id));
+                DB::query("UPDATE `jos_contxtd_details` SET $query_context WHERE `user_id`=" . $id);
 
             return TRUE;
         }
