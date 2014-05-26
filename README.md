@@ -1,9 +1,5 @@
 VAAS v1
-====
 
-Vilniaus Aeroklubo Administravimo Sistema
+Vilniaus aeroklubo administravimo sisitema, 2014, Vilnius
 
-<<<<<<< HEAD
-2014, Vilnius
-=======
->>>>>>> 27caef29a19015cae67c10a069909850c30ad655
+
