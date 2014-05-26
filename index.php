@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 	require "config.php";
 	require "functions.php";
     require "helpers/route.inc";
@@ -68,11 +69,15 @@
 		
 		require( TEMPLATE_PATH . "/singleNews.php" );
 	}
+=======
+require "config.php";
+require "functions.php";
+require "helpers/route.inc";
+>>>>>>> 756168da0a436078d33620e4211339dc37b02db3
 
- 	function finance() {
-	  require( TEMPLATE_PATH . "/finance.php" );
-	}
+$con=DB::connect();
 
+<<<<<<< HEAD
  	function calendar() {
 	  require( TEMPLATE_PATH . "/calendar.php" );
 	}
@@ -172,3 +177,14 @@ DB::close();
 
 
     
+=======
+$action = isset( $_GET['action'] ) ? $_GET['action'] : "";
+if (method_exists('Index', $action))
+  Index::$action();
+else if ($controller = load_controller($action))
+  $controller->Run();
+else
+  Index::home();
+
+DB::close();
+>>>>>>> 756168da0a436078d33620e4211339dc37b02db3
