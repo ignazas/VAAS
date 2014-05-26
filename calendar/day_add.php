@@ -1,4 +1,4 @@
-
+<?php session_start(); ?>
 <a class="b-close">[X]<a/><br />
 <form role="form" action="admin.php">
 	

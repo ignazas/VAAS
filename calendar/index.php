@@ -1,10 +1,6 @@
 ﻿<?
-require_once("includes/config.php");
-
-$db_connection = mysql_connect ($DBHost, $DBUser, $DBPass) OR die (mysql_error());
-mysql_set_charset('utf8',$db_connection);
-$db_select = mysql_select_db ($DBName) or die (mysql_error());
-$db_table = $TBL_PR . "events";
+require_once dirname(__FILE__) . '/../functions.php';
+require_once dirname(__FILE__) . '/const.inc';
 
 function getmicrotime(){ 
     list($usec, $sec) = explode(" ",microtime()); 
@@ -23,14 +19,13 @@ IF(!isset($_GET['month'])){
 $month = addslashes($_GET['month'] - 1);
 $year = addslashes($_GET['year']);
 
-$query = "SELECT event_id,event_title,event_day,event_time FROM $db_table WHERE event_month='$month' AND event_year='$year' ORDER BY event_time";
-$query_result = mysql_query ($query);
+$query_result = DB::query("SELECT event_id,event_title,event_day,event_time FROM " . TBL_EVENTS . " WHERE event_month='$month' AND event_year='$year' ORDER BY event_time");
 while ($info = mysql_fetch_array($query_result))
 {
     $day = $info['event_day'];
     $event_id = $info['event_id'];
     $events[$day][] = $info['event_id'];
-    $event_info[$event_id]['0'] = substr($info['event_title'], 0, 18);
+    $event_info[$event_id]['0'] = substr($info['event_title'], 0, 25);
     $event_info[$event_id]['1'] = $info['event_time'];
 }
 
@@ -178,15 +173,18 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			
 			echo "<span class=\"toprightnumber\">$i </span><div align=\"right\">
 			<a class=\"add\" href=\"?day=$i&amp;month=$link_month&amp;year=$_GET[year]\"> + </a>";
+			echo "<a class=\"show_day\" href=\"?day=$langelio_data\">S</a>";
+			
 			if($admin){
-
-			echo "<a class=\"show_day\" href=\"?day=$langelio_data\">S</a><a class=\"add_day\" href=\"?day=$langelio_data\">D</a>";
+			echo "<a class=\"add_day\" href=\"?day=$langelio_data\">D</a>";
+			
 			}
 			echo "</div>";
 			IF(isset($events[$i])){
 				echo "<div align=\"left\"><span class=\"eventinbox\">\n";
 				while (list($key, $value) = each ($events[$i])) {
-					echo "&nbsp;<a class=\"registracija\" href=\"?id=$value\">" . $event_info[$value]['1'] . " " . $event_info[$value]['0']  . "</a>\n<br>\n";
+					$vardas = explode(" ", $event_info[$value][0]);
+					echo "&nbsp;<a class=\"registracija\" href=\"?id=$value\">" . $event_info[$value]['1'] . " " . $vardas[0][0] . ". " . $vardas[1]  . "</a><br />";
 				}
 				echo "</span></div>\n";
 			}

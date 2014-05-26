@@ -1,17 +1,11 @@
-
 <?
-require_once("includes/config.php");
+require_once dirname(__FILE__) . '/../functions.php';
+require_once dirname(__FILE__) . '/const.inc';
 
 session_start();
 
-$db_connection = mysql_connect ($DBHost, $DBUser, $DBPass) OR die (mysql_error());  
-$db_select = mysql_select_db ($DBName) or die (mysql_error());
-mysql_set_charset('utf8',$db_connection);
-
-IF(isset($_POST['submit']))
+if (isset($_POST['submit']))
 {
-	$db_table = $TBL_PR . "events";
-	
 	$_POST['description'] = substr($_POST['description'],0,500);
 	$_POST['title'] = substr($_POST['title'],0,30);
 
@@ -24,18 +18,20 @@ IF(isset($_POST['submit']))
 	if($diena<10) {$diena = str_pad($diena, 2, "0", STR_PAD_LEFT);}
 	
 	$event_date = $_POST['year']."-".$menesis."-".$diena;
+	$event_time = $_POST['hour'] . ":" . $_POST['minute'];
 
-
-	$id = mysql_query("INSERT INTO $db_table ( `event_id` , `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES ('', '".addslashes($event_date)."', '".addslashes($_POST['day'])."', '".addslashes($_POST['month'])."', '".addslashes($_POST['year'])."', '".addslashes($_POST['hour'].":".$_POST['minute'])."', '".addslashes($_POST['title'])."', '".addslashes($_POST['description'])."', '".addslashes($_SESSION['user']['id'])."')");
+	$id = DB::query("INSERT INTO " . TBL_EVENTS . " ( `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES ('".addslashes($event_date)."', '".addslashes($_POST['day'])."', '".addslashes($_POST['month'])."', '".addslashes($_POST['year'])."', '".addslashes($_POST['hour'].":".$_POST['minute'])."', '".addslashes($_POST['title'])."', '".addslashes($_POST['description'])."', '".addslashes($_SESSION['user']['id'])."')");
 	$_POST['month'] = $_POST['month'] + 1;
-	
-	//log it
-    mysql_query("INSERT INTO log (`user`, `event`, `param`) VALUES ('".$_SESSION['user']['username']."','Registers','".mysql_insert_id()."')");
-
+	$pranesimas = "Jūs užsiregistravote skrydziams " . $event_date . " dieną, " . $event_time . " valandą.<br />Jūsų pastaba: " . $_POST[description];
+	$meilas = $_SESSION['user']['email'];
+	$user = $_SESSION['user']['username'];
+	$BookingId = mysql_insert_id();
+	send_mail($meilas,"Jūsų registracija skrydžiams",$pranesimas);
+		
 	//redirect
 	header( 'Location: ../index.php?action=calendar' ) ;
 }
-ELSE 
+else 
 {
 	
 	$menesis = $_GET['month'];
@@ -49,8 +45,8 @@ ELSE
 ?>
 
 <a class="b-close">[X]<a/>
-<form name="form1" method="post" action="calendar/event_add.php">
-  <table width="500" border="0" cellspacing="0" cellpadding="0">
+<form name="form1" method="post" action="calendar/event_add.php" class="calendar">
+  <table border="0" cellspacing="0" cellpadding="0">
   	
     <tr> 
       <td width="200" height="40" valign="top"><span class="addevent">Atvykimo diena:</span><br> 
@@ -68,8 +64,8 @@ ELSE
     </tr>
     <tr> 
       <td width="200" height="40" valign="top"><span class="addevent">Registracijos pastabos</span><br>
-      	<span class="addeventextrainfo">Nurodykite, jei reikalinga nakvynė, skrydžiai į aikštelę ar pan.</span>
-      	<span class="addeventextrainfo">Nurodykite kiek ir kokius skrydžius planuojate ar esate instruktorius ar autoišvilktuvo operatorius.</span>
+      	<span class="addeventextrainfo">Nurodykite, jei reikalinga nakvynė, skrydžiai į aik�telę ar pan.</span>
+      	<span class="addeventextrainfo">Nurodykite kiek ir kokius skrydžius planuojate ar esate instruktorius ar autoi�vilktuvo operatorius.</span>
       	</td>
       <td height="40" valign="top"> <textarea class="form-control" name="description" cols="18" rows="5" id="description"></textarea> 
       </td>
@@ -84,6 +80,5 @@ ELSE
   <input name="month" type="hidden" value="<? echo $_GET['month']; ?>">
   <input name="day" type="hidden" value="<? echo $_GET['day']; ?>">
 </form>
-<? 
+<?php 
 } 
-?>
