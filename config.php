@@ -23,8 +23,6 @@ define('DB_PASSWORD', '');
 define('DB_DATABASE', 'zadmin_vanza2');
 
 require( CLASS_PATH . "/news.php" );
-require( CLASS_PATH . "/bookings.php" );
-
 
 function handleException( $exception ) {
   echo "Sorry, a problem occurred. Please try later.";
