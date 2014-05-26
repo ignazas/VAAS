@@ -7,7 +7,7 @@
 	$con=DB::connect();
     	
 	$action = isset( $_GET['action'] ) ? $_GET['action'] : "";
-<<<<<<< HEAD
+
 	
 	switch ( $action ) {
   		case 'news':
@@ -155,10 +155,7 @@
 	
 
 	
-mysql_close($con);
 
-?>
-=======
 	if (method_exists('Index', $action))
         Index::$action();
     else if ($controller = load_controller($action))
@@ -167,10 +164,10 @@ mysql_close($con);
 		Index::home();
 
 DB::close();
->>>>>>> 72fef4ced8942e34e500689c131f6f133b568bd3
 
 
 
+?>
 
 
 
