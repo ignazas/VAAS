@@ -1,7 +1,7 @@
 ﻿   
 	<div id="footer">
 		<div class="container">
-        	<p class="text-muted">2014 VAAS, Ignas Galuškinas. Built-2014/05/12@1500 </p>
+        	<p class="text-muted">2014, Vilniaus Aeroklubas</p>
       	</div>
     </div>
 	<!-- Bootstrap core JavaScript
@@ -10,12 +10,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     
-	<!--
-	<pre>
-  	<?php print_r($dienos);?>
+    <!--
+    <pre>
+  		<?php print_r($_SESSION);?>
   	</pre>
-	-->
-
+  	-->
   </body>
 </html>
 

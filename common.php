@@ -1,11 +1,5 @@
-﻿ <?php
- 
-    // These variables define the connection information for your MySQL database
-    $username = "vanza2";
-    $password = "";
-    $host = "localhost";
-    $dbname = "zadmin_vanza2";
-
+ <?php
+	
     // UTF-8 is a character encoding scheme that allows you to conveniently store
     // a wide varienty of special characters, like ¢ or €, in your database.
     // By passing the following $options array to the database connection code we
@@ -25,7 +19,9 @@
         // PDO is designed to provide a flexible interface between PHP and many
         // different types of database servers.  For more information on PDO:
         // http://us2.php.net/manual/en/class.pdo.php
-        $db = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password, $options);
+        $db = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD, $options );
+        //$db = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password, $options);
+		
     }
     catch(PDOException $ex)
     {
@@ -75,6 +71,7 @@
     
     // This tells the web browser that your content is encoded using UTF-8
     // and that it should submit content back to you using UTF-8
+    
     //header('Content-Type: text/html; charset=utf-8');
     
     // This initializes a session.  Sessions are used to store information about

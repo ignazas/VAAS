@@ -3,13 +3,14 @@
     // user status
     $on = '';
 	$admin = '';
+    $action = isset($action) ? $action : NULL;
     IF(!empty($_SESSION['user'])) {
     		
 		//prisijunges	
     	$on = TRUE;
 		
 		//adminas
-		IF($_SESSION['user']['usertype']=="Administrator") {
+		IF($_SESSION['user']['usertype']=="Administrator" || $_SESSION['user']['usertype']=="Super Administrator") {
 			 $admin = TRUE;	
 		} 
     }
@@ -26,13 +27,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php?action=">Vilniaus Aeroklubas</a>
+          <a class="navbar-brand" href="index.php?action=">VAAS</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li <?php if ($action=="news"){echo "class=\"active\"";} ?>><a href="index.php?action=news">Pranešimai</a></li>
-            <!--<li <?php if ($action=="finance"){echo "class=\"active\"";} ?>><a href="index.php?action=finance">Finansai</a></li>-->
-            <!--<li <?php if ($action=="logbook"){echo "class=\"active\"";} ?>><a href="index.php?action=logbook">LogBook</a></li>-->
+            <li <?php if ($action=="finance"){echo "class=\"active\"";} ?>><a href="index.php?action=finance">Finansai</a></li>
+            <li <?php if ($action=="logbook"){echo "class=\"active\"";} ?>><a href="index.php?action=logbook">LogBook</a></li>
             <li <?php if ($action=="calendar"||$action=="booking"||$action=="my_bookings"){echo "class=\"active\"";} ?>class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kalendorius <b class="caret"></b></a>
               <ul class="dropdown-menu">

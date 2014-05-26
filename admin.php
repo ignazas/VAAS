@@ -1,7 +1,9 @@
-<?php require "common.php"; ?>
-<?php require "secure.php"; ?>
-<?php require "config.php"; ?>
-<?php
+<?php 
+
+require "config.php";
+require "common.php";
+require "secure.php";
+require "functions.php";
 
 $action = isset( $_GET['action'] ) ? $_GET['action'] : ""; 
  
@@ -44,7 +46,7 @@ switch ( $action ) {
 }
   
 function newArticle() {
- 
+ require( CLASS_PATH . "/news.php" );
   $results = array();
   $results['pageTitle'] = "New Article";
   $results['formAction'] = "newArticle";
@@ -55,6 +57,7 @@ function newArticle() {
     $article = new Article;
     $article->storeFormValues( $_POST );
     $article->insert();
+	log_event("Admin", "ArticleCreated", "");
     header( "Location: admin.php?status=changesSaved" );
  
   } elseif ( isset( $_POST['cancel'] ) ) {
@@ -68,11 +71,12 @@ function newArticle() {
     require( TEMPLATE_PATH . "/admin/editArticle.php" );
   }
  
+ 
 }
  
  
 function editArticle() {
- 
+ require( CLASS_PATH . "/news.php" );
   $results = array();
   $results['pageTitle'] = "Edit Article";
   $results['formAction'] = "editArticle";
@@ -88,6 +92,10 @@ function editArticle() {
  
     $article->storeFormValues( $_POST );
     $article->update();
+	
+	//log it		
+	log_event("Admin", "ArticleEdited", "");
+	
     header( "Location: admin.php?status=changesSaved" );
  
   } elseif ( isset( $_POST['cancel'] ) ) {
@@ -105,17 +113,20 @@ function editArticle() {
  
  
 function deleteArticle() {
- 
+ require( CLASS_PATH . "/news.php" );
   if ( !$article = Article::getById( (int)$_GET['articleId'] ) ) {
     header( "Location: admin.php?error=articleNotFound" );
     return;
   }
- 
-  $article->delete();
-  header( "Location: admin.php?status=articleDeleted" );
+	
+	log_event("Admin", "ArticleDeleted", "");
+  
+	$article->delete();
+	header( "Location: admin.php?status=articleDeleted" );
 }
 
 function listArticles() {
+	require( CLASS_PATH . "/news.php" );
   $results = array();
   $data = Article::getList();
   $results['articles'] = $data['results'];
@@ -136,7 +147,7 @@ function listArticles() {
 }
 
 function bookings() {
-		$conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
+	$conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
     $sql = "SELECT * FROM calendar_events LEFT JOIN days ON calendar_events.event_date=days.day ORDER by calendar_events.event_date";
     $st = $conn->prepare( $sql );
     $st->execute();
@@ -167,16 +178,16 @@ function bookings() {
 
 function delete_booking($booking_id) {
  
-    // Does the Article object have an ID?
+    // Does the Booking object have an ID?
     if ( is_null( $booking_id ) ) trigger_error ( "Attempt to delete an Booking object that does not have its ID property set.", E_USER_ERROR );
  
-    // Delete the Article
+    // Delete the Booking
     $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
     $st = $conn->prepare ( "DELETE FROM calendar_events WHERE event_id = :event_id LIMIT 1" );
     $st->bindValue( ":event_id", $booking_id, PDO::PARAM_INT );
     $st->execute();
     $conn = null;
-    
+	log_event("Admin", "BookingDeleted", $booking_id);
     header( "Location: admin.php?action=admin/bookings&status=eventDeleted" );
   }
 
@@ -187,29 +198,48 @@ function finance(){
 
 function deleteDay($day) {
  
-    // Does the Article object have an ID?
+    // Does the Day object have an ID?
     if ( is_null( $day ) ) trigger_error ( "Attempt to delete a Day that does not have its ID property set.", E_USER_ERROR );
  
-    // Delete the Article
+    // Delete the Day setting
     $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
     $st = $conn->prepare ( "DELETE FROM days WHERE day = :day LIMIT 1" );
     $st->bindValue( ":day", $day, PDO::PARAM_INT );
     $st->execute();
+    log_event("Admin", "DayDeleted", $day);
     $conn = null;
-    
-    header( "Location: admin.php?action=admin/working_days&status=dayDeleted" );
+	
+    $exploded_date = explode("-", $day);
+	IF(substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
+	$exploded_date[1] += 1;
+	
+    header( "Location: admin.php?action=admin/working_days&status=dayDeleted&month=" . $exploded_date[1] . "&year=" . $exploded_date[0] );
 }
 
 function addDay($day, $status, $reason) {
 	$confirmed = $_SESSION['user']['name'];
     // Add day status
     $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-    $st = $conn->prepare ( "INSERT INTO days (day, status, reason, confirmed) VALUES ('$day', '$status', '$reason', '$confirmed') on duplicate key update status=values(status), reason=values(reason), confirmed=values(confirmed)" );
+    $st = $conn->prepare ( "INSERT INTO days (day, status, reason, confirmed) VALUES ('$day', '$status', '$reason', '$confirmed') on duplicate key UPDATE status=values(status), reason=values(reason), confirmed=values(confirmed)" );
     if($status=='delete') {$st = $conn->prepare ( "DELETE FROM days WHERE day='$day'");};
     $st->execute();
+    $st = $conn->prepare ( "SELECT user_id, email FROM calendar_events LEFT JOIN jos_users ON user_id = id WHERE event_date = '" . $day ."'" );
+    $st->execute();
+	$RelatedEmails = array();
+	while ( $row = $st->fetch() ) {
+		$RelatedEmails = $row['email'];
+    }
+	send_mail($RelatedEmails,"Dienos statusas: " . $day, "Dienos statusas, kuriai Jūs buvote užsiregistravę skrydžiams, pasikeitė<br />
+	Dabartinis statusas: " . $status . "<br />" .
+	"Pastaba: " . $reason . "<br />"
+	);
     $conn = null;
-    
-    header( "Location: index.php?action=calendar&status=dayAdded" );
+    log_event("Admin", "DayAdded", $day);
+	
+	$exploded_date = explode("-", $day);
+	IF(substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
+	$exploded_date[1] += 1;
+    header( "Location: index.php?action=calendar&status=dayAdded&month=" . $exploded_date[1] . "&year=" . $exploded_date[0] );
 }
 function working_days() {
 	$conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
@@ -236,6 +266,5 @@ function working_days() {
 	
 	require( TEMPLATE_PATH . "/admin/working_days.php" );
 }
-
 
 ?>

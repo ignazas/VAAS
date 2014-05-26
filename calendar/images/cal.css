@@ -31,14 +31,14 @@ td.dayboxes {
 	color: #000000;
 	border: 1px;
 	border-spacing: 2px;
-	padding: 2px;
+	padding: 1px;
 }
 td.dayboxes-weekend {
 	background-color: #C6C6C6;
 	color: #000000;
 	border: 1px;
 	border-spacing: 2px;
-	padding: 2px;
+	padding: 1px;
 }
 
 td.afterdayboxes {
@@ -72,4 +72,19 @@ td.nevyksta {
 }
 td.svente {
 	border: 3px solid orange;
+}
+
+form.calendar {
+	width: 500px;
+}
+
+form.calendar table {
+	width: 100%;
+}
+
+#registruotis .b-ajax-wrapper {width: 580px;}
+
+td.p {
+	padding: 0 0 0 0;
+	
 }
