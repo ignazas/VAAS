@@ -1,10 +1,11 @@
-     
-    <?php 
+<?php 
     // user status
     $on = '';
 	$admin = '';
     $action = isset($action) ? $action : NULL;
-    IF(!empty($_SESSION['user'])) {
+    
+	IF(isset($_SESSION['user'])) {
+    //IF(!empty($_SESSION['user'])) {
     		
 		//prisijunges	
     	$on = TRUE;
@@ -14,6 +15,7 @@
 			 $admin = TRUE;	
 		} 
     }
+	
 	IF(isset( $_GET['action'] )) { 	$action = $_GET['action']; }
     ?>
     
@@ -33,7 +35,7 @@
           <ul class="nav navbar-nav">
             <li <?php if ($action=="news"){echo "class=\"active\"";} ?>><a href="index.php?action=news">Pranešimai</a></li>
             <li <?php if ($action=="finance"){echo "class=\"active\"";} ?>><a href="index.php?action=finance">Finansai</a></li>
-            <li <?php if ($action=="logbook"){echo "class=\"active\"";} ?>><a href="index.php?action=logbook">LogBook</a></li>
+            <li <?php if ($action=="logbook"){echo "class=\"active\"";} ?>><a href="index.php?action=logbook">Log Book</a></li>
             <li <?php if ($action=="calendar"||$action=="booking"||$action=="my_bookings"){echo "class=\"active\"";} ?>class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kalendorius <b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -41,7 +43,7 @@
                 <li <?php if ($action=="my_bookings"){echo "class=\"active\"";} ?>><a href="index.php?action=my_bookings">Mano registracijos</a></li>
               </ul>
             </li>
-            <!--<li <?php if ($action=="contact"){echo "class=\"active\"";} ?>><a href="index.php?action=contact">Kontaktai</a></li>-->
+            <li <?php if ($action=="contact"){echo "class=\"active\"";} ?>><a href="index.php?action=contact">Kontaktai</a></li>
            <?php IF ($admin) { ?> 
            <li <?php if ($action=="admin/news"||$action=="admin/bookings"||$action=="admin/finance") {echo "class=\"active\"";} ?> class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Administravimas <b class="caret"></b></a>
            		<ul class="dropdown-menu">
@@ -57,11 +59,11 @@
           <ul class="nav navbar-nav navbar-right">
           	<?php if (!$on) { ?>
             <li><a href="index.php?action=on">Prisijungti</a></li>
-            <? } else { ?>
+            <?php } else { ?>
             <li><a href="index.php?action=user"><u><?php echo $_SESSION['user']['name']; ?></u></a></li>
             <li><a href="index.php?action=off">Atsijungti</a></li>
             
-            <? } ?>
+            <?php } ?>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

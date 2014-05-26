@@ -5,8 +5,10 @@ require_once dirname(__FILE__) . '/const.inc';
 
 $day = $_GET['day'];
 
-$a = strptime($day, '%Y-%m-%d');
-$timestamp = mktime(0, 0, 0, $a['tm_mon']+1, $a['tm_mday'], $a['tm_year']+1900);
+$a = strftime($day, strtotime('%Y-%m-%d'));
+
+$susprogus_data = explode("-",$a);
+$timestamp = mktime(0, 0, 0, $susprogus_data[1], $susprogus_data[2], $susprogus_data[0]);
 $savaites_diena = date('l', $timestamp);
 
 switch($savaites_diena)
@@ -27,11 +29,10 @@ $result = DB::query("SELECT * FROM calendar_events WHERE event_date='$day' ORDER
 echo "<h2>" . $day . ", " . $savaites_diena . "</h2>";
 
 $sarasas = array();
-while ($row = mysql_fetch_array($result)){
+foreach ($result as $row){
 	$sarasas[] = $row;
 };
 
-mysql_free_result($result);
 ?>
 <div style="display: block">
 <table style="width: 600px; "  class="table table-striped">

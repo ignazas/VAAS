@@ -69,7 +69,7 @@ Pasirinkite dieną, kad atžymėti: <br/> <br/>
 					<form action="admin.php">
 	          		<input type="hidden" name="day" value="<?php echo $day['day']; ?>"/>
 	 				<button type="submit" name="action" onclick="return confirm('Ar tikrai norite pašalinti dienos žymę?')" class="btn btn-xs btn-danger" value="deleteDay">Pašalinti</button>
-					</form> <?
+					</form> <?php
 	          		echo "</td></tr>";
 		  			}
 				}

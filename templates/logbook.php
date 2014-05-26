@@ -1,16 +1,19 @@
-<?php require "common.php" ?>
-<?php require "secure.php" ?>
-<?php include "templates/include/header.php" ?>
-<?php include "templates/include/top-menu.php" ?>
+<?php 
+require "common.php";
+require "secure.php";
+include "templates/include/header.php";
+include "templates/include/top-menu.php";
+
+?>
 
 <div class="container">
 	<div class="page-header"><h1>Log Book</h1></div>
       <div class="col-md-8">
           <?php
+          
           	$query_result = DB::query("SELECT * FROM flights WHERE pilot ='" . $_SESSION['user']['id'] . "'");
 			$skrydziai = array();
-			while ($eilute = mysql_fetch_array($query_result))
-			{
+			foreach ($query_result as $eilute) {
 				$skrydziai[$eilute['record_id']][] = $eilute['record_id'];
 				$skrydziai[$eilute['record_id']]['record_id'] = $eilute['record_id'];
 			    $skrydziai[$eilute['record_id']]['data'] = $eilute['date'];
@@ -20,7 +23,7 @@
 				$skrydziai[$eilute['record_id']]['duration'] = $eilute['duration'];
 			}
           ?>
-       
+
         <table class="table table-striped">
       		<tr>
           	<th>#</th>
