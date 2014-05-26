@@ -11,16 +11,42 @@ class DB {
     
     public static function query($query) {
         DB::connect();
+
+        $st = DB::$conn->prepare($query);
+		$st->execute();
+
+        $result = $st->fetchAll();
+        
+        if(!$result)
+          die(mysql_error());
+        return $result;
+    }    
+
+    
+	public static function fetch_object($query) {
+        DB::connect();
 		
 		$st = DB::$conn->prepare($query);
 		
 		$st->execute();
-		$result = $st->fetchAll();
+		$result = $st->fetchObject();
+			
 		return $result;
     }    
-    
-    public static function escape($variable) {
-        DB::connect();
-        return mysql_real_escape_string($variable);
-    }
+
+	
+	public static function escape($variable) {
+ 	        DB::connect();
+ 	        return mysql_real_escape_string($variable);
+ 	    }
+
+	
+	public static function close() {
+        if (DB::$conn != NULL) {
+            mysql_close(DB::$conn);
+            DB::$conn = NULL;
+        }
+    }    
+	
+	
 }

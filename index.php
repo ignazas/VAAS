@@ -15,7 +15,6 @@ else if ($controller = load_controller($action))
 else
   Index::home();
 
-DB::close();
 
 
 ?>

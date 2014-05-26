@@ -8,7 +8,6 @@ class Index {
     }
         
     public static function news() {
-        require( CLASS_PATH . "/news.php" );
         $results = array();
         $data = Article::getList();
         $results['articles'] = $data['results'];
@@ -17,7 +16,6 @@ class Index {
     }
     
     public static function singleNews() {
-        require( CLASS_PATH . "/news.php" );
         if ( isset($_GET["articleId"])) {
           $results = array();
           $results['article'] = Article::getById( (int)$_GET["articleId"] );
