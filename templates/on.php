@@ -129,6 +129,7 @@
 	<h2 class="form-signin-heading">Prisijunkite</h2>
     <input class="form-control" required="" placeholder="El. paštas" type="text" name="username" value="<?php echo $submitted_username; ?>" autofocus="" />
     <input class="form-control" required="" placeholder="Slaptažodis" type="password" name="password" value="" />
+    <a href="#" id="reminder">Atsiųsti naują slaptažodį</a>
     <br /><br />
     <input class="btn btn-lg btn-primary btn-block" type="submit" value="Prisjungti" />
 </form>

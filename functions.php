@@ -10,6 +10,42 @@ function log_event($user, $event, $param) {
     DB::query("INSERT INTO log(user, event, param) VALUES ('$user','$event','$param')");
 }
 
+function load_controller($name) {
+    if (file_exists(dirname(__FILE__) . "/controlers/$name.inc")) {
+        require_once dirname(__FILE__) . "/controlers/$name.inc";
+        if ($class = new ReflectionClass(ucwords($name).'Controler')) {
+            if(session_id() == '') session_start();
+            return $class->newInstanceArgs();
+        }
+    }
+    return FALSE;
+}
+
+function theme($type, $name, $label, $entity, $values) {
+    $output = NULL;
+    
+    switch ($type) {
+        case 'text':
+        case 'url':
+        case 'email':
+        case 'password':
+            $output = '<div';
+            if (Messages::has_error('name'))
+                $output .= ' class="err"';
+            $output .= '><label for="' . $name . '"><b>' . $label . ':</b></label> <input type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . htmlentities(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '"/></div>';
+            break;
+        case 'display':
+            $output = '<div';
+            if (Messages::has_error('name'))
+                $output .= ' class="err"';
+            $output .= '><label><b>' . $label . ':</b></label> <span>' . htmlentities(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '</span></div>';
+            break;
+        default:
+            break;
+    }
+    
+    return $output;
+}
 
 function send_mail($recipient, $title, $content) {
 	IF(!$recipient) {$recipient = "magazin@audiounit.lt";};
@@ -24,6 +60,4 @@ function send_mail($recipient, $title, $content) {
 	} ELSE {
 		mail($recipient, "VAAS: " . $title , $mail, $headers);
 	}
-	
-	
 }

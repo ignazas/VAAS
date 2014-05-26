@@ -2,13 +2,12 @@
 
 	require "config.php";
 	require "functions.php";
+    require "helpers/route.inc";
 	
-	$con=mysql_connect(DB_HOSTNAME,DB_USERNAME,DB_PASSWORD);
-	if (mysqli_connect_errno($con)) { echo "Failed to connect to MySQL: " . mysql_connect_error();} 
-	$db_selected = mysql_select_db(DB_DATABASE, $con);
-	mysql_query("SET CHARACTER SET utf8");
-	
+	$con=DB::connect();
+    	
 	$action = isset( $_GET['action'] ) ? $_GET['action'] : "";
+<<<<<<< HEAD
 	
 	switch ( $action ) {
   		case 'news':
@@ -159,6 +158,16 @@
 mysql_close($con);
 
 ?>
+=======
+	if (method_exists('Index', $action))
+        Index::$action();
+    else if ($controller = load_controller($action))
+        $controller->Run();
+    else
+		Index::home();
+
+DB::close();
+>>>>>>> 72fef4ced8942e34e500689c131f6f133b568bd3
 
 
 
