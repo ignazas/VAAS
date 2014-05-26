@@ -22,11 +22,11 @@ if (isset($_POST['submit']))
 
 	$id = DB::query("INSERT INTO " . TBL_EVENTS . " ( `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES ('".addslashes($event_date)."', '".addslashes($_POST['day'])."', '".addslashes($_POST['month'])."', '".addslashes($_POST['year'])."', '".addslashes($_POST['hour'].":".$_POST['minute'])."', '".addslashes($_POST['title'])."', '".addslashes($_POST['description'])."', '".addslashes($_SESSION['user']['id'])."')");
 	$_POST['month'] = $_POST['month'] + 1;
-	$pranesimas = "Jūs užsiregistravote skrydziams " . $event_date . " dieną, " . $event_time . " valandą.<br />Jūsų pastaba: " . $_POST[description];
+	$pranesimas = "Jūs užsiregistravote skrydžiams " . $event_date . " dieną, " . $event_time . " valandų.<br />Jūsų pastaba: " . $_POST[description];
 	$meilas = $_SESSION['user']['email'];
 	$user = $_SESSION['user']['username'];
 	$BookingId = mysql_insert_id();
-	send_mail($meilas,"Jūsų registracija skrydžiams",$pranesimas);
+	send_mail($meilas,"Jधऎsधक registracija skrydधठiams",$pranesimas);
 		
 	//redirect
 	header( 'Location: ../index.php?action=calendar' ) ;
@@ -64,8 +64,8 @@ else
     </tr>
     <tr> 
       <td width="200" height="40" valign="top"><span class="addevent">Registracijos pastabos</span><br>
-      	<span class="addeventextrainfo">Nurodykite, jei reikalinga nakvynė, skrydžiai į aik�telę ar pan.</span>
-      	<span class="addeventextrainfo">Nurodykite kiek ir kokius skrydžius planuojate ar esate instruktorius ar autoi�vilktuvo operatorius.</span>
+      	<span class="addeventextrainfo">Nurodykite, jei reikalinga nakvynė, skrydžiai į aikštelę ar pan.</span>
+	<span class="addeventextrainfo">Nurodykite kiek ir kokius skrydžius planuojate, esate instruktorius ar autoišvilktuvo operatorius.</span>
       	</td>
       <td height="40" valign="top"> <textarea class="form-control" name="description" cols="18" rows="5" id="description"></textarea> 
       </td>
