@@ -13,11 +13,27 @@ class DB {
     
     public static function query($query) {
         DB::connect();
-        return mysql_query($query) /*|| die(mysql_error())*/;
+        $result = mysql_query($query);
+        if(!$result)
+          die(mysql_error());
+        return $result;
+    }    
+
+    public static function fetch_object($query) {
+        DB::connect();
+        if ($result = DB::query($query))
+            return mysql_fetch_object($result);
     }    
     
     public static function escape($variable) {
         DB::connect();
         return mysql_real_escape_string($variable);
     }
+    
+    public static function close() {
+        if (DB::$conn != NULL) {
+            mysql_close(DB::$conn);
+            DB::$conn = NULL;
+        }
+    }    
 }

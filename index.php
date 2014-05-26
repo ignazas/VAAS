@@ -3,54 +3,22 @@
 	require "config.php";
 	require "functions.php";
 	
-	$con=mysql_connect(DB_HOSTNAME,DB_USERNAME,DB_PASSWORD);
-	if (mysqli_connect_errno($con)) { echo "Failed to connect to MySQL: " . mysql_connect_error();} 
-	$db_selected = mysql_select_db(DB_DATABASE, $con);
-	mysql_query("SET CHARACTER SET utf8");
-	
+	$con=DB::connect();
+    	
 	$action = isset( $_GET['action'] ) ? $_GET['action'] : "";
-	
-	switch ( $action ) {
-  		case 'news':
-    		news();
-    		break;
-		case 'singleNews':
-    		singleNews();
-    		break;
-  		case 'finance':
-    		finance();
-    		break;
-		case 'calendar':
-    		calendar();
-    		break;
-		case 'my_bookings':
-    		my_bookings();
-    		break;
-		case 'deleteBooking':
-    		delete_booking($_GET['bookingId']);
-    		break;
-		case 'contact':
-    		contact();
-    		break;
-		case 'user':
-    		user();
-    		break;
-		case 'off':
-    		off();
-    		break;
-		case 'on':
-    		on();
-    		break;
-		case 'svecias':
-    		svecias();
-    		break;
-		case 'logbook':
-    		logbook();
-    		break;
-  		default:
-    		home();
-	}
-	
+	if (function_exists($action))
+        $action();
+    else if ($controller = load_controller($action))
+        $controller->Run();
+    else
+		home();
+
+    function ajax() {
+        if (isset($_GET['method']))
+            include dirname(__FILE__) . '/ajax/' . $_GET['method'] . '.inc';
+        exit;
+    }
+    	
 	function news() {
 		require( CLASS_PATH . "/news.php" );
 	  $results = array();
@@ -133,9 +101,6 @@
  	function contact() {
 	  require( TEMPLATE_PATH . "/contact.php" );
 }
-	function user() {
-	  require( TEMPLATE_PATH . "/user.php" );
-}
 	function home() {
 	  require( TEMPLATE_PATH . "/home.php" );
 }
@@ -151,12 +116,8 @@
 	function logbook() {
 	  require( TEMPLATE_PATH . "/logbook.php" );
 }
-	
 
-	
-mysql_close($con);
-
-?>
+DB::close();
 
 
 

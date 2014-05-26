@@ -1,0 +1,6 @@
+.messages {}
+.messages > div {padding:5px;color:green;}
+.errors {}
+.errors > div {color:red;padding:5px;border: 1px solid red;}
+
+form label { width: 40%; } 

@@ -4,25 +4,43 @@
 <?php include "templates/include/top-menu.php" ?>
 
 <div class="container">
+    <?php include "templates/include/messages.inc" ?>
+    <?php include "templates/include/errors.inc" ?>
+
 	<div class="page-header"><h1>Vartotojo nustatymai</h1></div>
       
-      <div class="col-md-8">
-      	<div class="col-md-6">
-      		<img src="" style="width: 150px; height: 150px;" class="img-thumbnail" alt="150x150 Foto">
-        </div>
-        <div class="col-md-6">
-        	<?php 
-	        	echo "<b>Vardas:</b> " . $_SESSION['user']['name'] . "<br />"; 
-	        	echo "<b>El. paštas:</b> " . $_SESSION['user']['email'] . "<br />";
-				echo "<b>Telefonas:</b> " . $_SESSION['user']['telephone1'] . "<br />";
-				echo "<b>Interneto svetainė:</b> " . $_SESSION['user']['website'] . "<br />";
-				echo "<b>Vartotojo tipas:</b> " . $_SESSION['user']['usertype'] . "<br />";
-				echo "<b>Užsiregistravo:</b> " . $_SESSION['user']['registerDate'] . "<br />";
-				echo "<b>Paskutinis apsilankymas:</b> " . $_SESSION['user']['lastvisitDate'] . "<br />";
-			 ?>
-        </div>   
+    <div class="col-md-8">
+        <form action="index.php?action=user" method="post" id="user_edit" enctype= "multipart/form-data">
+          	<div class="col-md-6">
+          		<img src="<?php echo empty($user->avatar) ? 'images/users/avatar.jpg' : "uploads/users/$user->avatar" ?>" style="width: 150px; height: 150px;" class="img-thumbnail" alt="150x150 Foto">
+          		<input type="file" name="avatar" id="avatar" value="Įkelti" />
+            </div>
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>Pagrindinė informacija:</legend>
+                    <?php echo theme('text', 'name', 'Vardas', $user, $edit) ?>
+                    <?php echo theme('email', 'email', 'El. paštas', $user, $edit) ?>
+                    <?php echo theme('text', 'telephone1', 'Telefonas', $user, $edit) ?>
+                    <?php echo theme('url', 'website', 'Interneto svetainė', $user, $edit) ?>
+                    
+                    <?php echo theme('display', 'usertype', 'Vartotojo tipas', $user, $edit) ?>
+                    <?php echo theme('display', 'registerDate', 'Užsiregistravo', $user, $edit) ?>
+                    <?php echo theme('display', 'lastvisitDate', 'Paskutinis apsilankymas', $user, $edit) ?>
+                </fieldset>
 
-		</div>
+                <fieldset>
+                    <legend>Slaptažodis:</legend>
+                    <?php echo theme('password', 'password', 'Senas', $user, array('password' => '')) ?>
+                    <?php echo theme('password', 'new_password_1', 'Naujas', $user, $edit) ?>
+                    <?php echo theme('password', 'new_password_2', 'Pakartoti', $user, $edit) ?>
+                </fieldset>
+            </div>
+            
+            <div class="buttons">
+                <input type="submit" value="Saugoti" />
+            </div>   
+        </form>
+    </div>
 
       <div class="col-md-4">
           <div class="panel panel-default">
