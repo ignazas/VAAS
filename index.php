@@ -12,7 +12,7 @@
     else if ($controller = load_controller($action))
         $controller->Run();
     else
-		home();
+		Index::home();
 
 DB::close();
 
