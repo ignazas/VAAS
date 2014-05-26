@@ -92,8 +92,14 @@
     $st->execute();
     $conn = null;
     
+<<<<<<< HEAD
+	//log it
+	mysql_query("INSERT INTO log(user, event, param) VALUES ('N/A','BookingRemove','". $booking_id ."')");
+	
+=======
 	log_event('User','BookingDeleted',$booking_id);
 
+>>>>>>> 27caef29a19015cae67c10a069909850c30ad655
     header( "Location: index.php?action=my_bookings&status=eventDeleted" );
   }
 
