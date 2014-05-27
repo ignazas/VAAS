@@ -46,7 +46,7 @@ switch ( $action ) {
 }
   
 function newArticle() {
- require( CLASS_PATH . "/news.php" );
+
   $results = array();
   $results['pageTitle'] = "New Article";
   $results['formAction'] = "newArticle";
@@ -76,7 +76,7 @@ function newArticle() {
  
  
 function editArticle() {
- require( CLASS_PATH . "/news.php" );
+
   $results = array();
   $results['pageTitle'] = "Edit Article";
   $results['formAction'] = "editArticle";
@@ -113,7 +113,7 @@ function editArticle() {
  
  
 function deleteArticle() {
- require( CLASS_PATH . "/news.php" );
+
   if ( !$article = Article::getById( (int)$_GET['articleId'] ) ) {
     header( "Location: admin.php?error=articleNotFound" );
     return;
@@ -126,7 +126,7 @@ function deleteArticle() {
 }
 
 function listArticles() {
-	require( CLASS_PATH . "/news.php" );
+
   $results = array();
   $data = Article::getList();
   $results['articles'] = $data['results'];

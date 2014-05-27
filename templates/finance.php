@@ -1,7 +1,8 @@
-<?php require "common.php" ?>
-<?php require "secure.php" ?>
-<?php include "templates/include/header.php" ?>
-<?php include "templates/include/top-menu.php" ?>
+<?php 
+require "common.php";
+require "secure.php";
+include "templates/include/header.php";
+include "templates/include/top-menu.php"; ?>
 
      <div class="container">
 		<div class="page-header"><h1>Finansai</h1></div>
@@ -45,7 +46,7 @@
         
         
         if ($balance < '0') {
-            ?><div class="alert alert-danger"><strong>Įspėjimas!</strong> Jūsų likutis neigiamas. Prašome apmokėti susidariusia skolą.</div><?}?>
+            ?><div class="alert alert-danger"><strong>Įspėjimas!</strong> Jūsų likutis neigiamas. Prašome apmokėti susidariusia skolą.</div><?php } ?>
         <table class="table table-striped">
         <tr>
 		  <td>Skrydžių mokesčiai</td>

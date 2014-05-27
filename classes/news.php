@@ -87,7 +87,7 @@ class Article
     $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
 	
     $sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles
-            ORDER BY " . mysql_escape_string($order) . " LIMIT :numRows";
+            ORDER BY " . $order . " LIMIT :numRows";
 
     $st = $conn->prepare( $sql );
     $st->bindValue( ":numRows", $numRows, PDO::PARAM_INT );

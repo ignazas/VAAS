@@ -1,4 +1,4 @@
-﻿<?
+﻿<?php
 require_once dirname(__FILE__) . '/../functions.php';
 require_once dirname(__FILE__) . '/const.inc';
 
@@ -20,8 +20,8 @@ $month = addslashes($_GET['month'] - 1);
 $year = addslashes($_GET['year']);
 
 $query_result = DB::query("SELECT event_id,event_title,event_day,event_time FROM " . TBL_EVENTS . " WHERE event_month='$month' AND event_year='$year' ORDER BY event_time");
-while ($info = mysql_fetch_array($query_result))
-{
+
+foreach ($query_result as $info) {
     $day = $info['event_day'];
     $event_id = $info['event_id'];
     $events[$day][] = $info['event_id'];
@@ -31,10 +31,9 @@ while ($info = mysql_fetch_array($query_result))
 
 // gaunam partvirtintas ir atmestas datas
 
-$query = "SELECT * FROM days ORDER BY day";
-$query_result = mysql_query ($query);
-while ($diena = mysql_fetch_array($query_result))
-{
+$query_result = DB::query("SELECT * FROM days ORDER BY day"); 
+
+foreach ($query_result as $diena) {
 	$dienos[$diena['day']]['data'] = $diena['day'];
 	$dienos[$diena['day']]['status'] = $diena['status'];
 	$dienos[$diena['day']]['reason'] = $diena['reason'];
@@ -103,9 +102,9 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 <div id="addDay"></div>
 
 <div align="center">
-		<a href="<? echo "index.php?action=calendar&month=$prev_month&amp;year=$prev_year"; ?>">&lt;&lt;</a>
-		<? echo date ("Y m", mktime(0,0,0,$_GET['month']-1,1,$_GET['year'])); ?></td>
-		<a href="<? echo "index.php?action=calendar&month=$next_month&amp;year=$next_year"; ?>">&gt;&gt;</a>
+		<a href="<?php echo "index.php?action=calendar&month=$prev_month&amp;year=$prev_year"; ?>">&lt;&lt;</a>
+		<?php echo date ("Y m", mktime(0,0,0,$_GET['month']-1,1,$_GET['year'])); ?></td>
+		<a href="<?php echo "index.php?action=calendar&month=$next_month&amp;year=$next_year"; ?>">&gt;&gt;</a>
 </div>
 
 <div id="dienos">
@@ -122,7 +121,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
           <td><div align="center">Sekmadienis</div></td>
         </tr>
 		<tr valign="top" bgcolor="#FFFFFF">
-		<?
+		<?php
 		for ($i = 1; $i <= $first_day_of_month-1; $i++) {
 			$days_so_far = $days_so_far + 1;
 			$count_boxes = $count_boxes + 1;

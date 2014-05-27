@@ -6,6 +6,7 @@ require "helpers/route.inc";
 
 $con=DB::connect();
 
+
 $action = isset( $_GET['action'] ) ? $_GET['action'] : "";
 if (method_exists('Index', $action))
   Index::$action();
@@ -14,4 +15,6 @@ else if ($controller = load_controller($action))
 else
   Index::home();
 
-DB::close();
+
+
+?>
