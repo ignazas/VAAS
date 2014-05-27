@@ -1,4 +1,6 @@
 <?php
+require_once dirname(__FILE__) . '/../config.php'; //DB config 
+
 class DB {
     private static $conn = NULL;
     
