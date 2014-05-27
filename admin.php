@@ -1,9 +1,11 @@
 <?php 
 
-require "config.php";
-require "common.php";
-require "secure.php";
-require "functions.php";
+require_once dirname(__FILE__) . '/helpers/db.inc';
+require_once dirname(__FILE__) . "/classes/news.php";
+require_once dirname(__FILE__) . "/config.php";
+require_once dirname(__FILE__) . "/common.php";
+require_once dirname(__FILE__) . "/secure.php";
+require_once dirname(__FILE__) . "/functions.php";
 
 $action = isset( $_GET['action'] ) ? $_GET['action'] : ""; 
  
@@ -147,10 +149,7 @@ function listArticles() {
 }
 
 function bookings() {
-	$conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-    $sql = "SELECT * FROM calendar_events LEFT JOIN days ON calendar_events.event_date=days.day ORDER by calendar_events.event_date";
-    $st = $conn->prepare( $sql );
-    $st->execute();
+    $st = DB::query("SELECT * FROM calendar_events LEFT JOIN days ON calendar_events.event_date=days.day ORDER by calendar_events.event_date");
     $BookingList = array();
  
     while ( $row = $st->fetch() ) {
@@ -182,11 +181,7 @@ function delete_booking($booking_id) {
     if ( is_null( $booking_id ) ) trigger_error ( "Attempt to delete an Booking object that does not have its ID property set.", E_USER_ERROR );
  
     // Delete the Booking
-    $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-    $st = $conn->prepare ( "DELETE FROM calendar_events WHERE event_id = :event_id LIMIT 1" );
-    $st->bindValue( ":event_id", $booking_id, PDO::PARAM_INT );
-    $st->execute();
-    $conn = null;
+    $st = DB::query("DELETE FROM calendar_events WHERE event_id = :event_id LIMIT 1", array(":event_id" => $booking_id));
 	log_event("Admin", "BookingDeleted", $booking_id);
     header( "Location: admin.php?action=admin/bookings&status=eventDeleted" );
   }
@@ -202,15 +197,11 @@ function deleteDay($day) {
     if ( is_null( $day ) ) trigger_error ( "Attempt to delete a Day that does not have its ID property set.", E_USER_ERROR );
  
     // Delete the Day setting
-    $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-    $st = $conn->prepare ( "DELETE FROM days WHERE day = :day LIMIT 1" );
-    $st->bindValue( ":day", $day, PDO::PARAM_INT );
-    $st->execute();
+    $st = DB::query("DELETE FROM days WHERE day = :day LIMIT 1", array(":day" => $day));
     log_event("Admin", "DayDeleted", $day);
-    $conn = null;
 	
     $exploded_date = explode("-", $day);
-	IF(substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
+	if (substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
 	$exploded_date[1] += 1;
 	
     header( "Location: admin.php?action=admin/working_days&status=dayDeleted&month=" . $exploded_date[1] . "&year=" . $exploded_date[0] );
@@ -219,12 +210,14 @@ function deleteDay($day) {
 function addDay($day, $status, $reason) {
 	$confirmed = $_SESSION['user']['name'];
     // Add day status
-    $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-    $st = $conn->prepare ( "INSERT INTO days (day, status, reason, confirmed) VALUES ('$day', '$status', '$reason', '$confirmed') on duplicate key UPDATE status=values(status), reason=values(reason), confirmed=values(confirmed)" );
-    if($status=='delete') {$st = $conn->prepare ( "DELETE FROM days WHERE day='$day'");};
-    $st->execute();
-    $st = $conn->prepare ( "SELECT user_id, email FROM calendar_events LEFT JOIN jos_users ON user_id = id WHERE event_date = '" . $day ."'" );
-    $st->execute();
+    $st = DB::query("INSERT INTO days (day, status, reason, confirmed) VALUES (:day, :status, :reason, :confirmed) on duplicate key UPDATE status=values(status), reason=values(reason), confirmed=values(confirmed)", array(
+        ':day' => $day,
+        ':status' => $status,
+        ':reason' => $reason,
+        ':confirmed' => $confirmed
+    ));
+    if($status=='delete') {$st = DB::query("DELETE FROM days WHERE day = :day", array(':day' => $day));};
+    $st = DB::query("SELECT user_id, email FROM calendar_events LEFT JOIN jos_users ON user_id = id WHERE event_date = :day", array(':day' => $day));
 	$RelatedEmails = array();
 	while ( $row = $st->fetch() ) {
 		$RelatedEmails = $row['email'];
@@ -233,19 +226,15 @@ function addDay($day, $status, $reason) {
 	Dabartinis statusas: " . $status . "<br />" .
 	"Pastaba: " . $reason . "<br />"
 	);
-    $conn = null;
     log_event("Admin", "DayAdded", $day);
 	
 	$exploded_date = explode("-", $day);
-	IF(substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
+	if(substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
 	$exploded_date[1] += 1;
     header( "Location: index.php?action=calendar&status=dayAdded&month=" . $exploded_date[1] . "&year=" . $exploded_date[0] );
 }
 function working_days() {
-	$conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-    $sql = "SELECT * FROM days ORDER by day";
-    $st = $conn->prepare( $sql );
-    $st->execute();
+    $st = DB::query("SELECT * FROM days ORDER by day");
     $workingDays = array();
  
     while ( $row = $st->fetch() ) {

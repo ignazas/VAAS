@@ -13,7 +13,7 @@ class User {
                 LEFT JOIN jos_contxtd_details
                 ON jos_users.id = jos_contxtd_details.user_id
                 WHERE
-                    jos_users.id = ".$id);
+                    jos_users.id = :id", array(':id' => $id));
         }
         return NULL;
     }
@@ -28,7 +28,7 @@ class User {
                 LEFT JOIN jos_contxtd_details
                 ON jos_users.id = jos_contxtd_details.user_id
                 WHERE
-                    jos_users.username = '" . $username . "' OR jos_users.email = '" . $username . "'");
+                    jos_users.username = :username OR jos_users.email = :username", array(':username' => $username));
         }
         return NULL;
     }
@@ -46,10 +46,10 @@ class User {
             }
 
             if ($query_user)
-                DB::query("UPDATE `jos_users` SET $query_user WHERE `id`=" . $id);
+                DB::query("UPDATE `jos_users` SET $query_user WHERE `id`=:id", array(':id' => $id));
             
             if ($query_context)
-                DB::query("UPDATE `jos_contxtd_details` SET $query_context WHERE `user_id`=" . $id);
+                DB::query("UPDATE `jos_contxtd_details` SET $query_context WHERE `user_id`=:id", array(':id' => $id));
 
             return TRUE;
         }

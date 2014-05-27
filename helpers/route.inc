@@ -1,4 +1,6 @@
 <?php
+
+
 class Index {
     /* INDEX.PHP */
     public static function ajax() {
@@ -8,17 +10,16 @@ class Index {
     }
         
     public static function news() {
-        $results = array();
+        require_once dirname(__FILE__) . '/../classes/news.php';
         $data = Article::getList();
-        $results['articles'] = $data['results'];
-        $results['totalRows'] = $data['totalRows'];
+        $results = array('articles' => $data['results'], 'totalRows' => $data['totalRows']);
         require( TEMPLATE_PATH . "/news.php" );
     }
     
     public static function singleNews() {
         if ( isset($_GET["articleId"])) {
-          $results = array();
-          $results['article'] = Article::getById( (int)$_GET["articleId"] );
+            require_once dirname(__FILE__) . '/../classes/news.php';
+            $results = array('article' => Article::getById((int)$_GET["articleId"]));
         }
         
         require( TEMPLATE_PATH . "/singleNews.php" );
@@ -37,10 +38,7 @@ class Index {
     }
     
     public static function my_bookings() {
-        $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-        $sql = "SELECT * FROM calendar_events LEFT JOIN days ON calendar_events.event_date=days.day ORDER by calendar_events.event_date";
-        $st = $conn->prepare( $sql );
-        $st->execute();
+        $st = DB::query("SELECT * FROM calendar_events LEFT JOIN days ON calendar_events.event_date=days.day ORDER by calendar_events.event_date");
     
         $BookingList = array();
         while ( $row = $st->fetch() ) {
@@ -73,11 +71,7 @@ class Index {
             if ( is_null( $booking_id ) ) trigger_error ( "Attempt to delete an Booking object that does not have its ID property set.", E_USER_ERROR );
          
             // Delete the Booking
-            $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-            $st = $conn->prepare ( "DELETE FROM calendar_events WHERE event_id = :event_id LIMIT 1" );
-            $st->bindValue( ":event_id", $booking_id, PDO::PARAM_INT );
-            $st->execute();
-            $conn = null;
+            $st = DB::query( "DELETE FROM calendar_events WHERE event_id = :event_id LIMIT 1", array(":event_id" => $booking_id));
         
             log_event('N/A','BookingRemove',$booking_id);
             header( "Location: index.php?action=my_bookings&status=eventDeleted" );

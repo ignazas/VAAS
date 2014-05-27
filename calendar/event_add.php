@@ -20,12 +20,19 @@ if (isset($_POST['submit']))
 	$event_date = $_POST['year']."-".$menesis."-".$diena;
 	$event_time = $_POST['hour'] . ":" . $_POST['minute'];
 
-	$id = DB::query("INSERT INTO " . TBL_EVENTS . " ( `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES ('".addslashes($event_date)."', '".addslashes($_POST['day'])."', '".addslashes($_POST['month'])."', '".addslashes($_POST['year'])."', '".addslashes($_POST['hour'].":".$_POST['minute'])."', '".addslashes($_POST['title'])."', '".addslashes($_POST['description'])."', '".addslashes($_SESSION['user']['id'])."')");
+	$BookingId = DB::insert('INSERT INTO ' . TBL_EVENTS . ' ( `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES (:event_date, :day, :month, :year, :time, :title, :description, :user_id)', array(
+    	':event_date' => $event_date,
+	    ':day' => isset($_POST['day']) ? $_POST['day'] : date('j'),
+        ':month' => isset($_POST['month']) ? $_POST['month'] : date('n'),
+        ':year' => isset($_POST['year']) ? $_POST['year'] : date('y'),
+        ':time' => (isset($_POST['hour']) ? $_POST['hour'] : 10).':'.(isset($_POST['minute']) ? $_POST['minute'] : 0),
+        ':title' => isset($_POST['title']) ? $_POST['title'] : '',
+        ':description' => isset($_POST['description']) ? $_POST['description'] : '',
+        ':user_id' => isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL));
 	$_POST['month'] = $_POST['month'] + 1;
-	$pranesimas = "Jūs užsiregistravote skrydžiams " . $event_date . " dieną, " . $event_time . " valandą.<br />Jūsų pastaba: " . $_POST[description];
+	$pranesimas = "Jūs užsiregistravote skrydžiams " . $event_date . " dieną, " . $event_time . " valandą.<br />Jūsų pastaba: " . $_POST['description'];
 	$meilas = $_SESSION['user']['email'];
 	$user = $_SESSION['user']['username'];
-	$BookingId = mysql_insert_id();
 	send_mail($meilas,"Jūsų registracija skrydžiams",$pranesimas);
 		
 	//redirect

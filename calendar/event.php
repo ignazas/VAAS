@@ -3,8 +3,8 @@
 require_once dirname(__FILE__) . '/../functions.php';
 require_once dirname(__FILE__) . '/const.inc';
 
-$query_result = DB::query("SELECT * FROM " . TBL_EVENTS . " WHERE event_id='$_GET[id]' LIMIT 1");
-while ($info = mysql_fetch_array($query_result)){
+$st = DB::query("SELECT * FROM " . TBL_EVENTS . " WHERE event_id=:id LIMIT 1", array(':id' => $_GET['id']));
+while ($info = $st->fetch()){
     $date =  $info['event_date'];
     $time_array = split(":", $info['event_time']);
     $time = date ("g:ia", mktime($time_array['0'],$time_array['1'],0,$info['event_month'],$info['event_day'],$info['event_year']));

@@ -24,7 +24,7 @@ switch($savaites_diena)
 }
 
 
-$result = DB::query("SELECT * FROM calendar_events WHERE event_date='$day' ORDER by event_time");
+$result = DB::query("SELECT * FROM calendar_events WHERE event_date=:day ORDER by event_time", array(':day' => $day));
 
 echo "<h2>" . $day . ", " . $savaites_diena . "</h2>";
 

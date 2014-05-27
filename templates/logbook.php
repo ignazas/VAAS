@@ -11,7 +11,7 @@ include "templates/include/top-menu.php";
       <div class="col-md-8">
           <?php
           
-          	$query_result = DB::query("SELECT * FROM flights WHERE pilot ='" . $_SESSION['user']['id'] . "'");
+          	$query_result = DB::query("SELECT * FROM flights WHERE pilot =:id", array(':id' => $_SESSION['user']['id']));
 			$skrydziai = array();
 			foreach ($query_result as $eilute) {
 				$skrydziai[$eilute['record_id']][] = $eilute['record_id'];

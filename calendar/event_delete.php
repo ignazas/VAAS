@@ -4,16 +4,13 @@ require_once dirname(__FILE__) . '/const.inc';
 
 session_start();
 
-$query = "SELECT admin_id FROM ".$TBL_PR."admins WHERE admin_username='".addslashes($_POST['USER'])."' AND admin_password='".addslashes(md5($_POST['PASS']))."' LIMIT 1";
-$query_result = DB::query($query);
-while ($info = mysql_fetch_array($query_result))
-{
+$st = DB::query('SELECT admin_id FROM '.TBL_PR . 'admins WHERE admin_username=:user AND admin_password=:password LIMIT 1', array(':user' => $_POST['USER'],'password' => md5($_POST['PASS'])));
+while ($info = $st->fetch($query_result)) {
 	$admin_id = $info['admin_id'];
 }
 
-if (isset($admin_id))
-{
-	DB::query("DELETE FROM " . TBL_EVENTS . " WHERE event_id='".addslashes($_POST['id'])."' LIMIT 1");
+if (isset($admin_id)) {
+	DB::query("DELETE FROM " . TBL_EVENTS . " WHERE event_id=:id LIMIT 1", array(':id' => $_POST['id']));
 	$_POST['month'] = $_POST['month'] + 1;
     ?>
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
