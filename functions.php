@@ -33,7 +33,7 @@ function theme($type, $name, $label, $entity, $values) {
             $output = '<div';
             if (Messages::has_error('name'))
                 $output .= ' class="err"';
-            $output .= '><label for="' . $name . '"><b>' . $label . ':</b></label> <input type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . htmlentities(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '"/></div>';
+            $output .= '><label for="' . $name . '"><b>' . $label . ':</b></label> <input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . htmlentities(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '"/></div>';
             break;
         case 'display':
             $output = '<div';
