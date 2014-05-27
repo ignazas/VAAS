@@ -9,6 +9,7 @@ tr.topdays {
 	 font-weight: bold;
 	 position: absolute;
      opacity: 0.1;
+     z-index: -1;
 }
 .eventinbox {
 	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 10px;	
@@ -26,19 +27,19 @@ table {
 td.beforedayboxes {
 	background-color: #EDEDED; color: #000000;
 }
-td.dayboxes {
-	background-color: #D3D3D3;
+td.dayboxes, td.dayboxes-weekend {
 	color: #000000;
 	border: 1px;
 	border-spacing: 2px;
 	padding: 1px;
+	background-color: #D3D3D3;
+	position: relative;
+	z-index: 0;
+}
+td.dayboxes {
 }
 td.dayboxes-weekend {
 	background-color: #C6C6C6;
-	color: #000000;
-	border: 1px;
-	border-spacing: 2px;
-	padding: 1px;
 }
 
 td.afterdayboxes {
