@@ -37,7 +37,7 @@
             </div>
             
             <div class="buttons">
-                <input type="submit" value="Saugoti" />
+                <input type="submit" class="btn btn-sm btn-primary" value="Saugoti" />
             </div>   
         </form>
     </div>
