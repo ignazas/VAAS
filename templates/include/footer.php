@@ -9,12 +9,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    
-    <!--
-    <pre>
-  		<?php print_r($_SESSION);?>
-  	</pre>
-  	-->
   </body>
 </html>
 
