@@ -36,7 +36,7 @@ if (isset($_POST['submit']))
 	send_mail($meilas,"Jūsų registracija skrydžiams",$pranesimas);
 		
 	//redirect
-	header( 'Location: ../index.php?action=calendar' ) ;
+	header( "Location: ../index.php?action=calendar&year=" . $_POST['year'] . "&month=" . $_POST['month'] ) ;
 }
 else 
 {
