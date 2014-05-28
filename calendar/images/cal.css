@@ -89,3 +89,7 @@ td.p {
 	padding: 0 0 0 0;
 	
 }
+a.registracija {white-space: nowrap;}
+
+table.calendar {table-layout: fixed;}
+table.calendar tr td .eventinbox {line-height: 2em; overflow: hidden; text-overflow: ellipsis;}

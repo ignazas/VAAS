@@ -19,13 +19,13 @@ IF(!isset($_GET['month'])){
 $month = addslashes($_GET['month'] - 1);
 $year = addslashes($_GET['year']);
 
-$query_result = DB::query("SELECT event_id,event_title,event_day,event_time FROM " . TBL_EVENTS . " WHERE event_month='$month' AND event_year='$year' ORDER BY event_time");
+$query_result = DB::query("SELECT e.event_id,e.event_title,e.event_day,e.event_time FROM " . TBL_EVENTS . " e INNER JOIN `jos_users` u ON u.id=e.user_id WHERE e.event_month='$month' AND e.event_year='$year' ORDER BY e.event_time");
 
 foreach ($query_result as $info) {
     $day = $info['event_day'];
     $event_id = $info['event_id'];
     $events[$day][] = $info['event_id'];
-    $event_info[$event_id]['0'] = substr($info['event_title'], 0, 25);
+    $event_info[$event_id]['0'] = $info['event_title'];
     $event_info[$event_id]['1'] = $info['event_time'];
 }
 
@@ -110,7 +110,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 <div id="dienos">
 <table width="100%" bgcolor="#000000">
   <tr>
-    <td><table width="100%">
+    <td><table width="100%" class="calendar">
         <tr class="topdays"> 
           <td><div align="center">Pirmadienis</div></td>
           <td><div align="center">Antradienis</div></td>
@@ -180,12 +180,20 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			}
 			echo "</div>";
 			IF(isset($events[$i])){
-				echo "<div align=\"left\"><span class=\"eventinbox\">\n";
+				echo "<div align=\"left\"><div class=\"eventinbox\">\n";
 				while (list($key, $value) = each ($events[$i])) {
-					$vardas = explode(" ", $event_info[$value][0]);
-					echo "&nbsp;<a class=\"registracija\" href=\"?id=$value\">" . $event_info[$value]['1'] . " " . $vardas[0][0] . ". " . $vardas[1]  . "</a><br />";
+				    $vardas = empty($event_info[$value][0]) ? NULL : $event_info[$value][0];
+				    $title_full = $event_info[$value]['1'] . " " . $vardas;
+				    if (!empty($vardas)) {
+					$vardas = explode(' ', trim($vardas));
+					if (count($vardas) > 0 && !empty($vardas[0]))
+					    $vardas[0] = mb_substr($vardas[0], 0, 1) . '.';
+					$vardas = implode(' ', $vardas);
+				    }
+				    $title = $event_info[$value]['1'] . " " . $vardas;
+				    echo "&nbsp;<a class=\"registracija\" href=\"?id=$value\" title=\"" . $title_full . "\">" . $title  . "</a><br />";
 				}
-				echo "</span></div>\n";
+				echo "</div></div>\n";
 			}
 			IF(isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='nevyksta'){
 				$reason = "<font style=\"color:red\">" . $dienos[$langelio_data]['reason'] . "</font>";
