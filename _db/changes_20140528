@@ -16,3 +16,5 @@ CREATE TABLE IF NOT EXISTS `aircrafts` (
   `model` varchar(15) NOT NULL,
   UNIQUE KEY `registration` (`registration`)
 );
+
+ALTER TABLE `aircrafts` CHANGE `registration` `callsign` VARCHAR(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

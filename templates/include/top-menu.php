@@ -51,6 +51,7 @@
                 	<li <?php if ($action=="admin/working_days") {echo "class=\"active\"";} ?>><a href="admin.php?action=admin/working_days">Darbo dienos</a></li>
                 	<li <?php if ($action=="admin/bookings") {echo "class=\"active\"";} ?>><a href="admin.php?action=admin/bookings">Registracijos</a></li>
                 	<li <?php if ($action=="admin/finance") {echo "class=\"active\"";} ?>><a href="admin.php?action=admin/finance">Finansai</a></li>
+                	<li <?php if ($action=="admin/aircrafts") {echo "class=\"active\"";} ?>><a href="admin.php?action=admin/aircrafts">Orlaiviai</a></li>
               	</ul>
            </li>	
            <?php } ?>

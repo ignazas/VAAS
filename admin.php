@@ -43,6 +43,9 @@ switch ( $action ) {
 	case 'deleteBooking':
     	delete_booking($_GET['bookingId']);
     	break;
+	case 'admin/aircrafts':
+    	aircrafts();
+    	break;
   	default:
     	listArticles();
 }
@@ -254,6 +257,17 @@ function working_days() {
   }
 	
 	require( TEMPLATE_PATH . "/admin/working_days.php" );
+}
+
+function aircrafts() {
+	$st = DB::query("SELECT * FROM aircrafts ORDER by callsign");
+    $ac = array();
+ 
+    while ( $row = $st->fetch() ) {
+		$ac[$row['callsign']]['callsign'] = $row['callsign'];
+		$ac[$row['callsign']]['model'] = $row['model']; 
+    }
+	require( TEMPLATE_PATH . "/admin/aircrafts.php" );
 }
 
 ?>
