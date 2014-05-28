@@ -46,7 +46,7 @@ $todays_month = date("n");
 
 $days_in_month = date ("t", mktime(0,0,0,$_GET['month'],0,$_GET['year']));
 $first_day_of_month = date ("w", mktime(0,0,0,$_GET['month']-1,1,$_GET['year']));
-$first_day_of_month = $first_day_of_month;
+IF ($first_day_of_month == 0) {$first_day_of_month = 7;};
 $count_boxes = 0;
 $days_so_far = 0;
 
