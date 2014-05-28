@@ -27,7 +27,7 @@ table {
 td.beforedayboxes {
 	background-color: #EDEDED; color: #000000;
 }
-td.dayboxes, td.dayboxes-weekend {
+td.dayboxes, td.dayboxes-weekend, td.highlighteddayboxes {
 	color: #000000;
 	border: 1px;
 	border-spacing: 2px;
