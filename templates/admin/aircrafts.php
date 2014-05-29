@@ -40,9 +40,6 @@
 			<?php }
 			?>
 		</table>
-		<pre>
-		<?php print_r($ac); ?>
-		</pre>
 		
 	</div>
 </div> <!-- /container -->

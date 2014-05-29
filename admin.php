@@ -49,6 +49,9 @@ switch ( $action ) {
 	case 'deleteAircraft':
     	delete_aircraft($_GET['callsign']);
     	break;
+	case 'addAircraft':
+    	add_aircraft($_GET['callsign'], $_GET['model']);
+    	break;
   	default:
     	listArticles();
 }
@@ -285,6 +288,14 @@ function delete_aircraft($callsign) {
 	log_event("Admin", "AircraftDeleted", $callsign);
     header( "Location: admin.php?action=admin/aircrafts&status=aircraftDeleted");
   }
-
+function add_aircraft($callsign, $model) {
+    // Add day status
+    $st = DB::query("INSERT INTO aircrafts (callsign, model) VALUES (:callsign, :model) on duplicate key UPDATE callsign=values(callsign), model=values(model)", array(
+        ':callsign' => $callsign,
+        ':model' => $model
+    ));
+    log_event("Admin", "AircraftAdded", $callsing);
+    header( "Location: index.php?action=admin/aircrafts&status=aircraftAdded");
+}
 
 ?>
