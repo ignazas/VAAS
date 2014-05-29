@@ -15,7 +15,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'reset' &&
     $edit['password'] = md5($new_password);
 
     if ($user_model->Put($user->id, $edit)) {
-        send_mail($user->email, 'Naujas sklandymas.lt slaptažodis', "Sveiki, $user->name,\r\nSiunčiame Jums naują prisijungimo slaptažodį.\r\n\r\nJūsų vartotojo vardas: $user->username\r\nSlaptažodis: $new_password\r\n");
+        send_mail($user->email, 'Naujas sklandymas.lt slaptažodis', "Sveiki, $user->name,<br /><br />Siunčiame Jums naują prisijungimo slaptažodį.<br /><br />Jūsų vartotojo vardas: $user->username<br />Slaptažodis: $new_password<br />");
         echo 'Naujas slaptažodis sugeneruotas ir išsiųstas adresu ' . $user->email;
     }
     else {
