@@ -40,7 +40,10 @@
 			<?php }
 			?>
 		</table>
-		
+		<br />
+ 	<form action="admin.php">
+ 		<button type="submit" name="action" class="btn btn-sm btn-primary" value="addAircraft">Pridėti orlaivį</button>
+	</form>
 	</div>
 </div> <!-- /container -->
 
