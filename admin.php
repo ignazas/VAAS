@@ -46,6 +46,9 @@ switch ( $action ) {
 	case 'admin/aircrafts':
     	aircrafts();
     	break;
+	case 'deleteAircraft':
+    	delete_aircraft($_GET['callsign']);
+    	break;
   	default:
     	listArticles();
 }
@@ -264,10 +267,24 @@ function aircrafts() {
     $ac = array();
  
     while ( $row = $st->fetch() ) {
-		$ac[$row['callsign']]['callsign'] = $row['callsign'];
-		$ac[$row['callsign']]['model'] = $row['model']; 
+		$ac['ac'][$row['callsign']]['callsign'] = $row['callsign'];
+		$ac['ac'][$row['callsign']]['model'] = $row['model']; 
     }
+
+	if ( isset( $_GET['status'] ) ) {
+		if ( $_GET['status'] == "changesSaved" ) $ac['statusMessage'] = "Orlaivio pakeitimai išsaugoti.";
+		if ( $_GET['status'] == "aircraftDeleted" ) $ac['statusMessage'] = "Orlaivis pašalintas iš sąrašo.";
+  }
+	
 	require( TEMPLATE_PATH . "/admin/aircrafts.php" );
 }
+function delete_aircraft($callsign) {
+
+    // Delete the Aircraft
+    $st = DB::query("DELETE FROM aircrafts WHERE callsign = :callsign", array(':callsign' => $callsign));
+	log_event("Admin", "AircraftDeleted", $callsign);
+    header( "Location: admin.php?action=admin/aircrafts&status=aircraftDeleted");
+  }
+
 
 ?>
