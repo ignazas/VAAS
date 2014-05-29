@@ -71,13 +71,9 @@ IF($_GET['month'] == 2){
 ?>
 <script src="js/jquery-1.11.0.js"></script>
 <script src="js/jquery.bpopup.min.js"></script>
-
-<link href="calendar/images/cal.css" rel="stylesheet" type="text/css">
 <link href="css/popup.css" rel="stylesheet" type="text/css">
 
-
-
-
+<link href="calendar/images/cal.css" rel="stylesheet" type="text/css">
 
 <script language="JavaScript" type="text/JavaScript">
 <!--

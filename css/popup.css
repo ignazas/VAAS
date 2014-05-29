@@ -37,6 +37,16 @@
 	min-width: 650px;
 }
 
+#addAircraftDialog{ 
+    background-color:#fff;
+    border-radius:15px;
+    color:#000;
+    display:none; 
+    padding:20px;
+    min-height: 100%;
+	min-width: 650px;
+}
+
 .b-close{
     cursor:pointer;
     position:absolute;

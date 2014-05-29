@@ -27,5 +27,8 @@
     <script src="js/jquery-1.11.0.js"></script>
     <script src="js/scripts.js"></script>
 
+
+	<script src="js/jquery.bpopup.min.js"></script>
+	<link href="css/popup.css" rel="stylesheet" type="text/css">
   </head>
 <body>

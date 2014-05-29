@@ -2,6 +2,8 @@
 <?php include "templates/include/top-menu.php" ?>
 
 
+
+<div id="addAircraftDialog"></div>
 <div class="container">
 	<div class="page-header"><h1>Orlaivių redagavimas</h1></div>
 	<div class="col-md-8">
@@ -41,9 +43,11 @@
 			?>
 		</table>
 		<br />
+	<div id="knopkes">
  	<form action="admin.php">
- 		<button type="submit" name="action" class="btn btn-sm btn-primary" value="addAircraft">Pridėti orlaivį</button>
+ 		<button id="addAircraft" type="submit" name="action" class="btn btn-sm btn-primary" value="addAircraft">Pridėti orlaivį</button>
 	</form>
+	</div>
 	</div>
 </div> <!-- /container -->
 

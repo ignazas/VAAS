@@ -40,14 +40,14 @@ function bookings() {
     }
 
 	if ( isset( $_GET['error'] ) ) {
-	    if ( $_GET['error'] == "articleNotFound" ) $BookingList['errorMessage'] = "PraneÅimas nerastas.";
+	    if ( $_GET['error'] == "articleNotFound" ) $BookingList['errorMessage'] = "Praneï¿½imas nerastas.";
 		if ( $_GET['error'] == "eventNotFound" ) $BookingList['errorMessage'] = "Registracija nerasta.";
 	  }
 
   if ( isset( $_GET['status'] ) ) {
-    if ( $_GET['status'] == "changesSaved" ) $BookingList['statusMessage'] = "Pakeitimai iÅsaugoti.";
-    if ( $_GET['status'] == "articleDeleted" ) $BookingList['statusMessage'] = "PraneÅimas paÅalintas.";
-    if ( $_GET['status'] == "eventDeleted" ) $BookingList['statusMessage'] = "Registracija paÅalinta.";
+    if ( $_GET['status'] == "changesSaved" ) $BookingList['statusMessage'] = "Pakeitimai iï¿½saugoti.";
+    if ( $_GET['status'] == "articleDeleted" ) $BookingList['statusMessage'] = "Praneï¿½imas paï¿½alintas.";
+    if ( $_GET['status'] == "eventDeleted" ) $BookingList['statusMessage'] = "Registracija paï¿½alinta.";
   }
 
 	require( TEMPLATE_PATH . "/admin/bookings.php" );
@@ -131,8 +131,8 @@ function working_days() {
   }
 
   if ( isset( $_GET['status'] ) ) {
-    if ( $_GET['status'] == "changesSaved" ) $workingDays['statusMessage'] = "Pakeitimai iÅsaugoti.";
-    if ( $_GET['status'] == "dayDeleted" ) $workingDays['statusMessage'] = "Dienos Å¾yma paÅalinta.";
+    if ( $_GET['status'] == "changesSaved" ) $workingDays['statusMessage'] = "Pakeitimai iÅ¡saugoti.";
+    if ( $_GET['status'] == "dayDeleted" ) $workingDays['statusMessage'] = "Dienos Å¾yma paÅ¡alinta.";
 	if ( $_GET['status'] == "dayAdded" ) $workingDays['statusMessage'] = "Dienos Å¾yma pridÄ—ta.";
   }
 
@@ -149,8 +149,8 @@ function aircrafts() {
     }
 
 	if ( isset( $_GET['status'] ) ) {
-		if ( $_GET['status'] == "changesSaved" ) $ac['statusMessage'] = "Orlaivio pakeitimai iÅsaugoti.";
-		if ( $_GET['status'] == "aircraftDeleted" ) $ac['statusMessage'] = "Orlaivis paÅalintas iÅ sÄ…raÅo.";
+		if ( $_GET['status'] == "changesSaved" ) $ac['statusMessage'] = "Orlaivio pakeitimai iÅ¡saugoti.";
+		if ( $_GET['status'] == "aircraftDeleted" ) $ac['statusMessage'] = "Orlaivis paï¿½alintas iÅ¡ sÄ…raÅ¡o.";
   }
 
 	require( TEMPLATE_PATH . "/admin/aircrafts.php" );
@@ -162,6 +162,7 @@ function delete_aircraft($callsign) {
 	log_event("Admin", "AircraftDeleted", $callsign);
     header( "Location: admin.php?action=admin/aircrafts&status=aircraftDeleted");
   }
+
 function add_aircraft($callsign, $model) {
     // Add day status
     $st = DB::query("INSERT INTO aircrafts (callsign, model) VALUES (:callsign, :model) on duplicate key UPDATE callsign=values(callsign), model=values(model)", array(
@@ -169,5 +170,5 @@ function add_aircraft($callsign, $model) {
         ':model' => $model
     ));
     log_event("Admin", "AircraftAdded", $callsing);
-    header( "Location: index.php?action=admin/aircrafts&status=aircraftAdded");
+    header( "Location: admin.php?action=admin/aircrafts&status=aircraftAdded");
 }
