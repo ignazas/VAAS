@@ -6,6 +6,13 @@ require "helpers/route.inc";
 
 $con=DB::connect();
 
+if (session_id() == '') session_start();
+if (!empty($_SESSION['user']['id'])) {
+    require "models/user.inc";
+    $user_model = new User();
+    $user_model->Put($_SESSION['user']['id'], array('lastvisitDate' => date('Y-m-d H:i:s')));
+}
+
 $action = isset( $_GET['action'] ) ? $_GET['action'] : "";
 if (method_exists('Index', $action))
   Index::$action();
