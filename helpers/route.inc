@@ -5,7 +5,7 @@ class Index {
     /* INDEX.PHP */
     public static function ajax() {
         if (isset($_GET['method']))
-            include dirname(__FILE__) . '/ajax/' . $_GET['method'] . '.inc';
+            include dirname(__FILE__) . '/../ajax/' . $_GET['method'] . '.inc';
         exit;
     }
         
