@@ -14,9 +14,10 @@ if (!empty($_SESSION['user']['id'])) {
 }
 
 $action = isset( $_GET['action'] ) ? $_GET['action'] : "";
+$view = isset($_GET['view']) ? $_GET['view'] : 'Index';
 if (method_exists('Index', $action))
   Index::$action();
-else if ($controller = load_controller($action))
-  $controller->Run();
+else if (($controller = load_controller($action)) && method_exists($controller, $view))
+  $controller->{$view}();
 else
   Index::home();

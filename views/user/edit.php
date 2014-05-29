@@ -1,17 +1,8 @@
-﻿<?php require "common.php" ?>
-<?php require "secure.php" ?>
-<?php include "templates/include/header.php" ?>
-<?php include "templates/include/top-menu.php" ?>
-
-<div class="container">
-    <?php include "templates/include/messages.inc" ?>
-    <?php include "templates/include/errors.inc" ?>
-
 	<div class="page-header"><h1>Vartotojo nustatymai</h1></div>
       	<div class="row">
-    	
-        <form action="index.php?action=user" method="post" id="user_edit" enctype= "multipart/form-data">
-	<div class="col-md-4">	
+
+        <form action="" method="post" id="user_edit" enctype= "multipart/form-data">
+	<div class="col-md-4">
         <img src="<?php echo empty($user->avatar) ? 'images/users/avatar.jpg' : "uploads/users/$user->avatar" ?>" style="width: 150px; height: 150px;" class="img-thumbnail" alt="150x150 Foto">
         <input type="file" name="avatar" id="avatar" value="Įkelti" /><br />
                     <?php echo theme('display', 'usertype', 'Vartotojo tipas', $user, $edit) ?>
@@ -38,19 +29,7 @@
             </div>
             <div class="buttons">
                 <input type="submit" class="btn btn-sm btn-primary" value="Saugoti" />
-            </div>   
+                <a href="index.php?action=user" class="btn btn-sm">Atšaukti</a>
+            </div>
         </form>
     </div>
-
-  
-	
-		
-	</div> <!-- /container -->
-
-
-
-        
-
-
-
-<?php include "templates/include/footer.php" ?>

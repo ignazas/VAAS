@@ -1,10 +1,3 @@
-<?php require "common.php" ?>
-<?php require "secure.php" ?>
-<?php include "templates/include/header.php" ?>
-<?php include "templates/include/top-menu.php" ?>
-    
-
-    <div class="container">
     <?php IF(isset($_GET['edit'])) { ?>
     	
     <?php } elseif(isset($_GET['insert'])) {?>
@@ -37,8 +30,3 @@
             </div>
           </div>
         </div>
-      
-
-    </div> <!-- /container -->
-
-<?php include "templates/include/footer.php" ?>

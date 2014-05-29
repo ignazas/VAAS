@@ -9,6 +9,7 @@ class UserControler {
 
     public function UserControler() {
         $this->view = dirname(__FILE__) . '/../templates/user.php';
+	$this->user_model = new User();
     }
 
     private function Validate($user) {
@@ -31,94 +32,108 @@ class UserControler {
             else if (empty($_POST['new_password_1']) || empty($_POST['new_password_2']))
                 Messages::form_error('password', "Naujas slaptažodis negali būti tuščias.");
         }
-        
+
         $messages = Messages::get_messages('errors', false);
         return empty($messages);
     }
-    
-    public function Run() {
+
+    public function Edit() {
+        $this->view = dirname(__FILE__) . '/../views/user/edit.php';
+
         if ($user_id = !empty($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL) {
-            $user_model = new User();
             $edit = array();
-            $user = $user_model->Get($user_id);
-            
+            $user = $this->user_model->Get($user_id);
+
             if ($user && $_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($this::Validate($user)) {
                     if (!empty($_POST['password']) && !empty($_POST['new_password_1'])) {
                         $edit['password'] = md5($_POST['new_password_1']);
                     }
-                    
+
                     foreach (array('name', 'email', 'telephone1', 'website') as $key) {
                         if (isset($_POST[$key]) && $user->{$key} != $_POST[$key])
                             $edit[$key] = $_POST[$key];
                     }
-    
+
                     if (!empty($_FILES["avatar"]) && $_FILES["avatar"]["error"] != 4) {
                         $moved = FALSE;
-                        
+
                         if ($_FILES["avatar"]["error"] > 0) {
                             //print_r($_FILES["avatar"]);
                             die("Error: " . $_FILES["avatar"]["error"]);
                         }
-                    
+
                         $filename = $user_id . '-' . $_FILES['avatar']['name'];
                         if (function_exists('imagecreatefromstring')) {
                             $MAX_WIDTH = 150;
                             $MAX_HEIGHT = 150;
-                            
+
                             $source = imagecreatefromstring(file_get_contents($_FILES["avatar"]["tmp_name"]));
                             list($width, $height) = getimagesize($_FILES["avatar"]["tmp_name"]);
-                            
+
                             if (!empty($source) && $width > 0 && $height > 0) {
                                 $percent = 1;
                                 if ($width / $height >= $MAX_WIDTH / $MAX_HEIGHT)
-                                    $percent = $MAX_WIDTH / $width;                         
+                                    $percent = $MAX_WIDTH / $width;
                                 else
                                     $percent = $MAX_HEIGHT / $height;
                                 $newwidth = $width * $percent;
                                 $newheight = $height * $percent;
-                                
+
                                 $thumb = imagecreatetruecolor($MAX_WIDTH, $MAX_HEIGHT);
                                 imagealphablending($thumb, false);
-                                imagesavealpha($thumb, true);  
-                                
+                                imagesavealpha($thumb, true);
+
                                 $trans_layer_overlay = imagecolorallocatealpha($thumb, 220, 220, 220, 127);
                                 imagefill($thumb, 0, 0, $trans_layer_overlay);
-                                
+
                                 imagecopyresampled($thumb, $source, ($MAX_WIDTH-$newwidth)/2, ($MAX_HEIGHT-$newheight)/2, 0, 0, $newwidth, $newheight, $width, $height);
-                                
+
                                 $filename = preg_replace('/\..+$/', '.' . 'png', $filename);
                                 imagepng($thumb, dirname(__FILE__) . "/../uploads/users/$filename");
                                 unlink($_FILES["avatar"]["tmp_name"]);
-                                
+
                                 $moved = TRUE;
-                            } 
+                            }
                         }
-    
+
                         if (!$moved)
                             move_uploaded_file($_FILES["avatar"]["tmp_name"], dirname(__FILE__) . "/../uploads/users/$filename");
-    
+
                         $edit['avatar'] = $filename;
                     }
 
-                    if ($user_model->Put($user_id, $edit))
+                    if ($this->user_model->Put($user_id, $edit))
                         Messages::set_message('Informacija atnaujinta');
-                    
+
                     if (!empty($edit['avatar']) && $user->avatar != $edit['avatar'])
                         unlink(dirname(__FILE__) . '/../uploads/users/' . $user->avatar);
-                    
+
                     //update session values
                     foreach ($edit as $key => $value) {
                         $_SESSION['user'][$key] = $value;
                         $user->{$key} = $value;
                     }
+
+		    return $this->Index();
                 }
             }
-            
-            include $this->view;
+
+            include dirname(__FILE__) . '/../views/_layout.php';
         }
-        else {
-            header("Location: index.php",TRUE,307);
+    }
+
+    public function Index() {
+	return $this->View();
+    }
+
+    public function View() {
+        $this->view = dirname(__FILE__) . '/../views/user/view.php';
+
+        if ($user_id = !empty($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL) {
+            $user = $this->user_model->Get($user_id);
+
+            include dirname(__FILE__) . '/../views/_layout.php';
         }
     }
 }

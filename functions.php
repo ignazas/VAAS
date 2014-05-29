@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/config.php';
 require_once dirname(__FILE__) . '/helpers/db.inc';
 
-function log_event($user, $event, $param) {	
+function log_event($user, $event, $param) {
     DB::query("INSERT INTO log(user, event, param) VALUES (:user,:event,:param)", array(
         ':user' => isset($_SESSION['user']['username']) ? $_SESSION['user']['username'] : $user,
         ':event' => $event,
@@ -22,9 +22,9 @@ function load_controller($name) {
     return FALSE;
 }
 
-function theme($type, $name, $label, $entity, $values) {
+function theme($type, $name, $label, $entity, $values=NULL) {
     $output = NULL;
-    
+
     switch ($type) {
         case 'text':
         case 'url':
@@ -44,7 +44,7 @@ function theme($type, $name, $label, $entity, $values) {
         default:
             break;
     }
-    
+
     return $output;
 }
 
