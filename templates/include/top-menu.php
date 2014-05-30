@@ -33,7 +33,7 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li <?php if ($action=="news"){echo "class=\"active\"";} ?>><a href="index.php?action=Article">Pranešimai</a></li>
+            <li <?php if ($action=="news"){echo "class=\"active\"";} ?>><a href="index.php?action=article">Pranešimai</a></li>
             <li <?php if ($action=="finance"){echo "class=\"active\"";} ?>><a href="index.php?action=finance">Finansai</a></li>
             <li <?php if ($action=="logbook"){echo "class=\"active\"";} ?>><a href="index.php?action=logbook">Log Book</a></li>
             <li <?php if ($action=="calendar"||$action=="booking"||$action=="my_bookings"){echo "class=\"active\"";} ?>class="dropdown">
@@ -47,7 +47,7 @@
            <?php IF ($admin) { ?>
            <li <?php if ($action=="admin/news"||$action=="admin/bookings"||$action=="admin/finance") {echo "class=\"active\"";} ?> class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Administravimas <b class="caret"></b></a>
            		<ul class="dropdown-menu">
-                	<li <?php if ($action=="admin/news") {echo "class=\"active\"";} ?>><a href="admin.php?action=Atricle&amp;view=AdminItemList">Pranešimai</a></li>
+                	<li <?php if ($action=="admin/news") {echo "class=\"active\"";} ?>><a href="admin.php?action=article&amp;view=AdminItemList">Pranešimai</a></li>
                 	<li <?php if ($action=="admin/working_days") {echo "class=\"active\"";} ?>><a href="admin.php?action=admin/working_days">Darbo dienos</a></li>
                 	<li <?php if ($action=="admin/bookings") {echo "class=\"active\"";} ?>><a href="admin.php?action=admin/bookings">Registracijos</a></li>
                 	<li <?php if ($action=="admin/finance") {echo "class=\"active\"";} ?>><a href="admin.php?action=admin/finance">Finansai</a></li>
