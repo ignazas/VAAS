@@ -58,7 +58,7 @@ class AircraftControler {
     }
     else {
       // User has not posted the aircraft edit form yet: display the form
-      $results['aircraft'] = new Aircraft(array('callsign' => 'LY-G'));
+      $results['aircraft'] = new Aircraft(array('callsign' => ''));
 
       include dirname(__FILE__) . '/../views/_layout.php';
     }

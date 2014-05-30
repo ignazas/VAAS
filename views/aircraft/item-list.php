@@ -9,10 +9,10 @@
 	<th style="width:69px;"></th>
       </tr>
     </thead>
-
+	<tbody>
 <?php foreach ( $results['aircrafts'] as $aircraft) { ?>
 
-    <tbody>
+
       <tr>
 	<td>
 	  <a href="admin.php?action=aircraft&amp;view=View&amp;callsign=<?php echo $aircraft->callsign ?>"><?php echo $aircraft->callsign ?></a>
@@ -27,10 +27,10 @@
  	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti orlaivį <?php echo $aircraft->callsign ?>?')" href="admin.php?action=aircraft&amp;view=Delete&amp;callsign=<?php echo $aircraft->callsign ?>">Pašalinti</a>
 	</td>
       </tr>
-    </tbody>
+
 
 <?php } ?>
-
+	</tbody>
   </table>
   <br />
   <a class="btn btn-sm btn-primary" href="index.php?action=aircraft&amp;view=NewItem">Kurti naują orlaivį</a>

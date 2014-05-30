@@ -11,7 +11,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="callsign">Registracija</label>
       <div class="col-md-4">
-	<input id="callsign" name="callsign" placeholder="LY-G??" class="form-control input-md" type="text" value="<?php echo isset($_POST['callsign']) ? $_POST['callsign'] : $results['aircraft']->callsign ?>">
+	<input id="callsign" name="callsign" placeholder="LY-" class="form-control input-md" type="text" value="<?php echo isset($_POST['callsign']) ? $_POST['callsign'] : $results['aircraft']->callsign ?>">
 
       </div>
     </div>
