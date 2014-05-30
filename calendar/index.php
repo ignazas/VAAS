@@ -9,6 +9,24 @@ function getmicrotime(){
 
 $time_start = getmicrotime();
 
+function get_day_letter($day) {
+	$day = date('l', strtotime( $day));
+	switch($day)
+	{
+		case "Monday":    $savaites_diena = "Pirmadienis";  break;
+		case "Tuesday":   $savaites_diena = "Antradienis"; break;
+		case "Wednesday": $savaites_diena = "Trečiadienis";  break;
+		case "Thursday":  $savaites_diena = "Ketvirtadienis"; break;
+		case "Friday":    $savaites_diena = "Penktadienis";  break;
+		case "Saturday":  $savaites_diena = "Šeštadienis";  break;
+		case "Sunday":    $savaites_diena = "Sekmadienis";  break;
+		default:          $savaites_diena = "-"; break;
+	}
+	$raide = mb_substr($savaites_diena, 0, 2);
+	return $raide;
+
+}
+
 IF(!isset($_GET['year'])){
     $_GET['year'] = date("Y");
 }
@@ -162,8 +180,8 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			echo "<td width=\"100\" height=\"100\" class=\"$class\">\n";
 			$link_month = $_GET['month'] - 1;
 			
-			
-			echo "<span class=\"toprightnumber\">$i </span><div align=\"right\">
+			$day_letter = get_day_letter($langelio_data);
+			echo "<span class=\"toprightnumber\">$i<font size=\"-1\">($day_letter)</font></span><div align=\"right\">
 			<a class=\"add\" href=\"?day=$i&amp;month=$link_month&amp;year=$_GET[year]\"> + </a>";
 			echo "<a class=\"show_day\" href=\"?day=$langelio_data\">S</a>";
 			
