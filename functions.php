@@ -57,8 +57,10 @@ function send_mail($recipient, $title, $content) {
 	IF(is_array($recipient)) {
 		foreach($recipient['email'] as $address){
 			mail($address, "VAAS: " . $title , $mail, $headers);
+			log_event("Admin", "Mail sent: " . $title, $address);
 		}
 	} ELSE {
 		mail($recipient, "VAAS: " . $title , $mail, $headers);
+		log_event("Admin", "Mail sent: " . $title, $address);
 	}
 }
