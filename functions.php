@@ -9,6 +9,7 @@ function log_event($user, $event, $param) {
         ':event' => $event,
         ':param' => $param,
     ));
+	return;
 }
 
 function load_controller($name) {
@@ -55,12 +56,12 @@ function send_mail($recipient, $title, $content) {
 	$headers .= "From: aeroklubas@sklandymas.lt\r\n";
 	$mail = $content . "<br /><br />Išsiųsta iš Vilniaus Aeroklubo narių administravimo sistemos (VAAS)";
 	IF(is_array($recipient)) {
-		foreach($recipient['email'] as $address){
-			//mail($address, "VAAS: " . $title , $mail, $headers);
-			log_event('Admin', 'Mail sent: ' . $title, $address);
+		foreach($recipient as $address){
+			//mail($address['email'], "VAAS: " . $title , $mail, $headers);
+			log_event('Admin', 'MultipleMailSent: ' . $title, $address);
 		}
 	} ELSE {
 		//mail($recipient, "VAAS: " . $title , $mail, $headers);
-		log_event('Admin', 'Mail sent: ' . $title, $recipient);
+		log_event('Admin', 'SingleMailSent: ' . $title, $recipient);
 	}
 }

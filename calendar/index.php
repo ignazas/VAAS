@@ -155,8 +155,6 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 				foreach ($dienos as $diena) {
 					IF($langelio_data==$diena['data'] && $diena['status']=="vyksta") {$class = $class . " vyksta";}
 					ELSEIF ($langelio_data==$diena['data'] && $diena['status']=="nevyksta") {$class = $class . " nevyksta";}
-					ELSEIF ($langelio_data==$diena['data'] && $diena['status']=="šventė") {$class = $class . " svente";}
-					ELSEIF ($langelio_data==$diena['data'] && $diena['status']=="talka") {$class = $class . " talka";}
 				}
 			}
 			
@@ -170,12 +168,11 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			echo "<a class=\"show_day\" href=\"?day=$langelio_data\">S</a>";
 			
 			if($admin){
-			echo "<a class=\"add_day\" href=\"?day=$langelio_data\">D</a>";
-			
+				echo "<a class=\"add_day\" href=\"?day=$langelio_data\">D</a>";		
 			}
 			echo "</div>";
+			echo "<div align=\"left\"><div class=\"eventinbox\">\n";
 			IF(isset($events[$i])){
-				echo "<div align=\"left\"><div class=\"eventinbox\">\n";
 				while (list($key, $value) = each ($events[$i])) {
 				    $vardas = empty($event_info[$value][0]) ? NULL : $event_info[$value][0];
 				    $title_full = $event_info[$value]['1'] . " " . $vardas;
@@ -188,7 +185,6 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 				    $title = $event_info[$value]['1'] . " " . $vardas;
 				    echo "&nbsp;<a class=\"registracija\" href=\"?id=$value\" title=\"" . $title_full . "\">" . $title  . "</a><br />";
 				}
-				echo "</div></div>\n";
 			}
 			IF(isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='nevyksta'){
 				$reason = "<font style=\"color:red\">" . $dienos[$langelio_data]['reason'] . "</font>";
@@ -201,12 +197,12 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 				echo "</td>\n";
 			
 			} ELSEIF(isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='šventė'){
-				$reason = "<font style=\"color:orange\">" . $dienos[$langelio_data]['reason'] . "</font>";
-				echo "<div align=\"center\"><span style=\"display: inline-block;vertical-align: middle;display: inline-block;\">$reason</span></div>";
+				$reason = "<font style=\"color:brown\">" . "Šventė: " . $dienos[$langelio_data]['reason'] . "</font>";
+				echo "&nbsp;<a class=\"registracija\">$reason</a><br />";
 				echo "</td>\n";
 			} ELSEIF(isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='talka'){
-				$reason = "<font style=\"color:blue\">" . $dienos[$langelio_data]['reason'] . "</font>";
-				echo "<div align=\"center\"><span style=\"display: inline-block;vertical-align: middle;display: inline-block;\">$reason</span></div>";
+				$reason = "<font style=\"color:brown\">" . "Talka: " . $dienos[$langelio_data]['reason'] . "</font>";
+				echo "&nbsp;<a class=\"registracija\">$reason</a><br />";
 				echo "</td>\n";
 			}
 			
@@ -214,6 +210,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 				$count_boxes = 0;
 				echo "</TR><TR valign=\"top\">\n";
 			}
+			echo "</div></div>\n";
 		}
 		$extra_boxes = 7 - $count_boxes;
 		for ($i = 1; $i <= $extra_boxes; $i++) {

@@ -101,7 +101,7 @@ function addDay() {
     $st = DB::query("SELECT user_id, email FROM calendar_events LEFT JOIN jos_users ON user_id = id WHERE event_date = :day", array(':day' => $day));
 	$RelatedEmails = array();
 	while ( $row = $st->fetch() ) {
-		$RelatedEmails = $row['email'];
+		$RelatedEmails[$row['email']] = $row['email'];
     }
 	send_mail($RelatedEmails,"Dienos statusas: " . $day, "Dienos statusas, kuriai Jūs buvote užsiregistravę skrydžiams, pasikeitė<br />
 	Dabartinis statusas: " . $status . "<br />" .

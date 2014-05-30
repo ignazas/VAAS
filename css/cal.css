@@ -71,13 +71,6 @@ td.vyksta {
 td.nevyksta {
 	border: 3px solid red;
 }
-td.svente {
-	border: 3px solid orange;
-}
-
-td.talka {
-	border: 3px solid blue;
-}
 
 form.calendar {
 	width: 500px;
