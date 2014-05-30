@@ -170,14 +170,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			
 			//tikrinam ar diena aktyvi
 			$langelio_data = $_GET['year'] ."-". $menesis ."-". $diena;
-			if(isset($dienos)) {
-				foreach ($dienos as $diena) {
-					IF($langelio_data==$diena['data'] && $diena['status']=="vyksta") {$class = $class . " vyksta";}
-					ELSEIF ($langelio_data==$diena['data'] && $diena['status']=="nevyksta") {$class = $class . " nevyksta";}
-				}
-			}
-			
-			
+						
 			echo "<td width=\"100\" height=\"100\" class=\"$class\">\n";
 			$link_month = $_GET['month'] - 1;
 			

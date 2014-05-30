@@ -64,14 +64,6 @@ td.highlighteddayboxes {
 	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 10px;
 }
 
-td.vyksta {
-	border: 3px solid green;
-}
-
-td.nevyksta {
-	border: 3px solid red;
-}
-
 form.calendar {
 	width: 500px;
 }

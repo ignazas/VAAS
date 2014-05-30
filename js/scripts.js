@@ -37,7 +37,7 @@ jQuery( document ).ready(function( $ ) {
         });		
 	
     });
-    $('#dienos').on('click', 'a.registracija', function(event) {
+    $('#dienos').on('click', 'a.registracija, a.talka, a.šventė, a.svečiai, a.kita', function(event) {
 
         // Prevents the default action to be triggered. 
         event.stopPropagation();
@@ -54,6 +54,7 @@ jQuery( document ).ready(function( $ ) {
             loadUrl: 'calendar/event.php'+data, //Uses jQuery.load()
         });		
     });
+
     $('#dienos').on('click', 'a.add_day', function(event) {
 
         // Prevents the default action to be triggered. 
