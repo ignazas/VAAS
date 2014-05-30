@@ -70,6 +70,26 @@ else
       	<input class="form-control" style="width: 50px;display: inline" name="minute" type="text" id="minute" value="00" size="2" maxlength="2"><br />
       </td>
     </tr>
+	
+	<?php
+	IF ($_SESSION['user']['usertype']=="Administrator"||$_SESSION['user']['usertype']=="Super Administrator") {	
+	?>
+	<tr> 
+      <td height="40" valign="top"><span class="addevent">Įvykis:</span> 
+      <td height="40" valign="top">
+      	<select class="form-control" name="title"id="title" value="00">
+			<option value="<?php echo $_SESSION['user']['name']; ?>">Registracija skrydžiams</option>
+			<option value="talka">Visuotinė talka</option>
+			<option value="šventė">Klubo šventė</option>
+			<option value="svečiai">Svečiai</option>
+			<option value="kita">Kita</option>			
+		<select>
+      </td>
+    </tr>
+	<?php } else { ?>
+	<input name="title" type="hidden" value="<?php echo $_SESSION['user']['name']; ?>">
+	<?php } ?>
+	
     <tr> 
       <td width="200" height="40" valign="top"><span class="addevent">Registracijos pastabos</span><br>
       	<span class="addeventextrainfo">Nurodykite, jei reikalinga nakvynė, skrydžiai į aikštelę ar pan.</span>
@@ -83,7 +103,6 @@ else
       <td><br /><input class="btn btn-primary" name="submit" type="submit" id="submit" value="Registruotis"></td>
     </tr>
   </table>
-  <input name="title" type="hidden" value="<?php echo $_SESSION['user']['name']; ?>">
   <input name="year" type="hidden" value="<?php echo $_GET['year']; ?>">
   <input name="month" type="hidden" value="<?php echo $_GET['month']; ?>">
   <input name="day" type="hidden" value="<?php echo $_GET['day']; ?>">

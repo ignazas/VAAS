@@ -87,6 +87,18 @@ td.p {
 	
 }
 a.registracija {white-space: nowrap;}
-
+a.talka{
+	white-space: nowrap;
+	color: blue;
+}
+a.kita {
+	color: brown;
+}
+a.šventė{
+	color: maroon;
+}
+a.svečiai{
+	color: purple;
+}
 table.calendar {table-layout: fixed;}
 table.calendar tr td .eventinbox {line-height: 2em; overflow: hidden; text-overflow: ellipsis;}

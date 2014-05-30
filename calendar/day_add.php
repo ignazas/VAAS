@@ -7,8 +7,6 @@ $current_status = isset($o->status) ? $o->status : 'nevyksta';
 $statuses = array(
       "nevyksta"=>'Nevyksta',
       "vyksta"=>'Vyksta',
-      "talka"=>'Talka',
-      "šventė"=>'Šventė',
       "delete"=>'[Šalinti žymą]',
 );
 

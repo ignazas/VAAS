@@ -37,7 +37,7 @@ IF(!isset($_GET['month'])){
 $month = addslashes($_GET['month'] - 1);
 $year = addslashes($_GET['year']);
 
-$query_result = DB::query("SELECT e.event_id,e.event_title,e.event_day,e.event_time FROM " . TBL_EVENTS . " e INNER JOIN `jos_users` u ON u.id=e.user_id WHERE e.event_month='$month' AND e.event_year='$year' ORDER BY e.event_time");
+$query_result = DB::query("SELECT e.event_id,e.event_title,e.event_day,e.event_time,e.event_desc FROM " . TBL_EVENTS . " e INNER JOIN `jos_users` u ON u.id=e.user_id WHERE e.event_month='$month' AND e.event_year='$year' ORDER BY e.event_time");
 
 foreach ($query_result as $info) {
     $day = $info['event_day'];
@@ -45,6 +45,7 @@ foreach ($query_result as $info) {
     $events[$day][] = $info['event_id'];
     $event_info[$event_id]['0'] = $info['event_title'];
     $event_info[$event_id]['1'] = $info['event_time'];
+	$event_info[$event_id]['2'] = $info['event_desc'];
 }
 
 // gaunam partvirtintas ir atmestas datas
@@ -190,6 +191,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			}
 			echo "</div>";
 			echo "<div align=\"left\"><div class=\"eventinbox\">\n";
+			$spec_events = array("šventė", "talka", "kita", "svečiai");
 			IF(isset($events[$i])){
 				while (list($key, $value) = each ($events[$i])) {
 				    $vardas = empty($event_info[$value][0]) ? NULL : $event_info[$value][0];
@@ -200,8 +202,14 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 					    $vardas[0] = mb_substr($vardas[0], 0, 1) . '.';
 					$vardas = implode(' ', $vardas);
 				    }
-				    $title = $event_info[$value]['1'] . " " . $vardas;
-				    echo "&nbsp;<a class=\"registracija\" href=\"?id=$value\" title=\"" . $title_full . "\">" . $title  . "</a><br />";
+					IF (in_array($event_info[$value]['0'], $spec_events)) { 
+						$title = $event_info[$value]['1'] . " " . $event_info[$value]['0'] . ": " . $event_info[$value]['2'];
+						$event = $event_info[$value]['0'];
+						echo "&nbsp;<a class=\"$event\" href=\"?id=$value\" title=\"" . $title_full . "\">" . $title  . "</a><br />";
+					} else {
+						$title = $event_info[$value]['1'] . " " . $vardas;
+						echo "&nbsp;<a class=\"registracija\" href=\"?id=$value\" title=\"" . $title_full . "\">" . $title  . "</a><br />";
+					}
 				}
 			}
 			IF(isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='nevyksta'){
@@ -214,14 +222,6 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 				echo "<div align=\"center\"><span style=\"display: inline-block;vertical-align: middle;display: inline-block;\">$reason</span></div>";
 				echo "</td>\n";
 			
-			} ELSEIF(isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='šventė'){
-				$reason = "<font style=\"color:brown\">" . "Šventė: " . $dienos[$langelio_data]['reason'] . "</font>";
-				echo "&nbsp;$reason<br />";
-				echo "</td>\n";
-			} ELSEIF(isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='talka'){
-				$reason = "<font style=\"color:brown\">" . "Talka: " . $dienos[$langelio_data]['reason'] . "</font>";
-				echo "&nbsp;$reason<br />";
-				echo "</td>\n";
 			}
 			
 			IF(($count_boxes == 7) AND ($days_so_far != (($first_day_of_month-1) + $days_in_month))){
