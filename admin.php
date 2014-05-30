@@ -13,8 +13,6 @@ if (function_exists($action))
 else {
   switch ( $action ) {
     case 'deleteBooking': delete_booking($_GET['bookingId']); break;
-    case 'deleteAircraft': delete_aircraft($_GET['callsign']); break;
-    case 'addAircraft': add_aircraft($_GET['callsign'], $_GET['model']);break;
     default:
       if (($controller = load_controller($action)) && method_exists($controller, $view))
         $controller->{$view}();
@@ -137,38 +135,4 @@ function working_days() {
   }
 
 	require( TEMPLATE_PATH . "/admin/working_days.php" );
-}
-
-function aircrafts() {
-	$st = DB::query("SELECT * FROM aircrafts ORDER by callsign");
-    $ac = array();
-
-    while ( $row = $st->fetch() ) {
-		$ac['ac'][$row['callsign']]['callsign'] = $row['callsign'];
-		$ac['ac'][$row['callsign']]['model'] = $row['model'];
-    }
-
-	if ( isset( $_GET['status'] ) ) {
-		if ( $_GET['status'] == "changesSaved" ) $ac['statusMessage'] = "Orlaivio pakeitimai išsaugoti.";
-		if ( $_GET['status'] == "aircraftDeleted" ) $ac['statusMessage'] = "Orlaivis pa�alintas iš sąrašo.";
-  }
-
-	require( TEMPLATE_PATH . "/admin/aircrafts.php" );
-}
-function delete_aircraft($callsign) {
-
-    // Delete the Aircraft
-    $st = DB::query("DELETE FROM aircrafts WHERE callsign = :callsign", array(':callsign' => $callsign));
-	log_event("Admin", "AircraftDeleted", $callsign);
-    header( "Location: admin.php?action=admin/aircrafts&status=aircraftDeleted");
-  }
-
-function add_aircraft($callsign, $model) {
-    // Add day status
-    $st = DB::query("INSERT INTO aircrafts (callsign, model) VALUES (:callsign, :model) on duplicate key UPDATE callsign=values(callsign), model=values(model)", array(
-        ':callsign' => $callsign,
-        ':model' => $model
-    ));
-    log_event("Admin", "AircraftAdded", $callsing);
-    header( "Location: admin.php?action=admin/aircrafts&status=aircraftAdded");
 }

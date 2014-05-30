@@ -49,7 +49,7 @@ class ArticleControler {
       $article->update();
 
       //log it
-      log_event("Admin", "ArticleEdited", "");
+      log_event("Admin", "ArticleEdited", $_POST['articleId']);
 
       Messages::set_message("Pakeitimai išsaugoti.");
       return $this->AdminItemList();
@@ -81,7 +81,7 @@ class ArticleControler {
       $article->storeFormValues( $_POST );
       $article->insert();
 
-      log_event("Admin", "ArticleCreated", "");
+      log_event("Admin", "ArticleCreated", $article->id);
 
       Messages::set_message("Pakeitimai išsaugoti.");
       return $this->AdminItemList();
@@ -101,13 +101,13 @@ class ArticleControler {
   public function Delete() {
     if (empty($_GET['articleId']) || !($article = Article::getById((int)$_GET['articleId']))) {
       Messages::set_message("Pranešimas nerastas.", 'errors');
-      return $this->AdminItemList();
     }
+    else {
+	$article->delete();
+	log_event("Admin", "ArticleDeleted", $_GET['articleId']);
 
-    $article->delete();
-    log_event("Admin", "ArticleDeleted", "");
-
-    Messages::set_message("Pranešimas pašalintas.");
+	Messages::set_message("Pranešimas pašalintas.");
+    }
     return $this->AdminItemList();
   }
 

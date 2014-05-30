@@ -96,7 +96,9 @@ class Article
         ":content" => $this->content,
     ));
 
-	send_mail("", $this->title, $this->content);
+    send_mail("", $this->title, $this->content);
+
+    return !empty($this->id);
   }
 
   /**
@@ -107,7 +109,7 @@ class Article
     if ( is_null( $this->id ) ) trigger_error ( "Article::update(): Attempt to update an Article object that does not have its ID property set.", E_USER_ERROR );
 
     // Update the Article
-    DB::query("UPDATE articles SET publicationDate=FROM_UNIXTIME(:publicationDate), title=:title, summary=:summary, content=:content WHERE id = :id", array(
+    $st = DB::query("UPDATE articles SET publicationDate=FROM_UNIXTIME(:publicationDate), title=:title, summary=:summary, content=:content WHERE id = :id", array(
         ":publicationDate" => $this->publicationDate,
         ":title" => $this->title,
         ":summary" => $this->summary,
@@ -121,6 +123,8 @@ class Article
     $mail = "Sveiki,<br />Buvo paskelbtas atnaujintas senas VAK pranešimas: <br /><br />";
     $mail .= $this->content . "<br /><br />Išsiųsta iš Vilniaus Aeroklubo narių administravimo sistemos";
     mail("ignas@igfe.eu", $this->title, $mail, $headers);
+
+    return $st->rowCount();
   }
 
   /**
