@@ -198,11 +198,11 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			
 			} ELSEIF(isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='šventė'){
 				$reason = "<font style=\"color:brown\">" . "Šventė: " . $dienos[$langelio_data]['reason'] . "</font>";
-				echo "&nbsp;<a class=\"registracija\">$reason</a><br />";
+				echo "&nbsp;$reason<br />";
 				echo "</td>\n";
 			} ELSEIF(isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='talka'){
 				$reason = "<font style=\"color:brown\">" . "Talka: " . $dienos[$langelio_data]['reason'] . "</font>";
-				echo "&nbsp;<a class=\"registracija\">$reason</a><br />";
+				echo "&nbsp;$reason<br />";
 				echo "</td>\n";
 			}
 			
