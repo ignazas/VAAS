@@ -156,6 +156,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 					IF($langelio_data==$diena['data'] && $diena['status']=="vyksta") {$class = $class . " vyksta";}
 					ELSEIF ($langelio_data==$diena['data'] && $diena['status']=="nevyksta") {$class = $class . " nevyksta";}
 					ELSEIF ($langelio_data==$diena['data'] && $diena['status']=="šventė") {$class = $class . " svente";}
+					ELSEIF ($langelio_data==$diena['data'] && $diena['status']=="talka") {$class = $class . " talka";}
 				}
 			}
 			
@@ -201,6 +202,10 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			
 			} ELSEIF(isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='šventė'){
 				$reason = "<font style=\"color:orange\">" . $dienos[$langelio_data]['reason'] . "</font>";
+				echo "<div align=\"center\"><span style=\"display: inline-block;vertical-align: middle;display: inline-block;\">$reason</span></div>";
+				echo "</td>\n";
+			} ELSEIF(isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='talka'){
+				$reason = "<font style=\"color:blue\">" . $dienos[$langelio_data]['reason'] . "</font>";
 				echo "<div align=\"center\"><span style=\"display: inline-block;vertical-align: middle;display: inline-block;\">$reason</span></div>";
 				echo "</td>\n";
 			}
