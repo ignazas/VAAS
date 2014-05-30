@@ -56,11 +56,11 @@ function send_mail($recipient, $title, $content) {
 	$mail = $content . "<br /><br />Išsiųsta iš Vilniaus Aeroklubo narių administravimo sistemos (VAAS)";
 	IF(is_array($recipient)) {
 		foreach($recipient['email'] as $address){
-			mail($address, "VAAS: " . $title , $mail, $headers);
-			log_event("Admin", "Mail sent: " . $title, $address);
+			//mail($address, "VAAS: " . $title , $mail, $headers);
+			log_event('Admin', 'Mail sent: ' . $title, $address);
 		}
 	} ELSE {
-		mail($recipient, "VAAS: " . $title , $mail, $headers);
-		log_event("Admin", "Mail sent: " . $title, $address);
+		//mail($recipient, "VAAS: " . $title , $mail, $headers);
+		log_event('Admin', 'Mail sent: ' . $title, $recipient);
 	}
 }
