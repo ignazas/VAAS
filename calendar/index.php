@@ -181,7 +181,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			$link_month = $_GET['month'] - 1;
 			
 			$day_letter = get_day_letter($langelio_data);
-			echo "<span class=\"toprightnumber\">$i<font size=\"-1\">($day_letter)</font></span><div align=\"right\">
+			echo "<span class=\"toprightnumber\">$i<font size=\"-2\">($day_letter)</font></span><div align=\"right\">
 			<a class=\"add\" href=\"?day=$i&amp;month=$link_month&amp;year=$_GET[year]\"> + </a>";
 			echo "<a class=\"show_day\" href=\"?day=$langelio_data\">S</a>";
 			
