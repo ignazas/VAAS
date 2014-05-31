@@ -41,3 +41,10 @@ form label { width: 40%; }
        width: 100% !important;
    }
 }
+
+#registracija,
+#report,
+#registruotis{
+    overflow-y: auto;
+    overflow-x: hidden;
+}
