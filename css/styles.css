@@ -4,3 +4,20 @@
 .errors > div {color:red;padding:5px;border: 1px solid red;}
 
 form label { width: 40%; } 
+
+@media (max-width: 480px) {
+    table.calendar,
+    table.calendar tbody,
+    table.calendar tr,
+    table.calendar tr td {
+	display: block;
+	width: 100%;
+    }
+    table.calendar thead,
+    table.calendar tfoot,
+    table.calendar tr.topdays,
+    table.calendar tr td.beforedayboxes,
+    table.calendar tr td.afterdayboxes {
+	display: none;
+    }
+}
