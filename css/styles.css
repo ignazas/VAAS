@@ -21,4 +21,8 @@ form label { width: 40%; }
     table.calendar tr td.afterdayboxes {
 	display: none;
     }
+
+   #registracija, #report {
+       max-width: 100%;
+   }
 }
