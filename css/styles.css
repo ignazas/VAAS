@@ -22,7 +22,17 @@ form label { width: 40%; }
 	display: none;
     }
 
-   #registracija, #report {
-       max-width: 100%;
+   #registracija,
+   #report,
+   #registruotis{
+       max-width: 100% !important;
+       min-width: 0 !important;
+       left: 0;
+       right: 0;
+   }
+   #report table,
+   #registruotis .b-ajax-wrapper,
+   #registruotis .b-ajax-wrapper form.calendar {
+       width: 100% !important;
    }
 }
