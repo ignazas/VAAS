@@ -29,6 +29,9 @@ form label { width: 40%; }
        min-width: 0 !important;
        left: 0;
        right: 0;
+       min-height: 0 !important;
+       overflow-y: auto;
+       height: auto !important;
    }
    #report table,
    #registruotis .b-ajax-wrapper,
