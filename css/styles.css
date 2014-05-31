@@ -12,6 +12,7 @@ form label { width: 40%; }
     table.calendar tr td {
 	display: block;
 	width: 100%;
+	height: auto;
     }
     table.calendar thead,
     table.calendar tfoot,
