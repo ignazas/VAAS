@@ -67,3 +67,12 @@ form label { width: 40%; }
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+
+.pager {
+  text-align: center;
+}
+
+.pager a {
+  text-decoration: none;
+}

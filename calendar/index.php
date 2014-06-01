@@ -114,10 +114,10 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 <div id="report"></div>
 <div id="addDay"></div>
 
-<div align="center">
-		<a href="<?php echo "index.php?action=calendar&month=$prev_month&amp;year=$prev_year"; ?>">&lt;&lt;</a>
-		<?php echo date ("Y m", mktime(0,0,0,$_GET['month']-1,1,$_GET['year'])); ?></td>
-		<a href="<?php echo "index.php?action=calendar&month=$next_month&amp;year=$next_year"; ?>">&gt;&gt;</a>
+<div class="pager" align="center">
+  <a class="prev glyphicon glyphicon-backward" href="<?php echo "index.php?action=calendar&amp;month=$prev_month&amp;year=$prev_year"; ?>"></a>
+  <?php echo date ("Y m", mktime(0,0,0,$_GET['month']-1,1,$_GET['year'])); ?>
+  <a class="next glyphicon glyphicon-forward" href="<?php echo "index.php?action=calendar&amp;month=$next_month&amp;year=$next_year"; ?>"></a>
 </div>
 
 <div id="dienos">
@@ -176,8 +176,8 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			
 			$day_letter = get_day_letter($langelio_data);
 			echo "<span class=\"toprightnumber\">$i<font size=\"-2\">($day_letter)</font></span><div align=\"right\">
-			<a class=\"add\" href=\"?day=$i&amp;month=$link_month&amp;year=$_GET[year]\"> + </a>";
-			echo "<a class=\"show_day\" href=\"?day=$langelio_data\">S</a>";
+			<a class=\"add\" href=\"?day=$i&amp;month=$link_month&amp;year=$_GET[year]\"><i class=\"glyphicon glyphicon-plus\"></i></a>";
+			echo "<a class=\"show_day\" href=\"?day=$langelio_data\"><i class=\"glyphicon glyphicon-th-list\"></i></a>";
 			
 			if($admin){
 				echo "<a class=\"add_day\" href=\"?day=$langelio_data\">D</a>";		
