@@ -5,7 +5,18 @@
 
 form label { width: 40%; } 
 
+.navbar ul.nav li ul.dropdown-menu li.calendar.mobile {
+    display: none;
+}
+
 @media (max-width: 480px) {
+    .navbar ul.nav li ul.dropdown-menu li.calendar {
+	display: none;
+    }
+    .navbar ul.nav li ul.dropdown-menu li.calendar.mobile {
+	display: block;
+    }
+
     table.calendar,
     table.calendar tbody,
     table.calendar tr,
