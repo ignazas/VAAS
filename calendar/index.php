@@ -171,7 +171,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			//tikrinam ar diena aktyvi
 			$langelio_data = $_GET['year'] ."-". $menesis ."-". $diena;
 						
-			echo "<td width=\"100\" height=\"100\" class=\"$class\">\n";
+			echo "<td width=\"100\" height=\"100\" class=\"$class\"><a name=\"" . $langelio_data . "\"></a>\n";
 			$link_month = $_GET['month'] - 1;
 			
 			$day_letter = get_day_letter($langelio_data);
