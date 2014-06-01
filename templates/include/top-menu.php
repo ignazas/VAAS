@@ -39,7 +39,7 @@
             <li <?php if ($action=="calendar"||$action=="booking"||$action=="my_bookings"){echo "class=\"active\"";} ?>class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kalendorius <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li <?php if ($action=="calendar"){echo "class=\"active\"";} ?>><a href="index.php?action=calendar">Registruotis</a></li>
+                <li <?php if ($action=="calendar"){echo "class=\"active\"";} ?>><a href="index.php?action=calendar#<?php echo date('Y-m-d')?>">Registruotis</a></li>
                 <li <?php if ($action=="my_bookings"){echo "class=\"active\"";} ?>><a href="index.php?action=my_bookings">Mano registracijos</a></li>
               </ul>
             </li>
