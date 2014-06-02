@@ -82,10 +82,6 @@ class Index {
         require( TEMPLATE_PATH . "/contact.php" );
     }
 
-    public static function home() {
-        require( TEMPLATE_PATH . "/home.php" );
-    }
-
     public static function off() {
         require( TEMPLATE_PATH . "/off.php" );
     }

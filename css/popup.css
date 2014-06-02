@@ -1,47 +1,47 @@
-#registruotis{ 
+#registruotis{
     background-color:#fff;
     border-radius:15px;
     color:#000;
-    display:none; 
+    display:none;
     padding:20px;
     width: auto;
     min-height: 350px;
 }
-#registracija{ 
+#registracija{
     background-color:#fff;
     border-radius:15px;
     color:#000;
-    display:none; 
+    display:none;
     padding:20px;
     width: auto;
     min-height: 350px;
 }
 
-#addDay{ 
+#addDay{
     background-color:#fff;
     border-radius:15px;
     color:#000;
-    display:none; 
+    display:none;
     padding:20px;
     min-width: 300px;
     min-height: 250px;
 }
 
-#report{ 
+#report{
     background-color:#fff;
     border-radius:15px;
     color:#000;
-    display:none; 
+    display:none;
     padding:20px;
     min-height: 100%;
 	min-width: 650px;
 }
 
-#addAircraftDialog{ 
+#addAircraftDialog{
     background-color:#fff;
     border-radius:15px;
     color:#000;
-    display:none; 
+    display:none;
     padding:20px;
     min-height: 100%;
 	min-width: 650px;
@@ -55,22 +55,11 @@
 }
 
 .add, .show_day, .add_day {
-	background-color:#f9f9f9;
-	text-indent:0;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	color:#666666;
-	font-family:Arial;
-	font-size:13px;
-	height:16px;
-	line-height:14px;
-	width:16px;
-	text-decoration:none;
-	text-align:center;
-	text-shadow:1px 1px 0px #ffffff;
+  padding: 0 0 0 2px;
+  color:#666666;
+  /*font-size:13px;*/
 }
 .add:hover, .show_day:hover, .add_day:hover {
-	background-color:#e9e9e9;
 }
 .add:active, .show_day:active, .add_day:active {
 	position:relative;

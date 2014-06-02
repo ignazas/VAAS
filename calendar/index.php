@@ -2,10 +2,10 @@
 require_once dirname(__FILE__) . '/../functions.php';
 require_once dirname(__FILE__) . '/const.inc';
 
-function getmicrotime(){ 
-    list($usec, $sec) = explode(" ",microtime()); 
-    return ((float)$usec + (float)$sec); 
-} 
+function getmicrotime(){
+    list($usec, $sec) = explode(" ",microtime());
+    return ((float)$usec + (float)$sec);
+}
 
 $time_start = getmicrotime();
 
@@ -50,7 +50,7 @@ foreach ($query_result as $info) {
 
 // gaunam partvirtintas ir atmestas datas
 
-$query_result = DB::query("SELECT * FROM days ORDER BY day"); 
+$query_result = DB::query("SELECT * FROM days ORDER BY day");
 
 foreach ($query_result as $diena) {
 	$dienos[$diena['day']]['data'] = $diena['day'];
@@ -107,7 +107,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 </head>
 
 <body>
-	
+
 
 <div id="registruotis"></div>
 <div id="registracija"></div>
@@ -124,7 +124,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 <table width="100%" bgcolor="#000000">
   <tr>
     <td><table width="100%" class="calendar">
-        <tr class="topdays"> 
+        <tr class="topdays">
           <td><div align="center">Pirmadienis</div></td>
           <td><div align="center">Antradienis</div></td>
           <td><div align="center">Trečiadienis</div></td>
@@ -163,24 +163,24 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			//susikonstruojam menesi
 			$menesis = ($_GET['month']-1);
 			if($menesis<10) {$menesis = str_pad($menesis, 2, "0", STR_PAD_LEFT);}
-			
+
 			//susikonstruojam diena
 			$diena = $i;
 			if($i<10) {$diena = str_pad($i, 2, "0", STR_PAD_LEFT);}
-			
+
 			//tikrinam ar diena aktyvi
 			$langelio_data = $_GET['year'] ."-". $menesis ."-". $diena;
-						
+
 			echo "<td width=\"100\" height=\"100\" class=\"$class\"><a name=\"" . $langelio_data . "\"></a>\n";
 			$link_month = $_GET['month'] - 1;
-			
+
 			$day_letter = get_day_letter($langelio_data);
 			echo "<span class=\"toprightnumber\">$i<font size=\"-2\">($day_letter)</font></span><div align=\"right\">
 			<a class=\"add\" href=\"?day=$i&amp;month=$link_month&amp;year=$_GET[year]\"><i class=\"glyphicon glyphicon-plus\"></i></a>";
 			echo "<a class=\"show_day\" href=\"?day=$langelio_data\"><i class=\"glyphicon glyphicon-th-list\"></i></a>";
-			
+
 			if($admin){
-				echo "<a class=\"add_day\" href=\"?day=$langelio_data\">D</a>";		
+				echo "<a class=\"add_day\" href=\"?day=$langelio_data\"><i class=\"glyphicon glyphicon-tag\"></i></a>";
 			}
 			echo "</div>";
 			echo "<div align=\"left\"><div class=\"eventinbox\">\n";
@@ -195,7 +195,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 					    $vardas[0] = mb_substr($vardas[0], 0, 1) . '.';
 					$vardas = implode(' ', $vardas);
 				    }
-					IF (in_array($event_info[$value]['0'], $spec_events)) { 
+					IF (in_array($event_info[$value]['0'], $spec_events)) {
 						$title = $event_info[$value]['1'] . " " . $event_info[$value]['0'] . ": " . $event_info[$value]['2'];
 						$event = $event_info[$value]['0'];
 						echo "&nbsp;<a class=\"$event\" href=\"?id=$value\" title=\"" . $title_full . "\">" . $title  . "</a><br />";
@@ -214,9 +214,9 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 				$reason = "<font style=\"color:green\">" . $dienos[$langelio_data]['reason'] . "</font>";
 				echo "<div align=\"center\"><span style=\"display: inline-block;vertical-align: middle;display: inline-block;\">$reason</span></div>";
 				echo "</td>\n";
-			
+
 			}
-			
+
 			IF(($count_boxes == 7) AND ($days_so_far != (($first_day_of_month-1) + $days_in_month))){
 				$count_boxes = 0;
 				echo "</TR><TR valign=\"top\">\n";
