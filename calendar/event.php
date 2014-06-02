@@ -1,5 +1,5 @@
-<a class="b-close">[X]<a/>
-<?
+<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a><br />
+<?php
 require_once dirname(__FILE__) . '/../functions.php';
 require_once dirname(__FILE__) . '/const.inc';
 

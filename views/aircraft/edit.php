@@ -1,4 +1,4 @@
-<a class="b-close">[X]</a>
+<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a><br />
 
 <form class="form-horizontal" action="" method="POST">
   <input type="hidden" name="old_callsign" value="<?php echo isset($_POST['old_callsign']) ? $_POST['old_callsign'] : $results['aircraft']->callsign ?>" />
