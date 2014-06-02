@@ -1,13 +1,14 @@
 <?php
 require_once dirname(__FILE__) . '/../helpers/db.inc';
 
-class Calendar
+class CalendarEvent
 {
   public $event_id;
   public $event_title;
   public $event_day;
   public $event_time;
   public $event_desc;
+  public $event_type;
 
   /**
   * Sets the object's properties using the values in the supplied array
@@ -22,6 +23,11 @@ class Calendar
     if (isset($data['event_day'])) $this->event_day = $data['event_day'];
     if (isset($data['event_time'])) $this->event_time = $data['event_time'];
     if (isset($data['event_desc'])) $this->event_desc = $data['event_desc'];
+
+    if (isset($this->event_title) && in_array($this->event_title, array("šventė", "talka", "kita", "svečiai")))
+	$this->event_type = $this->event_title;
+    else
+	$this->event_type = 'registracija';
   }
 
   /**
@@ -38,7 +44,7 @@ class Calendar
 
     $list = array();
     while ($row = $st->fetch()) {
-      $list[] = new Calendar($row);
+      $list[] = new CalendarEvent($row);
     }
 
     // Now get the total number of articles that matched the criteria

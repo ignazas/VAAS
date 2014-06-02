@@ -1,6 +1,6 @@
 
 tr.topdays {
-	background-color: #B7B7B7; font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 11px; color : #000000; 
+	background-color: #B7B7B7; font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 11px; color : #000000;
 }
 
 .toprightnumber {
@@ -12,15 +12,15 @@ tr.topdays {
 		 z-index: -1;
 }
 .eventinbox {
-	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 10px;	
+	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 10px;
 }
 .currentdate {
-	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 17px; font-weight: bold;	
+	font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 17px; font-weight: bold;
 }
 
-table { 
+table {
 	border-collapse: separate;
-	border-spacing: 1px; 
+	border-spacing: 1px;
 	}
 
 
@@ -76,7 +76,7 @@ form.calendar table {
 
 td.p {
 	padding: 0 0 0 0;
-	
+
 }
 a.registracija {white-space: nowrap;}
 a.talka{
@@ -94,3 +94,17 @@ a.svečiai{
 }
 table.calendar {table-layout: fixed;}
 table.calendar tr td .eventinbox {line-height: 2em; overflow: hidden; text-overflow: ellipsis;}
+
+#dienos .nevyksta,
+#dienos .vyksta {
+  text-align: center;
+  list-style: none;
+}
+
+#dienos .nevyksta {
+  color: red;
+}
+
+#dienos .vyksta {
+  color: green;
+}

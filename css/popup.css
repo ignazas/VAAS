@@ -54,14 +54,14 @@
     top:5px;
 }
 
-.add, .show_day, .add_day {
+table .add, table .show_day, table .add_day {
   padding: 0 0 0 2px;
   color:#666666;
   /*font-size:13px;*/
 }
-.add:hover, .show_day:hover, .add_day:hover {
+table .add:hover, table .show_day:hover, table .add_day:hover {
 }
-.add:active, .show_day:active, .add_day:active {
+table .add:active, table .show_day:active, table .add_day:active {
 	position:relative;
 	top:1px;
 }

@@ -25,10 +25,13 @@ class DashboardControler {
   }
 
   private function CalendarBlock(&$elements) {
-      require_once dirname(__FILE__) . '/../models/calendar.inc';
+      require_once dirname(__FILE__) . '/../models/calendar_event.inc';
+      $model = new CalendarEvent();;
+      $elements['calendar']['events'] = $model->getByDate(time());
 
-      $model = new Calendar();;
-      $elements['calendar'] = $model->getByDate(time());
+      require_once dirname(__FILE__) . '/../models/calendar_day.inc';
+      $model = new CalendarDay();;
+      $elements['calendar']['days'] = $model->getByDate(time());
   }
 
   public function View() {
