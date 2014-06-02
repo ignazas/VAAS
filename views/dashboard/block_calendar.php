@@ -1,6 +1,6 @@
 <?php if (!empty($elements['calendar']['results']) && is_array($elements['calendar'])) { ?>
 
-<div class="col-xs-6 col-md-6" id="dienos">
+<div class="col-md-6" id="dienos">
   <link href="css/cal.css" rel="stylesheet" type="text/css">
   <div id="registracija"></div>
   <div id="registruotis"></div>
