@@ -20,7 +20,7 @@
   </ul>
   <div class="buttons">
     <a class="add btn btn-sm btn-primary" href="?day=<?php echo date('j', time()) ?>&amp;month=<?php echo date('n', time()) ?>&amp;year=<?php echo date('Y', time()) ?>"><i class="glyphicon glyphicon-plus"></i> Šiandien</a>
-    <a class="add btn btn-sm" href="?day=<?php echo date('j', strtotime('+1 day')) ?>&amp;month=<?php echo date('n', strtotime('+1 day')) ?>&amp;year=<?php echo date('Y', strtotime('+1 day')) ?>"><i class="glyphicon glyphicon-plus"></i> Rytoj</a>
+    <!-- <a class="add btn btn-sm" href="?day=<?php echo date('j', strtotime('+1 day')) ?>&amp;month=<?php echo date('n', strtotime('+1 day')) ?>&amp;year=<?php echo date('Y', strtotime('+1 day')) ?>"><i class="glyphicon glyphicon-plus"></i> Rytoj</a> -->
   </div>
 </div>
 
