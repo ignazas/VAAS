@@ -205,10 +205,10 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 					}
 				}
 			}
-			if (isset($dienos[$langelio_data]['reason'])&&$dienos[$langelio_data]['status']=='nevyksta'){
+			if (isset($dienos[$langelio_data]['reason'])){
 				echo "<div class=\"" . $dienos[$langelio_data]['status'] . "\" align=\"center\">" . $dienos[$langelio_data]['reason'] . "</div>";
 			}
-      echo "</td>\n";
+			echo "</td>\n";
 
 			IF(($count_boxes == 7) AND ($days_so_far != (($first_day_of_month-1) + $days_in_month))){
 				$count_boxes = 0;

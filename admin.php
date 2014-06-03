@@ -25,7 +25,7 @@ else {
 }
 
 function bookings() {
-    $st = DB::query("SELECT * FROM calendar_events LEFT JOIN days ON calendar_events.event_date=days.day ORDER by calendar_events.event_date");
+    $st = DB::query("SELECT * FROM calendar_events LEFT JOIN days ON calendar_events.event_date=days.day ORDER by calendar_events.event_date DESC");
     $BookingList = array();
 
     while ( $row = $st->fetch() ) {
@@ -115,7 +115,7 @@ function addDay() {
     header( "Location: index.php?action=calendar&status=dayAdded&month=" . $exploded_date[1] . "&year=" . $exploded_date[0] );
 }
 function working_days() {
-    $st = DB::query("SELECT * FROM days ORDER by day");
+    $st = DB::query("SELECT * FROM days ORDER by day DESC");
     $workingDays = array();
 
     while ( $row = $st->fetch() ) {
