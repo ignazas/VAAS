@@ -12,11 +12,11 @@ if (isset($_POST['submit']))
 	//susikonstruojam menesi
 	$menesis = $_POST['month'];
 	if($menesis<10) {$menesis = str_pad($menesis, 2, "0", STR_PAD_LEFT);}
-	
+
 	//susikonstruojam diena
 	$diena = $_POST['day'];
 	if($diena<10) {$diena = str_pad($diena, 2, "0", STR_PAD_LEFT);}
-	
+
 	$event_date = $_POST['year']."-".$menesis."-".$diena;
 	$event_time = $_POST['hour'] . ":" . $_POST['minute'];
 
@@ -34,71 +34,75 @@ if (isset($_POST['submit']))
 	$meilas = $_SESSION['user']['email'];
 	$user = $_SESSION['user']['username'];
 	send_mail($meilas,"Jūsų registracija skrydžiams",$pranesimas);
-		
+
+  require_once dirname(__FILE__) . '/../helpers/messages.inc';
+	Messages::set_message($pranesimas);
+
 	//redirect
-	header( "Location: ../index.php?action=calendar&year=" . $_POST['year'] . "&month=" . $_POST['month'] ) ;
+	$destination = !empty($_GET['destination']) ? $_GET['destination'] : ("../index.php?action=calendar&year=" . $_POST['year'] . "&month=" . $_POST['month']);
+	header("Location: $destination") ;
 }
-else 
+else
 {
-	
+
 	$menesis = $_GET['month'];
 	if($menesis<10) {$menesis = str_pad($menesis, 2, "0", STR_PAD_LEFT);}
-	
+
 	//susikonstruojam diena
 	$diena = $_GET['day'];
 	if($diena<10) {$diena = str_pad($diena, 2, "0", STR_PAD_LEFT);}
-	
+
 	$event_date = $_GET['year']."-".$menesis."-".$diena;
 	$weekday = date('w', mktime(0, 0, 0, $_GET['month'], $_GET['day'], $_GET['year']));
 ?>
 
-<a class="b-close">[X]<a/>
-<form name="form1" method="post" action="calendar/event_add.php" class="calendar">
+<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a><br />
+<form name="form1" method="post" action="calendar/event_add.php<?php echo !empty($_GET['destination']) ? "?destination=$_GET[destination]" : NULL ?>" class="calendar">
   <table border="0" cellspacing="0" cellpadding="0">
-  	
-    <tr> 
-      <td width="200" height="40" valign="top"><span class="addevent">Atvykimo diena:</span><br> 
+
+    <tr>
+      <td width="200" height="40" valign="top"><span class="addevent">Atvykimo diena:</span><br>
         <td height="40" valign="top">
   			<?php echo $event_date; ?>
         </td>
     </tr>
-    <tr> 
-      <td width="200" height="40" valign="top"><span class="addevent">Atvykimo laikas:</span><br> 
+    <tr>
+      <td width="200" height="40" valign="top"><span class="addevent">Atvykimo laikas:</span><br>
         <span class="addeventextrainfo">(24val formatas)</span></td>
       <td height="40" valign="top">
       	<input class="form-control" style="width: 50px; display: inline" name="hour" type="text" id="hour" value="<?php echo $weekday == 0 || $weekday == 6 ? 10 : 16 ?>" size="2" maxlength="2"> :
       	<input class="form-control" style="width: 50px;display: inline" name="minute" type="text" id="minute" value="00" size="2" maxlength="2"><br />
       </td>
     </tr>
-	
+
 	<?php
-	IF ($_SESSION['user']['usertype']=="Administrator"||$_SESSION['user']['usertype']=="Super Administrator") {	
+	IF ($_SESSION['user']['usertype']=="Administrator"||$_SESSION['user']['usertype']=="Super Administrator") {
 	?>
-	<tr> 
-      <td height="40" valign="top"><span class="addevent">Įvykis:</span> 
+	<tr>
+      <td height="40" valign="top"><span class="addevent">Įvykis:</span>
       <td height="40" valign="top">
       	<select class="form-control" name="title"id="title" value="00">
 			<option value="<?php echo $_SESSION['user']['name']; ?>">Registracija skrydžiams</option>
 			<option value="talka">Visuotinė talka</option>
 			<option value="šventė">Klubo šventė</option>
 			<option value="svečiai">Svečiai</option>
-			<option value="kita">Kita</option>			
+			<option value="kita">Kita</option>
 		<select>
       </td>
     </tr>
 	<?php } else { ?>
 	<input name="title" type="hidden" value="<?php echo $_SESSION['user']['name']; ?>">
 	<?php } ?>
-	
-    <tr> 
+
+    <tr>
       <td width="200" height="40" valign="top"><span class="addevent">Registracijos pastabos</span><br>
       	<span class="addeventextrainfo">Nurodykite, jei reikalinga nakvynė, skrydžiai į aikštelę ar pan.</span>
       	<span class="addeventextrainfo">Nurodykite kiek ir kokius skrydžius planuojate, esate instruktorius ar autoišvilktuvo operatorius.</span>
       	</td>
-      <td height="40" valign="top"> <textarea class="form-control" name="description" cols="18" rows="5" id="description"></textarea> 
+      <td height="40" valign="top"> <textarea class="form-control" name="description" cols="18" rows="5" id="description"></textarea>
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>&nbsp;</td>
       <td><br /><input class="btn btn-primary" name="submit" type="submit" id="submit" value="Registruotis"></td>
     </tr>
@@ -107,6 +111,6 @@ else
   <input name="month" type="hidden" value="<?php echo $_GET['month']; ?>">
   <input name="day" type="hidden" value="<?php echo $_GET['day']; ?>">
 </form>
-<?php 
-} 
+<?php
+}
  ?>

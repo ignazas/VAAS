@@ -1,5 +1,6 @@
 <?php
 
+require_once dirname(__FILE__) . '/messages.inc';
 
 class Index {
     /* INDEX.PHP */
@@ -38,44 +39,43 @@ class Index {
     }
 
     public static function my_bookings() {
-        $st = DB::query("SELECT * FROM calendar_events LEFT JOIN days ON calendar_events.event_date=days.day ORDER by calendar_events.event_date");
+      require_once dirname(__FILE__) . '/../models/calendar_event.inc';
 
-        $BookingList = array();
-        while ( $row = $st->fetch() ) {
-            $BookingList['bookings'][$row['event_id']]['event_id'] = $row['event_id'];
-            $BookingList['bookings'][$row['event_id']]['event_time'] = $row['event_time'];
-            $BookingList['bookings'][$row['event_id']]['event_desc'] = $row['event_desc'];
-            $BookingList['bookings'][$row['event_id']]['event_date'] = $row['event_date'];
-            $BookingList['bookings'][$row['event_id']]['status'] = $row['status'];
-            $BookingList['bookings'][$row['event_id']]['user_id'] = $row['user_id'];
-        }
+      $BookingList = CalendarEvent::getByUser($_SESSION['user']['id']);
 
-        if ( isset( $_GET['error'] ) ) {
-            if ( $_GET['error'] == "articleNotFound" ) $BookingList['errorMessage'] = "Pranešimas nerastas.";
-            if ( $_GET['error'] == "eventNotFound" ) $BookingList['errorMessage'] = "Registracija nerasta.";
-        }
-
-        if ( isset( $_GET['status'] ) ) {
-            if ( $_GET['status'] == "changesSaved" ) $BookingList['statusMessage'] = "Pakeitimai išsaugoti.";
-            if ( $_GET['status'] == "articleDeleted" ) $BookingList['statusMessage'] = "Pranešimas pašalintas.";
-            if ( $_GET['status'] == "eventDeleted" ) $BookingList['statusMessage'] = "Registracija pašalinta.";
-        }
-
-        require( TEMPLATE_PATH . "/my_bookings.php" );
+      require( TEMPLATE_PATH . "/my_bookings.php" );
     }
 
     public static function deleteBooking() {
-        if (!empty($_GET['bookingId'])) {
-            $booking_id = $_GET['bookingId'];
-             // Does the Booking object have an ID?
-            if ( is_null( $booking_id ) ) trigger_error ( "Attempt to delete an Booking object that does not have its ID property set.", E_USER_ERROR );
+      if (!empty($_GET['bookingId'])) {
+        $destination = !empty($_GET['destination']) ? $_GET['destination'] : 'index.php?action=my_bookings';
 
-            // Delete the Booking
-            $st = DB::query( "DELETE FROM calendar_events WHERE event_id = :event_id LIMIT 1", array(":event_id" => $booking_id));
+        $bookingIdList = array();
+        foreach (explode(',', $_GET['bookingId']) as $booking_id)
+          if (!empty($booking_id) && is_numeric($booking_id))
+            $bookingIdList[] = (int)$booking_id;
 
-            log_event('N/A','BookingRemove',$booking_id);
-            header( "Location: index.php?action=my_bookings&status=eventDeleted" );
+        // Does the Booking object have an ID?
+        if (empty($bookingIdList)) {
+          //trigger_error ( "Attempt to delete an Booking object that does not have its ID property set.", E_USER_ERROR );
+          Messages::set_message("Registracija nerasta.", 'errors');
         }
+        else {
+          // Delete the Booking
+          $st = DB::query("DELETE FROM calendar_events WHERE event_id IN (" . implode(',', $bookingIdList) . ")");
+
+          $deleted = $st->rowCount();
+          if (empty($deleted)) {
+            Messages::set_message("Registracija nerasta.", 'errors');
+          }
+          else {
+            foreach ($bookingIdList as $booking_id)
+              log_event('N/A','BookingRemove',$booking_id);
+            Messages::set_message("Registracija pašalinta.");
+          }
+        }
+        header( "Location: $destination" );
+      }
     }
 
     public static function contact() {
