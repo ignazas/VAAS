@@ -35,7 +35,7 @@ class CalendarEvent
   }
 
   /**
-  * Returns an Calendar object matching the given article ID
+  * Returns an Calendar object matching the given date
   *
   * @param int The article ID
   * @return Calendar|false The article object, or false if the record was not found or there was a problem
@@ -59,7 +59,7 @@ class CalendarEvent
   }
 
   /**
-  * Returns an Calendar object matching the given article ID
+  * Returns an Calendar object matching the given user ID with date
   *
   * @param int The article ID
   * @return Calendar|false The article object, or false if the record was not found or there was a problem
@@ -98,5 +98,25 @@ class CalendarEvent
     $totalRows = $st->fetch();
 
     return array ( "results" => $list, "totalRows" => $totalRows[0] );
+  }
+
+  /**
+  * Returns an Calendar object matching the given ID
+  *
+  * @param int The article ID
+  * @return Calendar|false The article object, or false if the record was not found or there was a problem
+  */
+  public static function get($id) {
+    require_once dirname(__FILE__) . '/user.inc';
+
+    $st = DB::query("SELECT * FROM `calendar_events` e INNER JOIN `jos_users` u ON u.id=e.user_id LEFT JOIN `jos_contxtd_details` ud ON u.id = ud.user_id WHERE event_id=:id LIMIT 1", array(':id' => $id));
+
+    if ($row = $st->fetch()) {
+      $e = new CalendarEvent($row);
+      $e->user = new User($row);
+      return $e;
+    }
+
+    return NULL;
   }
 }

@@ -3,32 +3,61 @@
 require_once dirname(__FILE__) . '/../helpers/db.inc';
 
 class User {
+    public $id;
+    public $name;
+    public $username;
+    public $usertype;
+    public $password;
+    public $email;
+    public $registerDate;
+    public $lastvisitDate;
+
+    public $telephone1;
+    public $website;
+    public $avatar;
+
+  /**
+  * Sets the object's properties using the values in the supplied array
+  *
+  * @param assoc The property values
+  */
+  public function __construct( $data=array() ) {
+    if (isset($data['id'])) $this->id = $data['id'];
+    if (isset($data['name'])) $this->name = $data['name'];
+    if (isset($data['username'])) $this->username = $data['username'];
+    if (isset($data['usertype'])) $this->usertype = $data['usertype'];
+    if (isset($data['password'])) $this->password = $data['password'];
+    if (isset($data['email'])) $this->email = $data['email'];
+    if (isset($data['registerDate'])) $this->registerDate = $data['registerDate'];
+    if (isset($data['lastvisitDate'])) $this->lastvisitDate = $data['lastvisitDate'];
+
+    if (isset($data['telephone1'])) $this->telephone1 = $data['telephone1'];
+    if (isset($data['website'])) $this->website = $data['website'];
+    if (isset($data['avatar'])) $this->avatar = $data['avatar'];
+  }
+
     public static function Get($id) {
         if (!empty($id)) {
-            return DB::fetch_object("
-                SELECT jos_users.id, jos_users.name, jos_users.username, jos_users.usertype ,jos_users.password,
-                    jos_users.email, jos_contxtd_details.telephone1, jos_contxtd_details.website, jos_users.registerDate, jos_users.lastvisitDate,
-                    jos_contxtd_details.avatar
-                FROM jos_users
-                LEFT JOIN jos_contxtd_details
-                ON jos_users.id = jos_contxtd_details.user_id
+            return new User(DB::fetch("
+                SELECT u.id, u.name, u.username, u.usertype, u.email, u.password, u.registerDate, u.lastvisitDate,
+                    ud.telephone1, ud.website, ud.avatar
+                FROM jos_users u
+                LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
                 WHERE
-                    jos_users.id = :id", array(':id' => $id));
+                    u.id = :id", array(':id' => $id)));
         }
         return NULL;
     }
 
     public static function get_by_username($username) {
         if (!empty($username)) {
-            return DB::fetch_object("
-                SELECT jos_users.id, jos_users.name, jos_users.username, jos_users.usertype ,jos_users.password,
-                    jos_users.email, jos_contxtd_details.telephone1, jos_contxtd_details.website, jos_users.registerDate, jos_users.lastvisitDate,
-                    jos_contxtd_details.avatar
-                FROM jos_users
-                LEFT JOIN jos_contxtd_details
-                ON jos_users.id = jos_contxtd_details.user_id
+            return new User(DB::fetch("
+                SELECT u.id, u.name, u.username, u.usertype, u.email, u.password, u.registerDate, u.lastvisitDate,
+                    ud.telephone1, ud.website, ud.avatar
+                FROM jos_users u
+                LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
                 WHERE
-                    jos_users.username = :username OR jos_users.email = :username", array(':username' => $username));
+                    u.username = :username OR u.email = :username", array(':username' => $username)));
         }
         return NULL;
     }

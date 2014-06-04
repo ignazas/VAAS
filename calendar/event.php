@@ -2,39 +2,49 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
 require_once dirname(__FILE__) . '/const.inc';
+require_once dirname(__FILE__) . '/../models/calendar_event.inc';
 
-$st = DB::query("SELECT * FROM " . TBL_EVENTS . " WHERE event_id=:id LIMIT 1", array(':id' => $_GET['id']));
-while ($info = $st->fetch()){
-    $date =  $info['event_date'];
-    $time_array = split(":", $info['event_time']);
-    $time = date ("g:ia", mktime($time_array['0'],$time_array['1'],0,$info['event_month'],$info['event_day'],$info['event_year']));
+$info = CalendarEvent::get($_GET['id']);
+
+$time_array = split(":", $info->event_time);
 ?>
 
-<table >
+<table style="width:480px;margin-right: 90px;">
+  <tr>
+    <td><span class="eventwhen"><h3><? echo date("Y-m-d H:i", mktime($time_array['0'],$time_array['1'],0,$info->event_month,$info->event_day,$info->event_year)); ?></h3></span><br></td>
+  </tr>
+<?php if (!empty($info->user)) { ?>
   <tr>
     <td>
-	<table width="480" >
-        <tr> 
-          <td><span class="eventwhen"><h3><? echo $date . " @ " . $time; ?></h3></span><br></td>
-        </tr>
-        <tr> 
-          <td><span class="event">Dalyvis</span></td>
-        </tr>
-        <tr> 
-          <td><span class="eventdetail"><? echo $info['event_title']; ?></span><br> 
-            <br></td>
-        </tr>
-        <tr> 
-          <td><span class="event">Pastabos</span></td>
-        </tr>
-        <tr> 
-          <td><span class="eventdetail"><? echo $info['event_desc']; ?></span><br></td>
-        </tr>
-      </table></td>
+      <div class="pull-right">
+	<img src="<?php echo '/' . CATALOG . '/' . (empty($info->user->avatar) ? 'images/users/avatar.jpg' : ('uploads/users/' . $info->user->avatar)) ?>" class="img-thumbnail" alt="<?php echo htmlentities($info->user->name) ?>" style="width: 100px;">
+      </div>
+      <div>
+          <?php echo theme('display', 'name', 'Vardas', $info->user) ?>
+          <?php echo theme('display', 'email', 'El. paštas', $info->user) ?>
+          <?php echo theme('display', 'telephone1', 'Telefonas', $info->user) ?>
+          <?php echo theme('display', 'website', 'Interneto svetainė', $info->user) ?>
+      </div>
+    </td>
   </tr>
-  <tr>
-    
-  </tr>
-</table>
+<?php } ?>
 
-<? } ?>
+<?php $spec_events = array("šventė", "talka", "kita", "svečiai") ?>
+<?php if (!empty($info->event_desc) || in_array($info->event_title, $spec_events)) { ?>
+  <tr>
+    <td><h2 class="event">Pastabos</h2></td>
+  </tr>
+  <?php if (in_array($info->event_title, $spec_events)) { ?>
+  <tr>
+    <td class="eventdetail">
+      <?php echo theme('display', 'event_title', 'Renginys', $info) ?>
+    </td>
+  </tr>
+  <?php } ?>
+  <tr>
+    <td class="eventdetail">
+      <?php echo theme('display', 'event_desc', NULL, $info) ?>
+    </td>
+  </tr>
+<?php } ?>
+</table>

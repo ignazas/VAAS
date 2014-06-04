@@ -24,6 +24,8 @@ function load_controller($name) {
 }
 
 function theme($type, $name, $label, $entity, $values=NULL) {
+    require_once dirname(__FILE__) . '/helpers/messages.inc';
+
     $output = NULL;
 
     switch ($type) {
@@ -34,13 +36,19 @@ function theme($type, $name, $label, $entity, $values=NULL) {
             $output = '<div';
             if (Messages::has_error('name'))
                 $output .= ' class="err"';
-            $output .= '><label for="' . $name . '"><b>' . $label . ':</b></label> <input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . /*htmlentities*/(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '"/></div>';
+            $output .= '>';
+	    if (!empty($label))
+		$output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+	    $output .= '<input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . /*htmlentities*/(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '"/></div>';
             break;
         case 'display':
             $output = '<div';
             if (Messages::has_error('name'))
                 $output .= ' class="err"';
-            $output .= '><label><b>' . $label . ':</b></label> <span>' . htmlentities(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '</span></div>';
+            $output .= '>';
+	    if (!empty($label))
+		$output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+	    $output .= '<span>' . htmlentities(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '</span></div>';
             break;
         default:
             break;
