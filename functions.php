@@ -48,7 +48,7 @@ function theme($type, $name, $label, $entity, $values=NULL) {
             $output .= '>';
 	    if (!empty($label))
 		$output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
-	    $output .= '<span>' . htmlentities(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '</span></div>';
+	    $output .= '<span>' . /*htmlentities*/(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '</span></div>';
             break;
         default:
             break;
