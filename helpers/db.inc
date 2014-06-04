@@ -36,6 +36,18 @@ class DB {
         return $st->fetchObject();
     }
 
+    public static function fetch($query, $params = NULL) {
+        DB::connect();
+
+        $st = DB::$conn->prepare($query);
+        if (!$st)
+            die($dbh->errorInfo());
+
+        $st->execute($params);
+
+        return $st->fetch();
+    }
+
     public static function insert($query, $params = NULL) {
         $st = DB::query($query, $params);
         return DB::$conn->lastInsertId();
