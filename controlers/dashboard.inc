@@ -34,12 +34,19 @@ class DashboardControler {
       $elements['calendar']['days'] = $model->getByDate(time());
   }
 
+  private function ArticleBlock(&$elements) {
+      require_once dirname(__FILE__) . '/../models/article.inc';
+      $model = new Article();;
+      $elements['article'] = $model->getList(5);
+  }
+
   public function View() {
     $this->view = dirname(__FILE__) . '/../views/dashboard/view.php';
 
     $elements = array();
     $this->QuoteBlock($elements);
     $this->CalendarBlock($elements);
+    $this->ArticleBlock($elements);
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }

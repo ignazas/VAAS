@@ -5,5 +5,6 @@
 
 <div class="row">
   <?php include 'block_calendar.php'; ?>
+  <?php include 'block_article.php'; ?>
   <?php include 'block_quote.php'; ?>
 </div>
