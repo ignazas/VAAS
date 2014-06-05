@@ -12,7 +12,7 @@ $statuses = array(
 
 session_start();
 ?>
-<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a><br />
+<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a>
 <form role="form" action="admin.php">
 	
 	<select name="status" class="form-control">

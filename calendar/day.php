@@ -1,4 +1,4 @@
-<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a><br />
+<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a>
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
 require_once dirname(__FILE__) . '/const.inc';
@@ -23,31 +23,29 @@ switch($savaites_diena)
 	default:          $savaites_diena = "-"; break;
 }
 
-
-$result = DB::query("SELECT * FROM calendar_events WHERE event_date=:day ORDER by event_time", array(':day' => $day));
-
-echo "<h2>" . $day . ", " . $savaites_diena . "</h2>";
-
-$sarasas = array();
-foreach ($result as $row){
-	$sarasas[] = $row;
-};
-
+require_once dirname(__FILE__) . '/../models/calendar_event.inc';
+$result = CalendarEvent::getByDate($day);
 ?>
+
+<h2><?php echo $day . ", " . $savaites_diena ?></h2>
+
 <div style="display: block">
 <table style="width: 600px; "  class="table table-striped">
         <tr> 
-          <th>Laikas</th>
-          <th>Vardas</th>
+          <th class="col-xs-1"></th>
+          <th class="col-xs-2">Laikas</th>
+          <th class="col-xs-4">Vardas</th>
           <th>Pastaba</th>
         </tr>
 
-			<?php foreach ( $sarasas as $irasas ) { 
-				echo "<td>".$irasas['event_time']."</td>";
-				echo "<td>".$irasas['event_title']."</td>";
-				echo "<td>".$irasas['event_desc']."</td>";
-          		echo "</tr>";
-		  }?>
+<?php foreach ($result['results'] as $event) { ?>
+        <tr>
+	  <td class="col-xs-1"><img src="<?php echo '/' . CATALOG . '/' . (empty($event->user->avatar) ? 'images/users/avatar.jpg' : ('uploads/users/' . $event->user->avatar)) ?>" class="img-thumbnail img-responsive" alt="<?php echo htmlentities($event->user->name) ?>"></td>
+	  <td class="col-xs-1"><?php echo theme('display', 'event_time', NULL, $event) ?></td>
+	  <td class="col-xs-4"><?php echo theme('display', 'event_title', NULL, $event) ?></td>
+	  <td><?php echo theme('display', 'event_desc', NULL, $event) ?></td>
+        </tr>
+<?php } ?>
 
 </table>
 </div>

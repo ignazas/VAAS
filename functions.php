@@ -27,6 +27,7 @@ function theme($type, $name, $label, $entity, $values=NULL) {
     require_once dirname(__FILE__) . '/helpers/messages.inc';
 
     $output = NULL;
+    $value = /*htmlentities*/(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL);
 
     switch ($type) {
         case 'text':
@@ -39,16 +40,19 @@ function theme($type, $name, $label, $entity, $values=NULL) {
             $output .= '>';
 	    if (!empty($label))
 		$output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
-	    $output .= '<input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . /*htmlentities*/(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '"/></div>';
+	    $output .= '<input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . $value . '"/></div>';
             break;
         case 'display':
+	    if (empty($value))
+		break;
+
             $output = '<div';
             if (Messages::has_error('name'))
                 $output .= ' class="err"';
             $output .= '>';
 	    if (!empty($label))
 		$output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
-	    $output .= '<span>' . /*htmlentities*/(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL) . '</span></div>';
+	    $output .= '<span>' . $value . '</span></div>';
             break;
         default:
             break;

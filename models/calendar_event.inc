@@ -41,14 +41,18 @@ class CalendarEvent
   * @return Calendar|false The article object, or false if the record was not found or there was a problem
   */
   public static function getByDate($date) {
+    require_once dirname(__FILE__) . '/user.inc';
+
     if (is_string($date))
       $date = strtotime($date);
 
-    $st = DB::query("SELECT e.* FROM `calendar_events` e INNER JOIN `jos_users` u ON u.id=e.user_id WHERE e.event_month=:month AND e.event_year=:year AND e.event_day=:day ORDER BY e.event_time", array(':year' => date('Y', $date), ':month' => date('m', $date), ':day' => date('d', $date)));
+    $st = DB::query("SELECT * FROM `calendar_events` e INNER JOIN `jos_users` u ON u.id=e.user_id LEFT JOIN `jos_contxtd_details` ud ON u.id = ud.user_id WHERE e.event_month=:month AND e.event_year=:year AND e.event_day=:day ORDER BY e.event_time", array(':year' => date('Y', $date), ':month' => date('m', $date), ':day' => date('d', $date)));
 
     $list = array();
     while ($row = $st->fetch()) {
-      $list[] = new CalendarEvent($row);
+      $e = new CalendarEvent($row);
+      $e->user = new User($row);
+      $list[] = $e;
     }
 
     // Now get the total number of articles that matched the criteria

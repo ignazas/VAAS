@@ -1,4 +1,4 @@
-<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a><br />
+<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a>
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
 require_once dirname(__FILE__) . '/const.inc';
@@ -9,21 +9,21 @@ $info = CalendarEvent::get($_GET['id']);
 $time_array = split(":", $info->event_time);
 ?>
 
-<table style="width:480px;margin-right: 90px;">
+<table style="max-width:100%;width:480px;padding-right: 90px;">
   <tr>
     <td><span class="eventwhen"><h3><? echo date("Y-m-d H:i", mktime($time_array['0'],$time_array['1'],0,$info->event_month,$info->event_day,$info->event_year)); ?></h3></span><br></td>
   </tr>
 <?php if (!empty($info->user)) { ?>
   <tr>
     <td>
-      <div class="pull-right">
-	<img src="<?php echo '/' . CATALOG . '/' . (empty($info->user->avatar) ? 'images/users/avatar.jpg' : ('uploads/users/' . $info->user->avatar)) ?>" class="img-thumbnail" alt="<?php echo htmlentities($info->user->name) ?>" style="width: 100px;">
-      </div>
-      <div>
+      <div class="col-md-8 col-sm-12">
           <?php echo theme('display', 'name', 'Vardas', $info->user) ?>
           <?php echo theme('display', 'email', 'El. paštas', $info->user) ?>
           <?php echo theme('display', 'telephone1', 'Telefonas', $info->user) ?>
           <?php echo theme('display', 'website', 'Interneto svetainė', $info->user) ?>
+      </div>
+      <div class="col-md-4 col-sm-12<?php if (empty($info->user->avatar)) echo ' hidden-sm hidden-xs hidden-md'?>">
+	<img src="<?php echo '/' . CATALOG . '/' . (empty($info->user->avatar) ? 'images/users/avatar.jpg' : ('uploads/users/' . $info->user->avatar)) ?>" class="img-thumbnail img-responsive" alt="<?php echo htmlentities($info->user->name) ?>">
       </div>
     </td>
   </tr>

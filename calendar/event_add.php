@@ -56,7 +56,7 @@ else
 	$weekday = date('w', mktime(0, 0, 0, $_GET['month'], $_GET['day'], $_GET['year']));
 ?>
 
-<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a><br />
+<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a>
 <form name="form1" method="post" action="calendar/event_add.php<?php echo !empty($_GET['destination']) ? "?destination=$_GET[destination]" : NULL ?>" class="calendar">
   <table border="0" cellspacing="0" cellpadding="0">
 
