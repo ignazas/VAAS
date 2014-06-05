@@ -32,7 +32,7 @@ $result = CalendarEvent::getByDate($day);
 <div style="display: block">
 <table style="width: 600px; "  class="table table-striped">
         <tr> 
-          <th class="col-xs-1"></th>
+          <th class="col-lg-2 col-xs-1 hidden-xs hidden-sm"></th>
           <th class="col-xs-2">Laikas</th>
           <th class="col-xs-4">Vardas</th>
           <th>Pastaba</th>
@@ -40,7 +40,7 @@ $result = CalendarEvent::getByDate($day);
 
 <?php foreach ($result['results'] as $event) { ?>
         <tr>
-	  <td class="col-xs-1"><img src="<?php echo '/' . CATALOG . '/' . (empty($event->user->avatar) ? 'images/users/avatar.jpg' : ('uploads/users/' . $event->user->avatar)) ?>" class="img-thumbnail img-responsive" alt="<?php echo htmlentities($event->user->name) ?>"></td>
+	  <td class="col-lg-2 col-xs-1 hidden-xs hidden-sm"><img src="<?php echo '/' . CATALOG . '/' . (empty($event->user->avatar) ? 'images/users/avatar.jpg' : ('uploads/users/' . $event->user->avatar)) ?>" class="img-thumbnail img-responsive" alt="<?php echo htmlentities($event->user->name) ?>"></td>
 	  <td class="col-xs-1"><?php echo theme('display', 'event_time', NULL, $event) ?></td>
 	  <td class="col-xs-4"><?php echo theme('display', 'event_title', NULL, $event) ?></td>
 	  <td><?php echo theme('display', 'event_desc', NULL, $event) ?></td>
