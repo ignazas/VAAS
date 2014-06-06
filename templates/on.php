@@ -1,8 +1,5 @@
-<?php include "templates/include/header.php" ?>
-<?php include "templates/include/top-menu.php" ?>
-
-<div class="container">
-		<?php
+<?php
+require_once dirname(__FILE__) . '/../helpers/messages.inc';
 
     // First we execute our common code to connection to the database and start the session
     require("common.php");
@@ -107,7 +104,7 @@
         else
         {
             // Tell the user they failed
-            echo "<div class=\"alert alert-danger\"><strong>Klaida!</strong> Prisijungti nepavyko.</div>";
+            Messages::set_message('Klaida! Prisijungti nepavyko.', 'errors');
 			
 			//log it
             $query = "INSERT INTO log(user, event, param) VALUES (:username,'Knocks','".$ip."')";
@@ -124,20 +121,23 @@
     }
     
 ?>
+<?php include "templates/include/header.php" ?>
+<?php include "templates/include/top-menu.php" ?>
 <link href="css/signin.css" rel="stylesheet">
-<form class="form-signin" role="form" action="" method="post">
-	<h2 class="form-signin-heading">Prisijunkite</h2>
-    <input class="form-control" required="" placeholder="El. paštas" type="text" name="username" value="<?php echo $submitted_username; ?>" autofocus="" />
-    <input class="form-control" required="" placeholder="Slaptažodis" type="password" name="password" value="" />
-    <a href="#" id="reminder">Atsiųsti naują slaptažodį</a>
-    <br /><br />
-    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Prisjungti" />
-</form>
-<!-- <a href="register.php">Register</a> -->
 
+<div class="container">
+    <?php include "templates/include/messages.inc" ?>
+    <?php include "templates/include/errors.inc" ?>
 
-
-		
+    <form class="form-signin" role="form" action="" method="post">
+      <h2 class="form-signin-heading">Prisijunkite</h2>
+      <input class="form-control" required="" placeholder="El. paštas" type="text" name="username" value="<?php echo $submitted_username; ?>" autofocus="" />
+      <input class="form-control" required="" placeholder="Slaptažodis" type="password" name="password" value="" />
+      <a href="#" id="reminder">Atsiųsti naują slaptažodį</a>
+      <br /><br />
+      <input class="btn btn-lg btn-primary btn-block" type="submit" value="Prisijungti" />
+    </form>
+    <!-- <a href="register.php">Register</a> -->
 </div> <!-- /container -->
 
 <?php include "templates/include/footer.php" ?>
