@@ -5,7 +5,7 @@
 		<div class="panel panel-default">
             <div class="panel-heading">
 	            <h3 class="panel-title">
-	            <strong><a href="index.php?action=Article&amp;view=View&amp;articleId=<?php echo $article->id?>"><?php echo htmlspecialchars( $article->title )?></a></strong>
+	            <strong><a href="index.php?action=article&amp;view=View&amp;articleId=<?php echo $article->id?>"><?php echo htmlspecialchars( $article->title )?></a></strong>
 	            </h3>
 			</div>
 			<div class="panel-body">

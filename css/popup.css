@@ -14,7 +14,7 @@
     display:none;
     padding:20px;
     width: auto;
-    min-height: 350px;
+    min-height: 250px;
 }
 
 #addDay{
@@ -24,7 +24,7 @@
     display:none;
     padding:20px;
     min-width: 300px;
-    min-height: 250px;
+    min-height: 200px;
 }
 
 #report{
