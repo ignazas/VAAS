@@ -38,14 +38,14 @@ function bookings() {
     }
 
 	if ( isset( $_GET['error'] ) ) {
-	    if ( $_GET['error'] == "articleNotFound" ) $BookingList['errorMessage'] = "Prane�imas nerastas.";
+	    if ( $_GET['error'] == "articleNotFound" ) $BookingList['errorMessage'] = "Pranešimas nerastas.";
 		if ( $_GET['error'] == "eventNotFound" ) $BookingList['errorMessage'] = "Registracija nerasta.";
 	  }
 
   if ( isset( $_GET['status'] ) ) {
-    if ( $_GET['status'] == "changesSaved" ) $BookingList['statusMessage'] = "Pakeitimai i�saugoti.";
-    if ( $_GET['status'] == "articleDeleted" ) $BookingList['statusMessage'] = "Prane�imas pa�alintas.";
-    if ( $_GET['status'] == "eventDeleted" ) $BookingList['statusMessage'] = "Registracija pa�alinta.";
+    if ( $_GET['status'] == "changesSaved" ) $BookingList['statusMessage'] = "Pakeitimai išsaugoti.";
+    if ( $_GET['status'] == "articleDeleted" ) $BookingList['statusMessage'] = "Pranešimas pašalintas.";
+    if ( $_GET['status'] == "eventDeleted" ) $BookingList['statusMessage'] = "Registracija pašalinta.";
   }
 
 	require( TEMPLATE_PATH . "/admin/bookings.php" );

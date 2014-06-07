@@ -1,3 +1,4 @@
 config.php
 *.orig
 uploads/users/*
+*.project
