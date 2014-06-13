@@ -66,6 +66,7 @@ form label { width: 40%; }
 #registruotis{
     overflow-y: auto;
     overflow-x: hidden;
+    max-height: 100%;
 }
 
 

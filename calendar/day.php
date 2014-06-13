@@ -42,7 +42,12 @@ $result = CalendarEvent::getByDate($day);
         <tr>
 	  <td class="col-lg-2 col-xs-1 hidden-xs hidden-sm"><img src="<?php echo '/' . CATALOG . '/' . (empty($event->user->avatar) ? 'images/users/avatar.jpg' : ('uploads/users/' . $event->user->avatar)) ?>" class="img-thumbnail img-responsive" alt="<?php echo htmlentities($event->user->name) ?>"></td>
 	  <td class="col-xs-1"><?php echo theme('display', 'event_time', NULL, $event) ?></td>
-	  <td class="col-xs-4"><?php echo theme('display', 'event_title', NULL, $event) ?></td>
+	  <td class="col-xs-4">
+	    <?php echo theme('display', 'event_title', NULL, $event) ?>
+	    <?php if ($event->event_title != $event->user->name) echo theme('display', 'name', NULL, $event->user) ?>
+	    <?php echo theme('display', 'telephone1', NULL, $event->user) ?>
+	    <?php echo theme('display', 'email', NULL, $event->user) ?>
+	  </td>
 	  <td><?php echo theme('display', 'event_desc', NULL, $event) ?></td>
         </tr>
 <?php } ?>
