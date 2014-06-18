@@ -30,7 +30,9 @@ if (isset($_POST['submit']))
         ':description' => isset($_POST['description']) ? $_POST['description'] : '',
         ':user_id' => isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL));
 	$_POST['month'] = $_POST['month'] + 1;
-	$pranesimas = "Jūs užsiregistravote skrydžiams " . $event_date . " dieną, " . $event_time . " valandą.<br />Jūsų pastaba: " . $_POST['description'];
+	$pranesimas =
+	    "Jūs užsiregistravote skrydžiams " . $event_date . " dieną, " . $event_time . " valandą." .
+	    (!empty($_POST['description']) ? ("<br />Jūsų pastaba: " . $_POST['description']) : NULL);
 	$meilas = $_SESSION['user']['email'];
 	$user = $_SESSION['user']['username'];
 	send_mail($meilas,"Jūsų registracija skrydžiams",$pranesimas);
