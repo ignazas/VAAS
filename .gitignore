@@ -1,5 +1,9 @@
 config.php
 *.orig
 uploads/users/*
+<<<<<<< HEAD
+*.project
+=======
 *~
 #*#
+>>>>>>> 8f56575a01fb6b49c68574363dc3f08413a7c54f
