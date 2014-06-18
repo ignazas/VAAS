@@ -26,12 +26,18 @@ class DashboardControler {
 
   private function CalendarBlock(&$elements) {
       require_once dirname(__FILE__) . '/../models/calendar_event.inc';
-      $model = new CalendarEvent();;
-      $elements['calendar']['events'] = $model->getByDate(time());
-
       require_once dirname(__FILE__) . '/../models/calendar_day.inc';
-      $model = new CalendarDay();;
-      $elements['calendar']['days'] = $model->getByDate(time());
+
+      $model_event = new CalendarEvent();
+      $model_day = new CalendarDay();
+
+      $today = time();
+      $elements['calendar-today']['events'] = $model_event->getByDate($today);
+      $elements['calendar-today']['days'] = $model_day->getByDate($today);
+
+      $tomorrow = $today + 86400; /*1 Day = 24*60*60 = 86400*/
+      $elements['calendar-tomorrow']['events'] = $model_event->getByDate($tomorrow);
+      $elements['calendar-tomorrow']['days'] = $model_day->getByDate($tomorrow);
   }
 
   private function ArticleBlock(&$elements) {
