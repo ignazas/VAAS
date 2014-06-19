@@ -4,7 +4,7 @@
 
 <div class="col-md-8">
 
-<div class="col-md-6">
+<div class="col-md-6 flight-plan">
   <h2>Šiandien skrenda</h2>
   <?php $today = time(); ?>
   <ul class="list-group">
@@ -37,7 +37,7 @@
   </div>
 </div>
 
-<div class="col-md-6">
+<div class="col-md-6 flight-plan">
   <h2>Rytoj skris</h2>
   <ul class="list-group">
 	<?php if (!empty($elements['calendar-tomorrow']['events']['results'])) { ?>
