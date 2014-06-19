@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . '/../helpers/messages.inc';
+require_once dirname(__FILE__) . '/base.inc';
 
-class DashboardControler {
+class DashboardControler extends BaseControler {
   private $view;
 
   public function DashboardControler() {

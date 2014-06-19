@@ -1,9 +1,9 @@
 <?php
 
+require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/aircraft.inc';
-require_once dirname(__FILE__) . '/../helpers/messages.inc';
 
-class AircraftControler {
+class AircraftControler extends BaseControler {
   private $model;
   private $view;
 
@@ -25,6 +25,9 @@ class AircraftControler {
   }
 
   public function NewItem() {
+    if (!$this->HasPermission())
+      $this->Transfer();
+
     $this->view = dirname(__FILE__) . '/../views/aircraft/edit.php';
 
     $results = array(
@@ -44,7 +47,8 @@ class AircraftControler {
           log_event("Admin", "AircraftCreated", $aircraft->callsign);
           Messages::set_message("Pakeitimai išsaugoti.");
 
-          return $this->ItemList();
+	  $this->Transfer(NULL, 'ItemList');
+          //return $this->ItemList();
         }
         else {
           Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
@@ -54,7 +58,8 @@ class AircraftControler {
     }
     elseif (isset($_POST['cancel'])) {
       // User has cancelled their edits: return to the aircraft list
-      return $this->ItemList();
+      $this->Transfer(NULL, 'ItemList');
+      //return $this->ItemList();
     }
     else {
       // User has not posted the aircraft edit form yet: display the form
@@ -65,6 +70,9 @@ class AircraftControler {
   }
 
   public function Delete() {
+    if (!$this->HasPermission())
+      $this->Transfer();
+
     if (empty($_GET['callsign']) || !($aircraft = Aircraft::getByCallsign($_GET['callsign']))) {
       Messages::set_message("Orlaivis nerastas.", 'errors');
     }
@@ -74,10 +82,14 @@ class AircraftControler {
 
       Messages::set_message("Orlaivis pašalintas.");
     }
-    return $this->ItemList();
+	  $this->Transfer(NULL, 'ItemList');
+    //return $this->ItemList();
   }
 
   public function Edit() {
+    if (!$this->HasPermission())
+      $this->Transfer();
+
     $this->view = dirname(__FILE__) . '/../views/aircraft/edit.php';
 
     $results = array(
@@ -101,7 +113,8 @@ class AircraftControler {
             log_event("Admin", "AircraftEdited", $_POST['callsign']);
             Messages::set_message("Pakeitimai išsaugoti.");
 
-            return $this->ItemList();
+            $this->Transfer(NULL, 'ItemList');
+            //return $this->ItemList();
           }
           else {
             Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
@@ -112,7 +125,8 @@ class AircraftControler {
     }
     elseif (isset($_POST['cancel'])) {
       // User has cancelled their edits: return to the aircraft list
-      return $this->ItemList();
+      $this->Transfer(NULL, 'ItemList');
+      //return $this->ItemList();
     }
     else if (!empty($_GET['callsign'])) {
       // User has not posted the aircraft edit form yet: display the form

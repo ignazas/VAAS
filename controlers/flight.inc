@@ -1,9 +1,9 @@
 <?php
 
+require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/flight.inc';
-require_once dirname(__FILE__) . '/../helpers/messages.inc';
 
-class FlightControler {
+class FlightControler extends BaseControler {
   private $model;
   private $view;
 
@@ -44,7 +44,8 @@ class FlightControler {
           log_event("Admin", "FlightCreated", $flight->callsign);
           Messages::set_message("Pakeitimai išsaugoti.");
 
-          return $this->ItemList();
+          $this->Transfer(NULL, 'ItemList');
+          //return $this->ItemList();
         }
         else {
           Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
@@ -54,7 +55,8 @@ class FlightControler {
     }
     elseif (isset($_POST['cancel'])) {
       // User has cancelled their edits: return to the flight list
-      return $this->ItemList();
+      $this->Transfer(NULL, 'ItemList');
+      //return $this->ItemList();
     }
     else {
       // User has not posted the flight edit form yet: display the form
@@ -74,7 +76,8 @@ class FlightControler {
 
       Messages::set_message("Orlaivis pašalintas.");
     }
-    return $this->ItemList();
+	  $this->Transfer(NULL, 'ItemList');
+    //return $this->ItemList();
   }
 
   public function Edit() {
@@ -101,7 +104,8 @@ class FlightControler {
             log_event("Admin", "FlightEdited", $_POST['id']);
             Messages::set_message("Pakeitimai išsaugoti.");
 
-            return $this->ItemList();
+            $this->Transfer(NULL, 'ItemList');
+            //return $this->ItemList();
           }
           else {
             Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
@@ -112,7 +116,8 @@ class FlightControler {
     }
     elseif (isset($_POST['cancel'])) {
       // User has cancelled their edits: return to the flight list
-      return $this->ItemList();
+      $this->Transfer(NULL, 'ItemList');
+      //return $this->ItemList();
     }
     else if (!empty($_GET['callsign'])) {
       // User has not posted the flight edit form yet: display the form

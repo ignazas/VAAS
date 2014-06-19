@@ -1,15 +1,15 @@
 <?php
 
+require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/user.inc';
-require_once dirname(__FILE__) . '/../helpers/messages.inc';
 
-class UserControler {
+class UserControler extends BaseControler {
     private $user_model;
     private $view;
 
     public function UserControler() {
-        $this->view = dirname(__FILE__) . '/../templates/user.php';
-	$this->user_model = new User();
+      $this->view = dirname(__FILE__) . '/../templates/user.php';
+      $this->user_model = new User();
     }
 
     private function Validate($user) {
@@ -115,7 +115,8 @@ class UserControler {
                         $user->{$key} = $value;
                     }
 
-		    return $this->Index();
+                    $this->Transfer();
+                    //return $this->Index();
                 }
             }
 
@@ -124,16 +125,16 @@ class UserControler {
     }
 
     public function Index() {
-	return $this->View();
+      return $this->View();
     }
 
     public function View() {
         $this->view = dirname(__FILE__) . '/../views/user/view.php';
 
         if ($user_id = !empty($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL) {
-            $user = $this->user_model->Get($user_id);
+          $user = $this->user_model->Get($user_id);
 
-            include dirname(__FILE__) . '/../views/_layout.php';
+          include dirname(__FILE__) . '/../views/_layout.php';
         }
     }
 }
