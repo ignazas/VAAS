@@ -18,7 +18,9 @@
                 </fieldset>
 		</div>
             </div>
+<?php if ((!empty($_SESSION['user']['id']) && !empty($user->id) && $_SESSION['user']['id'] == $user->id) || $this->HasPermission()) { ?>
             <div class="buttons">
-                <a href="index.php?action=user&amp;view=Edit" class="btn btn-sm btn-primary">Redaguoti</a>
+                <a href="index.php?action=user&amp;view=Edit&amp;id=<?php echo $user->id ?>" class="btn btn-sm btn-primary">Redaguoti</a>
             </div>
+<?php } ?>
     </div>

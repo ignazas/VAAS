@@ -38,26 +38,30 @@ class User {
 
     public static function Get($id) {
         if (!empty($id)) {
-            return new User(DB::fetch("
+          $data = DB::fetch("
                 SELECT u.id, u.name, u.username, u.usertype, u.email, u.password, u.registerDate, u.lastvisitDate,
                     ud.telephone1, ud.website, ud.avatar
                 FROM jos_users u
                 LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
                 WHERE
-                    u.id = :id", array(':id' => $id)));
+                    u.id = :id", array(':id' => $id));
+          if (!empty($data))
+            return new User($data);
         }
         return NULL;
     }
 
     public static function get_by_username($username) {
         if (!empty($username)) {
-            return new User(DB::fetch("
+            $data = DB::fetch("
                 SELECT u.id, u.name, u.username, u.usertype, u.email, u.password, u.registerDate, u.lastvisitDate,
                     ud.telephone1, ud.website, ud.avatar
                 FROM jos_users u
                 LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
                 WHERE
-                    u.username = :username OR u.email = :username", array(':username' => $username)));
+                    u.username = :username OR u.email = :username", array(':username' => $username));
+            if (!empty($data))
+              return new User($data);
         }
         return NULL;
     }
@@ -70,18 +74,18 @@ class User {
                 if (in_array($key, array('name', 'username', 'email', 'password', 'usertype', 'block', 'sendEmail',
                                          'gid', 'registerDate', 'lastvisitDate', 'activation', 'params')))
                     $query_user .= (!empty($query_user) ? ',' : NULL) . "`$key`='" . $value . "'";
-                else                
-                    $query_context .= (!empty($query_context) ? ',' : NULL) . "`$key`='" . $value . "'";                
+                else
+                    $query_context .= (!empty($query_context) ? ',' : NULL) . "`$key`='" . $value . "'";
             }
 
             if ($query_user)
                 DB::query("UPDATE `jos_users` SET $query_user WHERE `id`=:id", array(':id' => $id));
-            
+
             if ($query_context)
                 DB::query("UPDATE `jos_contxtd_details` SET $query_context WHERE `user_id`=:id", array(':id' => $id));
 
             return TRUE;
         }
-        return FALSE;         
+        return FALSE;
     }
 }
