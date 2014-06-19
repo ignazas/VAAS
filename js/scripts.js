@@ -18,7 +18,6 @@ jQuery( document ).ready(function( $ ) {
 	}
     });
 
-
     $('#dienos,.flight-plan')
 	.on('click', 'a.add', function(event) {
             // Prevents the default action to be triggered. 
@@ -36,7 +35,9 @@ jQuery( document ).ready(function( $ ) {
 		loadUrl: 'calendar/event_add.php'+data, //Uses jQuery.load()
             });		
 	
-	})
+	});
+
+    $('#dienos,.flight-plan')
 	.on('click', 'a.registracija, a.talka, a.šventė, a.svečiai, a.kita', function(event) {
             // Prevents the default action to be triggered. 
             event.stopPropagation();
@@ -52,7 +53,9 @@ jQuery( document ).ready(function( $ ) {
 		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
 		loadUrl: 'calendar/event.php'+data, //Uses jQuery.load()
             });		
-	})
+	});
+
+    $('#dienos,.flight-plan')
 	.on('click', 'a.add_day', function(event) {
             // Prevents the default action to be triggered. 
             event.stopPropagation();
@@ -68,7 +71,9 @@ jQuery( document ).ready(function( $ ) {
 		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
 		loadUrl: 'calendar/day_add.php'+data, //Uses jQuery.load()
             });
-	})
+	});
+
+    $('#dienos,.flight-plan')
 	.on('click', 'a.show_day', function(event) {
             // Prevents the default action to be triggered. 
             event.stopPropagation();
