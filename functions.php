@@ -34,28 +34,50 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         case 'url':
         case 'email':
         case 'password':
-            $output = '<div';
-            if (Messages::has_error('name'))
-                $output .= ' class="err"';
-            $output .= '>';
-	    if (!empty($label))
-		$output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
-	    $output .= '<input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . $value . '"/></div>';
-            break;
-        case 'display':
-	    if (empty($value))
-		break;
+          $output = '<div';
+          if (Messages::has_error('name'))
+            $output .= ' class="err"';
+          $output .= '>';
+          if (!empty($label))
+            $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+          $output .= '<input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . $value . '"/></div>';
+          break;
+      case 'display':
+      case 'display_url':
+      case 'display_email':
+      case 'display_phone':
+      case 'display_password':
+        if (empty($value))
+          break;
 
-            $output = '<div';
-            if (Messages::has_error('name'))
-                $output .= ' class="err"';
-            $output .= '>';
-	    if (!empty($label))
-		$output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
-	    $output .= '<span>' . $value . '</span></div>';
+        $output = '<div';
+        if (Messages::has_error('name'))
+          $output .= ' class="err"';
+        $output .= '>';
+        if (!empty($label))
+          $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+        switch ($type) {
+          case 'display_url':
+            $value_short = preg_replace('/^\s*(.*:\/\/|)(www\.|)/', '', $value);
+            $output .= '<a href="' . $value . '" target="_blank">' . $value_short . '</a>';
             break;
-        default:
+          case 'display_email':
+            $output .= '<a href="mailto:' . $value . '">' . $value . '</a>';
             break;
+          case 'display_phone':
+            $output .= '<a href="tel:' . $value . '">' . $value . '</a>';
+            break;
+          case 'display_password':
+            $output .= '<span>' . preg_replace('/[^*]/', '*', $value) . '</span>';
+            break;
+          default:
+            $output .= '<span>' . $value . '</span>';
+            break;
+        }
+        $output .= '</div>';
+        break;
+      default:
+        break;
     }
 
     return $output;

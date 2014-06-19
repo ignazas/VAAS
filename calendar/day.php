@@ -31,7 +31,7 @@ $result = CalendarEvent::getByDate($day);
 
 <div style="display: block">
 <table style="width: 600px; "  class="table table-striped">
-        <tr> 
+        <tr>
           <th class="col-lg-2 col-xs-1 hidden-xs hidden-sm"></th>
           <th class="col-xs-2">Laikas</th>
           <th class="col-xs-4">Vardas</th>
@@ -45,8 +45,8 @@ $result = CalendarEvent::getByDate($day);
 	  <td class="col-xs-4">
 	    <?php echo theme('display', 'event_title', NULL, $event) ?>
 	    <?php if ($event->event_title != $event->user->name) echo theme('display', 'name', NULL, $event->user) ?>
-	    <?php echo theme('display', 'telephone1', NULL, $event->user) ?>
-	    <?php echo theme('display', 'email', NULL, $event->user) ?>
+	    <?php echo theme('display_phone', 'telephone1', NULL, $event->user) ?>
+	    <?php echo theme('display_email', 'email', NULL, $event->user) ?>
 	  </td>
 	  <td><?php echo theme('display', 'event_desc', NULL, $event) ?></td>
         </tr>

@@ -12,9 +12,9 @@
                 <fieldset>
                     <legend>Pagrindinė informacija:</legend>
                     <?php echo theme('display', 'name', 'Vardas', $user) ?>
-                    <?php echo theme('display', 'email', 'El. paštas', $user) ?>
-                    <?php echo theme('display', 'telephone1', 'Telefonas', $user) ?>
-                    <?php echo theme('display', 'website', 'Interneto svetainė', $user) ?>
+                    <?php echo theme('display_email', 'email', 'El. paštas', $user) ?>
+                    <?php echo theme('display_phone', 'telephone1', 'Telefonas', $user) ?>
+                    <?php echo theme('display_url', 'website', 'Interneto svetainė', $user) ?>
                 </fieldset>
 		</div>
             </div>

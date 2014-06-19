@@ -18,9 +18,9 @@ $time_array = split(":", $info->event_time);
     <td>
       <div class="col-md-8 col-sm-12">
           <?php echo theme('display', 'name', 'Vardas', $info->user) ?>
-          <?php echo theme('display', 'email', 'El. paštas', $info->user) ?>
-          <?php echo theme('display', 'telephone1', 'Telefonas', $info->user) ?>
-          <?php echo theme('display', 'website', 'Interneto svetainė', $info->user) ?>
+          <?php echo theme('display_email', 'email', 'El. paštas', $info->user) ?>
+          <?php echo theme('display_phone', 'telephone1', 'Telefonas', $info->user) ?>
+          <?php echo theme('display_url', 'website', 'Interneto svetainė', $info->user) ?>
       </div>
       <div class="col-md-4 col-sm-12<?php if (empty($info->user->avatar)) echo ' hidden-sm hidden-xs hidden-md'?>">
 	<img src="<?php echo '/' . CATALOG . '/' . (empty($info->user->avatar) ? 'images/users/avatar.jpg' : ('uploads/users/' . $info->user->avatar)) ?>" class="img-thumbnail img-responsive" alt="<?php echo htmlentities($info->user->name) ?>">
