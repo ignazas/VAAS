@@ -31,7 +31,7 @@
 </div>
 
 <div class="col-md-6 flight-plan">
-  <h2>Rytoj skrenda</h2>
+  <h2>Rytoj skris</h2>
   <ul class="list-group">
 	<?php if (!empty($elements['calendar-tomorrow']['events']['results'])) { ?>
     <?php foreach ($elements['calendar-tomorrow']['events']['results'] as $event) { $title = $event->event_time . ' ' . ($event->event_type != 'registracija' ? $event->event_desc : $event->event_title); ?>
