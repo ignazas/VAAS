@@ -1,11 +1,9 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
-require_once dirname(__FILE__) . '/const.inc';
 
 session_start();
 
-if (isset($_POST['submit']))
-{
+if (isset($_POST['submit'])) {
 	$_POST['description'] = substr($_POST['description'],0,500);
 	$_POST['title'] = substr($_POST['title'],0,30);
 
@@ -18,14 +16,14 @@ if (isset($_POST['submit']))
 	if($diena<10) {$diena = str_pad($diena, 2, "0", STR_PAD_LEFT);}
 
 	$event_date = $_POST['year']."-".$menesis."-".$diena;
-	$event_time = $_POST['hour'] . ":" . $_POST['minute'];
+	$event_time = $_POST['time'];
 
-	$BookingId = DB::insert('INSERT INTO ' . TBL_EVENTS . ' ( `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES (:event_date, :day, :month, :year, :time, :title, :description, :user_id)', array(
+	$BookingId = DB::insert('INSERT INTO `calendar_events` ( `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES (:event_date, :day, :month, :year, :time, :title, :description, :user_id)', array(
     	':event_date' => $event_date,
 	    ':day' => isset($_POST['day']) ? $_POST['day'] : date('j'),
         ':month' => isset($_POST['month']) ? $_POST['month'] : date('n'),
         ':year' => isset($_POST['year']) ? $_POST['year'] : date('y'),
-        ':time' => (isset($_POST['hour']) ? $_POST['hour'] : 10).':'.(isset($_POST['minute']) ? $_POST['minute'] : 0),
+        ':time' => isset($_POST['time']) ? $_POST['time'] : '10:00',
         ':title' => isset($_POST['title']) ? $_POST['title'] : '',
         ':description' => isset($_POST['description']) ? $_POST['description'] : '',
         ':user_id' => isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL));
@@ -44,9 +42,7 @@ if (isset($_POST['submit']))
 	$destination = !empty($_GET['destination']) ? $_GET['destination'] : ("../index.php?action=calendar&year=" . $_POST['year'] . "&month=" . $_POST['month']);
 	header("Location: $destination") ;
 }
-else
-{
-
+else {
 	$menesis = $_GET['month'];
 	if($menesis<10) {$menesis = str_pad($menesis, 2, "0", STR_PAD_LEFT);}
 
@@ -62,60 +58,54 @@ else
 
 <h2 class="eventwhen col-xs-12">Įvykio registravimas</h2>
 
-<form name="form1" method="post" action="calendar/event_add.php<?php echo !empty($_GET['destination']) ? "?destination=$_GET[destination]" : NULL ?>" class="calendar col-xs-12">
-  <table border="0" cellspacing="0" cellpadding="0">
+<form name="form1" method="post" action="calendar/event_add.php<?php echo !empty($_GET['destination']) ? "?destination=$_GET[destination]" : NULL ?>" class="calendar col-xs-12 form-horizontal" role="form">
+  <div class="form-group">
+    <label class="col-sm-3 control-label">Atvykimo diena</label>
+    <div class="col-sm-9">
+      <p class="form-control-static"><?php echo $event_date ?></p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="time" class="col-sm-3 control-label">Atvykimo laikas</label>
+    <div class="col-sm-9">
+      <input type="time" class="form-control" name="time" id="time" value="<?php echo !empty($_POST['time']) ? $_POST['time'] : ($weekday == 0 || $weekday == 6 ? '10:00' : '16:00') ?>">
+      <!-- <p class="help-block">24 val formatas</p> -->
+    </div>
+  </div>
+<?php if ($_SESSION['user']['usertype']=="Administrator" || $_SESSION['user']['usertype']=="Super Administrator") { ?>
+  <div class="form-group">
+    <label for="title" class="col-sm-3 control-label">Įvykis</label>
+    <div class="col-sm-9">
+      <select class="form-control" name="title" id="title">
+	<option selected="selected" value="<?php echo $_SESSION['user']['name']; ?>">Registracija skrydžiams</option>
+	<option value="talka">Visuotinė talka</option>
+	<option value="šventė">Klubo šventė</option>
+	<option value="svečiai">Svečiai</option>
+	<option value="kita">Kita</option>
+      </select>
+    </div>
+  </div>
+<?php } else { ?>
+  <input name="title" type="hidden" value="<?php echo $_SESSION['user']['name'] ?>">
+<?php } ?>
+  <div class="form-group">
+    <label for="description" class="col-sm-3 control-label">Registracijos pastabos</label>
+    <div class="col-sm-9">
+      <textarea class="form-control" rows="5" name="description" id="description">
+	<?php echo !empty($_POST['description']) ? $_POST['description'] : '' ?>
+      </textarea>
+      <p class="help-block">Nurodykite, jei reikalinga nakvynė, skrydžiai į aikštelę ar pan.</p>
+      <p class="help-block">Nurodykite kiek ir kokius skrydžius planuojate, esate instruktorius ar autoišvilktuvo operatorius.</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <button type="submit" name="submit" id="submit" class="btn btn-primary">Registruotis</button>
+    </div>
+  </div>
 
-    <tr>
-      <td width="200" height="40" valign="top"><span class="addevent">Atvykimo diena:</span><br>
-        <td height="40" valign="top">
-  			<?php echo $event_date; ?>
-        </td>
-    </tr>
-    <tr>
-      <td width="200" height="40" valign="top"><span class="addevent">Atvykimo laikas:</span><br>
-        <span class="addeventextrainfo">(24val formatas)</span></td>
-      <td height="40" valign="top">
-      	<input class="form-control" style="width: 50px; display: inline" name="hour" type="text" id="hour" value="<?php echo $weekday == 0 || $weekday == 6 ? 10 : 16 ?>" size="2" maxlength="2"> :
-      	<input class="form-control" style="width: 50px;display: inline" name="minute" type="text" id="minute" value="00" size="2" maxlength="2"><br />
-      </td>
-    </tr>
-
-	<?php
-	IF ($_SESSION['user']['usertype']=="Administrator"||$_SESSION['user']['usertype']=="Super Administrator") {
-	?>
-	<tr>
-      <td height="40" valign="top"><span class="addevent">Įvykis:</span>
-      <td height="40" valign="top">
-      	<select class="form-control" name="title"id="title" value="00">
-			<option value="<?php echo $_SESSION['user']['name']; ?>">Registracija skrydžiams</option>
-			<option value="talka">Visuotinė talka</option>
-			<option value="šventė">Klubo šventė</option>
-			<option value="svečiai">Svečiai</option>
-			<option value="kita">Kita</option>
-		<select>
-      </td>
-    </tr>
-	<?php } else { ?>
-	<input name="title" type="hidden" value="<?php echo $_SESSION['user']['name']; ?>">
-	<?php } ?>
-
-    <tr>
-      <td width="200" height="40" valign="top"><span class="addevent">Registracijos pastabos</span><br>
-      	<span class="addeventextrainfo">Nurodykite, jei reikalinga nakvynė, skrydžiai į aikštelę ar pan.</span>
-      	<span class="addeventextrainfo">Nurodykite kiek ir kokius skrydžius planuojate, esate instruktorius ar autoišvilktuvo operatorius.</span>
-      	</td>
-      <td height="40" valign="top"> <textarea class="form-control" name="description" cols="18" rows="5" id="description"></textarea>
-      </td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><br /><input class="btn btn-primary" name="submit" type="submit" id="submit" value="Registruotis"></td>
-    </tr>
-  </table>
   <input name="year" type="hidden" value="<?php echo $_GET['year']; ?>">
   <input name="month" type="hidden" value="<?php echo $_GET['month']; ?>">
   <input name="day" type="hidden" value="<?php echo $_GET['day']; ?>">
 </form>
-<?php
-}
- ?>
+<?php } ?>

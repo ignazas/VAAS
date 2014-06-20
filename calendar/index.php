@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
-require_once dirname(__FILE__) . '/const.inc';
 
 function getmicrotime(){
     list($usec, $sec) = explode(" ",microtime());
@@ -27,17 +26,17 @@ function get_day_letter($day) {
 
 }
 
-IF(!isset($_GET['year'])){
+if (!isset($_GET['year'])){
     $_GET['year'] = date("Y");
 }
-IF(!isset($_GET['month'])){
+if (!isset($_GET['month'])){
     $_GET['month'] = date("n")+1;
 }
 
 $month = addslashes($_GET['month'] - 1);
 $year = addslashes($_GET['year']);
 
-$query_result = DB::query("SELECT e.event_id,e.event_title,e.event_day,e.event_time,e.event_desc FROM " . TBL_EVENTS . " e INNER JOIN `jos_users` u ON u.id=e.user_id WHERE e.event_month='$month' AND e.event_year='$year' ORDER BY e.event_time");
+$query_result = DB::query("SELECT e.event_id,e.event_title,e.event_day,e.event_time,e.event_desc FROM `calendar_events` e INNER JOIN `jos_users` u ON u.id=e.user_id WHERE e.event_month='$month' AND e.event_year='$year' ORDER BY e.event_time");
 
 foreach ($query_result as $info) {
     $day = $info['event_day'];
@@ -85,6 +84,11 @@ IF($_GET['month'] == 2){
     $prev_year = $_GET['year'];
 }
 
+//susikonstruojam menesi
+$link_month = empty($_GET['month']) ? 0 : ($_GET['month'] - 1);
+$menesis = str_pad($link_month, 2, '0', STR_PAD_LEFT);
+
+$spec_events = array("šventė", "talka", "kita", "svečiai");
 
 
 ?>
@@ -102,9 +106,7 @@ IF($_GET['month'] == 2){
 </div>
 
 <div id="dienos">
-<table width="100%" bgcolor="#000000">
-  <tr>
-    <td><table width="100%" class="calendar">
+<table width="100%" class="calendar">
         <tr class="topdays">
           <td><div align="center">Pirmadienis</div></td>
           <td><div align="center">Antradienis</div></td>
@@ -115,58 +117,48 @@ IF($_GET['month'] == 2){
           <td><div align="center">Sekmadienis</div></td>
         </tr>
 		<tr valign="top" bgcolor="#FFFFFF">
-		<?php
+<?php
 		for ($i = 1; $i <= $first_day_of_month-1; $i++) {
-			$days_so_far = $days_so_far + 1;
-			$count_boxes = $count_boxes + 1;
+			$days_so_far++;
+			$count_boxes++;
 			echo "<td width=\"100\" height=\"100\" class=\"beforedayboxes\"></td>\n";
 		}
 		for ($i = 1; $i <= $days_in_month; $i++) {
-   			$days_so_far = $days_so_far + 1;
-    			$count_boxes = $count_boxes + 1;
-			IF($_GET['month'] == $todays_month+1){
-				IF($i == $todays_date){
-					$class = "highlighteddayboxes";
-				} ELSEIF($count_boxes==6 || $count_boxes==7) {
-					$class = "dayboxes-weekend";
-				} ELSE {
-					$class = "dayboxes";
-				}
-			} ELSE {
-				IF($i == 1){
-					$class = "highlighteddayboxes";
-				} ELSEIF($count_boxes==6 || $count_boxes==7) {
-					$class = "dayboxes-weekend";
-				} ELSE {
-					$class = "dayboxes";
-				}
-			}
-			//susikonstruojam menesi
-			$menesis = ($_GET['month']-1);
-			if($menesis<10) {$menesis = str_pad($menesis, 2, "0", STR_PAD_LEFT);}
+   			$days_so_far++;
+    			$count_boxes++;
+			if (($_GET['month'] == $todays_month+1 && $i == $todays_date) ||
+			    ($_GET['month'] != $todays_month+1 && $i == 1))
+			    $class = "highlighteddayboxes";
+			elseif ($count_boxes==6 || $count_boxes==7)
+			    $class = "dayboxes-weekend";
+			else
+			    $class = "dayboxes";
 
 			//susikonstruojam diena
-			$diena = $i;
-			if($i<10) {$diena = str_pad($i, 2, "0", STR_PAD_LEFT);}
+			$diena = str_pad($i, 2, "0", STR_PAD_LEFT);
 
 			//tikrinam ar diena aktyvi
 			$langelio_data = $_GET['year'] ."-". $menesis ."-". $diena;
-
-			echo "<td width=\"100\" height=\"100\" class=\"$class\"><a name=\"" . $langelio_data . "\"></a>\n";
-			$link_month = $_GET['month'] - 1;
-
 			$day_letter = get_day_letter($langelio_data);
-			echo "<span class=\"toprightnumber\">$i<font size=\"-2\">($day_letter)</font></span><div align=\"right\">
-			<a class=\"add\" href=\"?day=$i&amp;month=$link_month&amp;year=$_GET[year]\"><i class=\"glyphicon glyphicon-plus\"></i></a>";
-			echo "<a class=\"show_day\" href=\"?day=$langelio_data\"><i class=\"glyphicon glyphicon-th-list\"></i></a>";
+?>
+			<td width="100" height="100" class="<?php echo $class ?>">
+			  <a name="<?php echo $langelio_data ?>"></a>
 
-			if($admin){
-				echo "<a class=\"add_day\" href=\"?day=$langelio_data\"><i class=\"glyphicon glyphicon-tag\"></i></a>";
-			}
-			echo "</div>";
-			echo "<div align=\"left\"><div class=\"eventinbox\">\n";
-			$spec_events = array("šventė", "talka", "kita", "svečiai");
-			IF(isset($events[$i])){
+			  <div class="menu">
+			    <span class="toprightnumber"><?php echo $i ?><font size="-2"><?php echo $day_letter ?></font></span>
+			    <div class="actions">
+			      <a class="add" href="?day=<?php echo $i ?>&amp;month=<?php echo $link_month ?>&amp;year=<?php echo $_GET['year'] ?>"><i class="glyphicon glyphicon-plus"></i></a>
+			      <a class="show_day" href="?day=<?php echo $langelio_data ?>"><i class="glyphicon glyphicon-th-list"></i></a>
+<?php if ($admin) { ?>
+			      <a class="add_day" href="?day=<?php echo $langelio_data ?>"><i class="glyphicon glyphicon-tag"></i></a>
+<?php } ?>
+			    </div>
+			  </div>
+
+			  <div class="data" align="left">
+			    <div class="eventinbox">
+<?php
+			if (isset($events[$i])){
 				while (list($key, $value) = each ($events[$i])) {
 				    $vardas = empty($event_info[$value][0]) ? NULL : $event_info[$value][0];
 				    $title_full = $event_info[$value]['1'] . " " . $vardas;
@@ -176,7 +168,7 @@ IF($_GET['month'] == 2){
 					    $vardas[0] = mb_substr($vardas[0], 0, 1) . '.';
 					$vardas = implode(' ', $vardas);
 				    }
-					IF (in_array($event_info[$value]['0'], $spec_events)) {
+					if (in_array($event_info[$value]['0'], $spec_events)) {
 						$title = $event_info[$value]['1'] . " " . $event_info[$value]['0'] . ": " . $event_info[$value]['2'];
 						$event = $event_info[$value]['0'];
 						echo "&nbsp;<a class=\"$event\" href=\"?id=$value\" title=\"" . $title_full . "\">" . $title  . "</a><br />";
@@ -189,10 +181,12 @@ IF($_GET['month'] == 2){
 			if (isset($dienos[$langelio_data]['reason'])){
 				echo "<div class=\"" . $dienos[$langelio_data]['status'] . "\" align=\"center\">" . $dienos[$langelio_data]['reason'] . "</div>";
 			}
-			echo "</div></div>\n";
-			echo "</td>\n";
-
-			IF(($count_boxes == 7) AND ($days_so_far != (($first_day_of_month-1) + $days_in_month))){
+?>
+			    </div>
+			  </div>
+			</td>
+<?php
+			if (($count_boxes == 7) && ($days_so_far != (($first_day_of_month-1) + $days_in_month))) {
 				$count_boxes = 0;
 				echo "</tr><tr valign=\"top\">\n";
 			}
@@ -203,9 +197,7 @@ IF($_GET['month'] == 2){
 		}
 		$time_end = getmicrotime();
 		$time = round($time_end - $time_start, 3);
-		?>
+?>
         </tr>
-      </table></td>
-  </tr>
-</table>
+      </table>
 </div>

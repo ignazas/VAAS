@@ -19,12 +19,12 @@ class CalendarEvent
   */
   public function __construct( $data=array() ) {
     if (isset($data['event_id'])) $this->event_id = $data['event_id'];
-    if (isset($data['event_title'])) $this->event_title = $data['event_title'];
+    if (isset($data['event_title'])) $this->event_title = trim($data['event_title']);
     if (isset($data['event_year'])) $this->event_year = $data['event_year'];
     if (isset($data['event_month'])) $this->event_month = $data['event_month'];
     if (isset($data['event_day'])) $this->event_day = $data['event_day'];
     if (isset($data['event_time'])) $this->event_time = $data['event_time'];
-    if (isset($data['event_desc'])) $this->event_desc = $data['event_desc'];
+    if (isset($data['event_desc'])) $this->event_desc = trim($data['event_desc']);
     if (isset($data['event_date'])) $this->event_date = $data['event_date'];
     if (isset($data['user_id'])) $this->user_id = $data['user_id'];
 

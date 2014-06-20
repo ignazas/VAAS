@@ -93,6 +93,22 @@ a.svečiai{
 table.calendar {table-layout: fixed;}
 table.calendar tr td .eventinbox {line-height: 2em; overflow: hidden; text-overflow: ellipsis;}
 
+table.calendar .menu {
+  overflow: hidden;
+}
+
+table.calendar .menu .toprightnumber {
+  float: left;
+}
+
+table.calendar .menu .actions {
+  float: right;
+}
+
+table.calendar .menu .actions a {
+  margin: 0 0 0 1px;
+}
+
 #dienos .nevyksta,
 #dienos .vyksta {
   text-align: center;
@@ -105,4 +121,8 @@ table.calendar tr td .eventinbox {line-height: 2em; overflow: hidden; text-overf
 
 #dienos .vyksta {
   color: green;
+}
+
+#dienos table {
+  width: 100%;
 }

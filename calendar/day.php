@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
-require_once dirname(__FILE__) . '/const.inc';
 
 $day = $_GET['day'];
 
@@ -31,7 +30,7 @@ $result = CalendarEvent::getByDate($day);
 <h2 class="eventwhen col-xs-12"><?php echo $day . ", " . $savaites_diena ?></h2>
 
 <div class="col-xs-12">
-<table style="max-width:100%;width:600px;table-layout:fixed;"  class="table table-striped">
+<table style="width:600px;" class="table table-striped">
         <tr>
           <th class="col-lg-2 col-xs-1 hidden-xs hidden-sm"></th>
           <th class="col-xs-2">Laikas</th>

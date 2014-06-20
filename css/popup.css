@@ -1,67 +1,35 @@
-.b-ajax-wrapper form {
-  padding: 20px;
+.b-ajax-wrapper {
+  overflow-y: hidden;
+  overflow-x: auto;
+  /*padding: 20px;*/
+  background-color: #fff;
+  border-radius:15px;
 }
 
-#registruotis{
-    background-color:#fff;
-    border-radius:15px;
-    color:#000;
-    display:none;
-    width: auto;
-    min-height: 350px;
+.popup {
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-#registracija{
-    background-color:#fff;
-    border-radius:15px;
-    color:#000;
-    display:none;
-    width: auto;
-    min-height: 250px;
+.b-ajax-wrapper table {
+  table-layout: fixed;
+  max-width:100%;
+}
+
+.b-ajax-wrapper .b-close {
+  font-size: 2em;
+  cursor:pointer;
+  position:absolute;
+  right:10px;
+  top:5px;
+  z-index: 1;
 }
 
 #addDay{
-    background-color:#fff;
-    border-radius:15px;
-    color:#000;
-    display:none;
     min-width: 300px;
-    min-height: 200px;
-}
-
-#report{
-    background-color:#fff;
-    border-radius:15px;
-    color:#000;
-    display:none;
-    min-height: 100%;
-	/*min-width: 650px;*/
 }
 
 #addAircraftDialog{
-    background-color:#fff;
-    border-radius:15px;
-    color:#000;
-    display:none;
-    min-height: 100%;
-	min-width: 650px;
-}
-
-.b-close{
-    cursor:pointer;
-    position:absolute;
-    right:10px;
-    top:5px;
-}
-
-table .add, table .show_day, table .add_day {
-  padding: 0 0 0 2px;
-  color:#666666;
-  /*font-size:13px;*/
-}
-table .add:hover, table .show_day:hover, table .add_day:hover {
-}
-table .add:active, table .show_day:active, table .add_day:active {
-	position:relative;
-	top:1px;
+    min-width: 650px;
 }

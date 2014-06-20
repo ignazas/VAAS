@@ -36,7 +36,7 @@ jQuery( document ).ready(function( $ ) {
 	    var data = $(this).attr('href');
 
             // Triggering bPopup when click event is fired
-            $('#registruotis').bPopup({
+            $('#registruotis').addClass('popup').bPopup({
 		modalClose: true,
 		opacity: 0.6,
 		positionStyle: 'fixed', //'fixed' or 'absolute'
@@ -55,7 +55,7 @@ jQuery( document ).ready(function( $ ) {
 	    var data = $(this).attr('href');
 
             // Triggering bPopup when click event is fired
-            $('#registracija').bPopup({
+            $('#registracija').addClass('popup').bPopup({
 		modalClose: true,
 		opacity: 0.6,
 		positionStyle: 'fixed', //'fixed' or 'absolute'
@@ -73,7 +73,7 @@ jQuery( document ).ready(function( $ ) {
 	    var data = $(this).attr('href');
 
             // Triggering bPopup when click event is fired
-            $('#addDay').bPopup({
+            $('#addDay').addClass('popup').bPopup({
 		modalClose: true,
 		opacity: 0.6,
 		positionStyle: 'fixed', //'fixed' or 'absolute'
@@ -91,7 +91,7 @@ jQuery( document ).ready(function( $ ) {
 	    var data = $(this).attr('href');
 
             // Triggering bPopup when click event is fired
-            $('#report').bPopup({
+            $('#report').addClass('popup').bPopup({
 		modalClose: true,
 		opacity: 0.6,
 		positionStyle: 'fixed', //'fixed' or 'absolute'
@@ -109,7 +109,7 @@ jQuery( document ).ready(function( $ ) {
     	    event.preventDefault();
 
             // Triggering bPopup when click event is fired
-            $('#addAircraftDialog').bPopup({
+            $('#addAircraftDialog').addClass('popup').bPopup({
 		modalClose: true,
 		opacity: 0.6,
 		positionStyle: 'fixed', //'fixed' or 'absolute'
