@@ -1,18 +1,21 @@
+.b-ajax-wrapper form {
+  padding: 20px;
+}
+
 #registruotis{
     background-color:#fff;
     border-radius:15px;
     color:#000;
     display:none;
-    padding:20px;
     width: auto;
     min-height: 350px;
 }
+
 #registracija{
     background-color:#fff;
     border-radius:15px;
     color:#000;
     display:none;
-    padding:20px;
     width: auto;
     min-height: 250px;
 }
@@ -22,7 +25,6 @@
     border-radius:15px;
     color:#000;
     display:none;
-    padding:20px;
     min-width: 300px;
     min-height: 200px;
 }
@@ -32,7 +34,6 @@
     border-radius:15px;
     color:#000;
     display:none;
-    padding:20px;
     min-height: 100%;
 	/*min-width: 650px;*/
 }
@@ -42,7 +43,6 @@
     border-radius:15px;
     color:#000;
     display:none;
-    padding:20px;
     min-height: 100%;
 	min-width: 650px;
 }

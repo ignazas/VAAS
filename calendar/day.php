@@ -1,4 +1,3 @@
-<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a>
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
 require_once dirname(__FILE__) . '/const.inc';
@@ -27,10 +26,12 @@ require_once dirname(__FILE__) . '/../models/calendar_event.inc';
 $result = CalendarEvent::getByDate($day);
 ?>
 
-<h2><?php echo $day . ", " . $savaites_diena ?></h2>
+<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a>
 
-<div style="display: block">
-<table style="width: 600px; "  class="table table-striped">
+<h2 class="eventwhen col-xs-12"><?php echo $day . ", " . $savaites_diena ?></h2>
+
+<div class="col-xs-12">
+<table style="max-width:100%;width:600px;table-layout:fixed;"  class="table table-striped">
         <tr>
           <th class="col-lg-2 col-xs-1 hidden-xs hidden-sm"></th>
           <th class="col-xs-2">Laikas</th>
@@ -40,7 +41,7 @@ $result = CalendarEvent::getByDate($day);
 
 <?php foreach ($result['results'] as $event) { ?>
         <tr>
-	  <td class="col-lg-2 col-xs-1 hidden-xs hidden-sm"><img src="<?php echo '/' . CATALOG . '/' . (empty($event->user->avatar) ? 'images/users/avatar.jpg' : ('uploads/users/' . $event->user->avatar)) ?>" class="img-thumbnail img-responsive" alt="<?php echo htmlentities($event->user->name) ?>"></td>
+	  <td class="col-lg-2 col-xs-1 hidden-xs hidden-sm"><?php echo theme('display_avatar', 'avatar', $event->user->name, $event->user) ?></td>
 	  <td class="col-xs-1"><?php echo theme('display', 'event_time', NULL, $event) ?></td>
 	  <td class="col-xs-4">
 	    <?php echo theme('display', 'event_title', NULL, $event) ?>
@@ -54,5 +55,3 @@ $result = CalendarEvent::getByDate($day);
 
 </table>
 </div>
-</body>
-</html>

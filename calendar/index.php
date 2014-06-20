@@ -88,26 +88,7 @@ IF($_GET['month'] == 2){
 
 
 ?>
-<script src="js/jquery-1.11.0.js"></script>
-
 <link href="css/cal.css" rel="stylesheet" type="text/css">
-
-<script language="JavaScript" type="text/JavaScript">
-<!--
-function MM_jumpMenu(targ,selObj,restore){ //v3.0
-  eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
-  if (restore) selObj.selectedIndex=0;
-}
-function MM_openBrWindow(theURL,winName,features) { //v2.0
-  window.open(theURL,winName,features);
-}
-//-->
-
-</script>
-</head>
-
-<body>
-
 
 <div id="registruotis"></div>
 <div id="registracija"></div>
@@ -208,13 +189,13 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			if (isset($dienos[$langelio_data]['reason'])){
 				echo "<div class=\"" . $dienos[$langelio_data]['status'] . "\" align=\"center\">" . $dienos[$langelio_data]['reason'] . "</div>";
 			}
+			echo "</div></div>\n";
 			echo "</td>\n";
 
 			IF(($count_boxes == 7) AND ($days_so_far != (($first_day_of_month-1) + $days_in_month))){
 				$count_boxes = 0;
-				echo "</TR><TR valign=\"top\">\n";
+				echo "</tr><tr valign=\"top\">\n";
 			}
-			echo "</div></div>\n";
 		}
 		$extra_boxes = 7 - $count_boxes;
 		for ($i = 1; $i <= $extra_boxes; $i++) {
@@ -228,4 +209,3 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
   </tr>
 </table>
 </div>
-</body>

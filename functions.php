@@ -35,13 +35,29 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         case 'email':
         case 'password':
           $output = '<div';
-          if (Messages::has_error('name'))
+          if (Messages::has_error($name))
             $output .= ' class="err"';
           $output .= '>';
           if (!empty($label))
             $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
           $output .= '<input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . $value . '"/></div>';
           break;
+      case 'display_avatar':
+        $output = '<div';
+        if (Messages::has_error($name))
+          $output .= ' class="err"';
+        $output .= '>';
+        $title = !empty($label) ? $label : NULL;
+        if (empty($value))
+          $output .= '<img src="/' . CATALOG . '/images/users/avatar.jpg' . '" class="img-thumbnail img-responsive" alt="' . $title . '" title="' . $title . '" />';
+        else {
+          $img = '/' . CATALOG . '/' . 'uploads/users/' . $value;
+          //$output .= '<a href="#" onclick="return false;" rel="popover" data-content="<img src=\'' . $img . '\' alt=\'' . $title . '\' title=\'' . $title . '\' />" data-html="true" data-title="' . $title . '">';
+          $output .= '<img src="' . $img . '" class="img-thumbnail img-responsive" alt="' . $title . '" title="' . $title . '" />';
+          //$output .= '</a>';
+        }
+        $output .= '</div>';
+        break;
       case 'display':
       case 'display_url':
       case 'display_email':
@@ -51,7 +67,7 @@ function theme($type, $name, $label, $entity, $values=NULL) {
           break;
 
         $output = '<div';
-        if (Messages::has_error('name'))
+        if (Messages::has_error($name))
           $output .= ' class="err"';
         $output .= '>';
         if (!empty($label))
@@ -59,13 +75,13 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         switch ($type) {
           case 'display_url':
             $value_short = preg_replace('/^\s*(.*:\/\/|)(www\.|)/', '', $value);
-            $output .= '<a href="' . $value . '" target="_blank">' . $value_short . '</a>';
+            $output .= '<a style="white-space:nowrap;" href="' . $value . '" target="_blank"><i class="glyphicon glyphicon-link"></i> ' . $value_short . '</a>';
             break;
           case 'display_email':
-            $output .= '<a href="mailto:' . $value . '">' . $value . '</a>';
+            $output .= '<a style="white-space:nowrap;" href="mailto:' . $value . '"><i class="glyphicon glyphicon-envelope"></i> ' . $value . '</a>';
             break;
           case 'display_phone':
-            $output .= '<a href="tel:' . $value . '">' . $value . '</a>';
+            $output .= '<a style="white-space:nowrap;" href="tel:' . $value . '"><i class="glyphicon glyphicon-earphone"></i> ' . $value . '</a>';
             break;
           case 'display_password':
             $output .= '<span>' . preg_replace('/[^*]/', '*', $value) . '</span>';

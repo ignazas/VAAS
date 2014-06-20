@@ -28,10 +28,14 @@ class CalendarEvent
     if (isset($data['event_date'])) $this->event_date = $data['event_date'];
     if (isset($data['user_id'])) $this->user_id = $data['user_id'];
 
-    if (isset($this->event_title) && in_array($this->event_title, array("šventė", "talka", "kita", "svečiai")))
-	$this->event_type = $this->event_title;
+    if ($this->isSpecial())
+      $this->event_type = $this->event_title;
     else
-	$this->event_type = 'registracija';
+      $this->event_type = 'registracija';
+  }
+
+  public function isSpecial() {
+    return isset($this->event_title) && in_array($this->event_title, array("šventė", "talka", "kita", "svečiai"));
   }
 
   /**

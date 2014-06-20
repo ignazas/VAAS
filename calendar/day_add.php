@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once dirname(__FILE__) . '/../functions.php';
 
 $o = DB::fetch_object("SELECT status FROM days WHERE day = :day LIMIT 1", array(':day' => $_GET['day']));
@@ -12,9 +12,13 @@ $statuses = array(
 
 session_start();
 ?>
+
 <a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a>
-<form role="form" action="admin.php">
-	
+
+<h2 class="eventwhen col-xs-12">Žyma</h2>
+
+<form class="col-xs-12" role="form" action="admin.php">
+
 	<select name="status" class="form-control">
 <?php foreach ($statuses as $key => $value) { ?>
       <option value="<?php echo $key ?>"<?php if ($current_status == $key) echo ' selected="selected"' ?>><?php echo $value ?></option>

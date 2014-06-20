@@ -1,9 +1,19 @@
+function MM_jumpMenu(targ,selObj,restore){ //v3.0
+  eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
+  if (restore) selObj.selectedIndex=0;
+}
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+
 jQuery( document ).ready(function( $ ) {
+    $("a[rel='popover']").popover({});
+
     $('#reminder').click(function(event){
 	event.preventDefault();
-	
+
 	var username = $('input[name=username]').val();
-	
+
 	if (username) {
             $.ajax({
 		'url': 'index.php?action=ajax&method=login',
@@ -20,11 +30,11 @@ jQuery( document ).ready(function( $ ) {
 
     $('#dienos,.flight-plan')
 	.on('click', 'a.add', function(event) {
-            // Prevents the default action to be triggered. 
+            // Prevents the default action to be triggered.
             event.stopPropagation();
     	    event.preventDefault();
 	    var data = $(this).attr('href');
-        
+
             // Triggering bPopup when click event is fired
             $('#registruotis').bPopup({
 		modalClose: true,
@@ -32,18 +42,18 @@ jQuery( document ).ready(function( $ ) {
 		positionStyle: 'fixed', //'fixed' or 'absolute'
 		fadeSpeed: 'slow', //can be a string ('slow'/'fast') or int
 		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		loadUrl: 'calendar/event_add.php'+data, //Uses jQuery.load()
-            });		
-	
+		loadUrl: 'calendar/event_add.php'+data //Uses jQuery.load()
+            }, function() { $("a[rel='popover']", this).popover({}); });
+
 	});
 
     $('#dienos,.flight-plan')
 	.on('click', 'a.registracija, a.talka, a.šventė, a.svečiai, a.kita', function(event) {
-            // Prevents the default action to be triggered. 
+            // Prevents the default action to be triggered.
             event.stopPropagation();
     	    event.preventDefault();
 	    var data = $(this).attr('href');
-        
+
             // Triggering bPopup when click event is fired
             $('#registracija').bPopup({
 		modalClose: true,
@@ -51,17 +61,17 @@ jQuery( document ).ready(function( $ ) {
 		positionStyle: 'fixed', //'fixed' or 'absolute'
 		fadeSpeed: 'slow', //can be a string ('slow'/'fast') or int
 		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		loadUrl: 'calendar/event.php'+data, //Uses jQuery.load()
-            });		
+		loadUrl: 'calendar/event.php'+data //Uses jQuery.load()
+            }, function() { $("a[rel='popover']", this).popover({}); });
 	});
 
     $('#dienos,.flight-plan')
 	.on('click', 'a.add_day', function(event) {
-            // Prevents the default action to be triggered. 
+            // Prevents the default action to be triggered.
             event.stopPropagation();
     	    event.preventDefault();
 	    var data = $(this).attr('href');
-        
+
             // Triggering bPopup when click event is fired
             $('#addDay').bPopup({
 		modalClose: true,
@@ -69,17 +79,17 @@ jQuery( document ).ready(function( $ ) {
 		positionStyle: 'fixed', //'fixed' or 'absolute'
 		fadeSpeed: 'slow', //can be a string ('slow'/'fast') or int
 		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		loadUrl: 'calendar/day_add.php'+data, //Uses jQuery.load()
-            });
+		loadUrl: 'calendar/day_add.php'+data //Uses jQuery.load()
+            }, function() { $("a[rel='popover']", this).popover({}); });
 	});
 
     $('#dienos,.flight-plan')
 	.on('click', 'a.show_day', function(event) {
-            // Prevents the default action to be triggered. 
+            // Prevents the default action to be triggered.
             event.stopPropagation();
     	    event.preventDefault();
 	    var data = $(this).attr('href');
-        
+
             // Triggering bPopup when click event is fired
             $('#report').bPopup({
 		modalClose: true,
@@ -87,17 +97,17 @@ jQuery( document ).ready(function( $ ) {
 		positionStyle: 'fixed', //'fixed' or 'absolute'
 		fadeSpeed: 'slow', //can be a string ('slow'/'fast') or int
 		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		loadUrl: 'calendar/day.php'+data, //Uses jQuery.load()
-            });				
+		loadUrl: 'calendar/day.php'+data //Uses jQuery.load()
+            }, function() { $("a[rel='popover']", this).popover({}); });
 
 	});
 
     $('#knopkes')
 	.on('click', '#addAircraft', function(event) {
-            // Prevents the default action to be triggered. 
+            // Prevents the default action to be triggered.
             event.stopPropagation();
     	    event.preventDefault();
-	    
+
             // Triggering bPopup when click event is fired
             $('#addAircraftDialog').bPopup({
 		modalClose: true,
@@ -105,8 +115,8 @@ jQuery( document ).ready(function( $ ) {
 		positionStyle: 'fixed', //'fixed' or 'absolute'
 		fadeSpeed: 'slow', //can be a string ('slow'/'fast') or int
 		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		loadUrl: 'views/aircrafts/add_aircraft.php', //Uses jQuery.load()
-            });				
+		loadUrl: 'views/aircrafts/add_aircraft.php' //Uses jQuery.load()
+            }, function() { $("a[rel='popover']", this).popover({}); });
 
 	});
 });
