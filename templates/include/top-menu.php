@@ -61,7 +61,7 @@
                 <li <?php if ($action=="admin/bookings") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/bookings"><i class="glyphicon glyphicon-calendar"></i> Registracijos</a></li>
                 <li <?php if ($action=="admin/finance") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/finance"><i class="glyphicon glyphicon-shopping-cart"></i> Finansai</a></li>
                 <li <?php if ($action=="admin/aircraft") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=aircraft"><i class="glyphicon glyphicon-plane"></i> Orlaiviai</a></li>
-                <li <?php if ($action=="admin/flight") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=flight"><i class="glyphicon glyphicon-plane"></i> Skrydžiai</a></li>
+                <li <?php if ($action=="admin/flight") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=flight"><i class="glyphicon glyphicon-list-alt"></i> Skrydžiai</a></li>
 
               </ul>
             </li>
