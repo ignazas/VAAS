@@ -4,7 +4,14 @@ require_once dirname(__FILE__) . '/../helpers/db.inc';
 class Flight
 {
 
+  public $id = null;
+  public $date = null;
+  public $pilot = null;
+  public $passenger = null;
   public $callsign = null;
+  public $task = null;
+  public $amount = null;
+  public $duration = null;
   private $old_callsign = null;
 
   /**
@@ -90,7 +97,7 @@ class Flight
     if ( is_null( $this->callsign ) ) trigger_error ( "Flight::insert(): Attempt to insert an Flight object that does not have its callsign property set (to $this->callsign).", E_USER_ERROR );
 
     // Insert the Flight
-    $st = DB::query("INSERT INTO flights (date, callsign, pilot, passenger, task, amount, duration) 
+    $st = DB::query("INSERT INTO flights (date, callsign, pilot, passenger, task, amount, duration)
     VALUES (:date, :callsign, :pilot, :passenger, :task, :amount, :duration)", array(
         ":date" => $this->date,
         ":callsign" => $this->callsign,
@@ -99,7 +106,7 @@ class Flight
         ":task" => $this->task,
         ":amount" => $this->amount,
         ":duration" => $this->duration,
-        
+
     ));
 
     return $st->rowCount();
