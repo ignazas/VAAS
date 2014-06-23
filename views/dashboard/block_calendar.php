@@ -2,17 +2,24 @@
   <div id="registracija"></div>
   <div id="registruotis"></div>
 
+<div class="col-md-8">
 
 <div class="col-md-6 flight-plan">
   <h2>Šiandien skrenda</h2>
   <?php $today = time(); ?>
   <ul class="list-group">
 	<?php if (!empty($elements['calendar-today']['events']['results'])) { ?>
-    <?php foreach ($elements['calendar-today']['events']['results'] as $event) { $title = $event->event_time . ' ' . ($event->event_type != 'registracija' ? $event->event_desc : $event->event_title); ?>
+    <?php foreach ($elements['calendar-today']['events']['results'] as $event) { ?>
     <li class="list-group-item">
-      <a class="<?php echo $event->event_type ?>" href="?id=<?php echo $event->event_id ?>" title="<?php echo $title ?>"><?php echo $title ?></a>
+      <a class="<?php echo $event->event_type ?>" href="?id=<?php echo $event->event_id ?>" title="<?php echo $title ?>">
+        <?php echo $event->event_time ?>
+        <?php echo $event->event_type != 'registracija' ? $event->event_desc : $event->event_title ?>
+<?php if (!empty($event->user->avatar)) { ?>
+        <img src="<?php echo '/' . CATALOG . '/uploads/users/' . $event->user->avatar ?>" class="img-rounded" style="height:22px;" alt="<?php echo /*htmlentities*/($event->user->name) ?>">
+<?php } ?>
+      </a>
 <?php if ($event->event_type != 'registracija') { ?>
-      <span class="badge"><?php echo $event->event_type ?></span>
+        <span class="badge"><?php echo $event->event_type ?></span>
 <?php } ?>
     </li>
     <?php } } else { echo "<li class=\"list-group-item\">Registracijų nėra.</li>";} ?>
@@ -31,15 +38,18 @@
 </div>
 
 <div class="col-md-6 flight-plan">
-  <h2>Rytoj skrenda</h2>
+  <h2>Rytoj skris</h2>
   <ul class="list-group">
 	<?php if (!empty($elements['calendar-tomorrow']['events']['results'])) { ?>
     <?php foreach ($elements['calendar-tomorrow']['events']['results'] as $event) { $title = $event->event_time . ' ' . ($event->event_type != 'registracija' ? $event->event_desc : $event->event_title); ?>
     <li class="list-group-item">
-      <a class="<?php echo $event->event_type ?>" href="?id=<?php echo $event->event_id ?>" title="<?php echo $title ?>"><?php echo $title ?></a>
-<?php if ($event->event_type != 'registracija') { ?>
-      <span class="badge"><?php echo $event->event_type ?></span>
+      <a class="<?php echo $event->event_type ?>" href="?id=<?php echo $event->event_id ?>" title="<?php echo $title ?>">
+        <?php echo $event->event_time ?>
+        <?php echo $event->event_type != 'registracija' ? $event->event_desc : $event->event_title ?>
+<?php if (!empty($event->user->avatar)) { ?>
+        <img src="<?php echo '/' . CATALOG . '/uploads/users/' . $event->user->avatar ?>" class="img-rounded" style="height:22px;" alt="<?php echo /*htmlentities*/($event->user->name) ?>">
 <?php } ?>
+      </a>
     </li>
     <?php } } else { echo "<li class=\"list-group-item\">Registracijų nėra.</li>";} ?>
 	<?php IF (!empty($elements['calendar-tomorrow']['days']['results'])) { ?>
@@ -55,4 +65,6 @@
     <a class="delete btn btn-danger" onclick="return confirm('Ar tikrai norite atsisakyti registracijos?')" href="index.php?action=deleteBooking&amp;bookingId=<?php echo implode(',', $bookingIdList) ?>&amp;destination=<?php echo $_SERVER['REQUEST_URI'] ?>"><i class="glyphicon glyphicon-minus"></i> Atsisakyti</a>
     <?php } ?>
   </div>
+</div>
+
 </div>

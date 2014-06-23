@@ -11,7 +11,7 @@ include dirname(__FILE__) . "/../templates/include/top-menu.php";
     <?php include "templates/include/messages.inc" ?>
     <?php include "templates/include/errors.inc" ?>
 
-    <?php require $this->view; ?>
+    <?php if (!empty($this->view)) require $this->view; ?>
 
 </div> <!-- /container -->
 

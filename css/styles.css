@@ -3,8 +3,6 @@
 .errors {}
 .errors > div {color:red;padding:5px;border: 1px solid red;}
 
-form label { width: 40%; } 
-
 .navbar ul.nav li ul.dropdown-menu li.calendar.mobile {
     display: none;
 }
@@ -40,35 +38,35 @@ form label { width: 40%; }
 	font-size: 2em;
 	line-height: 1.5em;
     }
+    table.calendar .menu .actions a {
+      padding: 0 0 0 0.5em;
+      font-size: 1.5em;
+    }
 
-   #registracija,
-   #report,
-   #registruotis{
+    .popup {
        max-width: 100% !important;
        min-width: 0 !important;
-       left: 0;
-       right: 0;
-       top: 0;
-       bottom: 0;
+       top: 0 !important;
+       left: 0 !important;
+       right: 0 !important;
+       /*bottom: 0 !important;*/
        min-height: 0 !important;
-       overflow-y: auto;
+       max-height: 100% !important;
        height: auto !important;
+    }
+
+    .popup .b-ajax-wrapper * {
+      max-width: 100% !important;
+    }
+
+   .b-ajax-wrapper table {
+      table-layout: auto !important;
    }
-   #report table,
-   #registruotis .b-ajax-wrapper,
-   #registruotis .b-ajax-wrapper form.calendar {
-       width: 100% !important;
+
+   .b-ajax-wrapper .b-close {
+     font-size: 2em;
    }
 }
-
-#registracija,
-#report,
-#registruotis{
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: 100%;
-}
-
 
 .pager {
   text-align: center;
@@ -76,4 +74,16 @@ form label { width: 40%; }
 
 .pager a {
   text-decoration: none;
+}
+
+table .add, table .show_day, table .add_day {
+  padding: 0 0 0 2px;
+  color:#666666;
+  /*font-size:13px;*/
+}
+table .add:hover, table .show_day:hover, table .add_day:hover {
+}
+table .add:active, table .show_day:active, table .add_day:active {
+	position:relative;
+	top:1px;
 }

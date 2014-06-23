@@ -1,9 +1,9 @@
 <?php
 
+require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/article.inc';
-require_once dirname(__FILE__) . '/../helpers/messages.inc';
 
-class ArticleControler {
+class ArticleControler extends BaseControler {
   private $article_model;
   private $view;
 
@@ -31,6 +31,9 @@ class ArticleControler {
   }
 
   public function Edit() {
+    if (!$this->HasPermission())
+      $this->Transfer();
+
     $this->view = dirname(__FILE__) . '/../views/article/edit.php';
 
     $results = array(
@@ -52,11 +55,13 @@ class ArticleControler {
       log_event("Admin", "ArticleEdited", $_POST['articleId']);
 
       Messages::set_message("Pakeitimai išsaugoti.");
-      return $this->AdminItemList();
+      $this->Transfer(NULL, 'AdminItemList');
+      //return $this->AdminItemList();
     }
     elseif (isset($_POST['cancel'] ) ) {
       // User has cancelled their edits: return to the article list
-      return $this->AdminItemList();
+      $this->Transfer(NULL, 'AdminItemList');
+      //return $this->AdminItemList();
     }
     else if (!empty($_GET['articleId'])) {
       // User has not posted the article edit form yet: display the form
@@ -67,6 +72,9 @@ class ArticleControler {
   }
 
   public function NewItem() {
+    if (!$this->HasPermission())
+      $this->Transfer();
+
     $this->view = dirname(__FILE__) . '/../views/article/edit.php';
 
     $results = array(
@@ -84,11 +92,13 @@ class ArticleControler {
       log_event("Admin", "ArticleCreated", $article->id);
 
       Messages::set_message("Pakeitimai išsaugoti.");
-      return $this->AdminItemList();
+      $this->Transfer(NULL, 'AdminItemList');
+      //return $this->AdminItemList();
     }
     elseif (isset($_POST['cancel'] ) ) {
       // User has cancelled their edits: return to the article list
-      return $this->AdminItemList();
+      $this->Transfer(NULL, 'AdminItemList');
+      //return $this->AdminItemList();
     }
     else {
       // User has not posted the article edit form yet: display the form
@@ -99,6 +109,9 @@ class ArticleControler {
   }
 
   public function Delete() {
+    if (!$this->HasPermission())
+      $this->Transfer();
+
     if (empty($_GET['articleId']) || !($article = Article::getById((int)$_GET['articleId']))) {
       Messages::set_message("Pranešimas nerastas.", 'errors');
     }
@@ -108,7 +121,8 @@ class ArticleControler {
 
 	Messages::set_message("Pranešimas pašalintas.");
     }
-    return $this->AdminItemList();
+    $this->Transfer(NULL, 'AdminItemList');
+    //return $this->AdminItemList();
   }
 
   public function Index() {

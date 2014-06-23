@@ -1,16 +1,15 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
-require_once dirname(__FILE__) . '/const.inc';
 
 session_start();
 
-$st = DB::query('SELECT admin_id FROM '.TBL_PR . 'admins WHERE admin_username=:user AND admin_password=:password LIMIT 1', array(':user' => $_POST['USER'],'password' => md5($_POST['PASS'])));
+$st = DB::query('SELECT admin_id FROM calendar_admins WHERE admin_username=:user AND admin_password=:password LIMIT 1', array(':user' => $_POST['USER'],'password' => md5($_POST['PASS'])));
 while ($info = $st->fetch($query_result)) {
 	$admin_id = $info['admin_id'];
 }
 
 if (isset($admin_id)) {
-	DB::query("DELETE FROM " . TBL_EVENTS . " WHERE event_id=:id LIMIT 1", array(':id' => $_POST['id']));
+	DB::query("DELETE FROM `calendar_events` WHERE event_id=:id LIMIT 1", array(':id' => $_POST['id']));
 	$_POST['month'] = $_POST['month'] + 1;
     ?>
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

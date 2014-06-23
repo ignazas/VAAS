@@ -1,43 +1,19 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
-require_once dirname(__FILE__) . '/const.inc';
 
-function getmicrotime(){
-    list($usec, $sec) = explode(" ",microtime());
-    return ((float)$usec + (float)$sec);
-}
+$today = strtotime(date('Y-m-d'));
 
-$time_start = getmicrotime();
-
-function get_day_letter($day) {
-	$day = date('l', strtotime( $day));
-	switch($day)
-	{
-		case "Monday":    $savaites_diena = "Pirmadienis";  break;
-		case "Tuesday":   $savaites_diena = "Antradienis"; break;
-		case "Wednesday": $savaites_diena = "Trečiadienis";  break;
-		case "Thursday":  $savaites_diena = "Ketvirtadienis"; break;
-		case "Friday":    $savaites_diena = "Penktadienis";  break;
-		case "Saturday":  $savaites_diena = "Šeštadienis";  break;
-		case "Sunday":    $savaites_diena = "Sekmadienis";  break;
-		default:          $savaites_diena = "-"; break;
-	}
-	$raide = mb_substr($savaites_diena, 0, 2);
-	return $raide;
-
-}
-
-IF(!isset($_GET['year'])){
+if (!isset($_GET['year'])){
     $_GET['year'] = date("Y");
 }
-IF(!isset($_GET['month'])){
+if (!isset($_GET['month'])){
     $_GET['month'] = date("n")+1;
 }
 
 $month = addslashes($_GET['month'] - 1);
 $year = addslashes($_GET['year']);
 
-$query_result = DB::query("SELECT e.event_id,e.event_title,e.event_day,e.event_time,e.event_desc FROM " . TBL_EVENTS . " e INNER JOIN `jos_users` u ON u.id=e.user_id WHERE e.event_month='$month' AND e.event_year='$year' ORDER BY e.event_time");
+$query_result = DB::query("SELECT e.event_id,e.event_title,e.event_day,e.event_time,e.event_desc FROM `calendar_events` e INNER JOIN `jos_users` u ON u.id=e.user_id WHERE e.event_month='$month' AND e.event_year='$year' ORDER BY e.event_time");
 
 foreach ($query_result as $info) {
     $day = $info['event_day'];
@@ -85,29 +61,15 @@ IF($_GET['month'] == 2){
     $prev_year = $_GET['year'];
 }
 
+//susikonstruojam menesi
+$link_month = empty($_GET['month']) ? 0 : ($_GET['month'] - 1);
+$menesis = str_pad($link_month, 2, '0', STR_PAD_LEFT);
+
+$spec_events = array("šventė", "talka", "kita", "svečiai");
 
 
 ?>
-<script src="js/jquery-1.11.0.js"></script>
-
 <link href="css/cal.css" rel="stylesheet" type="text/css">
-
-<script language="JavaScript" type="text/JavaScript">
-<!--
-function MM_jumpMenu(targ,selObj,restore){ //v3.0
-  eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
-  if (restore) selObj.selectedIndex=0;
-}
-function MM_openBrWindow(theURL,winName,features) { //v2.0
-  window.open(theURL,winName,features);
-}
-//-->
-
-</script>
-</head>
-
-<body>
-
 
 <div id="registruotis"></div>
 <div id="registracija"></div>
@@ -121,9 +83,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 </div>
 
 <div id="dienos">
-<table width="100%" bgcolor="#000000">
-  <tr>
-    <td><table width="100%" class="calendar">
+<table width="100%" class="calendar">
         <tr class="topdays">
           <td><div align="center">Pirmadienis</div></td>
           <td><div align="center">Antradienis</div></td>
@@ -134,58 +94,52 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
           <td><div align="center">Sekmadienis</div></td>
         </tr>
 		<tr valign="top" bgcolor="#FFFFFF">
-		<?php
+<?php
 		for ($i = 1; $i <= $first_day_of_month-1; $i++) {
-			$days_so_far = $days_so_far + 1;
-			$count_boxes = $count_boxes + 1;
+			$days_so_far++;
+			$count_boxes++;
 			echo "<td width=\"100\" height=\"100\" class=\"beforedayboxes\"></td>\n";
 		}
 		for ($i = 1; $i <= $days_in_month; $i++) {
-   			$days_so_far = $days_so_far + 1;
-    			$count_boxes = $count_boxes + 1;
-			IF($_GET['month'] == $todays_month+1){
-				IF($i == $todays_date){
-					$class = "highlighteddayboxes";
-				} ELSEIF($count_boxes==6 || $count_boxes==7) {
-					$class = "dayboxes-weekend";
-				} ELSE {
-					$class = "dayboxes";
-				}
-			} ELSE {
-				IF($i == 1){
-					$class = "highlighteddayboxes";
-				} ELSEIF($count_boxes==6 || $count_boxes==7) {
-					$class = "dayboxes-weekend";
-				} ELSE {
-					$class = "dayboxes";
-				}
-			}
-			//susikonstruojam menesi
-			$menesis = ($_GET['month']-1);
-			if($menesis<10) {$menesis = str_pad($menesis, 2, "0", STR_PAD_LEFT);}
+   			$days_so_far++;
+    			$count_boxes++;
+			if (($_GET['month'] == $todays_month+1 && $i == $todays_date) ||
+			    ($_GET['month'] != $todays_month+1 && $i == 1))
+			    $class = "highlighteddayboxes";
+			elseif ($count_boxes==6 || $count_boxes==7)
+			    $class = "dayboxes-weekend";
+			else
+			    $class = "dayboxes";
 
 			//susikonstruojam diena
-			$diena = $i;
-			if($i<10) {$diena = str_pad($i, 2, "0", STR_PAD_LEFT);}
+			$diena = str_pad($i, 2, "0", STR_PAD_LEFT);
 
 			//tikrinam ar diena aktyvi
 			$langelio_data = $_GET['year'] ."-". $menesis ."-". $diena;
+			$current_date = strtotime($langelio_data);
+?>
+			<td width="100" height="100" class="<?php echo $class ?>">
+			  <a name="<?php echo $langelio_data ?>"></a>
 
-			echo "<td width=\"100\" height=\"100\" class=\"$class\"><a name=\"" . $langelio_data . "\"></a>\n";
-			$link_month = $_GET['month'] - 1;
+			  <div class="menu">
+			    <span class="toprightnumber"><?php echo $i ?><font size="-2"><?php echo get_day_letter($current_date) ?></font></span>
+			    <div class="actions">
+<?php if ($current_date >= $today) { ?>
+			      <a class="add" href="?day=<?php echo $i ?>&amp;month=<?php echo $link_month ?>&amp;year=<?php echo $_GET['year'] ?>"><i class="glyphicon glyphicon-plus"></i></a>
+<?php } ?>
+<?php if (isset($events[$i])) { ?>
+			      <a class="show_day" href="?day=<?php echo $langelio_data ?>"><i class="glyphicon glyphicon-th-list"></i></a>
+<?php } ?>
+<?php if ($current_date >= $today && $admin) { ?>
+			      <a class="add_day" href="?day=<?php echo $langelio_data ?>"><i class="glyphicon glyphicon-tag"></i></a>
+<?php } ?>
+			    </div>
+			  </div>
 
-			$day_letter = get_day_letter($langelio_data);
-			echo "<span class=\"toprightnumber\">$i<font size=\"-2\">($day_letter)</font></span><div align=\"right\">
-			<a class=\"add\" href=\"?day=$i&amp;month=$link_month&amp;year=$_GET[year]\"><i class=\"glyphicon glyphicon-plus\"></i></a>";
-			echo "<a class=\"show_day\" href=\"?day=$langelio_data\"><i class=\"glyphicon glyphicon-th-list\"></i></a>";
-
-			if($admin){
-				echo "<a class=\"add_day\" href=\"?day=$langelio_data\"><i class=\"glyphicon glyphicon-tag\"></i></a>";
-			}
-			echo "</div>";
-			echo "<div align=\"left\"><div class=\"eventinbox\">\n";
-			$spec_events = array("šventė", "talka", "kita", "svečiai");
-			IF(isset($events[$i])){
+			  <div class="data" align="left">
+			    <div class="eventinbox">
+<?php
+			if (isset($events[$i])){
 				while (list($key, $value) = each ($events[$i])) {
 				    $vardas = empty($event_info[$value][0]) ? NULL : $event_info[$value][0];
 				    $title_full = $event_info[$value]['1'] . " " . $vardas;
@@ -195,7 +149,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 					    $vardas[0] = mb_substr($vardas[0], 0, 1) . '.';
 					$vardas = implode(' ', $vardas);
 				    }
-					IF (in_array($event_info[$value]['0'], $spec_events)) {
+					if (in_array($event_info[$value]['0'], $spec_events)) {
 						$title = $event_info[$value]['1'] . " " . $event_info[$value]['0'] . ": " . $event_info[$value]['2'];
 						$event = $event_info[$value]['0'];
 						echo "&nbsp;<a class=\"$event\" href=\"?id=$value\" title=\"" . $title_full . "\">" . $title  . "</a><br />";
@@ -208,24 +162,21 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			if (isset($dienos[$langelio_data]['reason'])){
 				echo "<div class=\"" . $dienos[$langelio_data]['status'] . "\" align=\"center\">" . $dienos[$langelio_data]['reason'] . "</div>";
 			}
-			echo "</td>\n";
-
-			IF(($count_boxes == 7) AND ($days_so_far != (($first_day_of_month-1) + $days_in_month))){
+?>
+			    </div>
+			  </div>
+			</td>
+<?php
+			if (($count_boxes == 7) && ($days_so_far != (($first_day_of_month-1) + $days_in_month))) {
 				$count_boxes = 0;
-				echo "</TR><TR valign=\"top\">\n";
+				echo "</tr><tr valign=\"top\">\n";
 			}
-			echo "</div></div>\n";
 		}
 		$extra_boxes = 7 - $count_boxes;
 		for ($i = 1; $i <= $extra_boxes; $i++) {
 			echo "<td width=\"100\" height=\"100\" class=\"afterdayboxes\"></td>\n";
 		}
-		$time_end = getmicrotime();
-		$time = round($time_end - $time_start, 3);
-		?>
+?>
         </tr>
-      </table></td>
-  </tr>
-</table>
+      </table>
 </div>
-</body>

@@ -12,13 +12,15 @@
                 <fieldset>
                     <legend>Pagrindinė informacija:</legend>
                     <?php echo theme('display', 'name', 'Vardas', $user) ?>
-                    <?php echo theme('display', 'email', 'El. paštas', $user) ?>
-                    <?php echo theme('display', 'telephone1', 'Telefonas', $user) ?>
-                    <?php echo theme('display', 'website', 'Interneto svetainė', $user) ?>
+                    <?php echo theme('display_email', 'email', 'El. paštas', $user) ?>
+                    <?php echo theme('display_phone', 'telephone1', 'Telefonas', $user) ?>
+                    <?php echo theme('display_url', 'website', 'Interneto svetainė', $user) ?>
                 </fieldset>
 		</div>
             </div>
+<?php if ((!empty($_SESSION['user']['id']) && !empty($user->id) && $_SESSION['user']['id'] == $user->id) || $this->HasPermission()) { ?>
             <div class="buttons">
-                <a href="index.php?action=user&amp;view=Edit" class="btn btn-sm btn-primary">Redaguoti</a>
+                <a href="index.php?action=user&amp;view=Edit&amp;id=<?php echo $user->id ?>" class="btn btn-sm btn-primary">Redaguoti</a>
             </div>
+<?php } ?>
     </div>
