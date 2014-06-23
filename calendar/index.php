@@ -1,30 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
 
-function getmicrotime(){
-    list($usec, $sec) = explode(" ",microtime());
-    return ((float)$usec + (float)$sec);
-}
-
-$time_start = getmicrotime();
-
-function get_day_letter($day) {
-	$day = date('l', strtotime( $day));
-	switch($day)
-	{
-		case "Monday":    $savaites_diena = "Pirmadienis";  break;
-		case "Tuesday":   $savaites_diena = "Antradienis"; break;
-		case "Wednesday": $savaites_diena = "Trečiadienis";  break;
-		case "Thursday":  $savaites_diena = "Ketvirtadienis"; break;
-		case "Friday":    $savaites_diena = "Penktadienis";  break;
-		case "Saturday":  $savaites_diena = "Šeštadienis";  break;
-		case "Sunday":    $savaites_diena = "Sekmadienis";  break;
-		default:          $savaites_diena = "-"; break;
-	}
-	$raide = mb_substr($savaites_diena, 0, 2);
-	return $raide;
-
-}
+$today = strtotime(date('Y-m-d'));
 
 if (!isset($_GET['year'])){
     $_GET['year'] = date("Y");
@@ -139,17 +116,21 @@ $spec_events = array("šventė", "talka", "kita", "svečiai");
 
 			//tikrinam ar diena aktyvi
 			$langelio_data = $_GET['year'] ."-". $menesis ."-". $diena;
-			$day_letter = get_day_letter($langelio_data);
+			$current_date = strtotime($langelio_data);
 ?>
 			<td width="100" height="100" class="<?php echo $class ?>">
 			  <a name="<?php echo $langelio_data ?>"></a>
 
 			  <div class="menu">
-			    <span class="toprightnumber"><?php echo $i ?><font size="-2"><?php echo $day_letter ?></font></span>
+			    <span class="toprightnumber"><?php echo $i ?><font size="-2"><?php echo get_day_letter($current_date) ?></font></span>
 			    <div class="actions">
+<?php if ($current_date >= $today) { ?>
 			      <a class="add" href="?day=<?php echo $i ?>&amp;month=<?php echo $link_month ?>&amp;year=<?php echo $_GET['year'] ?>"><i class="glyphicon glyphicon-plus"></i></a>
+<?php } ?>
+<?php if (isset($events[$i])) { ?>
 			      <a class="show_day" href="?day=<?php echo $langelio_data ?>"><i class="glyphicon glyphicon-th-list"></i></a>
-<?php if ($admin) { ?>
+<?php } ?>
+<?php if ($current_date >= $today && $admin) { ?>
 			      <a class="add_day" href="?day=<?php echo $langelio_data ?>"><i class="glyphicon glyphicon-tag"></i></a>
 <?php } ?>
 			    </div>
@@ -195,8 +176,6 @@ $spec_events = array("šventė", "talka", "kita", "svečiai");
 		for ($i = 1; $i <= $extra_boxes; $i++) {
 			echo "<td width=\"100\" height=\"100\" class=\"afterdayboxes\"></td>\n";
 		}
-		$time_end = getmicrotime();
-		$time = round($time_end - $time_start, 3);
 ?>
         </tr>
       </table>

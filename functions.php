@@ -115,3 +115,17 @@ function send_mail($recipient, $title, $content) {
 		log_event('Admin', 'SingleMailSent: ' . $title, $recipient);
 	}
 }
+
+function get_day_letter($date) {
+  switch(date('w', $date)) {
+    case "1":    $savaites_diena = "Pirmadienis";  break;
+    case "2":   $savaites_diena = "Antradienis"; break;
+    case "3": $savaites_diena = "Trečiadienis";  break;
+    case "4":  $savaites_diena = "Ketvirtadienis"; break;
+    case "5":    $savaites_diena = "Penktadienis";  break;
+    case "6":  $savaites_diena = "Šeštadienis";  break;
+    case "0":    $savaites_diena = "Sekmadienis";  break;
+    default:          $savaites_diena = "-"; break;
+  }
+	return mb_substr($savaites_diena, 0, 2);
+}
