@@ -2,6 +2,7 @@
 <?php require "secure.php" ?>
 <?php include "templates/include/header.php" ?>
 <?php include "templates/include/top-menu.php" ?>
+<?php $today = strtotime(date('Y-m-d')) ?>
 
 <div class="container">
   <?php include "templates/include/messages.inc" ?>
@@ -29,10 +30,12 @@
           <td><?php echo $booking->event_time ?></td>
           <td><?php echo $booking->event_desc ?></td>
           <td>
+<?php if (strtotime($booking->event_date) >= $today) { ?>
             <form action="index.php">
               <input type="hidden" name="bookingId" value="<?php echo $booking->event_id; ?>"/>
  	            <button type="submit" name="action" onclick="return confirm('Ar tikrai norite atsisakyti registracijos?')" class="btn btn-xs btn-danger" value="deleteBooking">Atsisakyti</button>
             </form>
+<?php } ?>
           </td>
         </tr>
 <?php } ?>
