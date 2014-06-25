@@ -55,7 +55,7 @@
             <li <?php if ($action=="user") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=user"><i class="glyphicon glyphicon-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
 
 <?php if ($admin) { ?>
-            <li class="<?php if ($action=="admin/news"||$action=="admin/bookings"||$action=="admin/finance") {echo 'active';} ?> dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Administravimas"><i class="glyphicon glyphicon-cog"></i><span class="hidden-md hidden-sm"> Administravimas</span> <b class="caret"></b></a>
+            <li class="<?php if ($action=="admin/news"||$action=="admin/bookings"||$action=="admin/finance") {echo 'active';} ?> dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Administravimas"><i class="glyphicon glyphicon-cog"></i><span class="hidden hidden-md hidden-sm"> Administravimas</span> <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li <?php if ($action=="admin/news") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=article&amp;view=AdminItemList" title="Pranešimai"><i class="glyphicon glyphicon-bell"></i> Pranešimai</a></li>
                 <li <?php if ($action=="admin/working_days") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/working_days" title="Darbo dienos"><i class="glyphicon glyphicon-book"></i> Darbo dienos</a></li>
