@@ -34,6 +34,11 @@ switch ($title) {
       <td><?php echo $title ?></td>
       <td><?php echo $match[3] ?></td>
     </tr>
+<?php   } elseif (!empty($title) && !empty($match[4]) && $match[4] != '&nbsp;' && $match[4] != 'n/a') { ?>
+    <tr>
+      <td><?php echo $title ?></td>
+      <td><?php echo $match[4] ?></td>
+    </tr>
 <?php   } elseif (!empty($title) && !empty($match[8]) && $match[8] != '&nbsp;' && $match[8] != 'n/a') { ?>
     <tr>
       <td><?php echo $title ?></td>
