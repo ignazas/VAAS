@@ -10,11 +10,12 @@
 <?php if (!empty($this->data)) foreach ($this->data as $match) { ?>
 <?php
 $title = $match[1];
+$value_index = 3;
 switch ($title) {
   case "Outside Temp": $title = 'Temperatūra'; break;
   case "Outside Humidity": $title = 'Drėgmė'; break;
-  case "Inside Temp": $title=NULL; break;
-  case "Inside Humidity": $title=NULL; break;
+  case "Inside Temp": $value_index = NULL; break;
+  case "Inside Humidity": $value_index = NULL; break;
   case "Heat Index": $title = 'Šilumos rodiklis (heat index)'; break;
   case "Wind Chill": $title = 'Vėjo žvarba'; break;
   case "Dew Point": $title = 'Rasos taškas'; break;
@@ -22,29 +23,19 @@ switch ($title) {
   case "Bar Trend": $title = 'Slėgio tendencija (bar trend)'; break;
   case "Wind Speed": $title = 'Vėjo greitis'; break;
   case "Wind Direction": $title = 'Vėjo kryptis'; break;
-  case "12 Hour Forecast": $title = '12 val prognozė'; break;
+  case "12 Hour Forecast": $title = '12 val prognozė'; $value_index = 8; break;
   case "Rain": $title = 'Lietus'; break;
-  case "Average Wind Speed": $title = 'Vidutinis vėjo greitis'; break;
-  case "Wind Gust Speed": $title = 'Gūsiai'; break;
+  case "Average Wind Speed": $title = 'Vidutinis vėjo greitis'; $value_index = 4; break;
+  case "Wind Gust Speed": $title = 'Gūsiai'; $value_index = 4; break;
   case "Last Hour Rain": $title = 'Lietus per paskutinę val'; break;
 }
+if (empty($value_index) || empty($match[$value_index]) || $match[$value_index] == '&nbsp;' || $match[$value_index] == 'n/a')
+  continue;
 ?>
-<?php   if (!empty($title) && !empty($match[3]) && $match[3] != '&nbsp;' && $match[3] != 'n/a') { ?>
     <tr>
       <td><?php echo $title ?></td>
-      <td><?php echo $match[3] ?></td>
+      <td><?php echo $match[$value_index] ?></td>
     </tr>
-<?php   } elseif (!empty($title) && !empty($match[4]) && $match[4] != '&nbsp;' && $match[4] != 'n/a') { ?>
-    <tr>
-      <td><?php echo $title ?></td>
-      <td><?php echo $match[4] ?></td>
-    </tr>
-<?php   } elseif (!empty($title) && !empty($match[8]) && $match[8] != '&nbsp;' && $match[8] != 'n/a') { ?>
-    <tr>
-      <td><?php echo $title ?></td>
-      <td><?php echo $match[8] ?></td>
-    </tr>
-<?php   } ?>
 <?php } ?>
   </tbody>
 </table>
