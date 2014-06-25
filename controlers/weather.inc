@@ -6,6 +6,7 @@ require_once dirname(__FILE__) . '/../models/user.inc';
 class WeatherControler extends BaseControler {
   private $view;
   public $data;
+  public $data_time;
   public $prognosis;
 
   public function UserControler() {
@@ -27,8 +28,16 @@ class WeatherControler extends BaseControler {
     $content = file_get_contents('http://www.weatherlink.com/user/eyvp/index.php?view=summary&headers=0');
     if (!empty($content)) {
       $pattern = "~<tr>\s*<td\s+width=\"190\"\s+class=\"summary_data\">([^<]*)</td>\s*(<td\s+width=\"170\"\s+class=\"summary_data\">([^<]*)</td>\s*<td\s+width=\"100\"\s+class=\"summary_data\">([^<]*)</td>\s*<td\s+width=\"100\"\s+class=\"summary_data\">([^<]*)</td>\s*<td\s+width=\"100\"\s+class=\"summary_data\">([^<]*)</td>\s*<td\s+width=\"100\"\s+class=\"summary_data\">([^<]*)</td>|<td\s+width=\"570\"\s+class=\"summary_data\"\s+colspan=\"5\">([^<]*)</td>)\s*</tr>~";
-      //$pattern = "~<tr>\s*<td\s+width=\"190\"\s+class=\"summary_data\">([^<]*)</td>\s*<td\s+width=\"170\"\s+class=\"summary_data\">([^<]*)</td>\s*<td\s+width=\"100\"\s+class=\"summary_data\">([^<]*)</td>\s*<td\s+width=\"100\"\s+class=\"summary_data\">([^<]*)</td>\s*<td\s+width=\"100\"\s+class=\"summary_data\">([^<]*)</td>\s*<td\s+width=\"100\"\s+class=\"summary_data\">([^<]*)</td>\s*</tr>~";
       preg_match_all($pattern, $content, $this->data, PREG_SET_ORDER);
+
+      $pattern = "~<tr><td\s+colspan=\"6\"\s+class=\"summary_timestamp\">Current Conditions as of (\d+:\d+)\s+[^,]*,([^<]+)</td></tr>~";
+      $matches = NULL;
+      if (preg_match($pattern, $content, $matches)) {
+	  $this->data_time = strtotime($matches[1]);
+      }
+      else {
+	  $this->data_time = NULL;
+      }
     }
     else
       $this->data = NULL;

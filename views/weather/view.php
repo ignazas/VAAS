@@ -1,6 +1,16 @@
 <div class="page-header"><h1>Orai</h1></div>
 
 <h2>Faktinis oras</h2>
+<?php if (!empty($this->data_time)) { ?>
+<?php   if ((time() - $this->data_time) / 60 < 10) { ?>
+<p class="text-info">Informacija atnaujinta: <?php echo date('Y-m-d H:i', $this->data_time) ?></p>
+<?php   } else { ?>
+<p class="text-danger">Informacija pasenusi: <?php echo date('Y-m-d H:i', $this->data_time) ?></p>
+<?php   } ?>
+<?php } else { ?>
+<p class="text-danger">Informacija pasenusi</p>
+<?php } ?>
+
 <table class="table">
   <thead>
      <th>Pavadinimas</th>
