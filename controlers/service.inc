@@ -1,23 +1,27 @@
 <?php
 
+require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/service.inc';
-require_once dirname(__FILE__) . '/../helpers/messages.inc';
 
-class ServiceControler {
+class ServiceControler extends BaseControler {
   private $model;
   private $view;
 
   public function ServiceControler() {
-    $this->view = dirname(__FILE__) . '/../templates/service.php';
+    $this->view = NULL;
     $this->model = new Service();
   }
 
   private function Validate() {
-    if (empty($_POST['callsign'])) {
-      Messages::form_error('callsign', "Registracija negali būti tuščia.");
+    if (empty($_POST['title'])) {
+      Messages::form_error('title', "Pavadinimas negali būti tuščias.");
     }
-    elseif (mb_strlen($_POST['callsign'], 'utf-8') > 6) {
-      Messages::form_error('callsign', "Registracijos ilgis negali viršyti 6 simbolių.");
+    elseif (mb_strlen($_POST['title'], 'utf-8') > 256) {
+      Messages::form_error('description', "Pavadinimas ilgis negali viršyti 256 simbolių.");
+    }
+
+    if (mb_strlen($_POST['description'], 'utf-8') > 256) {
+      Messages::form_error('description', "Aprašymo ilgis negali viršyti 256 simbolių.");
     }
 
     $messages = Messages::get_messages('errors', false);
@@ -28,8 +32,7 @@ class ServiceControler {
     $this->view = dirname(__FILE__) . '/../views/service/edit.php';
 
     $results = array(
-      'pageTitle' => "New Service",
-      'formAction' => "newService",
+      'pageTitle' => "Naujas paslauga",
     );
 
     if (isset($_POST['saveChanges'])) {
@@ -39,14 +42,17 @@ class ServiceControler {
 
       if ($this->Validate()) {
         $service->storeFormValues($_POST);
+        if (isset($service->amount)) $service->amount = round($service->amount * 100);
         if ($service->insert()) {
           //log it
-          log_event("Admin", "ServiceCreated", $service->callsign);
+          log_event("Admin", "ServiceCreated", $service->id);
           Messages::set_message("Pakeitimai išsaugoti.");
 
-          return $this->ItemList();
+          $this->Transfer(NULL, 'ItemList');
+          //return $this->ItemList();
         }
         else {
+          if (isset($service->amount)) $service->amount = round($service->amount / 100);
           Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
         }
       }
@@ -54,27 +60,29 @@ class ServiceControler {
     }
     elseif (isset($_POST['cancel'])) {
       // User has cancelled their edits: return to the service list
-      return $this->ItemList();
+      $this->Transfer(NULL, 'ItemList');
+      //return $this->ItemList();
     }
     else {
       // User has not posted the service edit form yet: display the form
-      $results['service'] = new Service(array('callsign' => ''));
+      $results['service'] = new Service(array());
 
       include dirname(__FILE__) . '/../views/_layout.php';
     }
   }
 
   public function Delete() {
-    if (empty($_GET['callsign']) || !($service = Service::getByCallsign($_GET['callsign']))) {
-      Messages::set_message("Orlaivis nerastas.", 'errors');
+    if (empty($_GET['id']) || !($service = Service::getById($_GET['id']))) {
+      Messages::set_message("Paslauga nerasta.", 'errors');
     }
     else {
       $service->delete();
-      log_event("Admin", "ServiceDeleted", $_GET['callsign']);
+      log_event("Admin", "ServiceDeleted", $_GET['id']);
 
-      Messages::set_message("Orlaivis pašalintas.");
+      Messages::set_message("Paslauga pašalinta.");
     }
-    return $this->ItemList();
+    $this->Transfer(NULL, 'ItemList');
+    //return $this->ItemList();
   }
 
   public function Edit() {
@@ -82,13 +90,12 @@ class ServiceControler {
 
     $results = array(
       'pageTitle' => "Edit Service",
-      'formAction' => "editService",
     );
 
     if (isset($_POST['saveChanges'])) {
-      // User has posted the article edit form: save the article changes
+      // User has posted the service edit form: save the service changes
       if (!($service = Service::getById($_POST['id']))) {
-        Messages::set_message("Skrydis $_POST[id] nerastas.", 'errors');
+        Messages::set_message("Paslauga $_POST[id] nerasta.", 'errors');
 
         include dirname(__FILE__) . '/../views/_layout.php';
       }
@@ -96,14 +103,16 @@ class ServiceControler {
         $results['service'] = $service;
         if ($this->Validate()) {
           $service->storeFormValues($_POST);
+          if (isset($service->amount)) $service->amount = round($service->amount * 100);
           if ($service->update()) {
             //log it
             log_event("Admin", "ServiceEdited", $_POST['id']);
             Messages::set_message("Pakeitimai išsaugoti.");
-
-            return $this->ItemList();
+            $this->Transfer(NULL, 'ItemList');
+            //return $this->ItemList();
           }
           else {
+            if (isset($service->amount)) $service->amount = round($service->amount / 100);
             Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
           }
         }
@@ -112,11 +121,14 @@ class ServiceControler {
     }
     elseif (isset($_POST['cancel'])) {
       // User has cancelled their edits: return to the service list
-      return $this->ItemList();
+      $this->Transfer(NULL, 'ItemList');
+      //return $this->ItemList();
     }
-    else if (!empty($_GET['callsign'])) {
+    else if (!empty($_GET['id'])) {
       // User has not posted the service edit form yet: display the form
-      $results['service'] = Service::getByCallsign($_GET['callsign']);
+      $service = Service::getById($_GET['id']);
+      if (isset($service->amount)) $service->amount = round($service->amount / 100);
+      $results['service'] = $service;
       include dirname(__FILE__) . '/../views/_layout.php';
     }
   }
@@ -128,10 +140,10 @@ class ServiceControler {
   public function View() {
     $this->view = dirname(__FILE__) . '/../views/service/view.php';
 
-    if (isset($_GET["callsign"])) {
-      $results = array('service' => Service::getByCallsign($_GET["callsign"]));
-    } elseif ($_GET["id"]) {
-      $results = array('service' => Service::getById($_GET["id"]));
+    if ($_GET["id"]) {
+      $service = Service::getById($_GET["id"]);
+      if (isset($service->amount)) $service->amount = round($service->amount / 100);
+      $results = array('service' => $service);
     }
 
     include dirname(__FILE__) . '/../views/_layout.php';

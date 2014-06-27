@@ -15,36 +15,25 @@ class DB {
     public static function query($query, $params = NULL) {
         DB::connect();
 
-        $st = DB::$conn -> prepare($query);
+        $st = DB::$conn->prepare($query);
         if (!$st)
-            die($dbh -> errorInfo());
+            die(DB::$conn->errorInfo());
 
-        $st->execute($params);
+        if (!$st->execute($params)) {
+	    print_r($params);
+	    die("Error in sql query: $query");
+	}
 
         return $st;
     }
 
     public static function fetch_object($query, $params = NULL) {
-        DB::connect();
-
-        $st = DB::$conn->prepare($query);
-        if (!$st)
-            die($dbh->errorInfo());
-
-        $st->execute($params);
-
-        return $st->fetchObject();
+	$st = DB::query($query, $params);
+	return $st->fetchObject();
     }
 
     public static function fetch($query, $params = NULL) {
-        DB::connect();
-
-        $st = DB::$conn->prepare($query);
-        if (!$st)
-            die($dbh->errorInfo());
-
-        $st->execute($params);
-
+	$st = DB::query($query, $params);
         return $st->fetch();
     }
 
@@ -52,7 +41,7 @@ class DB {
         $st = DB::query($query, $params);
         return DB::$conn->lastInsertId();
     }
-    
+
     public static function escape($string) {
         DB::connect();
 

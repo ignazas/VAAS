@@ -1,13 +1,11 @@
 <div class="page-header"><h1>Paslauga</h1></div>
+
 <div class="row">
   <div class="col-md-8">
-    <?php echo theme('display', 'date', 'Data', $results['flight']) ?>
-    <?php echo theme('display', 'callsign', 'Orlaivis', $results['flight']) ?>
-    <?php echo theme('display', 'pilot', 'Pilotas', $results['flight']) ?>
-    <?php echo theme('display', 'passenger', 'Keleivis', $results['flight']) ?>
-    <?php echo theme('display', 'task', 'Užduotis', $results['flight']) ?>
-    <?php echo theme('display', 'amount', 'Kiekis', $results['flight']) ?>
-    <?php echo theme('display', 'duration', 'Trukmė', $results['flight']) ?>
+    <?php echo theme('display', 'title', 'Pavadinimas', $results['service']) ?>
+    <?php echo theme('display', 'amount', 'Kaina, Lt', $results['service']) ?>
+    <?php echo theme('display', 'discount_disabled', 'Nuolaidos netaikomos', $results['service']) ?>
+    <?php echo theme('display', 'description', 'Aprašymas', $results['service']) ?>
     <br />
   </div>
 
@@ -18,7 +16,7 @@
 	<h3 class="panel-title">Info</h3>
       </div>
       <div class="panel-body">
-	<p>Čia yra talpinama skrydžių informacija.</p>
+	<p>Čia yra talpinama kainų informacija.</p>
       </div>
     </div>
   </div>

@@ -1,29 +1,34 @@
-<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a><br />
+<div class="page-header"><h1>Paslauga</h1></div>
 
-<form class="form-horizontal" action="" method="POST">
+<form class="form-horizontal" action="" method="POST" role="form">
+  <input id="id" name="id" type="hidden" value="<?php echo $results['service']->id ?>">
   <fieldset>
 
     <!-- Form Name -->
-    <legend>Įtraukti skrydį</legend>
+    <legend><?php echo $results['pageTitle'] ?></legend>
 
     <!-- Text input-->
     <div class="form-group">
-		<label class="control-label" for="date">Data</label>
-		<input id="date" name="date" class="form-control input-md" type="text" maxlength="10" value="<?php ?>">
-		<label class="control-label" for="callsign">Registracija</label>
-      	<input id="callsign" name="callsign" class="form-control input-md" type="text" value="">
-		<label class="control-label" for="pilot">Pilotas</label>
-		<input id="pilot" name="pilot" class="form-control input-md" type="text" value="">
-		<label class="control-label" for="passenger">Keleivis</label>
-		<input id="passenger" name="passenger" class="form-control input-md" type="text" value="">
-		<label class="control-label" for="task">Užduotis</label>
-		<input id="task" name="task" class="form-control input-md" type="text" value="">
-		<label class="control-label" for="amount">Kiekis</label>
-		<input id="amount" name="amount" class="form-control input-md" type="text" value="">
-		<label class="control-label" for="duration">Trukmė</label>
-		<input id="duration" name="duration" class="form-control input-md" type="text" value="">	
-    <label class="control-label" for="singlebutton"></label>
-	<button id="submit" name="saveChanges" class="btn btn-primary">Įtraukti</button>
+      <label for="title">Pavadinimas</label>
+      <input id="title" name="title" class="form-control" type="text" maxlength="256" value="<?php echo $results['service']->title ?>">
+    </div>
+    <div class="form-group">
+      <label for="description">Aprašymas</label>
+      <input id="description" name="description" class="form-control" maxlength="256" type="text" value="<?php echo $results['service']->description ?>">
+    </div>
+    <div class="form-group">
+      <label for="amount">Kaina, Lt</label>
+      <input id="amount" name="amount" class="form-control" type="number" value="<?php echo $results['service']->amount ?>">
+    </div>
+    <div class="checkbox form-group">
+      <label for="discount_disabled">
+	<input id="discount_disabled" name="discount_disabled" type="checkbox" value="1" <?php if (!empty($results['service']->discount_disabled)) echo 'checked="checked"' ?>> Nuolaida netaikoma
+      </label>
+    </div>
+
+    <div class="buttons">
+      <input type="submit" class="btn btn-sm btn-primary" name="saveChanges" value="Saugoti" />
+      <a href="index.php?action=service" class="btn btn-sm">Atšaukti</a>
     </div>
 
   </fieldset>

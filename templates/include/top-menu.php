@@ -33,17 +33,18 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li <?php if ($action=="news"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=article" title="Prane�imai"><i class="glyphicon glyphicon-bell"></i><span class="hidden-md hidden-sm"> Prane�imai</span></a></li>
+            <li <?php if ($action=="article"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=article" title="Pranešimai"><i class="glyphicon glyphicon-bell"></i><span class="hidden-md hidden-sm"> Pranešimai</span></a></li>
             <li <?php if ($action=="finance"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=finance" title="Finansai"><i class="glyphicon glyphicon-shopping-cart"></i><span class="hidden-md hidden-sm"> Finansai</span></a></li>
             <li <?php if ($action=="logbook"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=logbook" title="Žurnalas"><i class="glyphicon glyphicon-book"></i><span class="hidden-md hidden-sm"> Žurnalas</span></a></li>
-            <li class="<?php if ($action=="calendar"||$action=="booking"||$action=="my_bookings"){echo 'active';} ?> dropdown">
+            <li class="<?php if (in_array($action, array("calendar", "my_bookings"))){echo 'active';} ?> dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Kalendorius"><i class="glyphicon glyphicon-calendar"></i> Kalendorius <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="calendar<?php if ($action=="calendar"){echo " active";} ?>"><a class="" href="index.php?action=calendar"><i class="glyphicon glyphicon-calendar"></i> Registruotis</a></li>
+                <li class="calendar<?php if ($action == "calendar"){echo " active";} ?>"><a class="" href="index.php?action=calendar"><i class="glyphicon glyphicon-calendar"></i> Registruotis</a></li>
                 <li class="calendar mobile<?php if ($action=="calendar"){echo " active";} ?>"><a class="" href="index.php?action=calendar#<?php echo date('Y-m-d')?>"><i class="glyphicon glyphicon-calendar"></i> Registruotis</a></li>
                 <li <?php if ($action=="my_bookings"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=my_bookings"><i class="glyphicon glyphicon-book"></i> Mano registracijos</a></li>
               </ul>
             </li>
+            <li <?php if ($action=="weather"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=weather" title="Orai"><i class="glyphicon glyphicon-cloud"></i><span class="hidden-md hidden-sm"> Orai</span></a></li>
             <li <?php if ($action=="contact"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=contact" title="Kontaktai"><i class="glyphicon glyphicon-envelope"></i><span class="hidden-md hidden-sm"> Kontaktai</span></a></li>
           </ul>
 
@@ -54,15 +55,15 @@
             <li <?php if ($action=="user") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=user"><i class="glyphicon glyphicon-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
 
 <?php if ($admin) { ?>
-            <li class="<?php if ($action=="admin/news"||$action=="admin/bookings"||$action=="admin/finance") {echo 'active';} ?> dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Administravimas"><i class="glyphicon glyphicon-cog"></i><span class="hidden-md hidden-sm"> Administravimas</span> <b class="caret"></b></a>
+            <li class="<?php if (in_array($action, array("article", "admin/bookings", "admin/finance", "aircraft", "flight", "service"))) {echo 'active';} ?> dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Administravimas"><i class="glyphicon glyphicon-cog"></i><span class="hidden-lg hidden-md hidden-sm"> Administravimas</span> <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li <?php if ($action=="admin/news") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=article&amp;view=AdminItemList"><i class="glyphicon glyphicon-bell"></i> Prane�imai</a></li>
-                <li <?php if ($action=="admin/working_days") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/working_days"><i class="glyphicon glyphicon-book"></i> Darbo dienos</a></li>
-                <li <?php if ($action=="admin/bookings") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/bookings"><i class="glyphicon glyphicon-calendar"></i> Registracijos</a></li>
-                <li <?php if ($action=="admin/finance") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/finance"><i class="glyphicon glyphicon-shopping-cart"></i> Finansai</a></li>
-                <li <?php if ($action=="admin/aircraft") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=aircraft"><i class="glyphicon glyphicon-plane"></i> Orlaiviai</a></li>
-                <li <?php if ($action=="admin/flight") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=flight"><i class="glyphicon glyphicon-list-alt"></i> Skrydžiai</a></li>
-                	<li class="<?php if ($action=="admin/service") {echo "active";} ?>"><a class="" href="admin.php?action=service"><i class="glyphicon glyphicon-shopping-cart"></i> Paslaugos</a></li>
+                <li <?php if ($action=="article") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=article&amp;view=AdminItemList" title="Pranešimai"><i class="glyphicon glyphicon-bell"></i> Pranešimai</a></li>
+                <li <?php if ($action=="admin/working_days") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/working_days" title="Darbo dienos"><i class="glyphicon glyphicon-book"></i> Darbo dienos</a></li>
+                <li <?php if ($action=="admin/bookings") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/bookings" title="Registracijos"><i class="glyphicon glyphicon-calendar"></i> Registracijos</a></li>
+                <li <?php if ($action=="admin/finance") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/finance" title="Finansai"><i class="glyphicon glyphicon-shopping-cart"></i> Finansai</a></li>
+                <li <?php if ($action=="aircraft") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=aircraft" title="Orlaiviai"><i class="glyphicon glyphicon-plane"></i> Orlaiviai</a></li>
+                <li <?php if ($action=="flight") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=flight" title="Skrydžiai"><i class="glyphicon glyphicon-list-alt"></i> Skrydžiai</a></li>
+                <li class="<?php if ($action=="service") {echo "active";} ?>"><a class="" href="admin.php?action=service" title="Kainynas"><i class="glyphicon glyphicon-shopping-cart"></i> Kainynas</a></li>
 
               </ul>
             </li>

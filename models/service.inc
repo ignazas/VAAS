@@ -5,10 +5,10 @@ class Service
 {
 
   public $id = null;
-  public $date = null;
   public $title = null;
-  public $summary = null;
-  public $content = null;
+  public $discount_disabled = null;
+  public $amount = null;
+  public $description = null;
 
   /**
   * Sets the object's properties using the values in the supplied array
@@ -16,11 +16,11 @@ class Service
   * @param assoc The property values
   */
   public function __construct( $data=array() ) {
-    if ( isset( $data['id'] ) ) $this->id = (int) $data['id'];
-    if ( isset( $data['date'] ) ) $this->date = (int) $data['date'];
-    if ( isset( $data['title'] ) ) $this->title =  $data['title'];
-    if ( isset( $data['summary'] ) ) $this->summary = $data['summary'];
-    if ( isset( $data['content'] ) ) $this->content = $data['content'];
+    if (!empty($data['id'])) $this->id = (int) $data['id'];
+    if (isset($data['title'])) $this->title =  $data['title'];
+    if (isset($data['discount_disabled'])) $this->discount_disabled = $data['discount_disabled'];
+    if (isset($data['amount'])) $this->amount = (double)$data['amount'];
+    if (isset($data['description'])) $this->description = $data['description'];
   }
 
   /**
@@ -29,19 +29,10 @@ class Service
   * @param assoc The form post values
   */
   public function storeFormValues ( $params ) {
-
     // Store all the parameters
-    $this->__construct( $params );
-
-    // Parse and store the publication date
-    if ( isset($params['date']) ) {
-      $date = explode ( '-', $params['date'] );
-
-      if ( count($date) == 3 ) {
-        list ( $y, $m, $d ) = $date;
-        $this->date = mktime ( 0, 0, 0, $m, $d, $y );
-      }
-    }
+    if (!isset($params['discount_disabled']))
+      $params['discount_disabled'] = 0;
+    $this->__construct($params);
   }
 
   /**
@@ -50,10 +41,10 @@ class Service
   * @param int The article ID
   * @return Article|false The article object, or false if the record was not found or there was a problem
   */
-  public static function getById( $id ) {
-    $st = DB::query("SELECT *, UNIX_TIMESTAMP(date) AS date FROM articles WHERE id = :id", array(":id" => $id));
+  public static function getById($id) {
+    $st = DB::query("SELECT * FROM `services` WHERE `id` = :id", array(":id" => $id));
     if ($row = $st->fetch())
-        return new Article( $row );
+        return new Service($row);
     return NULL;
   }
 
@@ -64,21 +55,21 @@ class Service
   * @param string Optional column by which to order the articles (default="date DESC")
   * @return Array|false A two-element array : results => array, a list of Article objects; totalRows => Total number of articles
   */
-  public static function getList( $numRows=1000000, $order="date DESC" ) {
-    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(date) AS date FROM articles
+  public static function getList( $numRows=1000000, $order="title DESC" ) {
+    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS * FROM `services`
             ORDER BY $order LIMIT $numRows");
 
     $list = array();
     while ( $row = $st->fetch() ) {
-      $article = new Article( $row );
-      $list[] = $article;
+      $service = new Service($row);
+      $list[] = $service;
     }
 
     // Now get the total number of articles that matched the criteria
     $st = DB::query("SELECT FOUND_ROWS() AS totalRows");
     $totalRows = $st->fetch();
 
-    return array ( "results" => $list, "totalRows" => $totalRows[0] );
+    return array("results" => $list, "totalRows" => $totalRows[0]);
   }
 
   /**
@@ -86,17 +77,14 @@ class Service
   */
   public function insert() {
     // Does the Article object already have an ID?
-    if ( !is_null( $this->id ) ) trigger_error ( "Article::insert(): Attempt to insert an Article object that already has its ID property set (to $this->id).", E_USER_ERROR );
+    if ( !is_null( $this->id ) ) trigger_error ( "Service::insert(): Attempt to insert a Service object that already has its ID property set (to $this->id).", E_USER_ERROR );
 
     // Insert the Article
-    $this->id = DB::insert("INSERT INTO articles ( date, title, summary, content ) VALUES ( FROM_UNIXTIME(:date), :title, :summary, :content )", array(
-        ":date" => $this->date,
+    $this->id = DB::insert("INSERT INTO `services` (`title`, `discount_disabled`, `amount`, `description`) VALUES (:title, " . (empty($this->discount_disabled) ? 0 : 1) . ", :amount, :description)", array(
         ":title" => $this->title,
-        ":summary" => $this->summary,
-        ":content" => $this->content,
+        ":amount" => $this->amount,
+        ":description" => $this->description,
     ));
-
-    send_mail("", $this->title, $this->content);
 
     return !empty($this->id);
   }
@@ -105,24 +93,16 @@ class Service
   * Updates the current Article object in the database.
   */
   public function update() {
-    // Does the Article object have an ID?
-    if ( is_null( $this->id ) ) trigger_error ( "Article::update(): Attempt to update an Article object that does not have its ID property set.", E_USER_ERROR );
+    // Does the Service object have an ID?
+    if ( is_null( $this->id ) ) trigger_error ( "Service::update(): Attempt to update a Service object that does not have its ID property set.", E_USER_ERROR );
 
-    // Update the Article
-    $st = DB::query("UPDATE articles SET date=FROM_UNIXTIME(:date), title=:title, summary=:summary, content=:content WHERE id = :id", array(
-        ":date" => $this->date,
+    // Update the Service
+    $st = DB::query("UPDATE `services` SET `title`=:title, `discount_disabled`=" . (empty($this->discount_disabled) ? 0 : 1) . ", `amount`=:amount, `description`=:description WHERE id = :id", array(
         ":title" => $this->title,
-        ":summary" => $this->summary,
-        ":content" => $this->content,
+        ":amount" => $this->amount,
+        ":description" => $this->description,
         ":id" => $this->id,
       ));
-
-    $headers  = "MIME-Version: 1.0\r\n";
-    $headers .= "Content-type: text/html; charset=UTF-8\r\n";
-    $headers .= "From: aeroklubas@sklandymas.lt\r\n";
-    $mail = "Sveiki,<br />Buvo paskelbtas atnaujintas senas VAK pranešimas: <br /><br />";
-    $mail .= $this->content . "<br /><br />Išsiųsta iš Vilniaus Aeroklubo narių administravimo sistemos";
-    mail("ignas@igfe.eu", $this->title, $mail, $headers);
 
     return $st->rowCount();
   }
@@ -131,10 +111,10 @@ class Service
   * Deletes the current Article object from the database.
   */
   public function delete() {
-    // Does the Article object have an ID?
-    if ( is_null( $this->id ) ) trigger_error ( "Article::delete(): Attempt to delete an Article object that does not have its ID property set.", E_USER_ERROR );
+    // Does the Service object have an ID?
+    if ( is_null( $this->id ) ) trigger_error ( "Service::delete(): Attempt to delete a Service object that does not have its ID property set.", E_USER_ERROR );
 
     // Delete the Article
-    DB::query( "DELETE FROM articles WHERE id = :id LIMIT 1", array(":id" => $this->id));
+    DB::query( "DELETE FROM `services` WHERE id = :id LIMIT 1", array(":id" => $this->id));
   }
 }
