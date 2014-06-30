@@ -33,6 +33,13 @@ class UserControler extends BaseControler {
         Messages::form_error('password', "Naujas slaptažodis negali būti tuščias.");
     }
 
+    if (!isset($_POST['discount']) || !is_numeric($_POST['discount'])) {
+        Messages::form_error('discount', "Nuolaida turi būti skaitinė.");
+    }
+    else if ((int)$_POST['discount'] < 0 || (int)$_POST['discount'] > 100) {
+        Messages::form_error('discount', "Nuolaida turi būti tarp 0% ir 100%.");
+    }
+
     $messages = Messages::get_messages('errors', false);
     return empty($messages);
   }
@@ -54,7 +61,7 @@ class UserControler extends BaseControler {
           $edit['password'] = md5($_POST['new_password_1']);
         }
 
-        foreach (array('name', 'email', 'telephone1', 'website') as $key) {
+        foreach (array('name', 'email', 'telephone1', 'website', 'discount') as $key) {
           if (isset($_POST[$key]) && $user->{$key} != $_POST[$key])
             $edit[$key] = $_POST[$key];
         }

@@ -16,6 +16,9 @@
                     <?php echo theme('email', 'email', 'El. paštas', $user, $edit) ?>
                     <?php echo theme('text', 'telephone1', 'Telefonas', $user, $edit) ?>
                     <?php echo theme('url', 'website', 'Interneto svetainė', $user, $edit) ?>
+<?php if (!empty($_SESSION['user']['usertype']) && ($_SESSION['user']['usertype']=="Administrator" || $_SESSION['user']['usertype']=="Super Administrator")) { ?>
+                    <?php echo theme('text', 'discount', 'Nuolaida, %', $user, $edit) ?>
+<?php } ?>
                 </fieldset>
 		</div>
 		<div class="col-md-4">

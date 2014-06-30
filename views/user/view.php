@@ -7,6 +7,7 @@
                     <?php echo theme('display', 'usertype', 'Vartotojo tipas', $user) ?>
                     <?php echo theme('display', 'registerDate', 'Užsiregistravo', $user) ?>
                     <?php echo theme('display', 'lastvisitDate', 'Paskutinis apsilankymas', $user) ?>
+                    <?php echo theme('display_percent', 'discount', 'Nuolaida', $user) ?>
             	</div>
             <div class="col-md-4">
                 <fieldset>

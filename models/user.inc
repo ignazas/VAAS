@@ -11,6 +11,7 @@ class User {
     public $email;
     public $registerDate;
     public $lastvisitDate;
+    public $discount;
 
     public $telephone1;
     public $website;
@@ -30,6 +31,7 @@ class User {
     if (isset($data['email'])) $this->email = $data['email'];
     if (isset($data['registerDate'])) $this->registerDate = $data['registerDate'];
     if (isset($data['lastvisitDate'])) $this->lastvisitDate = $data['lastvisitDate'];
+    if (isset($data['discount'])) $this->discount = $data['discount'];
 
     if (isset($data['telephone1'])) $this->telephone1 = $data['telephone1'];
     if (isset($data['website'])) $this->website = $data['website'];
@@ -39,7 +41,7 @@ class User {
     public static function Get($id) {
         if (!empty($id)) {
           $data = DB::fetch("
-                SELECT u.id, u.name, u.username, u.usertype, u.email, u.password, u.registerDate, u.lastvisitDate,
+                SELECT u.*,
                     ud.telephone1, ud.website, ud.avatar
                 FROM jos_users u
                 LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
@@ -54,7 +56,7 @@ class User {
     public static function get_by_username($username) {
         if (!empty($username)) {
             $data = DB::fetch("
-                SELECT u.id, u.name, u.username, u.usertype, u.email, u.password, u.registerDate, u.lastvisitDate,
+                SELECT u.*,
                     ud.telephone1, ud.website, ud.avatar
                 FROM jos_users u
                 LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
@@ -72,7 +74,7 @@ class User {
             $query_context = NULL;
             foreach ($values as $key => $value) {
                 if (in_array($key, array('name', 'username', 'email', 'password', 'usertype', 'block', 'sendEmail',
-                                         'gid', 'registerDate', 'lastvisitDate', 'activation', 'params')))
+                                         'gid', 'registerDate', 'lastvisitDate', 'activation', 'params', 'discount')))
                     $query_user .= (!empty($query_user) ? ',' : NULL) . "`$key`='" . $value . "'";
                 else
                     $query_context .= (!empty($query_context) ? ',' : NULL) . "`$key`='" . $value . "'";

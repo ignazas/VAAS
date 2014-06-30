@@ -7,3 +7,6 @@ CREATE TABLE IF NOT EXISTS `services` (
   
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE `jos_users` ADD `discount` double NOT NULL DEFAULT 0;

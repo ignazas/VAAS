@@ -28,7 +28,6 @@ function theme($type, $name, $label, $entity, $values=NULL) {
 
     $output = NULL;
     $value = /*htmlentities*/(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL);
-
     switch ($type) {
         case 'text':
         case 'url':
@@ -63,7 +62,8 @@ function theme($type, $name, $label, $entity, $values=NULL) {
       case 'display_email':
       case 'display_phone':
       case 'display_password':
-        if (empty($value))
+      case 'display_percent':
+        if (!isset($value) || $value === '')
           break;
 
         $output = '<div';
@@ -85,6 +85,9 @@ function theme($type, $name, $label, $entity, $values=NULL) {
             break;
           case 'display_password':
             $output .= '<span>' . preg_replace('/[^*]/', '*', $value) . '</span>';
+            break;
+          case 'display_percent':
+            $output .= '<span>' . $value . '%</span>';
             break;
           default:
             $output .= '<span>' . $value . '</span>';
