@@ -4,8 +4,8 @@ require_once dirname(__FILE__) . '/../functions.php';
 session_start();
 
 if (isset($_POST['submit'])) {
-	$_POST['description'] = substr($_POST['description'],0,500);
-	$_POST['title'] = substr($_POST['title'],0,30);
+  $_POST['description'] = !empty($_POST['description']) ? substr(trim($_POST['description']),0,500) : '';
+	$_POST['title'] = !empty($_POST['title']) ? substr(trim($_POST['title']),0,30) : '';
 
 	//susikonstruojam menesi
 	$menesis = $_POST['month'];
