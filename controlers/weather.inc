@@ -19,11 +19,11 @@ class WeatherControler extends BaseControler {
   public function View() {
     $this->view = dirname(__FILE__) . '/../views/weather/view.php';
 
-    $file = dirname(__FILE__) . "/../uploads/meteo_paluknis.png";
+    $file = dirname(__FILE__) . "/../uploads/meteo_trakai.png";
     if (!file_exists($file) || round(abs(time() - filemtime($file)) / 60, 2) > 10) { // min
-      file_put_contents($file, file_get_contents('http://meteo.lt/dokumentai/operatyvi_inf/skaitmenine_prog/meteo_paluknis.png'));
+      file_put_contents($file, file_get_contents('http://meteo.lt/dokumentai/operatyvi_inf/skaitmenine_prog/meteo_trakai.png'));
     }
-    $this->prognosis = '/' . CATALOG . '/uploads/meteo_paluknis.png';
+    $this->prognosis = '/' . CATALOG . '/uploads/meteo_trakai.png';
 
     $content = file_get_contents('http://www.weatherlink.com/user/eyvp/index.php?view=summary&headers=0');
     if (!empty($content)) {
