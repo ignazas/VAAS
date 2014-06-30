@@ -1,3 +1,14 @@
+<?php
+function weather_view_get_value($match, $value_index, $translate = FALSE) {
+  if (empty($value_index) || empty($match[$value_index]) || $match[$value_index] == '&nbsp;' || $match[$value_index] == 'n/a')
+    return FALSE;
+  /*if ($translate === TRUE) {
+    require_once dirname(__FILE__) . '/../../helpers/translate.inc';
+    return Translate::t($match[$value_index]);
+    }*/
+  return $match[$value_index];
+}
+?>
 <div class="page-header"><h1>Orai</h1></div>
 
 <h2>Faktinis oras</h2>
@@ -17,34 +28,35 @@
      <th>Reišmė</th>
   </thead>
   <tbody>
+
 <?php if (!empty($this->data)) foreach ($this->data as $match) { ?>
 <?php
 $title = $match[1];
-$value_index = 3;
+$value = NULL;
 switch ($title) {
-  case "Outside Temp": $title = 'Temperatūra'; break;
-  case "Outside Humidity": $title = 'Drėgmė'; break;
-  case "Inside Temp": $value_index = NULL; break;
-  case "Inside Humidity": $value_index = NULL; break;
-  case "Heat Index": $title = 'Šilumos rodiklis (heat index)'; break;
-  case "Wind Chill": $title = 'Vėjo žvarba'; break;
-  case "Dew Point": $title = 'Rasos taškas'; break;
-  case "Barometer": $title = 'Slėgis'; break;
-  case "Bar Trend": $title = 'Slėgio tendencija (bar trend)'; break;
-  case "Wind Speed": $title = 'Vėjo greitis'; break;
-  case "Wind Direction": $title = 'Vėjo kryptis'; break;
-  case "12 Hour Forecast": $title = '12 val prognozė'; $value_index = 8; break;
-  case "Rain": $title = 'Lietus'; break;
-  case "Average Wind Speed": $title = 'Vidutinis vėjo greitis'; $value_index = 4; break;
-  case "Wind Gust Speed": $title = 'Gūsiai'; $value_index = 4; break;
-  case "Last Hour Rain": $title = 'Lietus per paskutinę val'; break;
+  case "Outside Temp": $title = 'Temperatūra'; $value = weather_view_get_value($match, 3); break;
+  case "Outside Humidity": $title = 'Drėgmė'; $value = weather_view_get_value($match, 3); break;
+  case "Inside Temp": break;
+  case "Inside Humidity": break;
+  case "Heat Index": $title = 'Šilumos rodiklis (heat index)'; $value = weather_view_get_value($match, 3); break;
+  case "Wind Chill": $title = 'Vėjo žvarba'; $value = weather_view_get_value($match, 3); break;
+  case "Dew Point": $title = 'Rasos taškas'; $value = weather_view_get_value($match, 3); break;
+  case "Barometer": $title = 'Slėgis'; $value = weather_view_get_value($match, 3); break;
+  case "Bar Trend": $title = 'Slėgio tendencija (bar trend)'; $value = weather_view_get_value($match, 3, TRUE); break;
+  case "Wind Speed": $title = 'Vėjo greitis'; $value = weather_view_get_value($match, 3); break;
+  case "Wind Direction": $title = 'Vėjo kryptis'; $value = weather_view_get_value($match, 3); break;
+  case "12 Hour Forecast": $title = '12 val prognozė'; $value = weather_view_get_value($match, 8, TRUE); break;
+  case "Rain": $title = 'Lietus'; $value = weather_view_get_value($match, 3); break;
+  case "Average Wind Speed": $title = 'Vidutinis vėjo greitis'; $value = weather_view_get_value($match, 4); break;
+  case "Wind Gust Speed": $title = 'Gūsiai'; $value = weather_view_get_value($match, 4); break;
+  case "Last Hour Rain": $title = 'Lietus per paskutinę val'; $value = weather_view_get_value($match, 3); break;
 }
-if (empty($value_index) || empty($match[$value_index]) || $match[$value_index] == '&nbsp;' || $match[$value_index] == 'n/a')
+if (empty($value))
   continue;
 ?>
     <tr>
       <td><?php echo $title ?></td>
-      <td><?php echo $match[$value_index] ?></td>
+      <td><?php echo $value ?></td>
     </tr>
 <?php } ?>
   </tbody>

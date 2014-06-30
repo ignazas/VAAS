@@ -15,6 +15,7 @@ define( "CATALOG", "vaas" );
 define( "TEMPLATE_PATH", "templates" );
 define( "HOMEPAGE_NUM_ARTICLES", 5 );
 
+define('CACHE_DIR', dirname(__FILE__) . '/cache');
 
 // DB del mysql query
 define('DB_DSN', 'mysql:host=localhost;dbname=zadmin_vanza2;charset=utf8' );
