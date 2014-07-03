@@ -31,14 +31,12 @@ session_start();
   <div class="form-group">
     <label for="reason" class="col-sm-3 control-label">Pastaba</label>
     <div class="col-sm-9">
-      <textarea class="form-control" rows="3" name="reason" id="reason">
-	<?php echo !empty($_POST['reason']) ? $_POST['reason'] : '' ?>
-      </textarea>
+      <textarea class="form-control" rows="3" name="reason" id="reason"><?php echo !empty($_POST['reason']) ? $_POST['reason'] : '' ?></textarea>
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
-      <button type="submit" name="action" id="action" class="btn btn-primary">Žymėti</button>
+      <button type="submit" name="action" id="action" class="btn btn-primary" value="addDay">Žymėti</button>
     </div>
   </div>
 
