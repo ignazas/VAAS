@@ -10,9 +10,8 @@
       </tr>
     </thead>
 
-<?php foreach ( $results['articles'] as $article ) { ?>
-
     <tbody>
+<?php foreach ( $results['articles'] as $article ) { ?>
       <tr>
 	<td><?php echo date('Y-m-d', $article->publicationDate)?></td>
 	<td>
@@ -25,9 +24,8 @@
  	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti pranešimą?')" href="index.php?action=article&amp;view=Delete&amp;articleId=<?php echo $article->id ?>">Pašalinti</a>
 	</td>
       </tr>
-    </tbody>
-
 <?php } ?>
+    </tbody>
 
   </table>
   <br />
