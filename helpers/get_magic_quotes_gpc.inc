@@ -8,7 +8,7 @@ if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc())
 {
     function undo_magic_quotes_gpc(&$array)
     {
-        foreach($array as &$value)
+        foreach($array as $key => $value)
         {
             if(is_array($value))
             {
@@ -16,7 +16,7 @@ if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc())
             }
             else
             {
-                $value = stripslashes($value);
+		$array[$key] = stripslashes($value);
             }
         }
     }
