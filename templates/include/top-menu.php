@@ -45,7 +45,7 @@
 		<li <?php if ($action=="weather"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=weather" title="Orai"><i class="glyphicon glyphicon-cloud"></i><span class="hidden-md hidden-sm"> Orai</span></a></li>
               </ul>
             </li>
-            <li <?php if ($action=="user"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=user&amp;view=ItemList" title="Nariai"><i class="glyphicon glyphicon-user"></i><span class="hidden-md hidden-sm"> Nariai</span></a></li>
+            <li <?php if ($action=="user" && isset($_GET['view']) && $_GET['view'] == 'ItemList'){echo "class=\"active\"";} ?>><a class="" href="index.php?action=user&amp;view=ItemList" title="Nariai"><i class="glyphicon glyphicon-user"></i><span class="hidden-md hidden-sm"> Nariai</span></a></li>
             <li <?php if ($action=="contact"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=contact" title="Kontaktai"><i class="glyphicon glyphicon-envelope"></i><span class="hidden-md hidden-sm"> Kontaktai</span></a></li>
           </ul>
 
@@ -53,7 +53,7 @@
 <?php if (!$on) { ?>
             <li><a class="" href="index.php?action=on"><i class="glyphicon glyphicon-log-in"></i> Prisijungti</a></li>
 <?php } else { ?>
-            <li <?php if ($action=="user") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=user"><i class="glyphicon glyphicon-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
+            <li <?php if ($action=="user" && (empty($_GET['id']) || (!empty($_SESSION['user']['id']) && $_GET['id'] == $_SESSION['user']['id'])) && (empty($_GET['view']) || $_GET['view'] == 'View' || $_GET['view'] == 'Edit')) {echo "class=\"active\"";} ?>><a class="" href="index.php?action=user"><i class="glyphicon glyphicon-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
 
 <?php if ($admin) { ?>
             <li class="<?php if ($action=="admin/news"||$action=="admin/bookings"||$action=="admin/finance") {echo 'active';} ?> dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Administravimas"><i class="glyphicon glyphicon-cog"></i><span class="hidden-lg hidden-md hidden-sm"> Administravimas</span> <b class="caret"></b></a>
