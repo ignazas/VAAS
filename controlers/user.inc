@@ -143,4 +143,14 @@ class UserControler extends BaseControler {
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }
+
+  public function ItemList() {
+    $this->view = dirname(__FILE__) . '/../views/user/item-list.php';
+
+    $data = User::getList();
+    $results = array('users' => $data['results'], 'totalRows' => $data['totalRows']);
+
+    include dirname(__FILE__) . '/../views/_layout.php';
+  }
+
 }
