@@ -41,7 +41,7 @@ $result = CalendarEvent::getByDate($day);
 <?php foreach ($result['results'] as $event) { ?>
         <tr>
 	  <td class="col-lg-2 col-xs-1 hidden-xs hidden-sm"><?php echo theme('display_avatar', 'avatar', $event->user->name, $event->user) ?></td>
-	  <td class="col-xs-1"><?php echo theme('display', 'event_time', NULL, $event) ?></td>
+	  <td class="col-xs-2"><?php echo theme('display', 'event_time', NULL, $event) ?></td>
 	  <td class="col-xs-4">
 	    <?php echo theme('display', 'event_title', NULL, $event) ?>
 	    <?php if ($event->event_title != $event->user->name) echo theme('display', 'name', NULL, $event->user) ?>
