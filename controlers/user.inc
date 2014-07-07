@@ -119,7 +119,7 @@ class UserControler extends BaseControler {
           $user->{$key} = $value;
         }
 
-        $this->Transfer();
+        $this->Transfer(NULL, 'Index', array('id' => $id));
         //return $this->Index();
       }
     }
