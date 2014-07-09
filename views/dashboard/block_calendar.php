@@ -11,7 +11,7 @@
 	<?php if (!empty($elements['calendar-today']['events']['results'])) { ?>
     <?php foreach ($elements['calendar-today']['events']['results'] as $event) { ?>
     <li class="list-group-item">
-      <a class="<?php echo $event->event_type ?>" href="?id=<?php echo $event->event_id ?>" title="<?php echo $title ?>">
+      <a class="<?php echo $event->event_type ?>" href="?id=<?php echo $event->event_id ?>" title="<?php echo $event->event_title ?>">
         <?php echo $event->event_time ?>
         <?php echo $event->event_type != 'registracija' ? $event->event_desc : $event->event_title ?>
 <?php if (!empty($event->user->avatar)) { ?>

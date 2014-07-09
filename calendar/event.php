@@ -4,14 +4,14 @@ require_once dirname(__FILE__) . '/../models/calendar_event.inc';
 
 $info = CalendarEvent::get($_GET['id']);
 
-$time_array = split(":", $info->event_time);
+$time_array = split(":", str_replace(array('.', ','), ':', $info->event_time));
 ?>
 
 <a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a>
 
 <h2 class="eventwhen col-xs-12"><? echo date("Y-m-d H:i", mktime($time_array['0'],$time_array['1'],0,$info->event_month,$info->event_day,$info->event_year)); ?></h2>
 
-<div class="col-xs-12" style="width:480px;">
+<div class="col-xs-12" style="width:480px;margin-bottom:30px;">
 
 <?php if (!empty($info->user)) { ?>
   <div class="col-md-6 col-sm-12">

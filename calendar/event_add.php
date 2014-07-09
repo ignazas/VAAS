@@ -16,7 +16,7 @@ if (isset($_POST['submit'])) {
 	if($diena<10) {$diena = str_pad($diena, 2, "0", STR_PAD_LEFT);}
 
 	$event_date = $_POST['year']."-".$menesis."-".$diena;
-	$event_time = $_POST['time'];
+	$event_time = isset($_POST['time']) ? str_replace(array('.', ','), ':', $_POST['time']) : '10:00';
 
 	$BookingId = DB::insert('INSERT INTO `calendar_events` ( `event_date`, `event_day` , `event_month` , `event_year` , `event_time` , `event_title` , `event_desc`, `user_id` ) VALUES (:event_date, :day, :month, :year, :time, :title, :description, :user_id)', array(
     	':event_date' => $event_date,
@@ -24,7 +24,7 @@ if (isset($_POST['submit'])) {
         ':month' => isset($_POST['month']) ? $_POST['month'] : date('n'),
         ':year' => isset($_POST['year']) ? $_POST['year'] : date('y'),
         ':time' => isset($_POST['time']) ? $_POST['time'] : '10:00',
-        ':title' => isset($_POST['title']) ? $_POST['title'] : '',
+        ':title' => $event_time,
         ':description' => isset($_POST['description']) ? $_POST['description'] : '',
         ':user_id' => isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL));
 	$_POST['month'] = $_POST['month'] + 1;
