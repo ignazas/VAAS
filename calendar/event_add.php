@@ -5,7 +5,7 @@ session_start();
 
 if (isset($_POST['submit'])) {
   $_POST['description'] = !empty($_POST['description']) ? substr(trim($_POST['description']),0,500) : '';
-	$_POST['title'] = !empty($_POST['title']) ? substr(trim($_POST['title']),0,30) : '';
+	$title = $_POST['title'] = !empty($_POST['title']) ? substr(trim($_POST['title']),0,30) : '';
 
 	//susikonstruojam menesi
 	$menesis = $_POST['month'];
@@ -23,8 +23,8 @@ if (isset($_POST['submit'])) {
 	    ':day' => isset($_POST['day']) ? $_POST['day'] : date('j'),
         ':month' => isset($_POST['month']) ? $_POST['month'] : date('n'),
         ':year' => isset($_POST['year']) ? $_POST['year'] : date('y'),
-        ':time' => isset($_POST['time']) ? $_POST['time'] : '10:00',
-        ':title' => $event_time,
+        ':time' => $event_time,
+        ':title' => $title,
         ':description' => isset($_POST['description']) ? $_POST['description'] : '',
         ':user_id' => isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL));
 	$_POST['month'] = $_POST['month'] + 1;
