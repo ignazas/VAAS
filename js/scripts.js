@@ -119,4 +119,6 @@ jQuery( document ).ready(function( $ ) {
             }, function() { $("a[rel='popover']", this).popover({}); });
 
 	});
+
+    $(".chosen-select").chosen();
 });

@@ -11,6 +11,7 @@
     <link href="css/styles.css" rel="stylesheet">
     <link href="css/sticky-footer.css" rel="stylesheet">
     <link href="css/popup.css" rel="stylesheet" type="text/css">
+    <link href="css/chosen.min.css" rel="stylesheet" type="text/css">
 
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
