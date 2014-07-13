@@ -14,8 +14,12 @@ class User {
     public $discount;
 
     public $telephone1;
+    public $telephone2;
     public $website;
     public $avatar;
+    public $birthdate;
+    public $email_to;
+    public $con_position;
 
   /**
   * Sets the object's properties using the values in the supplied array
@@ -34,15 +38,19 @@ class User {
     if (isset($data['discount'])) $this->discount = $data['discount'];
 
     if (isset($data['telephone1'])) $this->telephone1 = $data['telephone1'];
+    if (isset($data['telephone2'])) $this->telephone2 = $data['telephone2'];
     if (isset($data['website'])) $this->website = $data['website'];
     if (isset($data['avatar'])) $this->avatar = $data['avatar'];
+    if (!empty($data['birthdate']) && trim($data['birthdate'], '0-')) $this->birthdate = $data['birthdate'];
+    if (isset($data['email_to'])) $this->email_to = $data['email_to'];
+    if (isset($data['con_position'])) $this->con_position = $data['con_position'];
   }
 
     public static function Get($id) {
         if (!empty($id)) {
           $data = DB::fetch("
                 SELECT u.*,
-                    ud.telephone1, ud.website, ud.avatar
+                    ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position
                 FROM jos_users u
                 LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
                 WHERE
@@ -57,7 +65,7 @@ class User {
         if (!empty($username)) {
             $data = DB::fetch("
                 SELECT u.*,
-                    ud.telephone1, ud.website, ud.avatar
+                    ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position
                 FROM jos_users u
                 LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
                 WHERE
@@ -90,4 +98,61 @@ class User {
         }
         return FALSE;
     }
+
+  /**
+  * Returns all (or a range of) Article objects in the DB
+  *
+  * @param int Optional The number of rows to return (default=all)
+  * @param string Optional column by which to order the articles (default="publicationDate DESC")
+  * @return Array|false A two-element array : results => array, a list of Article objects; totalRows => Total number of articles
+  */
+  public static function getList( $numRows=1000000, $order="u.name" ) {
+    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS
+                       u.*,
+                       ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position
+                     FROM jos_users u LEFT OUTER JOIN jos_contxtd_details ud ON u.id=ud.user_id
+                     ORDER BY $order LIMIT $numRows");
+
+    $list = array();
+    while ( $row = $st->fetch() ) {
+      $user = new User( $row );
+      $list[] = $user;
+    }
+
+    // Now get the total number of articles that matched the criteria
+    $st = DB::query("SELECT FOUND_ROWS() AS totalRows");
+    $totalRows = $st->fetch();
+
+    return array ( "results" => $list, "totalRows" => $totalRows[0] );
+  }
+
+  /**
+  * Inserts the current User object into the database, and sets its ID property.
+  */
+  public function insert() {
+    // Does the User object already have an ID?
+    if ( !is_null( $this->id ) ) trigger_error ( "User::insert(): Attempt to insert an User object that already has its ID property set (to $this->id).", E_USER_ERROR );
+
+    $this->id = DB::insert("INSERT INTO jos_users (name, username, usertype, password, email, registerDate) VALUES (:name, :username, :usertype, :password, :email, :registerDate)", array(
+                  ':name' => $this->name,
+                  ':username' => $this->username,
+                  ':usertype' => $this->usertype,
+                  ':password' => $this->password,
+                  ':email' => $this->email,
+                  ':registerDate' => time(''),
+                ));
+
+    DB::insert("INSERT INTO jos_contxtd_details (user_id, telephone1, website, avatar) VALUES (:user_id, :telephone1, :telephone1, :website, :avatar, :birthdate, :email_to, :con_position)", array(
+        ':telephone1' => $this->telephone1,
+        ':telephone2' => $this->telephone2,
+        ':website' => $this->website,
+        ':avatar' => $this->avatar,
+        ':birthdate' => $this->birthdate,
+        ':email_to' => $this->email_to,
+        ':con_position' => $this->con_position,
+        ':user_id' => $this->id,
+      ));
+
+      return !empty($this->id);
+  }
 }

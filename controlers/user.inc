@@ -126,7 +126,7 @@ class UserControler extends BaseControler {
           $user->{$key} = $value;
         }
 
-        $this->Transfer();
+        $this->Transfer(NULL, 'Index', array('id' => $id));
         //return $this->Index();
       }
     }
@@ -150,4 +150,14 @@ class UserControler extends BaseControler {
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }
+
+  public function ItemList() {
+    $this->view = dirname(__FILE__) . '/../views/user/item-list.php';
+
+    $data = User::getList();
+    $results = array('users' => $data['results'], 'totalRows' => $data['totalRows']);
+
+    include dirname(__FILE__) . '/../views/_layout.php';
+  }
+
 }
