@@ -87,3 +87,31 @@ table .add:active, table .show_day:active, table .add_day:active {
 	position:relative;
 	top:1px;
 }
+
+#flight-add table.table td input {
+  width: 100%;
+}
+#flight-add table.table td select {
+  width: 100%;
+}
+#flight-add table.table .date input[type=date] {
+  line-height: 100%;
+}
+#flight-add table.table .service select {
+  min-width: 100px;
+}
+/*#flight-add table.table .user select {
+  width: 120px;
+}*/
+#flight-add table.table .glider select {
+  min-width: 80px;
+}
+#flight-add table.table .quantity,
+#flight-add table.table .price {
+  width: 50px;
+}
+
+#flight-add table.table td, #flight-add table.table th {
+}
+#flight-add table .price {
+}

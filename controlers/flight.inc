@@ -13,11 +13,20 @@ class FlightControler extends BaseControler {
   }
 
   private function Validate() {
-    if (empty($_POST['callsign'])) {
-      Messages::form_error('callsign', "Registracija negali būti tuščia.");
+    foreach ($_POST['date'] as $key => $value) {
+      if (empty($value)) {
+        Messages::form_error('date[' . $key . ']', "Data negali būti tuščia.");
+      }
     }
-    elseif (mb_strlen($_POST['callsign'], 'utf-8') > 6) {
-      Messages::form_error('callsign', "Registracijos ilgis negali viršyti 6 simbolių.");
+    foreach ($_POST['user_student'] as $key => $value) {
+      if (empty($value)) {
+        Messages::form_error('user_student[' . $key . ']', "Mokinys/Mokėtojas negali būti tuščias.");
+      }
+    }
+    foreach ($_POST['price'] as $key => $value) {
+      if (empty($value) || !is_numeric($value)) {
+        Messages::form_error('price[' . $key . ']', "Kaina negali būti tuščia arba ne skaičius.");
+      }
     }
 
     $messages = Messages::get_messages('errors', false);
@@ -25,7 +34,8 @@ class FlightControler extends BaseControler {
   }
 
   public function NewItem() {
-    $this->view = dirname(__FILE__) . '/../views/flight/edit.php';
+    //$this->view = dirname(__FILE__) . '/../views/flight/edit.php';
+    $this->view = dirname(__FILE__) . '/../views/flight/new.php';
 
     $results = array(
       'pageTitle' => "New Flight",
@@ -33,22 +43,32 @@ class FlightControler extends BaseControler {
     );
 
     if (isset($_POST['saveChanges'])) {
+      print_r($_POST);
+      die;
       // User has posted the article edit form: save the article changes
       $flight = new Flight();
       $results['flight'] = $flight;
 
       if ($this->Validate()) {
-        $flight->storeFormValues($_POST);
-        if ($flight->insert()) {
-          //log it
-          log_event("Admin", "FlightCreated", $flight->callsign);
-          Messages::set_message("Pakeitimai išsaugoti.");
+        foreach ($_POST['date'] as $key => $value) {
+          $data = array();
+          foreach ($_POST as $_key => $_value) {
+            if (isset($_value[$key]))
+              $data[$_key] = $_value[$key];
+          }
+          $flight->storeFormValues($data);
+          if ($flight->insert()) {
+            //create payment
 
+
+            //log it
+            log_event("Admin", "FlightCreated", $flight->id);
+          }
+          else {
+            Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
+          }
+          Messages::set_message("Pakeitimai išsaugoti.");
           $this->Transfer(NULL, 'ItemList');
-          //return $this->ItemList();
-        }
-        else {
-          Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
         }
       }
       include dirname(__FILE__) . '/../views/_layout.php';

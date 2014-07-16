@@ -1,6 +1,6 @@
 <a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a><br />
 
-<form class="form-horizontal" action="" method="POST">
+<form id="flight-add" class="form-horizontal" action="" method="POST">
   <fieldset>
 
     <!-- Form Name -->
