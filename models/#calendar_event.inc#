@@ -50,13 +50,15 @@ class CalendarEvent
     if (is_string($date))
       $date = strtotime($date);
 
-    $st = DB::query("SELECT * FROM `calendar_events` e INNER JOIN `jos_users` u ON u.id=e.user_id LEFT JOIN `jos_contxtd_details` ud ON u.id = ud.user_id WHERE e.event_month=:month AND e.event_year=:year AND e.event_day=:day ORDER BY e.event_time", array(':year' => date('Y', $date), ':month' => date('m', $date), ':day' => date('d', $date)));
+    $st = DB::query("SELECT eu.id, u.name, u.username, u.usertype, u.email, u.password, u.registerDate, u.lastvisitDate,
+                         ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position
+                     FROM `calendar_events` e INNER JOIN `jos_users` u ON u.id=e.user_id LEFT JOIN `jos_contxtd_details` ud ON u.id = ud.user_id
+                     WHERE e.event_month=:month AND e.event_year=:year AND e.event_day=:day ORDER BY e.event_time", array(':year' => date('Y', $date), ':month' => date('m', $date), ':day' => date('d', $date)));
 
     $list = array();
     while ($row = $st->fetch()) {
       $e = new CalendarEvent($row);
       $e->user = new User($row);
-      $e->user->id = $e->user_id;
       $list[] = $e;
     }
 
@@ -121,7 +123,6 @@ class CalendarEvent
     if ($row = $st->fetch()) {
       $e = new CalendarEvent($row);
       $e->user = new User($row);
-      $e->user->id = $e->user_id;
       return $e;
     }
 

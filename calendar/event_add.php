@@ -91,9 +91,7 @@ else {
   <div class="form-group">
     <label for="description" class="col-sm-3 control-label">Registracijos pastabos</label>
     <div class="col-sm-9">
-      <textarea class="form-control" rows="5" name="description" id="description">
-	<?php echo !empty($_POST['description']) ? $_POST['description'] : '' ?>
-      </textarea>
+      <textarea class="form-control" rows="5" name="description" id="description"><?php echo !empty($_POST['description']) ? $_POST['description'] : '' ?></textarea>
       <p class="help-block">Nurodykite, jei reikalinga nakvynė, skrydžiai į aikštelę ar pan.</p>
       <p class="help-block">Nurodykite kiek ir kokius skrydžius planuojate, esate instruktorius ar autoišvilktuvo operatorius.</p>
     </div>

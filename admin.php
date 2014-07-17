@@ -1,9 +1,9 @@
 <?php
+require_once dirname(__FILE__) . '/helpers/user.inc';
+UserHelper::check_access();
 
-require_once dirname(__FILE__) . '/helpers/db.inc';
 require_once dirname(__FILE__) . "/config.php";
-require_once dirname(__FILE__) . "/common.php";
-require_once dirname(__FILE__) . "/secure.php";
+require_once dirname(__FILE__) . '/helpers/db.inc';
 require_once dirname(__FILE__) . "/functions.php";
 
 $action = isset( $_GET['action'] ) ? str_replace('admin/', '', $_GET['action']) : "";
@@ -87,8 +87,8 @@ function deleteDay() {
 function addDay() {
   $day = $_GET['day'];
   $status = $_GET['status'];
-  $reason = $_GET['reason'];
-	$confirmed = $_SESSION['user']['name'];
+  $reason = isset($_GET['reason']) ? trim($_GET['reason']) : '';
+  $confirmed = $_SESSION['user']['name'];
 
     // Add day status
     $st = DB::query("INSERT INTO days (day, status, reason, confirmed) VALUES (:day, :status, :reason, :confirmed) on duplicate key UPDATE status=values(status), reason=values(reason), confirmed=values(confirmed)", array(
@@ -112,7 +112,9 @@ function addDay() {
 	$exploded_date = explode("-", $day);
 	if(substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
 	$exploded_date[1] += 1;
-    header( "Location: index.php?action=calendar&status=dayAdded&month=" . $exploded_date[1] . "&year=" . $exploded_date[0] );
+
+	$destination = !empty($_GET['destination']) ? $_GET['destination'] : ("index.php?action=calendar&status=dayAdded&month=" . $exploded_date[1] . "&year=" . $exploded_date[0]);
+	header("Location: $destination") ;
 }
 function working_days() {
     $st = DB::query("SELECT * FROM days ORDER by day DESC");

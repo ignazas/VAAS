@@ -83,7 +83,8 @@ class Index {
     }
 
     public static function off() {
-        require( TEMPLATE_PATH . "/off.php" );
+	require_once dirname(__FILE__) . '/user.inc';
+	UserHelper::log_out();
     }
 
     public static function on() {

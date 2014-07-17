@@ -38,9 +38,8 @@ class CalendarDay
     }
 
     // Now get the total number of articles that matched the criteria
-    $st = DB::query("SELECT FOUND_ROWS() AS totalRows");
-    $totalRows = $st->fetch();
+    $totalRows = DB::fetch("SELECT FOUND_ROWS() AS totalRows");
 
-    return array ( "results" => $list, "totalRows" => $totalRows[0] );
+    return array ( "results" => $list, "totalRows" => $totalRows['totalRows'] );
   }
 }

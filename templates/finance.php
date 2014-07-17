@@ -1,16 +1,13 @@
-<?php 
-require "common.php";
-require "secure.php";
+<?php
+require_once dirname(__FILE__) . '/../helpers/user.inc';
+UserHelper::check_access();
+
+require_once dirname(__FILE__) . '/../helpers/db.inc';
+require_once dirname(__FILE__) . '/../helpers/messages.inc';
 include "templates/include/header.php";
-include "templates/include/top-menu.php"; ?>
+include "templates/include/top-menu.php";
 
-     <div class="container">
-		<div class="page-header"><h1>Finansai</h1></div>
-		
-		<div class="col-md-8">
-
-			<?php
-			$query = "
+$row = DB::fetch("
             SELECT entry_fee,member_fee,labor_fee,house_fee,electricity_fee,airworthiness_fee,insurance_fee,casco_fee,flight_fee,debt_fee,fee_last_updated
             FROM jos_users
             LEFT JOIN jos_contxtd_details
@@ -18,35 +15,19 @@ include "templates/include/top-menu.php"; ?>
             LEFT JOIN vak_contxtd_debt
             ON jos_contxtd_details.id = vak_contxtd_debt.contact_id
             WHERE
-                jos_users.id = :username
-        ";
-        
-        // The parameter values
-        $query_params = array(
-            ':username' => $_SESSION['user']['id']
-        );
-        
-        try
-        {
-            // Execute the query against the database
-            $stmt = $db->prepare($query);
-            $result = $stmt->execute($query_params);
-        }
-        catch(PDOException $ex)
-        {
-            // Note: On a production website, you should not output $ex->getMessage().
-            // It may provide an attacker with helpful information about your code. 
-            die("Failed to run query: " . $ex->getMessage());
-        }
-       
-        $row = $stmt->fetch();
+                jos_users.id = :id", array(':id' => $_SESSION['user']['id']));
 
-        $balance = $row['entry_fee'] + $row['member_fee'] + $row['labor_fee'] + $row['house_fee'] + $row['electricity_fee'] + $row['airworthiness_fee'] + $row['insurance_fee'] + $row['casco_fee'] + $row['flight_fee'] + $row['debt_fee'];
-        
-        
-        
-        if ($balance < '0') {
-            ?><div class="alert alert-danger"><strong>Įspėjimas!</strong> Jūsų likutis neigiamas. Prašome apmokėti susidariusia skolą.</div><?php } ?>
+$balance = $row['entry_fee'] + $row['member_fee'] + $row['labor_fee'] + $row['house_fee'] + $row['electricity_fee'] + $row['airworthiness_fee'] + $row['insurance_fee'] + $row['casco_fee'] + $row['flight_fee'] + $row['debt_fee'];
+
+if ($balance < 0)
+  Messages::set_message('Jūsų likutis neigiamas. Prašome apmokėti susidariusia skolą.', 'errors');
+?>
+
+     <div class="container">
+		<div class="page-header"><h1>Finansai</h1></div>
+
+		<div class="col-md-8">
+
         <table class="table table-striped">
         <tr>
 		  <td>Skrydžių mokesčiai</td>
@@ -59,7 +40,7 @@ include "templates/include/top-menu.php"; ?>
 		 <tr>
 		  <td>Mokestis už namelį</td>
 		  <td><?php echo $row['house_fee'];?></td>
-		 </tr>       
+		 </tr>
         <tr>
 		  <td>Mokestis už elektrą</td>
 		  <td><?php echo $row['electricity_fee'];?></td>
@@ -75,15 +56,15 @@ include "templates/include/top-menu.php"; ?>
 		 <tr>
 		  <td>Darbai/Talkos</td>
 		  <td><?php echo $row['labor_fee'];?></td>
-		 </tr>       
+		 </tr>
         <tr>
 		  <td><b>Likutis</b></td>
 		  <td><b><?php echo $balance;?> Lt</b></td>
-		 </tr> 
+		 </tr>
 		 <tr>
 		  <td><b>Duomenu data</b></td>
 		  <td><b><?php echo $row['fee_last_updated'];?></b></td>
-		 </tr>       
+		 </tr>
         </table>
 
 		</div>
@@ -100,7 +81,7 @@ include "templates/include/top-menu.php"; ?>
             </div>
           </div>
         </div>
-		
+
     </div> <!-- /container -->
 
 <?php include "templates/include/footer.php" ?>

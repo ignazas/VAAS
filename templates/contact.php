@@ -1,11 +1,14 @@
-<?php require "common.php" ?>
-<?php require "secure.php" ?>
-<?php include "templates/include/header.php" ?>
-<?php include "templates/include/top-menu.php" ?>
+<?php
+require_once dirname(__FILE__) . '/../helpers/user.inc';
+UserHelper::check_access();
+
+include "templates/include/header.php";
+include "templates/include/top-menu.php";
+?>
 
 <div class="container">
 	<div class="page-header"><h1>Kontaktai</h1></div>
-      
+
 		<div class="col-md-8">
 			<div class="col-md-6">
 			<h3>Vadovybė</h3>
@@ -24,8 +27,8 @@
 			Ignas, +370 614 36408, ignas@igfe.eu
 			</div>
 		</div>
-        
-		
+
+
       <div class="col-md-4">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -36,7 +39,7 @@
             </div>
           </div>
         </div>
-      
+
 
     </div> <!-- /container -->
 

@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
+require_once dirname(__FILE__) . '/../helpers/user.inc';
 
 $today = strtotime(date('Y-m-d'));
 
@@ -130,7 +131,7 @@ $spec_events = array("šventė", "talka", "kita", "svečiai");
 <?php if (isset($events[$i])) { ?>
 			      <a class="show_day" href="?day=<?php echo $langelio_data ?>"><i class="glyphicon glyphicon-th-list"></i></a>
 <?php } ?>
-<?php if ($current_date >= $today && $admin) { ?>
+<?php if ($current_date >= $today && UserHelper::has_permission('day_tag')) { ?>
 			      <a class="add_day" href="?day=<?php echo $langelio_data ?>"><i class="glyphicon glyphicon-tag"></i></a>
 <?php } ?>
 			    </div>

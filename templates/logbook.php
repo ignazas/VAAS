@@ -1,16 +1,16 @@
-<?php 
-require "common.php";
-require "secure.php";
+<?php
+require_once dirname(__FILE__) . '/../helpers/user.inc';
+UserHelper::check_access();
+
 include "templates/include/header.php";
 include "templates/include/top-menu.php";
-
 ?>
 
 <div class="container">
 	<div class="page-header"><h1>Log Book</h1></div>
       <div class="col-md-8">
           <?php
-          
+
           	$query_result = DB::query("SELECT * FROM flights WHERE pilot =:id", array(':id' => $_SESSION['user']['id']));
 			$skrydziai = array();
 			foreach ($query_result as $eilute) {
@@ -33,8 +33,8 @@ include "templates/include/top-menu.php";
 			<th>Skrydžių kiekis</th>
 			<th>Skrydžių trukmė</th>
           	</tr>
-          <?php foreach ( $skrydziai as $skrydis ) { 
-          	
+          <?php foreach ( $skrydziai as $skrydis ) {
+
           		echo "<td>".$skrydis['record_id']."</td>";
 				echo "<td>".$skrydis['data']."</td>";
 				echo "<td>".$skrydis['airplane_registration']."</td>";
@@ -43,7 +43,7 @@ include "templates/include/top-menu.php";
 				echo "<td>".$skrydis['duration']."</td>";
           		echo "</tr>";
 				}
-		  
+
 		  ?>
 		</table>
 	 </div>
@@ -57,7 +57,7 @@ include "templates/include/top-menu.php";
             </div>
           </div>
         </div>
-      
+
 
     </div> <!-- /container -->
 

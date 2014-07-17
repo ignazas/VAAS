@@ -1,8 +1,12 @@
-<?php require "common.php" ?>
-<?php require "secure.php" ?>
-<?php include "templates/include/header.php" ?>
-<?php include "templates/include/top-menu.php" ?>
-<?php $today = strtotime(date('Y-m-d')) ?>
+<?php
+require_once dirname(__FILE__) . '/../helpers/user.inc';
+UserHelper::check_access();
+
+include "templates/include/header.php";
+include "templates/include/top-menu.php";
+
+$today = strtotime(date('Y-m-d'));
+?>
 
 <div class="container">
   <?php include "templates/include/messages.inc" ?>
