@@ -1,30 +1,15 @@
 <?php
-    // user status
-    $on = '';
-	$admin = '';
-    $action = isset($action) ? $action : NULL;
-
-	IF(isset($_SESSION['user'])) {
-    //IF(!empty($_SESSION['user'])) {
-
-		//prisijunges
-    	$on = TRUE;
-
-		//adminas
-		IF($_SESSION['user']['usertype']=="Administrator" || $_SESSION['user']['usertype']=="Super Administrator") {
-			 $admin = TRUE;
-		}
-    }
-
-	IF(isset( $_GET['action'] )) { 	$action = $_GET['action']; }
-    ?>
+$action = isset($_GET['action']) ? $_GET['action'] : (isset($action) ? $action : NULL);
+$on = UserHelper::logged_in();
+$admin = UserHelper::has_permission();
+?>
 
     <!-- Static navbar -->
     <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="sr-only">Perjungti navigaciją</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -55,17 +40,22 @@
 <?php } else { ?>
             <li <?php if ($action=="user" && (empty($_GET['id']) || (!empty($_SESSION['user']['id']) && $_GET['id'] == $_SESSION['user']['id'])) && (empty($_GET['view']) || $_GET['view'] == 'View' || $_GET['view'] == 'Edit')) {echo "class=\"active\"";} ?>><a class="" href="index.php?action=user"><i class="glyphicon glyphicon-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
 
-<?php if ($admin) { ?>
+<?php if ($admin || UserHelper::has_permission('day_tag')) { ?>
             <li class="<?php if (in_array($action, array("article", "admin/bookings", "admin/finance", "aircraft", "flight", "service"))) {echo 'active';} ?> dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Administravimas"><i class="glyphicon glyphicon-cog"></i><span class="hidden-lg hidden-md hidden-sm"> Administravimas</span> <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li <?php if ($action=="article") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=article&amp;view=AdminItemList" title="Pranešimai"><i class="glyphicon glyphicon-bell"></i> Pranešimai</a></li>
+<?php if ($admin) { ?>
+                <li <?php if ($action=="admin/news") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=article&amp;view=AdminItemList" title="Pranešimai"><i class="glyphicon glyphicon-bell"></i> Pranešimai</a></li>
+<?php } ?>
+<?php if (UserHelper::has_permission('day_tag')) { ?>
                 <li <?php if ($action=="admin/working_days") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/working_days" title="Darbo dienos"><i class="glyphicon glyphicon-book"></i> Darbo dienos</a></li>
+<?php } ?>
+<?php if ($admin) { ?>
                 <li <?php if ($action=="admin/bookings") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/bookings" title="Registracijos"><i class="glyphicon glyphicon-calendar"></i> Registracijos</a></li>
                 <li <?php if ($action=="admin/finance") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/finance" title="Finansai"><i class="glyphicon glyphicon-shopping-cart"></i> Finansai</a></li>
                 <li <?php if ($action=="aircraft") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=aircraft" title="Orlaiviai"><i class="glyphicon glyphicon-plane"></i> Orlaiviai</a></li>
                 <li <?php if ($action=="flight") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=flight" title="Skrydžiai"><i class="glyphicon glyphicon-list-alt"></i> Skrydžiai</a></li>
                 <li class="<?php if ($action=="service") {echo "active";} ?>"><a class="" href="admin.php?action=service" title="Kainynas"><i class="glyphicon glyphicon-shopping-cart"></i> Kainynas</a></li>
-
+<?php } ?>
               </ul>
             </li>
 <?php } ?>

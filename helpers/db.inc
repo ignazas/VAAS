@@ -7,7 +7,13 @@ class DB {
 
     public static function connect() {
         if (DB::$conn == NULL) {
-            DB::$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+          try {
+            DB::$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+          } catch(PDOException $ex) {
+            die("Failed to connect to the database: " . $ex->getMessage());
+          }
+          DB::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+          DB::$conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         }
         return DB::$conn;
     }
@@ -19,9 +25,10 @@ class DB {
         if (!$st)
             die(DB::$conn->errorInfo());
 
-        if (!$st->execute($params)) {
-	    print_r($params);
-	    die("Error in sql query: $query");
+	try {
+	    $st->execute($params);
+	} catch (Exception $ex) {
+	    die($ex);
 	}
 
         return $st;
@@ -29,7 +36,7 @@ class DB {
 
     public static function fetch_object($query, $params = NULL) {
 	$st = DB::query($query, $params);
-	return $st->fetchObject();
+        return $st->fetchObject();
     }
 
     public static function fetch($query, $params = NULL) {

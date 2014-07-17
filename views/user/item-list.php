@@ -38,7 +38,7 @@
           <?php echo theme('display', 'registerDate', 'Užsiregistravo', $user) ?>
           <?php echo theme('display', 'lastvisitDate', 'Paskutinis apsilankymas', $user) ?>
 	</td>
-<?php if ($this->HasPermission()) { ?>
+<?php if ($this->HasPermission() || (!empty($_SESSION['user']['id']) && $_SESSION['user']['id'] == $user->id)) { ?>
 	<td>
  	  <a class="btn btn-xs btn-default" href="index.php?action=user&amp;view=Edit&amp;id=<?php echo $user->id ?>">Redaguoti</a>
 	</td>

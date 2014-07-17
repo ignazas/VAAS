@@ -1,8 +1,8 @@
 <?php
-require_once dirname(__FILE__) . '/../helpers/messages.inc';
+require_once dirname(__FILE__) . '/../helpers/user.inc';
+UserHelper::check_access();
 
-require dirname(__FILE__) . "/../common.php";
-require dirname(__FILE__) . "/../secure.php";
+require_once dirname(__FILE__) . '/../helpers/messages.inc';
 include dirname(__FILE__) . "/../templates/include/header.php";
 include dirname(__FILE__) . "/../templates/include/top-menu.php";
 ?>

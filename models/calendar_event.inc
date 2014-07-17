@@ -56,14 +56,14 @@ class CalendarEvent
     while ($row = $st->fetch()) {
       $e = new CalendarEvent($row);
       $e->user = new User($row);
+      $e->user->id = $e->user_id;
       $list[] = $e;
     }
 
     // Now get the total number of articles that matched the criteria
-    $st = DB::query("SELECT FOUND_ROWS() AS totalRows");
-    $totalRows = $st->fetch();
+    $totalRows = DB::fetch("SELECT FOUND_ROWS() AS totalRows");
 
-    return array ( "results" => $list, "totalRows" => $totalRows[0] );
+    return array ( "results" => $list, "totalRows" => $totalRows['totalRows'] );
   }
 
   /**
@@ -102,10 +102,9 @@ class CalendarEvent
     }
 
     // Now get the total number of articles that matched the criteria
-    $st = DB::query("SELECT FOUND_ROWS() AS totalRows");
-    $totalRows = $st->fetch();
+    $totalRows = DB::fetch("SELECT FOUND_ROWS() AS totalRows");
 
-    return array ( "results" => $list, "totalRows" => $totalRows[0] );
+    return array ( "results" => $list, "totalRows" => $totalRows['totalRows'] );
   }
 
   /**
@@ -122,6 +121,7 @@ class CalendarEvent
     if ($row = $st->fetch()) {
       $e = new CalendarEvent($row);
       $e->user = new User($row);
+      $e->user->id = $e->user_id;
       return $e;
     }
 

@@ -41,9 +41,10 @@ class ArticleControler extends BaseControler {
       'formAction' => "editArticle",
     );
 
+    if (empty($_GET['articleId']) && !empty($_GET['id'])) $_GET['articleId'] = $_GET['id'];
     if (isset($_POST['saveChanges'])) {
       // User has posted the article edit form: save the article changes
-      if ( !$article = Article::getById( (int)$_POST['articleId'])) {
+      if (!$article = Article::getById( (int)$_POST['articleId'])) {
         Messages::set_message("Pranešimas nerastas.", 'errors');
         return $this->AdminItemList();
       }
@@ -112,6 +113,7 @@ class ArticleControler extends BaseControler {
     if (!$this->HasPermission())
       $this->Transfer();
 
+    if (empty($_GET['articleId']) && !empty($_GET['id'])) $_GET['articleId'] = $_GET['id'];
     if (empty($_GET['articleId']) || !($article = Article::getById((int)$_GET['articleId']))) {
       Messages::set_message("Pranešimas nerastas.", 'errors');
     }
@@ -132,6 +134,7 @@ class ArticleControler extends BaseControler {
   public function View() {
     $this->view = dirname(__FILE__) . '/../views/article/view.php';
 
+    if (empty($_GET['articleId']) && !empty($_GET['id'])) $_GET['articleId'] = $_GET['id'];
     if (isset($_GET["articleId"])) {
       $results = array('article' => Article::getById((int)$_GET["articleId"]));
     }

@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
 require_once dirname(__FILE__) . '/../models/calendar_event.inc';
+require_once dirname(__FILE__) . '/../helpers/user.inc';
 
 $info = CalendarEvent::get($_GET['id']);
 
@@ -27,13 +28,20 @@ $time_array = split(":", str_replace(array('.', ','), ':', $info->event_time));
 
 <?php if (!empty($info->event_desc) || $info->isSpecial()) { ?>
   <h2 class="event">Pastabos</h2>
-<?php if ($info->isSpecial()) { ?>
+<?php   if ($info->isSpecial()) { ?>
   <div class="eventdetail">
     <?php echo theme('display', 'event_title', 'Renginys', $info) ?>
   </div>
-<?php } ?>
+<?php   } ?>
   <div class="eventdetail">
     <?php echo theme('display', 'event_desc', NULL, $info) ?>
+  </div>
+<?php } ?>
+
+<?php USerHelper::init_session() ?>
+<?php if (strtotime($info->event_date) >= strtotime(date('Y-m-d')) && !empty($_SESSION['user']['id']) && $_SESSION['user']['id'] == $info->user->id) { ?>
+  <div class="buttons">
+    <a class="delete btn btn-danger" onclick="return confirm('Ar tikrai norite atsisakyti registracijos?')" href="index.php?action=deleteBooking&amp;bookingId=<?php echo $info->event_id ?>&amp;destination=index.php%3Faction%3Dcalendar%26year%3D<?php echo $info->event_year ?>%26month%3D<?php echo $info->event_month+1 ?>"><i class="glyphicon glyphicon-minus"></i> Atsisakyti</a>
   </div>
 <?php } ?>
 

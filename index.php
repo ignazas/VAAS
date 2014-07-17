@@ -1,13 +1,10 @@
 <?php
-
+require_once dirname(__FILE__) . '/helpers/user.inc';
 require "config.php";
 require "functions.php";
 require "helpers/route.inc";
 
-$con=DB::connect();
-
-if (session_id() == '') session_start();
-if (!empty($_SESSION['user']['id'])) {
+if (UserHelper::logged_in()) {
     require "models/user.inc";
     $user_model = new User();
     $user_model->Put($_SESSION['user']['id'], array('lastvisitDate' => date('Y-m-d H:i:s')));

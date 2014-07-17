@@ -9,12 +9,9 @@ class BaseControler {
     $this->view = NULL;
   }
 
-  public function HasPermission($permission = 'administer') {
-    switch ($permission) {
-      case 'administer':
-        return !empty($_SESSION['user']['usertype']) &&
-          ($_SESSION['user']['usertype']=="Administrator" || $_SESSION['user']['usertype']=="Super Administrator");
-    }
+  public static function HasPermission($permission = 'administer') {
+    require_once dirname(__FILE__) . '/../helpers/user.inc';
+    return UserHelper::has_permission($permission);
   }
 
   /*
