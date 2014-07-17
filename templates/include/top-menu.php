@@ -27,7 +27,7 @@ $admin = UserHelper::has_permission();
                 <li class="calendar<?php if ($action=="calendar"){echo " active";} ?>"><a class="" href="index.php?action=calendar"><i class="glyphicon glyphicon-calendar"></i> Registruotis</a></li>
                 <li class="calendar mobile<?php if ($action=="calendar"){echo " active";} ?>"><a class="" href="index.php?action=calendar#<?php echo date('Y-m-d')?>"><i class="glyphicon glyphicon-calendar"></i> Registruotis</a></li>
                 <li <?php if ($action=="my_bookings"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=my_bookings"><i class="glyphicon glyphicon-book"></i> Mano registracijos</a></li>
-		<li <?php if ($action=="weather"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=weather" title="Orai"><i class="glyphicon glyphicon-cloud"></i><span class="hidden-md hidden-sm"> Orai</span></a></li>
+		<li <?php if ($action=="weather"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=weather" title="Orai"><i class="glyphicon glyphicon-cloud"></i> Orai</a></li>
               </ul>
             </li>
             <li <?php if ($action=="user" && isset($_GET['view']) && $_GET['view'] == 'ItemList'){echo "class=\"active\"";} ?>><a class="" href="index.php?action=user&amp;view=ItemList" title="Nariai"><i class="glyphicon glyphicon-user"></i><span class="hidden-md hidden-sm"> Nariai</span></a></li>
