@@ -3,6 +3,11 @@
   <h2 style="width: 75%;"><?php echo htmlspecialchars( $results['article']->title )?></h2>
   <p class="pubDate">Paskelbta <i><?php echo date('Y-m-d', $results['article']->publicationDate)?></i></p>
   <?php echo $results['article']->content ?>
+<?php if (UserHelper::has_permission()) { ?>
+  <div class="buttons">
+    <a href="index.php?action=article&amp;view=Edit&amp;id=<?php echo $results['article']->id ?>" class="btn btn-sm btn-primary">Redaguoti</a>
+  </div>
+<?php } ?>
 </div>
 
 <div class="col-md-4">
@@ -16,9 +21,3 @@
     </div>
   </div>
 </div>
-
-<?php if (UserHelper::has_permission()) { ?>
-<div class="buttons">
-  <a href="index.php?action=article&amp;view=Edit&amp;id=<?php echo $results['article']->id ?>" class="btn btn-sm btn-primary">Redaguoti</a>
-</div>
-<?php } ?>
