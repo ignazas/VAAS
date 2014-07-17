@@ -123,6 +123,8 @@ ul.list-group > li {
   margin-bottom: -1px;
   border: 1px solid #ddd;
   border-radius: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 ul.list-group > li:first-child {
   border-top-right-radius: 4px;
