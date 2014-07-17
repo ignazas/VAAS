@@ -65,5 +65,12 @@ if (empty($value))
 <?php if (!empty($this->prognosis)) { ?>
 <h2>Orų prognozė</h2>
 <img class="img-responsive" src="<?php echo $this->prognosis ?>" alt="Skaitmeninė Paluknio orų prognozė" />
-<a href="http://meteo.lt/skaitmenine_prog_lt_zem.php?skpt=lt_krit" target="_blank">Daugiau</a>
+<ol>
+  <li>Mėlyni (lietaus) arba purpuriniai (sniego) stulpeliai rodo kritulių kiekį per 1 val. Kritulių skalė yra kairėje pusėje (matavimo vienetai - mm/1 val.).</li>
+  <li>Oranžinės spalvos linija rodo vidutinį vėjo greitį. Vėjo greičio skalė yra kairėje pusėje (matavimo vienetai - m/s). Melsva spalva vaizduojami vėjo gūsiai (m/s). Rodyklės rodo vėjo kryptį.</li>
+  <li>Raudona linija rodo oro temperatūrą 2 m aukštyje. Mėlyna linija pavaizduota rasos taško temperatūra. Temperatūros skalė yra kairėje pusėje (matavimo vienetai - <sup>o</sup>C).</li>
+  <li>Pilka linija rodo slėgį jūros lygyje. Slėgio skalė yra kairėje pusėje (matavimo vienetai - hPa).</li>
+</ol>
+<a class="btn btn-default" href="http://meteo.lt/skaitmenine_prog_lt_zem.php?skpt=lt_krit" target="_blank">Krituliai</a>
+<a class="btn btn-default" href="http://meteo.lt/skaitmenine_prog_lt_zem.php?skpt=lt_vej" target="_blank">Vėjas</a>
 <?php } ?>
