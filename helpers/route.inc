@@ -26,10 +26,6 @@ class Index {
         require( TEMPLATE_PATH . "/singleNews.php" );
     }
 
-    public static function finance() {
-      require( TEMPLATE_PATH . "/finance.php" );
-    }
-
     public static function calendar() {
       require( TEMPLATE_PATH . "/calendar.php" );
     }

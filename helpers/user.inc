@@ -20,6 +20,11 @@ class UserHelper {
     return !empty($_SESSION['user']);
   }
 
+  public static function get_id() {
+    UserHelper::init_session();
+    return empty($_SESSION['user']['id']) ? NULL : $_SESSION['user']['id'];
+  }
+
   public static function log_out() {
     if (UserHelper::logged_in()) {
       require_once dirname(__FILE__) . '/../functions.php';

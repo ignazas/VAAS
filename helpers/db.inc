@@ -26,7 +26,7 @@ class DB {
             die(DB::$conn->errorInfo());
 
 	try {
-	    $st->execute($params);
+    $st->execute($params);
 	} catch (Exception $ex) {
 	    die($ex);
 	}

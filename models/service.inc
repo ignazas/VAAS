@@ -69,7 +69,7 @@ class Service
     $st = DB::query("SELECT FOUND_ROWS() AS totalRows");
     $totalRows = $st->fetch();
 
-    return array("results" => $list, "totalRows" => $totalRows[0]);
+    return array("results" => $list, "totalRows" => $totalRows['totalRows']);
   }
 
   /**

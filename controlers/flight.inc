@@ -43,8 +43,6 @@ class FlightControler extends BaseControler {
     );
 
     if (isset($_POST['saveChanges'])) {
-      print_r($_POST);
-      die;
       // User has posted the article edit form: save the article changes
       $flight = new Flight();
       $results['flight'] = $flight;
@@ -57,9 +55,18 @@ class FlightControler extends BaseControler {
               $data[$_key] = $_value[$key];
           }
           $flight->storeFormValues($data);
+
+          print_r($_POST);
+          die;
+
           if ($flight->insert()) {
             //create payment
-
+            if (!empty($flight->amount)) {
+              require_once dirname(__FILE__) . '/../models/finance.inc';
+              $finance = Finance::getByUserId();
+              $finance->flight_fee = floatval($finance->flight_fee) - $flight->amount;
+              $finance->update();
+            }
 
             //log it
             log_event("Admin", "FlightCreated", $flight->id);
