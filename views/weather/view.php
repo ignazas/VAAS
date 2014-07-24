@@ -73,4 +73,5 @@ if (empty($value))
 </ol>
 <a class="btn btn-default" href="http://meteo.lt/skaitmenine_prog_lt_zem.php?skpt=lt_krit" target="_blank">Krituliai</a>
 <a class="btn btn-default" href="http://meteo.lt/skaitmenine_prog_lt_zem.php?skpt=lt_vej" target="_blank">Vėjas</a>
+<a class="btn btn-default" href="http://meteo.lt/radaro_inf.php" target="_blank">Radaro informacija</a>
 <?php } ?>

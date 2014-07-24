@@ -1,6 +1,6 @@
 <?php if (isset($elements['article']) && is_array($elements['article']) && !empty($elements['article'])) { ?>
 
-<div class="col-md-12">
+<div class="row">
   <h2>Pranešimai</h2>
   <?php foreach ($elements['article']['results'] as $article) { ?>
   <div class="panel panel-default">
