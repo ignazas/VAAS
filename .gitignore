@@ -5,3 +5,6 @@ uploads/users/*
 *~
 #*#
 uploads/meteo_*.png
+*.BASE
+*.LOCAL
+*.REMOTE
