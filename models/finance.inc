@@ -66,6 +66,7 @@ class Finance
     $st = DB::query("SELECT d.*, u.*, cd.user_id FROM vak_contxtd_debt d INNER JOIN jos_contxtd_details cd ON cd.id=d.contact_id INNER JOIN jos_users u ON cd.user_id=u.id WHERE d.contact_id = :contact_id", array(":contact_id" => $id));
     if ($row = $st->fetch()) {
       $f = new Finance($row);
+      require_once dirname(__FILE__) . '/user.inc';
       $f->user = new User($row);
       $f->user->id = $row['user_id'];
       return $f;
@@ -130,7 +131,9 @@ class Finance
     if (is_null($this->contact_id)) trigger_error ( "Finance::insert(): Attempt to insert an Finance object that does not have its contact_id property set (to $this->contact_id).", E_USER_ERROR );
 
     // Insert the Finance
-    $this->fee_last_updated = date('Y-m-d H:i:s');
+    list($usec, $sec) = explode(' ', microtime());
+    $usec = str_replace("0.", ".", $usec);
+    $this->fee_last_updated = date('Y-m-d H:i:s', $sec).$usec;
     $st = DB::query("INSERT INTO vak_contxtd_debt (contact_id,entry_fee,member_fee,labor_fee,house_fee,electricity_fee,airworthiness_fee,insurance_fee,casco_fee,flight_fee,debt_fee,fee_last_updated,fee_notes)
     VALUES (:contact_id,:entry_fee,:member_fee,:labor_fee,:house_fee,:electricity_fee,:airworthiness_fee,:insurance_fee,:casco_fee,:flight_fee,:debt_fee,:fee_last_updated,:fee_notes)", array(
       ':contact_id' => intval($this->contact_id),
@@ -161,7 +164,9 @@ class Finance
     if (is_null($this->contact_id)) trigger_error ( "Finance::update(): Attempt to update an Finance object that does not have its contact_id property set.", E_USER_ERROR );
 
     // Update the Finance
-    $this->fee_last_updated = date('Y-m-d H:i:s');
+    list($usec, $sec) = explode(' ', microtime());
+    $usec = str_replace("0.", ".", $usec);
+    $this->fee_last_updated = date('Y-m-d H:i:s', $sec).$usec;
     $st = DB::query("UPDATE vak_contxtd_debt SET entry_fee=:entry_fee,member_fee=:member_fee,labor_fee=:labor_fee,house_fee=:house_fee,electricity_fee=:electricity_fee,airworthiness_fee=:airworthiness_fee,insurance_fee=:insurance_fee,casco_fee=:casco_fee,flight_fee=:flight_fee,debt_fee=:debt_fee,fee_last_updated=:fee_last_updated,fee_notes=:fee_notes WHERE contact_id = :contact_id", array(
             ':contact_id' => intval($this->contact_id),
             ':entry_fee' => !isset($this->entry_fee) || $this->entry_fee == '' ? PDO::PARAM_NULL : floatval($this->entry_fee),

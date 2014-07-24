@@ -9,9 +9,9 @@
 	<tr>
 	  <th class="date">Data</th>
 	  <th class="service">Paslauga</th>
-	  <th class="user instructor">Instruktorius</th>
 	  <th class="user student">Mokinys/Pirkėjas</th>
-	  <th class="glider">Sklandyt.</th>
+	  <th class="user instructor">Instruktorius</th>
+	  <th class="glider">Orlaivis</th>
 	  <th class="quantity">Kiekis</th>
 	  <th class="price">Kaina, Lt</th>
 	  <th></th>

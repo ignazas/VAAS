@@ -4,12 +4,10 @@ require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/flight.inc';
 
 class FlightControler extends BaseControler {
-  private $model;
   private $view;
 
   public function FlightControler() {
     $this->view = dirname(__FILE__) . '/../templates/flight.php';
-    $this->model = new Flight();
   }
 
   private function Validate() {
@@ -18,9 +16,14 @@ class FlightControler extends BaseControler {
         Messages::form_error('date[' . $key . ']', "Data negali būti tuščia.");
       }
     }
-    foreach ($_POST['user_student'] as $key => $value) {
+    foreach ($_POST['payer'] as $key => $value) {
       if (empty($value)) {
-        Messages::form_error('user_student[' . $key . ']', "Mokinys/Mokėtojas negali būti tuščias.");
+        Messages::form_error('payer[' . $key . ']', "Mokinys/Pirkėjas negali būti tuščias.");
+      }
+    }
+    foreach ($_POST['airplane_registration'] as $key => $value) {
+      if (empty($value)) {
+        Messages::form_error('airplane_registration[' . $key . ']', "Orlaivis negali būti nenurodytas.");
       }
     }
     foreach ($_POST['price'] as $key => $value) {
@@ -56,27 +59,25 @@ class FlightControler extends BaseControler {
           }
           $flight->storeFormValues($data);
 
-          print_r($_POST);
-          die;
-
           if ($flight->insert()) {
             //create payment
+            $finance = NULL;
             if (!empty($flight->amount)) {
               require_once dirname(__FILE__) . '/../models/finance.inc';
-              $finance = Finance::getByUserId();
+              $finance = Finance::getByUserId($flight->payer);
               $finance->flight_fee = floatval($finance->flight_fee) - $flight->amount;
               $finance->update();
             }
 
             //log it
-            log_event("Admin", "FlightCreated", $flight->id);
+            log_event("Admin", "FlightCreated", 'flight id: ' . $flight->record_id . (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id));
           }
           else {
             Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
           }
-          Messages::set_message("Pakeitimai išsaugoti.");
-          $this->Transfer(NULL, 'ItemList');
         }
+        Messages::set_message("Pakeitimai išsaugoti.");
+        $this->Transfer(NULL, 'ItemList');
       }
       include dirname(__FILE__) . '/../views/_layout.php';
     }
@@ -94,14 +95,25 @@ class FlightControler extends BaseControler {
   }
 
   public function Delete() {
-    if (empty($_GET['callsign']) || !($flight = Flight::getByCallsign($_GET['callsign']))) {
-      Messages::set_message("Orlaivis nerastas.", 'errors');
+    if (empty($_GET['record_id']) && !empty($_GET['id'])) $_GET['record_id'] = $_GET['id'];
+    if (empty($_GET['record_id']) || !($flight = Flight::getById($_GET['record_id']))) {
+      Messages::set_message("Skrydžio įrašas nerastas.", 'errors');
     }
     else {
-      $flight->delete();
-      log_event("Admin", "FlightDeleted", $_GET['callsign']);
+      $finance = NULL;
+      if (!empty($flight->amount)) {
+        require_once dirname(__FILE__) . '/../models/finance.inc';
+        $finance = Finance::getByUserId($flight->payer);
+        $finance->flight_fee = floatval($finance->flight_fee) + $flight->amount;
+        $finance->update();
+      }
 
-      Messages::set_message("Orlaivis pašalintas.");
+      $flight->delete();
+
+      //log it
+      log_event("Admin", "FlightDeleted", 'flight id: ' . $flight->record_id . (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id));
+
+      Messages::set_message("Skrydis pašalintas.");
     }
 	  $this->Transfer(NULL, 'ItemList');
     //return $this->ItemList();

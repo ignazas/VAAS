@@ -27,7 +27,7 @@ function theme($type, $name, $label, $entity, $values=NULL) {
     require_once dirname(__FILE__) . '/helpers/messages.inc';
 
     $output = NULL;
-    $value = /*htmlentities*/(isset($values[$name]) ? $values[$name] : isset($entity->{$name}) ? $entity->{$name} : NULL);
+    $value = /*htmlentities*/(isset($values[$name]) ? $values[$name] : (isset($entity->{$name}) ? $entity->{$name} : NULL));
     switch ($type) {
         case 'text':
         case 'url':
@@ -58,11 +58,15 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         $output .= '</div>';
         break;
       case 'display':
+      case 'display_money':
       case 'display_url':
       case 'display_email':
       case 'display_phone':
       case 'display_password':
       case 'display_percent':
+        if ($type == 'display_money' && empty($value))
+          $value = 0;
+
         if (!isset($value) || $value === '')
           break;
 
@@ -88,6 +92,9 @@ function theme($type, $name, $label, $entity, $values=NULL) {
             break;
           case 'display_percent':
             $output .= '<span>' . $value . '%</span>';
+            break;
+          case 'display_money':
+            $output .= '<span>' . $value . ' Lt</span>';
             break;
           default:
             $output .= '<span>' . $value . '</span>';

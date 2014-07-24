@@ -62,11 +62,6 @@ function delete_booking($booking_id) {
     header( "Location: admin.php?action=admin/bookings&status=eventDeleted" );
   }
 
-function finance(){
-
-	require( TEMPLATE_PATH . "/admin/finance.php" );
-}
-
 function deleteDay() {
   $day = $_GET['day'];
 

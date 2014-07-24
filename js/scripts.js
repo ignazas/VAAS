@@ -151,24 +151,24 @@ jQuery(document).ready(function($) {
 	    $.each(flightEntity.getServices(), function(i, service) { selectService.append($('<option></option>').val(service['id']).text(service['title'])) });
 	    addCell(row, selectService, 'service');
 
-	    //pilot
-	    var selectPilot = $('<select />').append($('<option value=""></option>'));
-	    $.each(flightEntity.getUsers(), function(id, user) { selectPilot.append($('<option></option>').val(id).text(user['name'])) });
-	    addCell(row, selectPilot, 'user instructor');
-
 	    //student
-	    var selectStudent = $('<select />').append($('<option value=""></option>'));
+	    var selectStudent = $('<select />').addClass('user').append($('<option value=""></option>'));
 	    $.each(flightEntity.getUsers(), function(id, user) { selectStudent.append($('<option></option>').val(id).text(user['name'])) });
-	    addCell(row, selectStudent, 'user student');
+	    addCell(row, selectStudent, 'payer');
+
+	    //pilot
+	    var selectPilot = $('<select />').addClass('user').append($('<option value=""></option>'));
+	    $.each(flightEntity.getUsers(), function(id, user) { selectPilot.append($('<option></option>').val(id).text(user['name'])) });
+	    addCell(row, selectPilot, 'pilot');
 
 	    //glider
-	    var selectGlider = $('<select />').append($('<option value=""></option>'));
+	    var selectGlider = $('<select />').addClass('glider').append($('<option value=""></option>'));
 	    $.each(flightEntity.getAircrafts(), function(i, glider) { selectGlider.append($('<option></option>').val(glider['callsign']).text(glider['model'])) });
-	    addCell(row, selectGlider, 'glider');
+	    addCell(row, selectGlider, 'airplane_registration');
 
 	    //qty
-	    var qty = $('<input type="number" />');
-	    addCell(row, qty.val(1), 'quantity');
+	    var qty = $('<input type="number" />').addClass('quantity');
+	    addCell(row, qty.val(1), 'amount');
 
 	    //price
 	    var price = $('<input type="number" />');

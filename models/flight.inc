@@ -4,15 +4,15 @@ require_once dirname(__FILE__) . '/../helpers/db.inc';
 class Flight
 {
 
-  public $id = null;
+  public $record_id = null;
   public $date = null;
-  public $pilot = null;
-  public $passenger = null;
-  public $callsign = null;
+  public $instructor = null;
+  public $payer = null;
+  public $airplane_registration = null;
   public $task = null;
   public $amount = null;
   public $duration = null;
-  private $old_callsign = null;
+  public $service_id = null;
 
   /**
   * Sets the object's properties using the values in the supplied array
@@ -20,17 +20,11 @@ class Flight
   * @param assoc The property values
   */
   public function __construct( $data=array() ) {
-    //save old callsign
-    if (isset($data['old_callsign'])) {
-    	$this->old_callsign = $data['old_callsign'];
-    } elseif (isset($data['callsign']) && isset($this->callsign) && ($this->callsign != $data['callsign'])) {
-    	$this->old_callsign = $this->callsign;
-	}
-	if (isset($data['id'])) $this->id = $data['id'];
+	if (isset($data['record_id'])) $this->record_id = $data['record_id'];
     if (isset($data['date'])) $this->date = $data['date'];
-	if (isset($data['pilot'])) $this->pilot = $data['pilot'];
-	if (isset($data['passenger'])) $this->passenger = $data['passenger'];
-    if (isset($data['callsign'])) $this->callsign = $data['callsign'];
+	if (isset($data['instructor'])) $this->instructor['instructor'];
+	if (isset($data['payer'])) $this->payer = $data['payer'];
+    if (isset($data['airplane_registration'])) $this->airplane_registration = $data['airplane_registration'];
 	if (isset($data['task'])) $this->task = $data['task'];
 	if (isset($data['amount'])) $this->amount = $data['amount'];
 	if (isset($data['duration'])) $this->duration = $data['duration'];
@@ -52,15 +46,8 @@ class Flight
   * @param int The article ID
   * @return Flight|false The article object, or false if the record was not found or there was a problem
   */
-  public static function getByCallsign($callsign) {
-    $st = DB::query("SELECT * FROM flights WHERE callsign = :callsign", array(":callsign" => $callsign));
-    if ($row = $st->fetch())
-        return new Flight( $row );
-    return NULL;
-  }
-
   public static function getById($id) {
-    $st = DB::query("SELECT * FROM flights WHERE id = :id", array(":id" => $id));
+    $st = DB::query("SELECT * FROM flights WHERE record_id = :id", array(":id" => $id));
     if ($row = $st->fetch())
         return new Flight( $row );
     return NULL;
@@ -93,15 +80,15 @@ class Flight
   */
   public function insert() {
     // Does the Flight object already have an ID?
-    if ( is_null( $this->callsign ) ) trigger_error ( "Flight::insert(): Attempt to insert an Flight object that does not have its callsign property set (to $this->callsign).", E_USER_ERROR );
+    if (!is_null($this->record_id)) trigger_error ( "Flight::insert(): Attempt to insert an Flight object that does have its record_id property set (to $this->record_id).", E_USER_ERROR );
 
     // Insert the Flight
-    $st = DB::query("INSERT INTO flights (date, callsign, pilot, passenger, task, amount, duration)
-    VALUES (:date, :callsign, :pilot, :passenger, :task, :amount, :duration)", array(
+    $st = DB::query("INSERT INTO flights (date, airplane_registration, instructor, payer, task, amount, duration)
+    VALUES (:date, :airplane_registration, :instructor, :payer, :task, :amount, :duration)", array(
         ":date" => $this->date,
-        ":callsign" => $this->callsign,
-        ":pilot" => $this->pilot,
-        ":passenger" => $this->passenger,
+        ":airplane_registration" => $this->airplane_registration,
+        ":instructor" => $this->instructor,
+        ":payer" => $this->payer,
         ":task" => $this->task,
         ":amount" => $this->amount,
         ":duration" => $this->duration,
@@ -116,13 +103,13 @@ class Flight
   */
   public function update() {
     // Does the Flight object have an ID?
-    if ( is_null( $this->callsign ) ) trigger_error ( "Flight::update(): Attempt to update an Flight object that does not have its callsign property set.", E_USER_ERROR );
+    if (is_null($this->record_id)) trigger_error ( "Flight::update(): Attempt to update an Flight object that does not have its record_id property set.", E_USER_ERROR );
 
     // Update the Flight
-    $st = DB::query("UPDATE flights SET model=:model, callsign = :callsign WHERE callsign = :old_callsign", array(
+    $st = DB::query("UPDATE flights SET model=:model, airplane_registration = :airplane_registration WHERE record_id = :record_id", array(
         ":model" => $this->model,
-        ":callsign" => $this->callsign,
-        ":old_callsign" => isset($this->old_callsign) ? $this->old_callsign : $this->callsign,
+        ":airplane_registration" => $this->airplane_registration,
+        ":record_id" => $this->record_id,
       ));
 
     return $st->rowCount();
@@ -133,9 +120,9 @@ class Flight
   */
   public function delete() {
     // Does the Flight object have an ID?
-    if ( is_null( $this->callsign ) ) trigger_error ( "Flight::delete(): Attempt to delete an Flight object that does not have its ID property set.", E_USER_ERROR );
+    if ( is_null( $this->record_id ) ) trigger_error ( "Flight::delete(): Attempt to delete an Flight object that does not have its record_id property set.", E_USER_ERROR );
 
     // Delete the Flight
-    DB::query( "DELETE FROM flights WHERE callsign = :callsign LIMIT 1", array(":callsign" => $this->callsign));
+    DB::query( "DELETE FROM flights WHERE record_id = :record_id LIMIT 1", array(":record_id" => $this->record_id));
   }
 }

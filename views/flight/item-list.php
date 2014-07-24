@@ -1,13 +1,13 @@
 <div class="page-header"><h1>Skrydžių redagavimas</h1></div>
-<div class="col-md-8">
+<div class="col-md-12">
   <table class="table table-striped">
     <thead>
       <tr>
 	<th>#</th>
 	<th>Data</th>
 	<th>Orlaivis</th>
-	<th>Pilotas Instruktorius</th>
-	<th>Keleivis Mokinys</th>
+	<th>Keleivis/Pirkėjas</th>
+	<th>Instruktorius</th>
 	<th>Užduotis</th>
 	<th>Trukmė</th>
 	<th>Kiekis</th>
@@ -19,19 +19,19 @@
 
       <tr>
 	<td>
-	  <a href="admin.php?action=flight&amp;view=View&amp;id=<?php echo $flight->id ?>"><?php echo $flight->id ?></a>
+	  <a href="admin.php?action=flight&amp;view=View&amp;id=<?php echo $flight->record_id ?>"><?php echo $flight->record_id ?></a>
 	</td>
 	<td>
 	  <?php echo $flight->date ?>
 	</td>
 	<td>
-	  <?php echo $flight->callsign ?>
+	  <?php echo $flight->airplane_registration ?>
 	</td>
 	<td>
-	  <?php echo $flight->pilot ?>
+	  <?php echo $flight->payer ?>
 	</td>
 	<td>
-	  <?php echo $flight->passenger ?>
+	  <?php echo $flight->instructor ?>
 	</td>
 	<td>
 	  <?php echo $flight->task ?>
@@ -43,10 +43,10 @@
 	  <?php echo $flight->amount ?>
 	</td>
 	<td>
- 	  <a class="btn btn-xs btn-default" href="admin.php?action=flight&amp;view=Edit&amp;id=<?php echo $flight->id ?>">Redaguoti</a>
+ 	  <a class="btn btn-xs btn-default" href="admin.php?action=flight&amp;view=Edit&amp;id=<?php echo $flight->record_id ?>">Redaguoti</a>
 	</td>
 	<td>
- 	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti įrašą <?php echo $flight->id ?>?')" href="admin.php?action=flight&amp;view=Delete&amp;id=<?php echo $flight->id ?>">Pašalinti</a>
+ 	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti įrašą <?php echo $flight->record_id ?>?')" href="admin.php?action=flight&amp;view=Delete&amp;id=<?php echo $flight->record_id ?>">Pašalinti</a>
 	</td>
       </tr>
 
