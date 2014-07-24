@@ -15,7 +15,7 @@
       <tr>
 	<td><?php echo date('Y-m-d', $article->publicationDate)?></td>
 	<td>
-          <?php echo $article->title?>
+          <a href="index.php?action=article&amp;view=View&amp;articleId=<?php echo $article->id ?>"><?php echo $article->title?></a>
 	</td>
 	<td>
  	  <a class="btn btn-xs btn-default" href="index.php?action=article&amp;view=Edit&amp;articleId=<?php echo $article->id ?>">Redaguoti</a>
