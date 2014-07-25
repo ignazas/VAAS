@@ -25,3 +25,5 @@ ALTER TABLE `zadmin_vanza2`.`vak_balance_journal`
 
 ALTER TABLE `zadmin_vanza2`.`vak_balance_journal`
   ADD INDEX `IX_BALANCE_JOURNAL_ID_UPDATED` (`contact_id` ASC, `fee_updated` ASC) ;
+
+ALTER TABLE `zadmin_vanza2`.`flights` ADD COLUMN `price` DECIMAL(10,0) NULL  AFTER `service_id` ;

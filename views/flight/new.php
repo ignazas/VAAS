@@ -22,8 +22,28 @@
     </table>
 
     <label class="control-label" for="singlebutton"></label>
-	<button id="submit" name="saveChanges" class="btn btn-primary">Įtraukti</button>
+	<button id="submit" name="saveChanges" name="saveChanges" class="btn btn-primary">Įtraukti</button>
 	<a href="#" class="add" class="btn">Pridėti eilutę</a>
     </div>
   </fieldset>
 </form>
+
+<script language="javascript">
+jQuery(document).ready(function($) {
+<?php if (!empty($_POST['date'])) foreach ($_POST['date'] as $key => $value) { ?>
+  window.flightEntity.addRow($('form#flight-add'), {
+    date: '<?php echo isset($_POST['date'][$key]) ? $_POST['date'][$key] : NULL ?>'
+    , service_id: '<?php echo isset($_POST['service_id'][$key]) ? $_POST['service_id'][$key] : NULL ?>'
+    , payer: '<?php echo isset($_POST['payer'][$key]) ? $_POST['payer'][$key] : NULL ?>'
+    , pilot: '<?php echo isset($_POST['pilot'][$key]) ? $_POST['pilot'][$key] : NULL ?>'
+    , airplane_registration: '<?php echo isset($_POST['airplane_registration'][$key]) ? $_POST['airplane_registration'][$key] : NULL ?>'
+    , amount: '<?php echo isset($_POST['amount'][$key]) ? $_POST['amount'][$key] : NULL ?>'
+    , price: '<?php echo isset($_POST['price'][$key]) ? $_POST['price'][$key] : NULL ?>'
+  });
+
+<?php } ?>
+  //add row if there is none
+  if ($('form#flight-add').length && !window.flightEntity.rows($('form#flight-add')).length)
+    window.flightEntity.addRow($('form#flight-add'));
+});
+</script>

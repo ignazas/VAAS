@@ -32,13 +32,15 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         case 'text':
         case 'url':
         case 'email':
+        case 'number':
+        case 'date':
         case 'password':
           $output = '<div';
           if (Messages::has_error($name))
             $output .= ' class="err"';
           $output .= '>';
           if (!empty($label))
-            $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+            $output .= '<label class="control-label" for="' . $name . '">' . $label . '</label> ';
           $output .= '<input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . $value . '"/></div>';
           break;
       case 'display_avatar':

@@ -13,7 +13,6 @@
     <script src="js/jquery.bpopup.min.js"></script>
     <script src="js/scripts.js"></script>
 
-    <script src="js/jquery-1.11.0.js"></script>
     <script src="js/chosen.jquery.min.js"></script>
 
     <script type="text/javascript" src="libraries/tinymce/tinymce.min.js"></script>

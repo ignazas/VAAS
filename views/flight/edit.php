@@ -1,29 +1,72 @@
-<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a><br />
+<?php
+require_once dirname(__FILE__) . '/../../models/service.inc';
+$services = Service::getList();
+require_once dirname(__FILE__) . '/../../models/user.inc';
+$users = User::getList();
+require_once dirname(__FILE__) . '/../../models/aircraft.inc';
+$airplanes = Aircraft::getList();
+?>
 
-<form id="flight-add" class="form-horizontal" action="" method="POST">
+<form id="flight-edit" class="form-horizontal" action="" method="POST" role="form">
+  <input type="hidden" name="id" value="<?php echo $results['flight']->record_id ?>" />
   <fieldset>
+    <legend>Redaguoti skrydį</legend>
 
-    <!-- Form Name -->
-    <legend>Įtraukti skrydį</legend>
-
-    <!-- Text input-->
     <div class="form-group">
-		<label class="control-label" for="date">Data</label>
-		<input id="date" name="date" class="form-control input-md" type="text" maxlength="10" value="<?php ?>">
-		<label class="control-label" for="callsign">Registracija</label>
-      	<input id="callsign" name="callsign" class="form-control input-md" type="text" value="">
-		<label class="control-label" for="pilot">Pilotas</label>
-		<input id="pilot" name="pilot" class="form-control input-md" type="text" value="">
-		<label class="control-label" for="passenger">Keleivis</label>
-		<input id="passenger" name="passenger" class="form-control input-md" type="text" value="">
-		<label class="control-label" for="task">Užduotis</label>
-		<input id="task" name="task" class="form-control input-md" type="text" value="">
-		<label class="control-label" for="amount">Kiekis</label>
-		<input id="amount" name="amount" class="form-control input-md" type="text" value="">
-		<label class="control-label" for="duration">Trukmė</label>
-		<input id="duration" name="duration" class="form-control input-md" type="text" value="">	
-    <label class="control-label" for="singlebutton"></label>
-	<button id="submit" name="saveChanges" class="btn btn-primary">Įtraukti</button>
+      <?php echo theme('date', 'date', 'Data', $results['flight'], $_POST) ?>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label" for="service_id">Paslauga</label>
+      <select name="service_id" id="service_id" class="form-control">
+	<option value=""></option>
+<?php foreach ($services['results'] as $service) { ?>
+	<option amount="<?php echo $service->amount ?>" discount_disabled="<?php echo $service->discount_disabled ?>" value="<?php echo $service->id ?>"<?php echo (!empty($_POST['service_id']) && $_POST['service_id'] == $service->id) || (!empty($results['flight']->service_id) && $results['flight']->service_id == $service->id) ? ' selected="selected"' : NULL ?>><?php echo $service->title ?></option>
+<?php } ?>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label" for="payer">Mokinys/Pirkėjas</label>
+      <select name="payer" id="payer" class="form-control">
+	<option value=""></option>
+<?php foreach ($users['results'] as $user) { ?>
+	<option discount="<?php echo $user->discount ?>" value="<?php echo $user->id ?>"<?php echo (!empty($_POST['payer']) && $_POST['payer'] == $user->id) || (!empty($results['flight']->payer) && $results['flight']->payer == $user->id) ? ' selected="selected"' : NULL ?>><?php echo $user->name ?></option>
+<?php } ?>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label" for="pilot">Instruktorius</label>
+      <select name="pilot" id="pilot" class="form-control">
+	<option value=""></option>
+<?php foreach ($users['results'] as $user) { ?>
+	<option value="<?php echo $user->id ?>"<?php echo (!empty($_POST['pilot']) && $_POST['pilot'] == $user->id) || (!empty($results['flight']->pilot) && $results['flight']->pilot == $user->id) ? ' selected="selected"' : NULL ?>><?php echo $user->name ?></option>
+<?php } ?>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label" for="airplane_registration">Orlaivis</label>
+      <select name="airplane_registration" id="airplane_registration" class="form-control">
+	<option value=""></option>
+<?php foreach ($airplanes['results'] as $airplane) { ?>
+	<option value="<?php echo $airplane->callsign ?>"<?php echo (!empty($_POST['airplane_registration']) && $_POST['airplane_registration'] == $airplane->callsign) || (!empty($results['flight']->airplane_registration) && $results['flight']->airplane_registration == $airplane->callsign) ? ' selected="selected"' : NULL ?>><?php echo $airplane->model ?></option>
+<?php } ?>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <?php echo theme('number', 'amount', 'Kiekis', $results['flight'], $_POST) ?>
+    </div>
+
+    <div class="form-group">
+      <?php echo theme('number', 'price', 'Kaina', $results['flight'], $_POST) ?>
+    </div>
+
+    <div class="buttons">
+      <input type="submit" class="btn btn-sm btn-primary" name="saveChanges" value="Saugoti" />
+      <a href="index.php?action=flight" class="btn btn-sm">Atšaukti</a>
     </div>
 
   </fieldset>

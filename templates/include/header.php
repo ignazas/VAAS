@@ -13,6 +13,7 @@
     <link href="css/popup.css" rel="stylesheet" type="text/css">
     <link href="css/chosen.min.css" rel="stylesheet" type="text/css">
 
+    <script src="js/jquery-1.11.0.js"></script>
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>

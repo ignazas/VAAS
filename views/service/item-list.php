@@ -1,5 +1,5 @@
 <div class="page-header"><h1>Paslaugų redagavimas</h1></div>
-<div class="col-md-8">
+<div class="col-md-12">
   <table class="table table-striped">
     <thead>
       <tr>
@@ -20,10 +20,10 @@
 	  <?php echo $service->title ?>
 	</td>
 	<td>
-	  <?php echo $service->discount_disabled ?>
+    <?php echo $service->discount_disabled == 1 ? '<i class="glyphicon glyphicon-ok"></i>' : '' ?>
 	</td>
 	<td>
-	  <?php echo $service->amount/100 ?>
+    <?php echo theme('display_money', 'amount', NULL, $service) ?>
 	</td>
 	<td>
 	  <?php echo $service->description ?>

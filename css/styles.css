@@ -106,9 +106,11 @@ table .add:active, table .show_day:active, table .add_day:active {
 #flight-add table.table .glider select {
   min-width: 80px;
 }
-#flight-add table.table .quantity,
-#flight-add table.table .price {
+#flight-add table.table .quantity {
   width: 50px;
+}
+#flight-add table.table .price {
+  width: 80px;
 }
 
 #flight-add table.table td, #flight-add table.table th {

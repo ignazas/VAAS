@@ -1,5 +1,5 @@
 <div class="page-header"><h1>Pranešimų administravimas</h1></div>
-<div class="col-md-8">
+<div class="col-md-12">
   <table class="table table-striped">
     <thead>
       <tr>

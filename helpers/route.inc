@@ -90,8 +90,4 @@ class Index {
     public static function svecias() {
         require( TEMPLATE_PATH . "/svecias.php" );
     }
-
-    public static function logbook() {
-          require( TEMPLATE_PATH . "/logbook.php" );
-    }
 }

@@ -1,13 +1,28 @@
+<?php
+$payer = NULL;
+if (isset($results['flight']->payer)) {
+  require_once dirname(__FILE__) . '/../../models/user.inc';
+  $payer = User::Get($results['flight']->payer);
+}
+$service = NULL;
+if (isset($results['flight']->service_id)) {
+  require_once dirname(__FILE__) . '/../../models/service.inc';
+  $service = Service::getById($results['flight']->service_id);
+}
+?>
+
 <div class="page-header"><h1>Skrydis</h1></div>
 <div class="row">
   <div class="col-md-8">
     <?php echo theme('display', 'date', 'Data', $results['flight']) ?>
-    <?php echo theme('display', 'callsign', 'Orlaivis', $results['flight']) ?>
-    <?php echo theme('display', 'pilot', 'Pilotas', $results['flight']) ?>
-    <?php echo theme('display', 'passenger', 'Keleivis', $results['flight']) ?>
+    <?php echo theme('display', 'airplane_registration', 'Orlaivis', $results['flight']) ?>
+    <?php echo theme('display', 'title', 'Paslauga', $service) ?>
+    <?php echo theme('display', 'pilot', 'Instruktorius', $results['flight']) ?>
+    <?php echo theme('display', 'name', 'Mokinys/Mokėtojas', $payer) ?>
     <?php echo theme('display', 'task', 'Užduotis', $results['flight']) ?>
-    <?php echo theme('display', 'amount', 'Kiekis', $results['flight']) ?>
     <?php echo theme('display', 'duration', 'Trukmė', $results['flight']) ?>
+    <?php echo theme('display', 'amount', 'Kiekis', $results['flight']) ?>
+    <?php echo theme('display_money', 'price', 'Suma', $results['flight']) ?>
     <br />
   </div>
 
