@@ -6,23 +6,22 @@
 	<tr>
 	  <th rowspan="2">#</th>
 	  <th rowspan="2">Narys</th>
-	  <th colspan="8">Mokesčiai</th>
 	  <th rowspan="2">Likutis</th>
+	  <th colspan="7">Mokesčiai</th>
 	  <th rowspan="2">Komentarai</th>
-	  <th rowspan="2">Atnaujinta</th>
+	  <th rowspan="2" style="width:90px;">Atnaujinta</th>
 <?php if ($this->HasPermission()) { ?>
 	  <th rowspan="2"></th>
 <?php } ?>
 	</tr>
 	<tr>
+	  <th>Skrydžiai</th>
 	  <th>Nario</th>
-	  <th>Darbų/talkos</th>
-	  <th>Patalpų</th>
-	  <th>Elektros</th>
+	  <th>Namelis</th>
+	  <th>Elektra</th>
 	  <th>Draudimas</th>
-	  <th>Kasko</th>
-	  <th>Skrydžių</th>
-	  <th>Už 2 %</th>
+	  <th>2%</th>
+	  <th>Darbai</th>
 	</tr>
       </thead>
       <tbody>
@@ -35,32 +34,29 @@
 	  <td>
 	    <a href="index.php?action=user&amp;id=<?php echo $finance->user->id ?>"><?php echo $finance->user->name ?></a>
 	  </td>
+	  <td title="Likutis" class="<?php echo empty($balance) ? 'warning' : ($balance < 0 ? 'danger' : 'success') ?>">
+ 	    <?php echo $balance ?>
+	  </td>
+	  <td title="Skrydžiai">
+	    <?php echo theme('display', 'flight_fee', NULL, $finance) ?>
+	  </td>
 	  <td title="Nario">
 	    <?php echo theme('display', 'member_fee', NULL, $finance) ?>
 	  </td>
-	  <td title="Darbų/talkos">
-	    <?php echo theme('display', 'labor_fee', NULL, $finance) ?>
-	  </td>
-	  <td title="Patalpų">
+	  <td title="Namelis">
 	    <?php echo theme('display', 'house_fee', NULL, $finance) ?>
 	  </td>
-	  <td title="Elektros">
+	  <td title="Elektra">
 	    <?php echo theme('display', 'electricity_fee', NULL, $finance) ?>
 	  </td>
 	  <td title="Draudimas">
 	    <?php echo theme('display', 'insurance_fee', NULL, $finance) ?>
 	  </td>
-	  <td title="Kasko">
-	    <?php echo theme('display', 'casco_fee', NULL, $finance) ?>
-	  </td>
-	  <td title="Skrydžių">
-	    <?php echo theme('display', 'flight_fee', NULL, $finance) ?>
-	  </td>
-	  <td title="Už 2 %">
+	  <td title="2%">
 	    <?php echo theme('display', 'debt_fee', NULL, $finance) ?>
 	  </td>
-	  <td title="Likutis" class="<?php echo empty($balance) ? 'warning' : ($balance < 0 ? 'danger' : 'success') ?>">
- 	    <?php echo $balance ?>
+	  <td title="Darbai">
+	    <?php echo theme('display', 'labor_fee', NULL, $finance) ?>
 	  </td>
 	  <td title="Komentarai">
  	    <?php echo theme('display', 'fee_notes', NULL, $finance) ?>
