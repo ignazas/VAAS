@@ -43,6 +43,15 @@ function theme($type, $name, $label, $entity, $values=NULL) {
             $output .= '<label class="control-label" for="' . $name . '">' . $label . '</label> ';
           $output .= '<input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . $value . '"/></div>';
           break;
+        case 'decimal':
+          $output = '<div';
+          if (Messages::has_error($name))
+            $output .= ' class="err"';
+          $output .= '>';
+          if (!empty($label))
+            $output .= '<label class="control-label" for="' . $name . '">' . $label . '</label> ';
+          $output .= '<input class="form-control" type="number" step="any" pattern="[0-9]+([\,|\.][0-9]+)?" id="' . $name . '" name="' . $name . '" value="' . $value . '"/></div>';
+          break;
       case 'display_avatar':
         $output = '<div';
         if (Messages::has_error($name))
@@ -60,48 +69,86 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         $output .= '</div>';
         break;
       case 'display':
-      case 'display_money':
-      case 'display_url':
-      case 'display_email':
-      case 'display_phone':
-      case 'display_password':
-      case 'display_percent':
-        if ($type == 'display_money' && empty($value))
-          $value = 0;
-
         if (!isset($value) || $value === '')
           break;
 
-        $output = '<div';
-        if (Messages::has_error($name))
-          $output .= ' class="err"';
-        $output .= '>';
+        $output = '<div>';
         if (!empty($label))
           $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
-        switch ($type) {
-          case 'display_url':
-            $value_short = preg_replace('/^\s*(.*:\/\/|)(www\.|)/', '', $value);
-            $output .= '<a style="white-space:nowrap;" href="' . $value . '" target="_blank"><i class="glyphicon glyphicon-link"></i> ' . $value_short . '</a>';
-            break;
-          case 'display_email':
-            $output .= '<a style="white-space:nowrap;" href="mailto:' . $value . '"><i class="glyphicon glyphicon-envelope"></i> ' . $value . '</a>';
-            break;
-          case 'display_phone':
-            $output .= '<a style="white-space:nowrap;" href="tel:' . $value . '"><i class="glyphicon glyphicon-earphone"></i> ' . $value . '</a>';
-            break;
-          case 'display_password':
-            $output .= '<span>' . preg_replace('/[^*]/', '*', $value) . '</span>';
-            break;
-          case 'display_percent':
-            $output .= '<span>' . $value . '%</span>';
-            break;
-          case 'display_money':
-            $output .= '<span>' . $value . ' Lt</span>';
-            break;
-          default:
-            $output .= '<span>' . $value . '</span>';
-            break;
-        }
+        $output .= '<span>' . $value . '</span>';
+        $output .= '</div>';
+        break;
+      case 'display_money':
+        $output = '<div>';
+        if (!empty($label))
+          $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+        $output .= '<span>' . (empty($value) ? 0 : $value) . ' Lt</span>';
+        $output .= '</div>';
+        break;
+      case 'display_url':
+        if (!isset($value) || $value === '')
+          break;
+
+        $value_short = preg_replace('/^\s*(.*:\/\/|)(www\.|)/', '', $value);
+
+        $output = '<div>';
+        if (!empty($label))
+          $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+        $output .= '<a style="white-space:nowrap;" href="' . $value . '" target="_blank"><i class="glyphicon glyphicon-link"></i> ' . $value_short . '</a>';
+        $output .= '</div>';
+        break;
+      case 'display_email':
+        if (!isset($value) || $value === '')
+          break;
+
+        $output = '<div>';
+        if (!empty($label))
+          $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+        $output .= '<a style="white-space:nowrap;" href="mailto:' . $value . '"><i class="glyphicon glyphicon-envelope"></i> ' . $value . '</a>';
+        $output .= '</div>';
+        break;
+      case 'display_phone':
+        if (!isset($value) || $value === '')
+          break;
+
+        $output = '<div>';
+        if (!empty($label))
+          $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+        $output .= '<a style="white-space:nowrap;" href="tel:' . $value . '"><i class="glyphicon glyphicon-earphone"></i> ' . $value . '</a>';
+        $output .= '</div>';
+        break;
+      case 'display_password':
+        if (!isset($value) || $value === '')
+          break;
+
+        $output = '<div>';
+        if (!empty($label))
+          $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+        $output .= '<span>' . preg_replace('/[^*]/', '*', $value) . '</span>';
+        $output .= '</div>';
+        break;
+      case 'display_percent':
+        if (!isset($value) || $value === '')
+          break;
+
+        $output = '<div>';
+        if (!empty($label))
+          $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+        $output .= '<span>' . $value . '%</span>';
+        $output .= '</div>';
+        break;
+      case 'display_date':
+        if (!isset($value) || $value === '')
+          break;
+
+        //$value = date('Y-m-d H:i:s', strtotime($value));
+        if (!is_string($value))
+          $value = date('Y-m-d H:i:s', $value);
+
+        $output = '<div>';
+        if (!empty($label))
+          $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+        $output .= '<span>' . $value . '</span>';
         $output .= '</div>';
         break;
       default:
@@ -140,4 +187,18 @@ function get_day_letter($date) {
     default:          $savaites_diena = "-"; break;
   }
 	return mb_substr($savaites_diena, 0, 2);
+}
+
+function order_link($name=NULL, $url=NULL, $title=NULL) {
+  $order = isset($_GET['order']) ? ($_GET['order'] == $name ? 'asc' : 'desc') : NULL;
+
+  $output = NULL;
+  if (!empty($url)) {
+    $output .= '<a href="' . htmlspecialchars($url . (strpos($url, '?') ? '&' : '?') . 'order=' . urlencode($order != 'desc' ? "-$name" : $name)) . '">';
+  }
+  if (!empty($title))
+    $output .= $title;
+  if (!empty($url))
+    $output .= ($order == 'asc' ? ' <i class="glyphicon glyphicon-sort-by-alphabet"></i>' : ($order == 'desc' ? ' <i class="glyphicon glyphicon-sort-by-alphabet-alt"></i>' : NULL)) . '</a>';
+  return $output;
 }

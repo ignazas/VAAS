@@ -9,23 +9,28 @@ $data = Service::getList();
 $services = array();
 foreach ($data['results'] as $service)
   $services[$service->id] = $service;
+require_once dirname(__FILE__) . '/../../models/aircraft.inc';
+$data = Aircraft::getList();
+$airplanes = array();
+foreach ($data['results'] as $airplane)
+  $airplanes[$airplane->id] = $airplane;
 ?>
 
-<div class="page-header"><h1>Skrydžių redagavimas</h1></div>
+<div class="page-header"><h1>Skrydžiai</h1></div>
 <div class="col-md-12">
   <table class="table table-striped">
     <thead>
       <tr>
 	<th>#</th>
-	<th>Data</th>
+	<th><?php echo order_link('date', 'index.php?action=flight&view=ItemList', 'Data') ?></th>
 	<th>Orlaivis</th>
 	<th>Paslauga</th>
 	<th>Keleivis/Pirkėjas</th>
 	<th>Instruktorius</th>
 	<th>Kiekis</th>
 <?php if ($this->HasPermission()) { ?>
-	<th></th>
-	<th></th>
+	<th style="width:60px;"></th>
+	<th style="width:69px;"></th>
 <?php } ?>
       </tr>
     </thead>
@@ -41,7 +46,7 @@ foreach ($data['results'] as $service)
 	  <?php echo theme('display', 'date', NULL, $flight) ?>
 	</td>
 	<td>
-	  <?php echo theme('display', 'airplane_registration', NULL, $flight) ?>
+	  <?php echo !empty($airplanes[$flight->airplane_id]) ? $airplanes[$flight->airplane_id]->name : NULL ?>
 	</td>
 	<td>
 	  <?php echo !empty($services[$flight->service_id]) ? $services[$flight->service_id]->title : NULL ?>

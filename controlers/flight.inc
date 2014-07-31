@@ -22,9 +22,9 @@ class FlightControler extends BaseControler {
           Messages::form_error('payer[' . $key . ']', "Mokinys/Pirkėjas negali būti tuščias.");
         }
       }
-      foreach ($_POST['airplane_registration'] as $key => $value) {
+      foreach ($_POST['airplane_id'] as $key => $value) {
         if (empty($value)) {
-          Messages::form_error('airplane_registration[' . $key . ']', "Orlaivis negali būti nenurodytas.");
+          Messages::form_error('airplane_id[' . $key . ']', "Orlaivis negali būti nenurodytas.");
         }
       }
       foreach ($_POST['price'] as $key => $value) {
@@ -40,8 +40,8 @@ class FlightControler extends BaseControler {
       if (empty($_POST['payer'])) {
         Messages::form_error('payer', "Mokinys/Pirkėjas negali būti tuščias.");
       }
-      if (empty($_POST['airplane_registration'])) {
-        Messages::form_error('airplane_registration', "Orlaivis negali būti nenurodytas.");
+      if (empty($_POST['airplane_id'])) {
+        Messages::form_error('airplane_id', "Orlaivis negali būti nenurodytas.");
       }
       if (empty($_POST['price']) || !is_numeric($_POST['price'])) {
         Messages::form_error('price', "Kaina negali būti tuščia arba ne skaičius.");
@@ -282,7 +282,7 @@ class FlightControler extends BaseControler {
   public function ItemList() {
     $this->view = dirname(__FILE__) . '/../views/flight/item-list.php';
 
-    $data = Flight::getList();
+    $data = Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : NULL);
     $results = array('flights' => $data['results'], 'totalRows' => $data['totalRows']);
 
     include dirname(__FILE__) . '/../views/_layout.php';

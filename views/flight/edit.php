@@ -37,21 +37,21 @@ $airplanes = Aircraft::getList();
     </div>
 
     <div class="form-group">
-      <label class="control-label" for="pilot">Instruktorius</label>
-      <select name="pilot" id="pilot" class="form-control">
+      <label class="control-label" for="instructor">Instruktorius</label>
+      <select name="instructor" id="instructor" class="form-control">
 	<option value=""></option>
 <?php foreach ($users['results'] as $user) { ?>
-	<option value="<?php echo $user->id ?>"<?php echo (!empty($_POST['pilot']) && $_POST['pilot'] == $user->id) || (!empty($results['flight']->pilot) && $results['flight']->pilot == $user->id) ? ' selected="selected"' : NULL ?>><?php echo $user->name ?></option>
+	<option value="<?php echo $user->id ?>"<?php echo (!empty($_POST['instructor']) && $_POST['instructor'] == $user->id) || (!empty($results['flight']->instructor) && $results['flight']->instructor == $user->id) ? ' selected="selected"' : NULL ?>><?php echo $user->name ?></option>
 <?php } ?>
       </select>
     </div>
 
     <div class="form-group">
-      <label class="control-label" for="airplane_registration">Orlaivis</label>
-      <select name="airplane_registration" id="airplane_registration" class="form-control">
+      <label class="control-label" for="airplane_id">Orlaivis</label>
+      <select name="airplane_id" id="airplane_id" class="form-control">
 	<option value=""></option>
 <?php foreach ($airplanes['results'] as $airplane) { ?>
-	<option value="<?php echo $airplane->callsign ?>"<?php echo (!empty($_POST['airplane_registration']) && $_POST['airplane_registration'] == $airplane->callsign) || (!empty($results['flight']->airplane_registration) && $results['flight']->airplane_registration == $airplane->callsign) ? ' selected="selected"' : NULL ?>><?php echo $airplane->model ?></option>
+	<option value="<?php echo $airplane->id ?>"<?php echo (!empty($_POST['airplane_id']) && $_POST['airplane_id'] == $airplane->id) || (!empty($results['flight']->airplane_id) && $results['flight']->airplane_id == $airplane->id) ? ' selected="selected"' : NULL ?>><?php echo $airplane->name ?></option>
 <?php } ?>
       </select>
     </div>

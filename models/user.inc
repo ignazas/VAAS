@@ -55,8 +55,16 @@ class User {
                 LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
                 WHERE
                     u.id = :id", array(':id' => $id));
-          if (!empty($data))
+          if (!empty($data)) {
+            if (!isset($data['user_id'])) {
+              //that means context is not created! need to create one
+              DB::insert("INSERT INTO jos_contxtd_details (user_id, email_to, params) VALUES (:user_id, :email_to, '')", array(
+                  ':email_to' => $data['email'],
+                  ':user_id' => $id,
+                ));
+            }
             return new User($data);
+          }
         }
         return NULL;
     }
@@ -141,7 +149,7 @@ class User {
                   ':registerDate' => time(''),
                 ));
 
-    DB::insert("INSERT INTO jos_contxtd_details (user_id, telephone1, website, avatar) VALUES (:user_id, :telephone1, :telephone1, :website, :avatar, :birthdate, :email_to, :con_position)", array(
+    DB::insert("INSERT INTO jos_contxtd_details (user_id, telephone1, telephone2, website, avatar, birthdate, email_to, con_position, params) VALUES (:user_id, :telephone1, :telephone2, :website, :avatar, :birthdate, :email_to, :con_position, '')", array(
         ':telephone1' => $this->telephone1,
         ':telephone2' => $this->telephone2,
         ':website' => $this->website,
@@ -152,6 +160,6 @@ class User {
         ':user_id' => $this->id,
       ));
 
-      return !empty($this->id);
+    return !empty($this->id);
   }
 }

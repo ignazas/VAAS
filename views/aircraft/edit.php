@@ -1,36 +1,45 @@
-<a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a><br />
+<?php $edit = array_merge((array)$results['aircraft'], $_POST) ?>
 
 <form class="form-horizontal" action="" method="POST">
-  <input type="hidden" name="old_callsign" value="<?php echo isset($_POST['old_callsign']) ? $_POST['old_callsign'] : $results['aircraft']->callsign ?>" />
+  <input type="hidden" name="id" value="<?php echo $results['aircraft']->id ?>" />
   <fieldset>
 
     <!-- Form Name -->
-    <legend>Įtraukti orlaivį</legend>
+    <legend><?php echo $results['pageTitle'] ?></legend>
 
-    <!-- Text input-->
     <div class="form-group">
-      <label class="col-md-4 control-label" for="callsign">Registracija</label>
-      <div class="col-md-4">
-	<input id="callsign" name="callsign" placeholder="LY-" class="form-control input-md" type="text" value="<?php echo isset($_POST['callsign']) ? $_POST['callsign'] : $results['aircraft']->callsign ?>">
+    <?php echo theme('text', 'reg_num', 'Registracijos numeris', $results['aircraft'], $edit) ?>
+    <?php echo theme('text', 'name', 'Modelis', $results['aircraft'], $edit) ?>
+    <?php echo theme('text', 'serial_num', 'Serijinis numeris', $results['aircraft'], $edit) ?>
+    <?php echo theme('text', 'first_pilot', 'Pirmas pilotas', $results['aircraft'], $edit) ?>
+    <?php echo theme('text', 'second_pilot', 'Antras pilotas', $results['aircraft'], $edit) ?>
+    <?php echo theme('text', 'third_pilot', 'Trečias pilotas', $results['aircraft'], $edit) ?>
+    <?php echo theme('text', 'remarks', 'Pastabos', $results['aircraft'], $edit) ?>
 
-      </div>
-    </div>
+    <?php echo theme('decimal', 'time_since_new', 'Praskrista iš viso', $results['aircraft'], $edit) ?>
+    <?php echo theme('decimal', 'flights_since_new', 'Skrydžių kiekis iš viso', $results['aircraft'], $edit) ?>
 
-    <!-- Text input-->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="model">Modelis</label>
-      <div class="col-md-4">
-	<input id="model" name="model" placeholder="Bocian" class="form-control input-md" type="text" value="<?php echo isset($_POST['model']) ? $_POST['model'] : $results['aircraft']->model ?>">
+    <?php echo theme('date', 'moh_date', 'MOH', $results['aircraft'], $edit) ?>
+    <?php echo theme('decimal', 'time_since_mo', 'Laikas nuo MO', $results['aircraft'], $edit) ?>
+    <?php echo theme('decimal', 'flights_since_mo', 'Skrydžių nuo MO', $results['aircraft'], $edit) ?>
 
-      </div>
+    <?php echo theme('decimal', 'time_left', 'Laiko liko', $results['aircraft'], $edit) ?>
+    <?php echo theme('decimal', 'flights_left', 'Skrydžių liko', $results['aircraft'], $edit) ?>
+
+    <?php echo theme('decimal', 'time_last_year', 'Praskrista pernai', $results['aircraft'], $edit) ?>
+    <?php echo theme('decimal', 'flights_last_year', 'Skrydžių kiekis pernai', $results['aircraft'], $edit) ?>
+
+    <?php echo theme('date', 'coa_expiry_date', 'COA baigiasi', $results['aircraft'], $edit) ?>
+    <?php echo theme('date', 'civ_insur_expiry_date', 'Civilinis draudimas baigiasi', $results['aircraft'], $edit) ?>
+    <?php echo theme('date', 'kasko_insur_expiry_date', 'Kasko draudimas baigiasi', $results['aircraft'], $edit) ?>
+
+    <?php echo theme('date', 'manuf_date', 'Pagaminimo data', $results['aircraft']) ?>
     </div>
 
     <!-- Button -->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="singlebutton"></label>
-      <div class="col-md-4">
-	<button id="submit" name="saveChanges" class="btn btn-primary">Įtraukti</button>
-      </div>
+    <div class="buttons">
+      <input type="submit" class="btn btn-sm btn-primary" name="saveChanges" value="Saugoti" />
+      <a href="index.php?action=aircraft" class="btn btn-sm">Atšaukti</a>
     </div>
 
   </fieldset>

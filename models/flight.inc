@@ -8,7 +8,7 @@ class Flight
   public $date = null;
   public $instructor = null;
   public $payer = null;
-  public $airplane_registration = null;
+  public $airplane_id = null;
   public $task = null;
   public $amount = null;
   public $price = null;
@@ -23,9 +23,9 @@ class Flight
   public function __construct( $data=array() ) {
     if (isset($data['record_id'])) $this->record_id = $data['record_id'];
     if (isset($data['date'])) $this->date = $data['date'];
-    if (isset($data['instructor'])) $this->instructor['instructor'];
+    if (isset($data['instructor'])) $this->instructor = $data['instructor'];
     if (isset($data['payer'])) $this->payer = $data['payer'];
-    if (isset($data['airplane_registration'])) $this->airplane_registration = $data['airplane_registration'];
+    if (isset($data['airplane_id'])) $this->airplane_id = $data['airplane_id'];
     if (isset($data['task'])) $this->task = $data['task'];
     if (isset($data['amount'])) $this->amount = intval($data['amount']);
     if (isset($data['price'])) $this->price = floatval($data['price']);
@@ -63,9 +63,8 @@ class Flight
   * @param string Optional column by which to order the articles (default="publicationDate DESC")
   * @return Array|false A two-element array : results => array, a list of Flight objects; totalRows => Total number of articles
   */
-  public static function getList( $numRows=1000000) {
-    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS * FROM flights
-            LIMIT $numRows");
+  public static function getList( $numRows=1000000, $order = NULL) {
+    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS * FROM flights" . (!empty($numRows) ? " LIMIT $numRows" : NULL) . (!empty($order) ? (' ORDER BY ' . ltrim($order, '-+') . ($order[0] == '-' ? ' DESC' : ' ASC')) : NULL));
 
     $list = array();
     while ($row = $st->fetch()) {
@@ -86,10 +85,9 @@ class Flight
     if (!is_null($this->record_id)) trigger_error ( "Flight::insert(): Attempt to insert an Flight object that does have its record_id property set (to $this->record_id).", E_USER_ERROR );
 
     // Insert the Flight
-    $st = DB::query("INSERT INTO flights (date, airplane_registration, instructor, payer, task, amount, price, service_id, duration)
-    VALUES (:date, :airplane_registration, :instructor, :payer, :task, :amount, :price, :service_id, :duration)", array(
-        ":date" => $this->date,
-        ":airplane_registration" => $this->airplane_registration,
+    $st = DB::query("INSERT INTO flights (date, airplane_id, instructor, payer, task, amount, price, service_id, duration)
+    VALUES (" . DB::date_as_string($this->date) . ", :airplane_id, :instructor, :payer, :task, :amount, :price, :service_id, :duration)", array(
+        ":airplane_id" => $this->airplane_id,
         ":instructor" => $this->instructor,
         ":payer" => $this->payer,
         ":task" => $this->task,
@@ -110,9 +108,8 @@ class Flight
     if (is_null($this->record_id)) trigger_error ( "Flight::update(): Attempt to update an Flight object that does not have its record_id property set.", E_USER_ERROR );
 
     // Update the Flight
-    $st = DB::query("UPDATE flights SET date=:date, airplane_registration=:airplane_registration, instructor=:instructor, payer=:payer, task=:task, amount=:amount, price=:price, service_id=:service_id, duration=:duration WHERE record_id = :record_id", array(
-        ":date" => $this->date,
-        ":airplane_registration" => $this->airplane_registration,
+    $st = DB::query("UPDATE flights SET date=" . DB::date_as_string($this->date) . ", airplane_id=:airplane_id, instructor=:instructor, payer=:payer, task=:task, amount=:amount, price=:price, service_id=:service_id, duration=:duration WHERE record_id = :record_id", array(
+        ":airplane_id" => $this->airplane_id,
         ":instructor" => $this->instructor,
         ":payer" => $this->payer,
         ":task" => $this->task,

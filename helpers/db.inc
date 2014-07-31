@@ -61,4 +61,11 @@ class DB {
         }
     }
 
+    public static function null_if_empty($value) {
+      return empty($value) ? PDO::PARAM_NULL : $value;
+    }
+
+    public static function date_as_string($value) {
+      return empty($value) ? 'NULL' : ("'" . (is_string($value) ? "$value" : date('Y-m-d H:i:s', $value)). "'");
+    }
 }

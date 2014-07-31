@@ -59,6 +59,11 @@ class Finance
     $st = DB::query("SELECT d.* FROM vak_contxtd_debt d INNER JOIN jos_contxtd_details cd ON cd.id=d.contact_id INNER JOIN jos_users u ON cd.user_id=u.id WHERE u.id = :id", array(":id" => $id));
     if ($row = $st->fetch())
         return new Finance($row);
+    else {
+      require_once dirname(__FILE__) . '/user.inc';
+      if (User::Get($id)) //create context in the same go, if there is none and try again
+        return Finance::getByUserId($id);
+    }
     return NULL;
   }
 

@@ -35,8 +35,8 @@ jQuery(document).ready(function($) {
     date: '<?php echo isset($_POST['date'][$key]) ? $_POST['date'][$key] : NULL ?>'
     , service_id: '<?php echo isset($_POST['service_id'][$key]) ? $_POST['service_id'][$key] : NULL ?>'
     , payer: '<?php echo isset($_POST['payer'][$key]) ? $_POST['payer'][$key] : NULL ?>'
-    , pilot: '<?php echo isset($_POST['pilot'][$key]) ? $_POST['pilot'][$key] : NULL ?>'
-    , airplane_registration: '<?php echo isset($_POST['airplane_registration'][$key]) ? $_POST['airplane_registration'][$key] : NULL ?>'
+    , instructor: '<?php echo isset($_POST['instructor'][$key]) ? $_POST['instructor'][$key] : NULL ?>'
+    , airplane_id: '<?php echo isset($_POST['airplane_id'][$key]) ? $_POST['airplane_id'][$key] : NULL ?>'
     , amount: '<?php echo isset($_POST['amount'][$key]) ? $_POST['amount'][$key] : NULL ?>'
     , price: '<?php echo isset($_POST['price'][$key]) ? $_POST['price'][$key] : NULL ?>'
   });

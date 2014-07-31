@@ -9,15 +9,20 @@ if (isset($results['flight']->service_id)) {
   require_once dirname(__FILE__) . '/../../models/service.inc';
   $service = Service::getById($results['flight']->service_id);
 }
+$airplane = NULL;
+if (isset($results['flight']->airplane_id)) {
+  require_once dirname(__FILE__) . '/../../models/aircraft.inc';
+  $airplane = Airplane::getById($results['flight']->airplane_id);
+}
 ?>
 
 <div class="page-header"><h1>Skrydis</h1></div>
 <div class="row">
   <div class="col-md-8">
     <?php echo theme('display', 'date', 'Data', $results['flight']) ?>
-    <?php echo theme('display', 'airplane_registration', 'Orlaivis', $results['flight']) ?>
+    <?php echo theme('display', 'name', 'Orlaivis', $airplane) ?>
     <?php echo theme('display', 'title', 'Paslauga', $service) ?>
-    <?php echo theme('display', 'pilot', 'Instruktorius', $results['flight']) ?>
+    <?php echo theme('display', 'instructor', 'Instruktorius', $results['flight']) ?>
     <?php echo theme('display', 'name', 'Mokinys/Mokėtojas', $payer) ?>
     <?php echo theme('display', 'task', 'Užduotis', $results['flight']) ?>
     <?php echo theme('display', 'duration', 'Trukmė', $results['flight']) ?>
@@ -34,6 +39,12 @@ if (isset($results['flight']->service_id)) {
       </div>
       <div class="panel-body">
 	<p>Čia yra talpinama skrydžių informacija.</p>
+
+<?php if (UserHelper::has_permission()) { ?>
+        <div class="buttons">
+	  <a href="index.php?action=flight&amp;view=Edit&amp;id=<?php echo $results['flight']->record_id ?>" class="btn btn-sm btn-primary">Redaguoti</a>
+	</div>
+<?php } ?>
       </div>
     </div>
   </div>

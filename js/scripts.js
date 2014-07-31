@@ -45,17 +45,17 @@ window.flightEntity = {
 	addCell(row, selectStudent, 'payer');
 	options && options.payer && selectStudent.val(options.payer);
 
-	//pilot
+	//instructor
 	var selectPilot = $('<select />').addClass('user').append($('<option value=""></option>'));
 	$.each(window.flightEntity.getUsers(), function(id, user) { selectPilot.append($('<option></option>').val(id).text(user['name'])) });
-	addCell(row, selectPilot, 'pilot');
-	options && options.pilot && selectPilot.val(options.pilot);
+	addCell(row, selectPilot, 'instructor');
+	options && options.instructor && selectPilot.val(options.instructor);
 
 	//glider
 	var selectGlider = $('<select />').addClass('glider').append($('<option value=""></option>'));
-	$.each(window.flightEntity.getAircrafts(), function(i, glider) { selectGlider.append($('<option></option>').val(glider['callsign']).text(glider['model'])) });
-	addCell(row, selectGlider, 'airplane_registration');
-	options && options.airplane_registration && selectGlider.val(options.airplane_registration);
+	$.each(window.flightEntity.getAircrafts(), function(i, glider) { selectGlider.append($('<option></option>').val(glider['id']).text(glider['name'])) });
+	addCell(row, selectGlider, 'airplane_id');
+	options && options.airplane_id && selectGlider.val(options.airplane_id);
 
 	//qty
 	var qty = $('<input type="number" />').addClass('quantity');
