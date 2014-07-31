@@ -4,6 +4,11 @@ if (isset($results['flight']->payer)) {
   require_once dirname(__FILE__) . '/../../models/user.inc';
   $payer = User::Get($results['flight']->payer);
 }
+$instructor = NULL;
+if (isset($results['flight']->instructor)) {
+  require_once dirname(__FILE__) . '/../../models/user.inc';
+  $instructor = User::Get($results['flight']->instructor);
+}
 $service = NULL;
 if (isset($results['flight']->service_id)) {
   require_once dirname(__FILE__) . '/../../models/service.inc';
@@ -22,7 +27,7 @@ if (isset($results['flight']->airplane_id)) {
     <?php echo theme('display', 'date', 'Data', $results['flight']) ?>
     <?php echo theme('display', 'name', 'Orlaivis', $airplane) ?>
     <?php echo theme('display', 'title', 'Paslauga', $service) ?>
-    <?php echo theme('display', 'instructor', 'Instruktorius', $results['flight']) ?>
+    <?php echo theme('display', 'name', 'Instruktorius', $instructor) ?>
     <?php echo theme('display', 'name', 'Mokinys/Mokėtojas', $payer) ?>
     <?php echo theme('display', 'task', 'Užduotis', $results['flight']) ?>
     <?php echo theme('display', 'duration', 'Trukmė', $results['flight']) ?>
