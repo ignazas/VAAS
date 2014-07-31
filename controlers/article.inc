@@ -142,6 +142,9 @@ class ArticleControler extends BaseControler {
   }
 
   public function Notify() {
+    if (!$this->HasPermission())
+      $this->Transfer();
+
     $article = Article::getById((int)(empty($_GET['articleId']) && !empty($_GET['id']) ? $_GET['id'] : $_GET['articleId']));
     if (empty($article))
       $this->Transfer(NULL, 'AdminItemList');
