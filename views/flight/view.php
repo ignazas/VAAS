@@ -12,7 +12,7 @@ if (isset($results['flight']->service_id)) {
 $airplane = NULL;
 if (isset($results['flight']->airplane_id)) {
   require_once dirname(__FILE__) . '/../../models/aircraft.inc';
-  $airplane = Airplane::getById($results['flight']->airplane_id);
+  $airplane = Aircraft::getById($results['flight']->airplane_id);
 }
 ?>
 
