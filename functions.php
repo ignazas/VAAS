@@ -159,19 +159,28 @@ function theme($type, $name, $label, $entity, $values=NULL) {
 }
 
 function send_mail($recipient, $title, $content) {
-	IF(!$recipient) {$recipient = "magazin@audiounit.lt";};
+	if (empty($recipient)) {
+    Messages::set_message('Pranešimas neišsiųstas - nenurodyti gavėjai');
+    return;
+  }
+
+  require_once dirname(__FILE__) . '/helpers/messages.inc';
+
 	$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=UTF-8\r\n";
 	$headers .= "From: aeroklubas@sklandymas.lt\r\n";
+
 	$mail = $content . "<br /><br />Išsiųsta iš Vilniaus Aeroklubo narių administravimo sistemos (VAAS)";
-	IF(is_array($recipient)) {
-		foreach($recipient as $address){
-			//mail($address['email'], "VAAS: " . $title , $mail, $headers);
-			log_event('Admin', 'MultipleMailSent: ' . $title, $address);
-		}
-	} ELSE {
+	if (is_array($recipient)) {
+    $recipient = array_unique($recipient);
+    //mail(implode(', ', $recipient), "VAAS: " . $title , $mail, $headers);
+    log_event('Admin', 'MultipleMailSent: ' . $title, implode(', ', $recipient));
+    Messages::set_message('Pranešimas išsiųstas: ' . implode(', ', $recipient));
+	}
+  else {
 		//mail($recipient, "VAAS: " . $title , $mail, $headers);
 		log_event('Admin', 'SingleMailSent: ' . $title, $recipient);
+    Messages::set_message('Pranešimas išsiųstas: ' . $recipient);
 	}
 }
 

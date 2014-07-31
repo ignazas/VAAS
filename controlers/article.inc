@@ -118,13 +118,12 @@ class ArticleControler extends BaseControler {
       Messages::set_message("Pranešimas nerastas.", 'errors');
     }
     else {
-	$article->delete();
-	log_event("Admin", "ArticleDeleted", $_GET['articleId']);
+      $article->delete();
+      log_event("Admin", "ArticleDeleted", $_GET['articleId']);
 
-	Messages::set_message("Pranešimas pašalintas.");
+      Messages::set_message("Pranešimas pašalintas.");
     }
     $this->Transfer(NULL, 'AdminItemList');
-    //return $this->AdminItemList();
   }
 
   public function Index() {
@@ -140,5 +139,63 @@ class ArticleControler extends BaseControler {
     }
 
     include dirname(__FILE__) . '/../views/_layout.php';
+  }
+
+  public function Notify() {
+    $article = Article::getById((int)(empty($_GET['articleId']) && !empty($_GET['id']) ? $_GET['id'] : $_GET['articleId']));
+    if (empty($article))
+      $this->Transfer(NULL, 'AdminItemList');
+
+    $receivers = array();
+    $r = isset($_GET['receivers']) ? $_GET['receivers'] : 'me';
+    switch($_GET['receivers']) {
+      case 'all':
+        require_once dirname(__FILE__) . '/../models/user.inc';
+        $data = User::getList();
+        foreach ($data['results'] as $user) {
+          $receivers[] = !empty($user->email_to) ? $user->email_to : $user->email;
+        }
+        break;
+      case 'flying_today':
+        require_once dirname(__FILE__) . '/../models/calendar_event.inc';
+        $data = CalendarEvent::getByDate(time());
+        foreach ($data['results'] as $event) {
+          if (!empty($event->user))
+            $receivers[] = !empty($event->user->email_to) ? $event->user->email_to : $event->user->email;
+        }
+        break;
+      case 'flying_tomorrow':
+        require_once dirname(__FILE__) . '/../models/calendar_event.inc';
+        $data = CalendarEvent::getByDate(time()+86400); /*1 Day = 24*60*60 = 86400*/
+        foreach ($data['results'] as $event) {
+          if (!empty($event->user))
+            $receivers[] = !empty($event->user->email_to) ? $event->user->email_to : $event->user->email;
+        }
+        break;
+      case 'me':
+      default:
+        require_once dirname(__FILE__) . '/../helpers/user.inc';
+        $uid = UserHelper::get_id();
+        if (!empty($uid)) {
+          require_once dirname(__FILE__) . '/../models/user.inc';
+          $user = User::Get($uid);
+          $receivers[] = !empty($user->email_to) ? $user->email_to : $user->email;
+        }
+          break;
+    }
+
+    $url = '/index.php?action=article&amp;id=' . $article->id;
+    if (!empty($_SERVER['HTTP_HOST'])) {
+      $base = 'http://' . $_SERVER['HTTP_HOST'];
+      if (!empty($url) && $url[0] == '?')
+        $base .= $_SERVER['PHP_SELF'];
+      else
+        $base .= dirname($_SERVER['PHP_SELF']);
+      $url = $base . $url;
+    }
+
+    send_mail($receivers, $article->title, "Sveiki,<br />Buvo paskelbtas VAK pranešimas adresu: $url<br /><br />" . $article->content);
+
+    $this->Transfer(NULL, 'View', array('id' => $article->id));
   }
 }

@@ -33,7 +33,6 @@ if (isset($_POST['submit'])) {
 	    (!empty($_POST['description']) ? ("<br />Jūsų pastaba: " . $_POST['description']) : NULL);
 	$meilas = $_SESSION['user']['email'];
 	$user = $_SESSION['user']['username'];
-	send_mail($meilas,"Jūsų registracija skrydžiams",$pranesimas);
 
   require_once dirname(__FILE__) . '/../helpers/messages.inc';
 	Messages::set_message($pranesimas);
