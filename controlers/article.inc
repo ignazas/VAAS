@@ -184,7 +184,7 @@ class ArticleControler extends BaseControler {
           break;
     }
 
-    $url = '/index.php?action=article&amp;id=' . $article->id;
+    $url = '/index.php?action=article&amp;view=View&amp;id=' . $article->id;
     if (!empty($_SERVER['HTTP_HOST'])) {
       $base = 'http://' . $_SERVER['HTTP_HOST'];
       if (!empty($url) && $url[0] == '?')
