@@ -173,12 +173,12 @@ function send_mail($recipient, $title, $content) {
 	$mail = $content . "<br /><br />Išsiųsta iš Vilniaus Aeroklubo narių administravimo sistemos (VAAS)";
 	if (is_array($recipient)) {
     $recipient = array_unique($recipient);
-    //mail(implode(', ', $recipient), "VAAS: " . $title , $mail, $headers);
+    mail(implode(', ', $recipient), "VAAS: " . $title , $mail, $headers);
     log_event('Admin', 'MultipleMailSent: ' . $title, implode(', ', $recipient));
     Messages::set_message('Pranešimas išsiųstas: ' . implode(', ', $recipient));
 	}
   else {
-		//mail($recipient, "VAAS: " . $title , $mail, $headers);
+		mail($recipient, "VAAS: " . $title , $mail, $headers);
 		log_event('Admin', 'SingleMailSent: ' . $title, $recipient);
     Messages::set_message('Pranešimas išsiųstas: ' . $recipient);
 	}
