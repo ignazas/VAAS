@@ -87,8 +87,8 @@ function addDay() {
   $send_mail = isset($_GET['mail']) ? $_GET['mail'] : NULL;
 
   // Add day status
+  $st = DB::query("DELETE FROM days WHERE day = :day", array(':day' => $day)); //delete old event for that day
   if($status=='delete') {
-    $st = DB::query("DELETE FROM days WHERE day = :day", array(':day' => $day));
     log_event("Admin", "DayDeleted", $day);
   }
   else {
