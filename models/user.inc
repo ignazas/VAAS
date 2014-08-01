@@ -13,6 +13,7 @@ class User {
     public $lastvisitDate;
     public $discount;
 
+    public $contact_id;
     public $telephone1;
     public $telephone2;
     public $website;
@@ -37,6 +38,7 @@ class User {
     if (isset($data['lastvisitDate'])) $this->lastvisitDate = $data['lastvisitDate'];
     if (isset($data['discount'])) $this->discount = $data['discount'];
 
+    if (isset($data['contact_id'])) $this->contact_id = $data['contact_id'];
     if (isset($data['telephone1'])) $this->telephone1 = $data['telephone1'];
     if (isset($data['telephone2'])) $this->telephone2 = $data['telephone2'];
     if (isset($data['website'])) $this->website = $data['website'];
@@ -50,15 +52,15 @@ class User {
         if (!empty($id)) {
           $data = DB::fetch("
                 SELECT u.*,
-                    ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position, ud.id 'ud_id'
+                    ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position, ud.id 'contact_id'
                 FROM jos_users u
                 LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
                 WHERE
                     u.id = :id", array(':id' => $id));
           if (!empty($data)) {
-            if (!isset($data['ud_id'])) {
+            if (!isset($data['contact_id'])) {
               //that means context is not created! need to create one
-              DB::insert("INSERT INTO jos_contxtd_details (user_id, email_to, params, name) VALUES (:user_id, :email_to, '', :name)", array(
+              $data['contact_id'] = DB::insert("INSERT INTO jos_contxtd_details (user_id, email_to, params, name) VALUES (:user_id, :email_to, '', :name)", array(
                   ':email_to' => $data['email'],
                   ':user_id' => $id,
                   ':name' => $data['name']
@@ -74,7 +76,7 @@ class User {
         if (!empty($username)) {
             $data = DB::fetch("
                 SELECT u.*,
-                    ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position
+                    ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position, ud.id 'contact_id'
                 FROM jos_users u
                 LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
                 WHERE
@@ -118,7 +120,7 @@ class User {
   public static function getList( $numRows=1000000, $order="u.name" ) {
     $st = DB::query("SELECT SQL_CALC_FOUND_ROWS
                        u.*,
-                       ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position
+                       ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position, ud.id 'contact_id'
                      FROM jos_users u LEFT OUTER JOIN jos_contxtd_details ud ON u.id=ud.user_id
                      ORDER BY $order LIMIT $numRows");
 
@@ -141,7 +143,7 @@ class User {
     // Does the User object already have an ID?
     if ( !is_null( $this->id ) ) trigger_error ( "User::insert(): Attempt to insert an User object that already has its ID property set (to $this->id).", E_USER_ERROR );
 
-    $this->id = DB::insert("INSERT INTO jos_users (name, username, usertype, password, email, registerDate) VALUES (:name, :username, :usertype, :password, :email, '" . DB::date_as_string(time()) . "')", array(
+    $this->id = DB::insert("INSERT INTO jos_users (name, username, usertype, password, email, registerDate, params) VALUES (:name, :username, :usertype, :password, :email, " . DB::date_as_string(time()) . ", '')", array(
                   ':name' => $this->name,
                   ':username' => $this->username,
                   ':usertype' => $this->usertype,
@@ -149,13 +151,12 @@ class User {
                   ':email' => $this->email,
                 ));
 
-    DB::insert("INSERT INTO jos_contxtd_details (name, user_id, telephone1, telephone2, website, avatar, birthdate, email_to, con_position, params) VALUES (:name, :user_id, :telephone1, :telephone2, :website, :avatar, :birthdate, :email_to, :con_position, '')", array(
+    $this->contact_id = DB::insert("INSERT INTO jos_contxtd_details (name, user_id, telephone1, telephone2, website, avatar, birthdate, email_to, con_position, params) VALUES (:name, :user_id, :telephone1, :telephone2, :website, :avatar, " . DB::date_as_string($this->birthdate) . ", :email_to, :con_position, '')", array(
         ':name' => $this->name,
         ':telephone1' => $this->telephone1,
         ':telephone2' => $this->telephone2,
         ':website' => $this->website,
         ':avatar' => $this->avatar,
-        ':birthdate' => $this->birthdate,
         ':email_to' => $this->email_to,
         ':con_position' => $this->con_position,
         ':user_id' => $this->id,

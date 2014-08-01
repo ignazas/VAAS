@@ -12,19 +12,20 @@
             <div class="col-md-4">
                 <fieldset>
                     <legend>Pagrindinė informacija:</legend>
+                    <?php echo empty($user->id) ? theme('text', 'username', 'Vartotojo vardas', $user) : NULL ?>
                     <?php echo theme('text', 'name', 'Vardas', $user, $edit) ?>
                     <?php echo theme('email', 'email', 'El. paštas', $user, $edit) ?>
                     <?php echo theme('text', 'telephone1', 'Telefonas', $user, $edit) ?>
                     <?php echo theme('url', 'website', 'Interneto svetainė', $user, $edit) ?>
 <?php if (!empty($_SESSION['user']['usertype']) && ($_SESSION['user']['usertype']=="Administrator" || $_SESSION['user']['usertype']=="Super Administrator")) { ?>
-                    <?php echo theme('text', 'discount', 'Nuolaida, %', $user, $edit) ?>
+                    <?php echo theme('number', 'discount', 'Nuolaida, %', $user, $edit) ?>
 <?php } ?>
                 </fieldset>
 		</div>
 		<div class="col-md-4">
                 <fieldset>
                     <legend>Slaptažodis:</legend>
-                    <?php echo theme('password', 'password', 'Senas', $user, array('password' => '')) ?>
+                    <?php echo !empty($user->id) ? theme('password', 'password', 'Senas', $user, array('password' => '')) : NULL ?>
                     <?php echo theme('password', 'new_password_1', 'Naujas', $user, $edit) ?>
                     <?php echo theme('password', 'new_password_2', 'Pakartoti', $user, $edit) ?>
                 </fieldset>
