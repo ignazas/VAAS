@@ -17,7 +17,7 @@ session_start();
 
 <h2 class="eventwhen col-xs-12">Žyma</h2>
 
-<form class="col-xs-12 form-horizontal" role="form" action="admin.php">
+<form class="col-xs-12 form-horizontal" role="form" action="admin.php" method="get">
   <div class="form-group">
     <label for="status" class="col-sm-3 control-label">Būsena</label>
     <div class="col-sm-9">
@@ -32,6 +32,35 @@ session_start();
     <label for="reason" class="col-sm-3 control-label">Pastaba</label>
     <div class="col-sm-9">
       <textarea class="form-control" rows="3" name="reason" id="reason"><?php echo !empty($_POST['reason']) ? $_POST['reason'] : '' ?></textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="reason" class="col-sm-3 control-label">Siųsti pranešimą</label>
+    <div class="col-sm-9">
+      <div class="radio">
+	<label>
+	  <input type="radio" name="mail" id="none" value="none" checked="checked">
+	  Nesiųsti niekam
+	</label>
+      </div>
+      <div class="radio">
+	<label>
+	  <input type="radio" name="mail" id="all" value="all">
+	  Visiems
+	</label>
+      </div>
+      <div class="radio">
+	<label>
+	  <input type="radio" name="mail" id="flying" value="flying">
+	  Užsiregistravusiems skrydžiui
+	</label>
+      </div>
+      <div class="radio">
+	<label>
+	  <input type="radio" name="mail" id="me" value="me">
+	  Man
+	</label>
+      </div>
     </div>
   </div>
   <div class="form-group">

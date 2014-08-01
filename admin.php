@@ -84,10 +84,12 @@ function addDay() {
   $status = $_GET['status'];
   $reason = isset($_GET['reason']) ? trim($_GET['reason']) : '';
   $confirmed = $_SESSION['user']['name'];
+  $send_mail = isset($_GET['mail']) ? $_GET['mail'] : NULL;
 
   // Add day status
   if($status=='delete') {
     $st = DB::query("DELETE FROM days WHERE day = :day", array(':day' => $day));
+    log_event("Admin", "DayDeleted", $day);
   }
   else {
     $st = DB::query("INSERT INTO days (day, status, reason, confirmed) VALUES (:day, :status, :reason, :confirmed) on duplicate key UPDATE status=values(status), reason=values(reason), confirmed=values(confirmed)", array(
@@ -96,23 +98,46 @@ function addDay() {
             ':reason' => $reason,
             ':confirmed' => $confirmed
           ));
+    log_event("Admin", "DayAdded", $day);
   }
 
   //notification
-  require_once dirname(__FILE__) . '/models/calendar_event.inc';
-  foreach (CalendarEvent::getByDate($day) as $event) {
-    if (!empty($event->user))
-      $receivers[] = !empty($event->user->email_to) ? $event->user->email_to : $event->user->email;
+  $receivers = array();
+  switch($send_mail) {
+    case 'all':
+      require_once dirname(__FILE__) . '/models/user.inc';
+      $data = User::getList();
+      foreach ($data['results'] as $user) {
+        $receivers[] = !empty($user->email_to) ? $user->email_to : $user->email;
+      }
+      break;
+    case 'flying':
+      require_once dirname(__FILE__) . '/models/calendar_event.inc';
+      $data = CalendarEvent::getByDate($day);
+      foreach ($data['results'] as $event) {
+        if (!empty($event->user))
+          $receivers[] = !empty($event->user->email_to) ? $event->user->email_to : $event->user->email;
+      }
+      break;
+    case 'me':
+      require_once dirname(__FILE__) . '/helpers/user.inc';
+      $uid = UserHelper::get_id();
+      if (!empty($uid)) {
+        require_once dirname(__FILE__) . '/models/user.inc';
+        $user = User::Get($uid);
+        $receivers[] = !empty($user->email_to) ? $user->email_to : $user->email;
+      }
+      break;
   }
   send_mail($receivers, "Dienos statusas: " . $day, "Dienos statusas, kuriai Jūs buvote užsiregistravę skrydžiams, pasikeitė<br />Dabartinis statusas: " . $status . "<br />Pastaba: " . $reason . "<br />");
-  log_event("Admin", "DayAdded", $day);
 
 	$exploded_date = explode("-", $day);
 	if(substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
 	$exploded_date[1] += 1;
 
-	$destination = !empty($_GET['destination']) ? $_GET['destination'] : ("index.php?action=calendar&status=dayAdded&month=" . $exploded_date[1] . "&year=" . $exploded_date[0]);
+	$destination = !empty($_GET['destination']) ? $_GET['destination'] : ("index.php?action=calendar&month=" . $exploded_date[1] . "&year=" . $exploded_date[0]);
 	header("Location: $destination") ;
+  die;
 }
 
 function working_days() {

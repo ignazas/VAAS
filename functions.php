@@ -159,12 +159,12 @@ function theme($type, $name, $label, $entity, $values=NULL) {
 }
 
 function send_mail($recipient, $title, $content) {
+  require_once dirname(__FILE__) . '/helpers/messages.inc';
+
 	if (empty($recipient)) {
     Messages::set_message('Pranešimas neišsiųstas - nenurodyti gavėjai');
     return;
   }
-
-  require_once dirname(__FILE__) . '/helpers/messages.inc';
 
 	$headers  = "MIME-Version: 1.0\r\n";
 	$headers .= "Content-type: text/html; charset=UTF-8\r\n";

@@ -70,6 +70,9 @@ $spec_events = array("šventė", "talka", "kita", "svečiai");
 
 
 ?>
+<?php include "templates/include/messages.inc" ?>
+<?php include "templates/include/errors.inc" ?>
+
 <link href="css/cal.css" rel="stylesheet" type="text/css">
 
 <div id="registruotis"></div>
