@@ -8,3 +8,4 @@ uploads/meteo_*.png
 *.BASE
 *.LOCAL
 *.REMOTE
+uploads/logs/*/*.igc
