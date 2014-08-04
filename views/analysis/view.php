@@ -24,7 +24,7 @@
 <?php } ?>
         <form action="" method="post" enctype="multipart/form-data">
 	  <input type="file" id="file" name="files[]" multiple="multiple" />
-	  <input type="submit" value="Upload!" />
+	  <input type="submit" value="Įkelti" />
 	</form>
       </div>
     </div>
