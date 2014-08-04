@@ -491,7 +491,7 @@ class IGC_J_Record extends IGC_Record
 	public function __construct($record)
 	{
 		$this->type = 'J';
-		$this->raw = $string;
+		$this->raw = $record;
 
 		$this->start_byte_number = substr($record,1,2);
 		$this->finish_byte_number = substr($record,3,2);
@@ -752,7 +752,7 @@ class IGC_D_Record extends IGC_Record
 	public function __construct($record)
 	{
 		$this->type = 'D';
-		$this->raw = $string;
+		$this->raw = $record;
 
 		$this->gps_qualifier = substr($record,1,1);
 		$this->station_id = substr($record,2,4);
@@ -797,7 +797,7 @@ class IGC_E_Record extends IGC_Record
 	public function __construct($record)
 	{
 		$this->type = 'E';
-		$this->raw = $string;
+		$this->raw = $record;
 
 		$this->time_array['h'] = substr($record,1,2);
 		$this->time_array['m'] = substr($record,3,2);
@@ -845,7 +845,7 @@ class IGC_F_Record extends IGC_Record
 	public function __consruct($record)
 	{
 		$this->type = 'F';
-		$this->raw = $string;
+		$this->raw = $record;
 
 		$this->time_array['h'] = substr($record,1,2);
 		$this->time_array['m'] = substr($record,3,2);
@@ -921,13 +921,13 @@ class IGC_L_Record extends IGC_Record
 	*
 	* $param	string	$record
 	*/
-	public function __construct($string)
+	public function __construct($record)
 	{
 		$this->type = 'L';
-		$this->raw = $string;
+		$this->raw = $record;
 
-		$this->manufacturer = substr($string,1,1);
-		$this->comment = substr($string,2);
+		$this->manufacturer = substr($record,1,1);
+		$this->comment = substr($record,2);
 	}
 }
 ?>
