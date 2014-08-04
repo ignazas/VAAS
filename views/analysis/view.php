@@ -16,7 +16,7 @@
       <div class="panel-body">
 	<p>Čia yra talpinami Jūsų skrydžių analizės failai.</p>
 	<ul>
-<?php foreach ($results['files'] as $file) { ?>
+<?php if (!empty($results['files'])) foreach ($results['files'] as $file) { ?>
           <li><a href="?action=analysis&amp;file=<?php echo urlencode(basename($file, '.igc')) ?>"><?php echo basename($file, '.igc') ?></a> <a href="?action=analysis&amp;view=Delete&amp;file=<?php echo urlencode(basename($file, '.igc')) ?>"><i class="glyphicon glyphicon-remove"></i></a></li>
 <?php } ?>
 	</ul>

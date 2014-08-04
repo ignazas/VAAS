@@ -89,8 +89,10 @@ class AnalysisControler extends BaseControler {
       $file = dirname(__FILE__) . '/../uploads/logs/' . $user_id . '/' . urldecode($_GET['file']) . '.igc';
     else {
       $file = NULL;
-      foreach ($results['files'] as $f) {
-        $file = $f;
+      if (!empty($results['files'])) {
+        foreach ($results['files'] as $f) {
+          $file = $f;
+        }
       }
     }
 

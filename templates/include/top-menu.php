@@ -20,8 +20,15 @@ $admin = UserHelper::has_permission();
           <ul class="nav navbar-nav">
             <li <?php if ($action=="article"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=article" title="Pranešimai"><i class="glyphicon glyphicon-bell"></i><span class="hidden-md hidden-sm"> Pranešimai</span></a></li>
             <li <?php if ($action=="finance"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=finance" title="Finansai"><i class="glyphicon glyphicon-shopping-cart"></i><span class="hidden-md hidden-sm"> Finansai</span></a></li>
-            <li <?php if ($action=="flight") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=flight" title="Skrydžiai"><i class="glyphicon glyphicon-list-alt"></i> Skrydžiai</a></li>
-            <!-- <li <?php if ($action=="logbook"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=logbook" title="Žurnalas"><i class="glyphicon glyphicon-book"></i><span class="hidden-md hidden-sm"> Žurnalas</span></a></li> -->
+
+            <li class="<?php if (in_array($action, array("flight", "analysis"))){echo 'active';} ?> dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Skrydžiai"><i class="glyphicon glyphicon-list-alt"></i><span class="hidden-md hidden-sm">  Skrydžiai</span> <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+		<li <?php if ($action=="flight") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=flight" title="Skrydžiai"><i class="glyphicon glyphicon-list-alt"></i> Skrydžiai</a></li>
+		<li <?php if ($action=="analysis"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=analysis" title="Analizė"><i class="glyphicon glyphicon-book"></i> Analizė</a></li>
+              </ul>
+            </li>
+
             <li class="<?php if (in_array($action, array("calendar", "my_bookings", 'weather'))){echo 'active';} ?> dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Kalendorius"><i class="glyphicon glyphicon-calendar"></i> Kalendorius <b class="caret"></b></a>
               <ul class="dropdown-menu">

@@ -207,11 +207,11 @@ class PHP_IGC
         google.setOnLoadCallback(drawChart);
         function drawChart() {
           var data = google.visualization.arrayToDataTable([
-            ["Time", "Height, m"], ' . implode(', ', $code_alt) . '
+            ["Laikas", "Aukštis, m"], ' . implode(', ', $code_alt) . '
           ]);
 
           var options = {
-            title: "Flight review"
+            title: "Skrydžių peržiūra"
           };
 
           var chart = new google.visualization.LineChart(document.getElementById("chart_div"));
