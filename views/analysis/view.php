@@ -16,9 +16,9 @@
       <div class="panel-body">
 	<p>Čia yra talpinami Jūsų skrydžių analizės failai (*.igc).</p>
 <?php if (!empty($results['files'])) { ?>
-	<ul>
-<?php   foreach ($results['files'] as $file) { ?>
-          <li><a href="?action=analysis&amp;file=<?php echo urlencode(basename($file, '.igc')) ?>"><?php echo basename($file, '.igc') ?></a> <a href="?action=analysis&amp;view=Delete&amp;file=<?php echo urlencode(basename($file, '.igc')) ?>"><i class="glyphicon glyphicon-remove"></i></a></li>
+	<ul class="list-group">
+<?php   foreach ($results['files'] as $f) { ?>
+          <li class="list-group-item<?php echo $file == $f ? ' list-group-item-success' : NULL ?>"><a href="?action=analysis&amp;file=<?php echo urlencode(basename($f, '.igc')) ?>"><?php echo basename($f, '.igc') ?></a> <a href="?action=analysis&amp;view=Delete&amp;file=<?php echo urlencode(basename($f, '.igc')) ?>"><i class="glyphicon glyphicon-remove"></i></a></li>
 <?php   } ?>
 	</ul>
 <?php } ?>

@@ -25,7 +25,7 @@
     <?php } } else { echo "<li class=\"list-group-item\">Registracijų nėra.</li>";} ?>
 	<?php IF (!empty($elements['calendar-today']['days']['results'])) { ?>
     <?php foreach ($elements['calendar-today']['days']['results'] as $day) { ?>
-    <li class="<?php echo $day->status ?> alert <?php echo $day->status == 'nevyksta' ? 'alert-danger' : 'alert-info' ?>"><?php echo $day->reason ?></li>
+    <li class="list-group-item <?php echo $day->status ?> list-group-item-<?php echo $day->status == 'nevyksta' ? 'danger' : 'info' ?>"><?php echo $day->reason ?></li>
     <?php } } ?>
   </ul>
   <div class="buttons">
@@ -54,7 +54,7 @@
     <?php } } else { echo "<li class=\"list-group-item\">Registracijų nėra.</li>";} ?>
 	<?php IF (!empty($elements['calendar-tomorrow']['days']['results'])) { ?>
     <?php foreach ($elements['calendar-tomorrow']['days']['results'] as $day) { ?>
-    <li class="<?php echo $day->status ?> alert <?php echo $day->status == 'nevyksta' ? 'alert-danger' : 'alert-info' ?>"><?php echo $day->reason ?></li>
+    <li class="list-group-item <?php echo $day->status ?> list-group-item-<?php echo $day->status == 'nevyksta' ? 'danger' : 'info' ?>"><?php echo $day->reason ?></li>
     <?php } } ?>
   </ul>
   <div class="buttons">
