@@ -177,11 +177,11 @@ class PHP_IGC
         google.load("visualization", "1", {packages:["corechart"]});
         function drawChart() {
           var data = google.visualization.arrayToDataTable([
-            ["Laikas", "Aukštėjimo greitis, m/s"], ' . implode(', ', $code_alt) . '
+            ["Laikas", "Aukštėjimo ir žemėjimo greitis, m/s"], ' . implode(', ', $code_alt) . '
           ]);
 
           var options = {
-            title: "Aukštėjimas ir žemėjimas greitis",
+            title: "Aukštėjimo ir žemėjimo greitis",
             legend: {position: "", alignment: "center"},
             chartArea: {width: "100%"},
             vAxis: {textPosition:"in"}
@@ -210,14 +210,17 @@ class PHP_IGC
     $code_alt = array();
     $prev = NULL;
     foreach ($this->records as $each) {
+
       if (isset($each->type) && $each->type == "B") {
         $time_in_s = $each->time_array['h'] * 3600 + $each->time_array['m'] * 60 + $each->time_array['s'];
         $prev_time_in_s = $prev != NULL ? $prev->time_array['h'] * 3600 + $prev->time_array['m'] * 60 + $prev->time_array['s'] : $time_in_s;
 
         $dist = $prev != null ? N::getDistance($prev->latitude['decimal_degrees'], $prev->longitude['decimal_degrees'], $each->latitude['decimal_degrees'], $each->longitude['decimal_degrees']) : 0; //meters
-        $speed = $time_in_s != $prev_time_in_s ? ($dist * 3600 / ($time_in_s - $prev_time_in_s) / 1000) : 0;
+        if (empty($prev) || $time_in_s != $prev_time_in_s) {
+          $speed = $time_in_s != $prev_time_in_s ? ($dist * 3600 / ($time_in_s - $prev_time_in_s) / 1000) : 0;
+          $code_alt[] = '["' . $each->time_array['h'] . ':' . $each->time_array['m'] . ':' . $each->time_array['s'] . '", ' . $speed . ']';
+        }
 
-        $code_alt[] = '["' . $each->time_array['h'] . ':' . $each->time_array['m'] . ':' . $each->time_array['s'] . '", ' . $speed . ']';
         $prev = $each;
       }
     }
