@@ -1,6 +1,3 @@
-<?php
-?>
-
 <div class="page-header"><h1>Skrydžių analizė</h1></div>
 <div class="row">
   <div class="col-md-8">
@@ -14,7 +11,7 @@
 	<h3 class="panel-title">Info</h3>
       </div>
       <div class="panel-body">
-	<p>Čia yra talpinami Jūsų skrydžių analizės failai (*.igc).</p>
+	<p>Čia galite įsikelti savo skrydžių analizės (*.igc) failus.</p>
 <?php if (!empty($results['files'])) { ?>
 	<ul class="list-group">
 <?php   foreach ($results['files'] as $f) { ?>

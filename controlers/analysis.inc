@@ -103,7 +103,11 @@ class AnalysisControler extends BaseControler {
         $this->Transfer();
       }
       $igc->setDetails();
-      $results['google_maps_code'] = $igc->getMap('AIzaSyAe39YF9QPfql88R8lEsD9JMm6OD-Wpazg', NULL, 480);
+      $results['google_maps_code'] =
+        $igc->getMap('AIzaSyAe39YF9QPfql88R8lEsD9JMm6OD-Wpazg', NULL, 600) .
+        $igc->getAltitude(NULL, 300) .
+        $igc->getSpeed(NULL, 300) .
+        $igc->getVariometer(NULL, 300);
     }
 
 

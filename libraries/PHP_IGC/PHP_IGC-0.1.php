@@ -1,4 +1,7 @@
 <?php
+require_once dirname(__FILE__) . '/../Treffynnon/Navigator.php';
+use Treffynnon\Navigator as N;
+
 /**
 * PHP_IGC version 0.1
 *
@@ -94,6 +97,8 @@ class PHP_IGC
 			}
 		}
 
+    N::autoloader();
+
 		return true;
 	}
 
@@ -141,55 +146,190 @@ class PHP_IGC
 	}
 
 	/**
+	* Returns the HTML and Javascript to draw the variometer info
+	*
+	* @param	integer	$width in pixels, % or NULL
+	* @param	integer	$height in pixels
+	* @return	string 	Returns HTML, CSS, and JavaScript
+	*/
+	public function getVariometer($width, $height)
+  {
+		if (count($this->records)<1) {
+			return "invalid file";
+		}
+
+    $code_alt = array();
+    $prev = NULL;
+    foreach ($this->records as $each) {
+      if (isset($each->type) && $each->type == "B") {
+        $time_in_s = $each->time_array['h'] * 3600 + $each->time_array['m'] * 60 + $each->time_array['s'];
+        $prev_time_in_s = $prev != NULL ? $prev->time_array['h'] * 3600 + $prev->time_array['m'] * 60 + $prev->time_array['s'] : $time_in_s;
+        $diff = $time_in_s != $prev_time_in_s ? (($each->gps_altitude - $prev->gps_altitude) / ($time_in_s - $prev_time_in_s)) : 0;
+        $code_alt[] = '["' . $each->time_array['h'] . ':' . $each->time_array['m'] . ':' . $each->time_array['s'] . '", ' . $diff . ']';
+        $prev = $each;
+      }
+    }
+
+		return '
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<div id="variometer_div" style="' . (isset($width) ? 'width: '.$width.(is_numeric($width) ? 'px' : NULL) . '; ' : NULL) . 'height: '.$height.'px;"></div>
+<script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ["Laikas", "Aukštėjimo greitis, m/s"], ' . implode(', ', $code_alt) . '
+          ]);
+
+          var options = {
+            title: "Aukštėjimas ir žemėjimas greitis",
+            legend: {position: "", alignment: "center"},
+            chartArea: {width: "100%"},
+            vAxis: {textPosition:"in"}
+          };
+
+          var chart = new google.visualization.LineChart(document.getElementById("variometer_div"));
+          chart.draw(data, options);
+        }
+        google.setOnLoadCallback(drawChart);
+    </script>';
+  }
+
+	/**
+	* Returns the HTML and Javascript to draw the speed on google chart
+	*
+	* @param	integer	$width in pixels, % or NULL
+	* @param	integer	$height in pixels
+	* @return	string 	Returns HTML, CSS, and JavaScript
+	*/
+	public function getSpeed($width, $height)
+  {
+		if (count($this->records)<1) {
+			return "invalid file";
+		}
+
+    $code_alt = array();
+    $prev = NULL;
+    foreach ($this->records as $each) {
+      if (isset($each->type) && $each->type == "B") {
+        $time_in_s = $each->time_array['h'] * 3600 + $each->time_array['m'] * 60 + $each->time_array['s'];
+        $prev_time_in_s = $prev != NULL ? $prev->time_array['h'] * 3600 + $prev->time_array['m'] * 60 + $prev->time_array['s'] : $time_in_s;
+
+        $dist = $prev != null ? N::getDistance($prev->latitude['decimal_degrees'], $prev->longitude['decimal_degrees'], $each->latitude['decimal_degrees'], $each->longitude['decimal_degrees']) : 0; //meters
+        $speed = $time_in_s != $prev_time_in_s ? ($dist * 3600 / ($time_in_s - $prev_time_in_s) / 1000) : 0;
+
+        $code_alt[] = '["' . $each->time_array['h'] . ':' . $each->time_array['m'] . ':' . $each->time_array['s'] . '", ' . $speed . ']';
+        $prev = $each;
+      }
+    }
+
+		return '
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<div id="speed_div" style="' . (isset($width) ? 'width: '.$width.(is_numeric($width) ? 'px' : NULL) . '; ' : NULL) . 'height: '.$height.'px;"></div>
+<script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ["Laikas", "Greitis, km/h"], ' . implode(', ', $code_alt) . '
+          ]);
+
+          var options = {
+            title: "Greitis",
+            legend: {position: "", alignment: "center"},
+            chartArea: {width: "100%"},
+            vAxis: {textPosition:"in"}
+          };
+
+          var chart = new google.visualization.LineChart(document.getElementById("speed_div"));
+          chart.draw(data, options);
+        }
+        google.setOnLoadCallback(drawChart);
+    </script>';
+  }
+
+	/**
+	* Returns the HTML and Javascript to draw the altitude on google chart
+	*
+	* @param	integer	$width in pixels, % or NULL
+	* @param	integer	$height in pixels
+	* @return	string 	Returns HTML, CSS, and JavaScript
+	*/
+	public function getAltitude($width, $height)
+  {
+		if (count($this->records)<1) {
+			return "invalid file";
+		}
+
+    $code_alt = array();
+    foreach ($this->records as $each) {
+      if (isset($each->type) && $each->type == "B") {
+        $code_alt[] = '["' . $each->time_array['h'] . ':' . $each->time_array['m'] . ':' . $each->time_array['s'] . '", /*' . ((int)$each->pressure_altitude) . ', */' . ((int)$each->gps_altitude) . "]\r\n";
+      }
+    }
+
+		return '
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<div id="alt_div" style="' . (isset($width) ? 'width: '.$width.(is_numeric($width) ? 'px' : NULL) . '; ' : NULL) . 'height: '.$height.'px;"></div>
+<script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ["Laikas", /*"Aukštis pagal slėgį, m", */"Aukštis pagal GPS, m"], ' . implode(', ', $code_alt) . '
+          ]);
+
+          var options = {
+            title: "Aukštis metrais nuo MSL",
+            legend: {position: "", alignment: "center"},
+            chartArea: {width: "100%"},
+            vAxis: {textPosition:"in"}
+          };
+
+          var chart = new google.visualization.LineChart(document.getElementById("alt_div"));
+          chart.draw(data, options);
+        }
+        google.setOnLoadCallback(drawChart);
+    </script>';
+  }
+
+	/**
 	* Returns the HTML and Javascript to draw the path over GoogleMaps
 	*
 	* @param 	string	$key is the GoogleAPI developer key
-	* @param	integer	$width in pixels
+	* @param	integer	$width in pixels, % or NULL
 	* @param	integer	$height in pixels
 	* @return	string 	Returns HTML, CSS, and JavaScript
 	*/
 	public function getMap($key, $width, $height)
 	{
 		if (count($this->records)<1) {
-			$code = "invalid file";
-			return $code;
+			return "invalid file";
 		}
 
-		$code = '<script src="https://maps.googleapis.com/maps/api/js?key='.$key.'" type="text/javascript"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<br /><br />
-<div id="map" style="' . (isset($width) ? 'width: '.$width.(is_numeric($width) ? 'px' : NULL) . '; ' : NULL) . 'height: '.$height.'px; border: 2px solid #111111;"></div>
-<div id="chart_div" style="' . (isset($width) ? 'width: '.$width.(is_numeric($width) ? 'px' : NULL) . '; ' : NULL) . 'height: '.($height/2).'px; border: 2px solid #111111;"></div>
+    $path = array();
+    foreach ($this->records as $each) {
+      if (isset($each->type) && $each->type == "B") {
+        $path[] = "new google.maps.LatLng(".$each->latitude['decimal_degrees'].", ".$each->longitude['decimal_degrees'].")";
+      }
+    }
 
+		return '
+<script src="https://maps.googleapis.com/maps/api/js?key='.$key.'" type="text/javascript"></script>
+<div id="map" style="' . (isset($width) ? 'width: '.$width.(is_numeric($width) ? 'px' : NULL) . '; ' : NULL) . 'height: '.$height.'px;"></div>
 <script type="text/javascript">
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(-34.397, 150.644),
-          zoom: 8,
-          mapTypeControl: true,
-          mapTypeId: google.maps.MapTypeId.SATELLITE
-        };
-        var map = new google.maps.Map(document.getElementById("map"),
-            mapOptions);
-	';
+  function initialize() {
+    var mapOptions = {
+      center: new google.maps.LatLng(-34.397, 150.644),
+      zoom: 8,
+      mapTypeControl: true,
+      mapTypeId: google.maps.MapTypeId.SATELLITE
+    };
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-  $code_alt = array();
-  $path = array();
-	foreach ($this->records as $each) {
-		if (isset($each->type) && $each->type == "B") {
-      $code_alt[] = '["' . $each->time_array['h'] . ':' . $each->time_array['m'] . ':' . $each->time_array['s'] . '", ' . ($each->gps_altitude / 10.0) . ']';
-
-			$path[] = "new google.maps.LatLng(".$each->latitude['decimal_degrees'].", ".$each->longitude['decimal_degrees'].")";
-		}
-	}
-
-  $code .= '
-  var polyline = new google.maps.Polyline({
-    path: [' . implode(', ', $path) . '],
-      strokeColor: "#FF0000",
-      strokeWeight: 2,
-      strokeOpacity: 1.0,
-      geodesic: true
+    var polyline = new google.maps.Polyline({
+      path: [' . implode(', ', $path) . '],
+        strokeColor: "#FF0000",
+        strokeWeight: 2,
+        strokeOpacity: 1.0,
+        geodesic: true
     });
     polyline.setMap(map);
 
@@ -198,30 +338,9 @@ class PHP_IGC
       bounds.extend(e);
     });
     map.fitBounds(bounds);
-	}
-';
-	$code .= '
-      google.maps.event.addDomListener(window, "load", initialize);
-
-        google.load("visualization", "1", {packages:["corechart"]});
-        google.setOnLoadCallback(drawChart);
-        function drawChart() {
-          var data = google.visualization.arrayToDataTable([
-            ["Laikas", "Aukštis, m"], ' . implode(', ', $code_alt) . '
-          ]);
-
-          var options = {
-            title: "Skrydžių peržiūra"
-          };
-
-          var chart = new google.visualization.LineChart(document.getElementById("chart_div"));
-          chart.draw(data, options);
-        }
-
-    </script>';
-
-    		return $code;
-
+  }
+  google.maps.event.addDomListener(window, "load", initialize);
+</script>';
 	}
 
 	/**
@@ -598,16 +717,16 @@ class IGC_B_Record extends IGC_Record
 		if (strlen($record)>25) {
 
 			// set fixed valid
-			$this->fixed_valid = substr($record,25,1);
+			$this->fixed_valid = substr($record,24,1);
 
 			// set pressure altitude
-			$this->pressure_altitude = substr($record,26,5);
+			$this->pressure_altitude = substr($record,25,5);
 
 			// set gps altitude
-			$this->gps_altitude = substr($record,31,5);
+			$this->gps_altitude = substr($record,30,5);
 
 			// set fix accuracy
-			$this->fix_accuracy = substr($record,36,3);
+			$this->fix_accuracy = substr($record,35,3);
 		}
 	}
 }
