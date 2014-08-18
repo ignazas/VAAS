@@ -16,7 +16,7 @@ class WeatherControler extends BaseControler {
     return $this->View();
   }
 
-  private function GetMeteoImage($location = 'meteo_trakai') {
+  private function GetMeteoImage($location = 'meteo_valkininkai') {
     $file = dirname(__FILE__) . "/../uploads/$location.png";
     if (!file_exists($file) || round(abs(time() - filemtime($file)) / 60, 2) > 30) { // min
       $opts = array('http' => array(
