@@ -25,7 +25,7 @@ class WeatherControler extends BaseControler {
               )
       );
       $context  = stream_context_create($opts);
-      $content = @file_get_contents('http://meteo.lt/dokumentai/operatyvi_inf/skaitmenine_prog/meteo_trakai.png', false, $context, -1);
+      $content = @file_get_contents("http://meteo.lt/dokumentai/operatyvi_inf/skaitmenine_prog/$location.png", false, $context, -1);
       if (!empty($content))
         file_put_contents($file, $content);
     }
@@ -35,8 +35,8 @@ class WeatherControler extends BaseControler {
   public function View() {
     $this->view = dirname(__FILE__) . '/../views/weather/view.php';
 
-    $location = 'meteo_trakai';
-    $file = $this->GetMeteoImage($location);
+    $location = 'meteo_valkininkai';
+    $file = $this->GetMeteoImage();
     $this->prognosis = '/' . CATALOG . "/uploads/$location.png";
 
     $content = file_get_contents('http://www.weatherlink.com/user/eyvp/index.php?view=summary&headers=0');
