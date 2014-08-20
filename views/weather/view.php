@@ -9,7 +9,10 @@ function weather_view_get_value($match, $value_index, $translate = FALSE) {
   return $match[$value_index];
 }
 ?>
+
 <div class="page-header"><h1>Orai</h1></div>
+
+<?php if (empty($this->data_time) || (time() - $this->data_time) < 86400 /*1 day*/) { ?>
 
 <h2>Faktinis oras</h2>
 <?php if (!empty($this->data_time)) { ?>
@@ -61,6 +64,7 @@ if (empty($value))
 <?php } ?>
   </tbody>
 </table>
+<?php } ?>
 
 <?php if (!empty($this->prognosis)) { ?>
 <h2>Orų prognozė</h2>

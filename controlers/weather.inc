@@ -47,10 +47,10 @@ class WeatherControler extends BaseControler {
       $pattern = "~<tr><td\s+colspan=\"6\"\s+class=\"summary_timestamp\">Current Conditions as of (\d+:\d+)\s+[^,]*,([^<]+)</td></tr>~";
       $matches = NULL;
       if (preg_match($pattern, $content, $matches)) {
-	  $this->data_time = strtotime($matches[1]);
+        $this->data_time = strtotime($matches[2] . ' ' . $matches[1]);
       }
       else {
-	  $this->data_time = NULL;
+        $this->data_time = NULL;
       }
     }
     else
