@@ -111,8 +111,9 @@ class FinanceControler extends BaseControler {
     if (isset($_GET["id"])) {
       $results = array(
         'finance' => Finance::get($_GET["id"]),
-        'journal' => Finance::get_payments($_GET["id"])
       );
+      if ($this->HasPermission() || (!empty($results['finance']->user->id) &&  UserHelper::get_id() == $results['finance']->user->id))
+        $results['journal'] = Finance::get_payments($_GET["id"]);
     }
 
     include dirname(__FILE__) . '/../views/_layout.php';
