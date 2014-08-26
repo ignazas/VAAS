@@ -31,3 +31,43 @@
     </div>
   </div>
 </div>
+
+<?php if (!empty($results['journal'])) { ?>
+<div class="row">
+  <div class="col-md-12">
+    <h2>Mokėjimai</h2>
+    <table class="table table-striped">
+      <thead>
+	<tr>
+	  <th>Skrydžiai</th>
+	  <th>Nario mokestis</th>
+	  <th>Darbų/talkos mokestis</th>
+	  <th>Patalpų mokestis</th>
+	  <th>Elektros mokestis</th>
+	  <th>Draudimas</th>
+	  <th>Kasko mokestis</th>
+	  <th>Už 2%</th>
+	  <th>Komentarai</th>
+	  <th>Data</th>
+	</tr>
+      </thead>
+      <tbody>
+<?php  foreach ($results['journal'] as $r) { $row = (object)$r; ?>
+        <tr>
+	  <td><?php echo theme('display_money', 'flight_fee', NULL, $row) ?></td>
+	  <td><?php echo theme('display_money', 'member_fee', NULL, $row) ?></td>
+	  <td><?php echo theme('display_money', 'labor_fee', NULL, $row) ?></td>
+	  <td><?php echo theme('display_money', 'house_fee', NULL, $row) ?></td>
+	  <td><?php echo theme('display_money', 'electricity_fee', NULL, $row) ?></td>
+	  <td><?php echo theme('display_money', 'insurance_fee', NULL, $row) ?></td>
+	  <td><?php echo theme('display_money', 'casco_fee', NULL, $row) ?></td>
+	  <td><?php echo theme('display_money', 'debt_fee', NULL, $row) ?></td>
+	  <td><?php echo theme('display', 'fee_notes', NULL, $row) ?></td>
+	  <td><?php echo theme('display', 'fee_updated', NULL, $row) ?></td>
+        </tr>
+<?php  } ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+<?php } ?>

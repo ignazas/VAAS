@@ -109,7 +109,10 @@ class FinanceControler extends BaseControler {
     $this->view = dirname(__FILE__) . '/../views/finance/view.php';
 
     if (isset($_GET["id"])) {
-      $results = array('finance' => Finance::get($_GET["id"]));
+      $results = array(
+        'finance' => Finance::get($_GET["id"]),
+        'journal' => Finance::get_payments($_GET["id"])
+      );
     }
 
     include dirname(__FILE__) . '/../views/_layout.php';

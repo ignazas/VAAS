@@ -79,6 +79,14 @@ class Finance
     return NULL;
   }
 
+  public static function get_payments($id) {
+    $st = DB::query("SELECT d.* FROM vak_balance_journal d INNER JOIN jos_contxtd_details cd ON cd.id=d.contact_id INNER JOIN jos_users u ON cd.user_id=u.id WHERE d.contact_id = :contact_id ORDER BY d.fee_updated DESC", array(":contact_id" => $id));
+    if ($row = $st->fetchAll()) {
+      return $row;
+    }
+    return NULL;
+  }
+
   /**
   * Returns all (or a range of) Finance objects in the DB
   *
