@@ -158,6 +158,15 @@ jQuery(document).ready(function($) {
 	}
     });
 
+    var bPopupDefaultOptions = {
+	modalClose: true,
+	opacity: 0.6,
+	positionStyle: 'fixed', //'fixed' or 'absolute'
+	fadeSpeed: 'fast', //can be a string ('slow'/'fast') or int
+	followSpeed: 'fast', //can be a string ('slow'/'fast') or int
+	loadCallback: function(status) { if (status == 'error') window.location.reload(true); }
+    };
+
     $('#dienos,.flight-plan')
 	.on('click', 'a.add', function(event) {
             // Prevents the default action to be triggered.
@@ -166,15 +175,10 @@ jQuery(document).ready(function($) {
 	    var data = $(this).attr('href');
 
             // Triggering bPopup when click event is fired
-            $('#registruotis').addClass('popup').bPopup({
-		modalClose: true,
-		opacity: 0.6,
-		positionStyle: 'fixed', //'fixed' or 'absolute'
-		fadeSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		loadUrl: 'calendar/event_add.php'+data //Uses jQuery.load()
-            }, function() { $("a[rel='popover']", this).popover({}); });
-
+            $('#registruotis').addClass('popup').bPopup(
+		$.extend({loadUrl: 'calendar/event_add.php'+data}, bPopupDefaultOptions)
+		, function() { $("a[rel='popover']", this).popover({}); }
+	    );
 	});
 
     $('#dienos,.flight-plan')
@@ -185,14 +189,10 @@ jQuery(document).ready(function($) {
 	    var data = $(this).attr('href');
 
             // Triggering bPopup when click event is fired
-            $('#registracija').addClass('popup').bPopup({
-		modalClose: true,
-		opacity: 0.6,
-		positionStyle: 'fixed', //'fixed' or 'absolute'
-		fadeSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		loadUrl: 'calendar/event.php'+data //Uses jQuery.load()
-            }, function() { $("a[rel='popover']", this).popover({}); });
+            $('#registracija').addClass('popup').bPopup(
+		$.extend({loadUrl: 'calendar/event.php'+data}, bPopupDefaultOptions)
+		, function() { $("a[rel='popover']", this).popover({}); }
+	    );
 	});
 
     $('#dienos,.flight-plan')
@@ -203,14 +203,10 @@ jQuery(document).ready(function($) {
 	    var data = $(this).attr('href');
 
             // Triggering bPopup when click event is fired
-            $('#addDay').addClass('popup').bPopup({
-		modalClose: true,
-		opacity: 0.6,
-		positionStyle: 'fixed', //'fixed' or 'absolute'
-		fadeSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		loadUrl: 'calendar/day_add.php'+data //Uses jQuery.load()
-            }, function() { $("a[rel='popover']", this).popover({}); });
+            $('#addDay').addClass('popup').bPopup(
+		$.extend({loadUrl: 'calendar/day_add.php'+data}, bPopupDefaultOptions)
+		, function() { $("a[rel='popover']", this).popover({}); }
+	    );
 	});
 
     $('#dienos,.flight-plan')
@@ -221,14 +217,10 @@ jQuery(document).ready(function($) {
 	    var data = $(this).attr('href');
 
             // Triggering bPopup when click event is fired
-            $('#report').addClass('popup').bPopup({
-		modalClose: true,
-		opacity: 0.6,
-		positionStyle: 'fixed', //'fixed' or 'absolute'
-		fadeSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		loadUrl: 'calendar/day.php'+data //Uses jQuery.load()
-            }, function() { $("a[rel='popover']", this).popover({}); });
+            $('#report').addClass('popup').bPopup(
+		$.extend({loadUrl: 'calendar/day.php'+data}, bPopupDefaultOptions)
+		, function() { $("a[rel='popover']", this).popover({}); }
+	    );
 
 	});
 
@@ -239,15 +231,10 @@ jQuery(document).ready(function($) {
     	    event.preventDefault();
 
             // Triggering bPopup when click event is fired
-            $('#addAircraftDialog').addClass('popup').bPopup({
-		modalClose: true,
-		opacity: 0.6,
-		positionStyle: 'fixed', //'fixed' or 'absolute'
-		fadeSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		followSpeed: 'slow', //can be a string ('slow'/'fast') or int
-		loadUrl: 'views/aircrafts/add_aircraft.php' //Uses jQuery.load()
-            }, function() { $("a[rel='popover']", this).popover({}); });
-
+            $('#addAircraftDialog').addClass('popup').bPopup(
+		$.extend({loadUrl: 'views/aircrafts/add_aircraft.php'}, bPopupDefaultOptions)
+		, function() { $("a[rel='popover']", this).popover({}); }
+	    );
 	});
 
     $('form#flight-add')

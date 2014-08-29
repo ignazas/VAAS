@@ -1,7 +1,8 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
+require_once dirname(__FILE__) . '/../helpers/user.inc';
 
-session_start();
+UserHelper::check_access(FALSE);
 
 $st = DB::query('SELECT admin_id FROM calendar_admins WHERE admin_username=:user AND admin_password=:password LIMIT 1', array(':user' => $_POST['USER'],'password' => md5($_POST['PASS'])));
 while ($info = $st->fetch($query_result)) {
@@ -22,7 +23,7 @@ if (isset($admin_id)) {
                  function redirect_to(where, closewin)
                  {
                          opener.location= 'index.php?' + where;
-                         
+
                          if (closewin == 1)
                          {
                                  self.close();

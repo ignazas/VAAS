@@ -67,11 +67,17 @@ class UserHelper {
     if (session_id() == '') session_start();
   }
 
-  public static function check_access() {
+  public static function check_access($redirect=TRUE) {
     UserHelper::init_session();
     if (!UserHelper::logged_in()) {
-      header("Location: index.php?action=svecias");
-      die("Redirecting to login.php");
+      if ($redirect === TRUE) {
+        header("Location: index.php?action=svecias");
+        die("Redirecting to login.php");
+      }
+      else {
+        header("HTTP/1.1 401 Unauthorized");
+        die("Access denied");
+      }
     }
   }
 }

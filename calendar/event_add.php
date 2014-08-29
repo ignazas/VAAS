@@ -1,7 +1,8 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
+require_once dirname(__FILE__) . '/../helpers/user.inc';
 
-session_start();
+UserHelper::check_access(FALSE);
 
 if (isset($_POST['submit'])) {
   $_POST['description'] = !empty($_POST['description']) ? substr(trim($_POST['description']),0,500) : '';

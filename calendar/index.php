@@ -70,8 +70,8 @@ $spec_events = array("šventė", "talka", "kita", "svečiai");
 
 
 ?>
-<?php include "templates/include/messages.inc" ?>
-<?php include "templates/include/errors.inc" ?>
+<?php include dirname(__FILE__) . "/../templates/include/messages.inc" ?>
+<?php include dirname(__FILE__) . "/../templates/include/errors.inc" ?>
 
 <link href="css/cal.css" rel="stylesheet" type="text/css">
 

@@ -1,5 +1,8 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
+require_once dirname(__FILE__) . '/../helpers/user.inc';
+
+UserHelper::check_access(FALSE);
 
 $o = DB::fetch_object("SELECT status FROM days WHERE day = :day LIMIT 1", array(':day' => $_GET['day']));
 $current_status = isset($o->status) ? $o->status : 'nevyksta';
@@ -9,8 +12,6 @@ $statuses = array(
       "vyksta"=>'Vyksta',
       "delete"=>'[Šalinti žymą]',
 );
-
-session_start();
 ?>
 
 <a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a>
