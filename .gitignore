@@ -8,3 +8,4 @@ uploads/meteo_*.png
 *.BASE
 *.LOCAL
 *.REMOTE
+_db/zadmin_vanza2.sql
