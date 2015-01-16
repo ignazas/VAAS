@@ -9,3 +9,4 @@ uploads/meteo_*.png
 *.LOCAL
 *.REMOTE
 uploads/logs/*/*.igc
+_db/zadmin_vanza2.sql
