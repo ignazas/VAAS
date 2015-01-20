@@ -93,10 +93,12 @@ class User {
             $query_context = NULL;
             foreach ($values as $key => $value) {
                 if (in_array($key, array('name', 'username', 'email', 'password', 'usertype', 'block', 'sendEmail',
-                                         'gid', 'registerDate', 'lastvisitDate', 'activation', 'params', 'discount')))
-                    $query_user .= (!empty($query_user) ? ',' : NULL) . "`$key`='" . $value . "'";
+                      'gid', 'registerDate', 'lastvisitDate', 'activation', 'params', 'discount'))) {
+                  $query_user .= (!empty($query_user) ? ',' : NULL) . "`$key`='" . $value . "'";
+                  if ($key == 'email') $query_context .= (!empty($query_context) ? ',' : NULL) . "`email_to`='" . $value . "'";
+                }
                 else
-                    $query_context .= (!empty($query_context) ? ',' : NULL) . "`$key`='" . $value . "'";
+                  $query_context .= (!empty($query_context) ? ',' : NULL) . "`$key`='" . $value . "'";
             }
 
             if ($query_user)
