@@ -20,18 +20,19 @@ class BaseControler {
   public function Transfer($controler=NULL, $action='Index', $params = NULL) {
     if (empty($controler))
       $controler = strtolower(preg_replace('/Controler$/', '', get_class($this)));
+    $code = 302;
     if (empty($params))
-	$code = 302;
+      $code = 302;
     elseif (is_numeric($params))
-	$code = $params;
+      $code = $params;
     elseif (!empty($params['code'])) {
-	$code = $params['code'];
-	unset($params['code']);
+      $code = $params['code'];
+      unset($params['code']);
     }
 
     $q = NULL;
     if (!empty($params) && is_array($params))
-	$q = '&' . http_build_query($params, '', '&');
+      $q = '&' . http_build_query($params, '', '&');
 
     $this->Redirect("?action=$controler&view=$action$q", $code);
   }
