@@ -59,9 +59,9 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         $output .= '>';
         $title = !empty($label) ? $label : NULL;
         if (empty($value))
-          $output .= '<img src="/' . CATALOG . '/images/users/avatar.jpg' . '" class="img-thumbnail img-responsive" alt="' . $title . '" title="' . $title . '" />';
+          $output .= '<img src="' . (defined('CATALOG') && CATALOG ? '/' . CATALOG : NULL) . '/images/users/avatar.jpg' . '" class="img-thumbnail img-responsive" alt="' . $title . '" title="' . $title . '" />';
         else {
-          $img = '/' . CATALOG . '/' . 'uploads/users/' . $value;
+          $img = (defined('CATALOG') && CATALOG ? '/' . CATALOG : NULL) . '/' . 'uploads/users/' . $value;
           //$output .= '<a href="#" onclick="return false;" rel="popover" data-content="<img src=\'' . $img . '\' alt=\'' . $title . '\' title=\'' . $title . '\' />" data-html="true" data-title="' . $title . '">';
           $output .= '<img src="' . $img . '" class="img-thumbnail img-responsive" alt="' . $title . '" title="' . $title . '" />';
           //$output .= '</a>';
