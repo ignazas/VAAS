@@ -34,6 +34,7 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         case 'email':
         case 'number':
         case 'date':
+        case 'time':
         case 'password':
           $output = '<div';
           if (Messages::has_error($name))
@@ -76,6 +77,17 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         if (!empty($label))
           $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
         $output .= '<span>' . $value . '</span>';
+        $output .= '</div>';
+        break;
+      case 'display_hhmm':
+        if (!isset($value) || $value === '')
+          break;
+
+        $output = '<div>';
+        if (!empty($label))
+          $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+        $output .= '<span>' . date("H:i", is_numeric($value) ? mktime(0, $value) : strtotime($value)) . '</span>';
+
         $output .= '</div>';
         break;
       case 'display_money':

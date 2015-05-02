@@ -259,7 +259,7 @@ jQuery(document).ready(function($) {
 	    event.preventDefault();
 	});
 
-    jQuery($('select')).chosen({placeholder_text_single: 'Pasirinkite...', no_results_text: 'Nėra rezultatų', allow_single_deselect: true});
+    jQuery($('select')).chosen({placeholder_text_single: 'Pasirinkite...', no_results_text: 'Nėra rezultatų', allow_single_deselect: true, search_contains: true});
 
 
 	jQuery('form#flight-edit select#service, form#flight-edit select#payer, form#flight-edit #amount').on('change keyup', function() {
