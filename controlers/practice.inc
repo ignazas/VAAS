@@ -28,8 +28,8 @@ class PracticeControler extends BaseControler {
     }
 
     if (!empty($_POST['count'])) {
-      if (empty($_POST['airplane_id'])) {
-        Messages::form_error('airplane_id', "Sklandytuvas turi būti pasirinktas.");
+      if (empty($_POST['aircraft_id'])) {
+        Messages::form_error('aircraft_id', "Sklandytuvas turi būti pasirinktas.");
       }
     }
     //else {
@@ -73,13 +73,15 @@ class PracticeControler extends BaseControler {
 
       if ($this->ValidateData()) {
         $practice_data->storeFormValues($_POST);
+	if (!empty($practice_data->time))
+            $practice_data->time *= 60;
         if (!empty($practice_data->id)) {
           if ($practice_data->update()) {
             //log it
             log_event("Admin", "PracticeDataUpdated", $practice_data->id);
             Messages::set_message("Pakeitimai išsaugoti.");
 
-            $this->Transfer(NULL, 'ItemList');
+            $this->Transfer(NULL, 'DataItemList');
           }
           else {
             Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
@@ -105,7 +107,7 @@ class PracticeControler extends BaseControler {
       $this->Transfer(NULL, 'ItemList');
     }
 
-    $results['airplanes'] = Aircraft::getList();
+    $results['aircrafts'] = Aircraft::getList();
     $results['practices'] = Practice::getList();
     $results['practice_data'] = $practice_data;
 
@@ -136,14 +138,14 @@ class PracticeControler extends BaseControler {
       Messages::set_message("Skrydžio įrašas nerastas.", 'errors');
     }
     else {
-      $practice->delete();
+      $practice_data->delete();
 
       //log it
-      log_event("Admin", "PracticeDataDeleted", 'id: ' . $practice->id);
+      log_event("Admin", "PracticeDataDeleted", 'id: ' . $practice_data->id);
 
       Messages::set_message("Praktikos duomenys pašalinti.");
     }
-	  $this->Transfer(NULL, 'ItemList');
+	  $this->Transfer(NULL, 'DataItemList');
     //return $this->ItemList();
   }
 
@@ -170,6 +172,31 @@ class PracticeControler extends BaseControler {
       'practice' => $data,
       'user' => empty($user_id) ? NULL : User::Get($user_id),
       'practice_data' => PracticeData::getStatistic($user_id),
+    );
+
+    include dirname(__FILE__) . '/../views/_layout.php';
+  }
+
+  public function DataItemList() {
+    $this->view = dirname(__FILE__) . '/../views/practice_data/item-list.php';
+
+    if ($this->HasPermission()) {
+      $user_id = NULL;;
+    }
+    else {
+      $user_id = UserHelper::get_id();
+    }
+    $data = PracticeData::getList($user_id, !empty($_GET['order']) ? $_GET['order'] : NULL);
+    foreach ($data['results'] as $practice) {
+        $practice->user = User::Get($practice->user_id);
+        $practice->instructor = User::Get($practice->instructor_id);
+        $practice->practice = Practice::getById($practice->practice_id);
+        $practice->aircraft = Aircraft::getById($practice->aircraft_id);
+    }
+
+    $results = array(
+      'practice_data' => $data,
+      'user' => empty($user_id) ? NULL : User::Get($user_id),
     );
 
     include dirname(__FILE__) . '/../views/_layout.php';

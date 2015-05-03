@@ -54,11 +54,11 @@
     </div>
 
     <div class="form-group">
-      <label class="control-label" for="airplane_id">Sklandytuvas</label>
-      <select name="airplane_id" id="airplane_id" class="form-control">
+      <label class="control-label" for="aircraft_id">Sklandytuvas</label>
+      <select name="aircraft_id" id="aircraft_id" class="form-control">
 	<option value=""></option>
-<?php foreach ($results['airplanes']['results'] as $airplane) { ?>
-      <option value="<?php echo $airplane->id ?>"<?php echo (!empty($_POST['airplane_id']) && $_POST['airplane_id'] == $airplane->id) || (!empty($results['practice_data']->airplane_id) && $results['practice_data']->airplane_id == $airplane->id) ? ' selected="selected"' : NULL ?>><?php echo $airplane->name . (!empty($airplane->reg_num) ? ' (' . $airplane->reg_num . ')' : NULL) ?></option>
+<?php foreach ($results['aircrafts']['results'] as $aircraft) { ?>
+      <option value="<?php echo $aircraft->id ?>"<?php echo (!empty($_POST['aircraft_id']) && $_POST['aircraft_id'] == $aircraft->id) || (!empty($results['practice_data']->aircraft_id) && $results['practice_data']->aircraft_id == $aircraft->id) ? ' selected="selected"' : NULL ?>><?php echo $aircraft->name . (!empty($aircraft->reg_num) ? ' (' . $aircraft->reg_num . ')' : NULL) ?></option>
 <?php } ?>
       </select>
     </div>

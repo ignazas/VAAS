@@ -1,5 +1,7 @@
-<?php
+﻿<?php
 $action = isset($_GET['action']) ? $_GET['action'] : (isset($action) ? $action : NULL);
+if ($action == "practice" && isset($_GET['view']) && $_GET['view'] == "DataItemList")
+    $action = "practice_data";
 $on = UserHelper::logged_in();
 $admin = UserHelper::has_permission();
 ?>
@@ -50,7 +52,7 @@ $admin = UserHelper::has_permission();
             <li <?php if ($action=="user" && (empty($_GET['id']) || (!empty($_SESSION['user']['id']) && $_GET['id'] == $_SESSION['user']['id'])) && (empty($_GET['view']) || $_GET['view'] == 'View' || $_GET['view'] == 'Edit')) {echo "class=\"active\"";} ?>><a class="" href="index.php?action=user"><i class="glyphicon glyphicon-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
 
 <?php if ($admin || UserHelper::has_permission('day_tag')) { ?>
-            <li class="<?php if (in_array($action, array("article", "admin/bookings", "admin/finance", "aircraft", "flight", "service"))) {echo 'active';} ?> dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Administravimas"><i class="glyphicon glyphicon-cog"></i><span class="hidden-lg hidden-md hidden-sm"> Administravimas</span> <b class="caret"></b></a>
+            <li class="<?php if (in_array($action, array("article", "admin/bookings", "admin/finance", "aircraft", "flight", "service", "practice_data"))) {echo 'active';} ?> dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Administravimas"><i class="glyphicon glyphicon-cog"></i><span class="hidden-lg hidden-md hidden-sm"> Administravimas</span> <b class="caret"></b></a>
               <ul class="dropdown-menu">
 <?php if ($admin) { ?>
                 <li <?php if ($action=="admin/news") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=article&amp;view=AdminItemList" title="Pranešimai"><i class="glyphicon glyphicon-bell"></i> Pranešimai</a></li>
@@ -63,7 +65,8 @@ $admin = UserHelper::has_permission();
                 <li <?php if ($action=="admin/finance") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=admin/finance" title="Finansai"><i class="glyphicon glyphicon-shopping-cart"></i> Finansai</a></li>
                 <li <?php if ($action=="aircraft") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=aircraft" title="Orlaiviai"><i class="glyphicon glyphicon-plane"></i> Orlaiviai</a></li>
                 <li <?php if ($action=="flight") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=flight" title="Skrydžiai"><i class="glyphicon glyphicon-list-alt"></i> Skrydžiai</a></li>
-                <li class="<?php if ($action=="service") {echo "active";} ?>"><a class="" href="admin.php?action=service" title="Kainynas"><i class="glyphicon glyphicon-shopping-cart"></i> Kainynas</a></li>
+                <li <?php if ($action=="service") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=service" title="Kainynas"><i class="glyphicon glyphicon-shopping-cart"></i> Kainynas</a></li>
+                <li <?php if ($action=="practice_data") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=practice&amp;view=DataItemList" title="Praktika"><i class="glyphicon glyphicon-list"></i> Praktika</a></li>
 <?php } ?>
               </ul>
             </li>

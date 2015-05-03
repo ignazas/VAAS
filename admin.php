@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once dirname(__FILE__) . '/helpers/user.inc';
 UserHelper::check_access();
 

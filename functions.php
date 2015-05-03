@@ -86,7 +86,7 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         $output = '<div>';
         if (!empty($label))
           $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
-        $output .= '<span>' . date("H:i", is_numeric($value) ? mktime(0, $value) : strtotime($value)) . '</span>';
+        $output .= '<span>' . date("H:i", is_numeric($value) ? mktime(0, 0, $value) : strtotime($value)) . '</span>';
 
         $output .= '</div>';
         break;
