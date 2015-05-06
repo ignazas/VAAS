@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/user.inc';
+require_once dirname(__FILE__) . '/../models/user_group.inc';
 
 class UserControler extends BaseControler {
   private $user_model;
@@ -220,8 +221,10 @@ class UserControler extends BaseControler {
   public function ItemList() {
     $this->view = dirname(__FILE__) . '/../views/user/item-list.php';
 
-    $data = User::getList();
-    $results = array('users' => $data['results'], 'totalRows' => $data['totalRows']);
+    $results = array(
+      'users' => User::getList(1000000, 'u.name', !empty($_GET['group']) && is_numeric($_GET['group']) ? 'ud.catid=' . $_GET['group'] : NULL),
+      'groups' => UserGroup::getList(),
+    );
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }

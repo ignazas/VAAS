@@ -21,6 +21,7 @@ class User {
     public $birthdate;
     public $email_to;
     public $con_position;
+    public $catid;
 
   /**
   * Sets the object's properties using the values in the supplied array
@@ -46,6 +47,7 @@ class User {
     if (!empty($data['birthdate']) && trim($data['birthdate'], '0-')) $this->birthdate = $data['birthdate'];
     if (isset($data['email_to'])) $this->email_to = $data['email_to'];
     if (isset($data['con_position'])) $this->con_position = $data['con_position'];
+    if (isset($data['catid'])) $this->catid = $data['catid'];
   }
 
     public static function Get($id) {
@@ -119,11 +121,12 @@ class User {
   * @param string Optional column by which to order the articles (default="publicationDate DESC")
   * @return Array|false A two-element array : results => array, a list of Article objects; totalRows => Total number of articles
   */
-  public static function getList( $numRows=1000000, $order="u.name" ) {
+    public static function getList($numRows=1000000, $order="u.name", $filter = NULL) {
     $st = DB::query("SELECT SQL_CALC_FOUND_ROWS
                        u.*,
-                       ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position, ud.id 'contact_id'
+                       ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position, ud.id 'contact_id', ud.catid
                      FROM jos_users u LEFT OUTER JOIN jos_contxtd_details ud ON u.id=ud.user_id
+                     " . (!empty($filter) ? "WHERE " . $filter : NULL) . "
                      ORDER BY $order LIMIT $numRows");
 
     $list = array();
@@ -153,7 +156,7 @@ class User {
                   ':email' => $this->email,
                 ));
 
-    $this->contact_id = DB::insert("INSERT INTO jos_contxtd_details (name, user_id, telephone1, telephone2, website, avatar, birthdate, email_to, con_position, params) VALUES (:name, :user_id, :telephone1, :telephone2, :website, :avatar, " . DB::date_as_string($this->birthdate) . ", :email_to, :con_position, '')", array(
+    $this->contact_id = DB::insert("INSERT INTO jos_contxtd_details (name, user_id, telephone1, telephone2, website, avatar, birthdate, email_to, con_position, params, catid) VALUES (:name, :user_id, :telephone1, :telephone2, :website, :avatar, " . DB::date_as_string($this->birthdate) . ", :email_to, :con_position, '', NULL)", array(
         ':name' => $this->name,
         ':telephone1' => $this->telephone1,
         ':telephone2' => $this->telephone2,

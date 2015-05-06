@@ -1,6 +1,39 @@
 <div class="page-header"><h1>Nariai</h1></div>
 
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Filtrai</h3>
+    </div>
+    <div class="panel-body">
+      <div id="addDay">
+	<form role="form" method="get" action="" class="col-xs-12 form-horizontal">
+	  <input type="hidden" name="action" value="user" />
+	  <input type="hidden" name="view" value="ItemList" />
+	  <div class="form-group">
+	    <label for="status" class="col-sm-3 control-label">Būsena</label>
+	    <div class="col-sm-9">
+	      <select name="group" class="form-control">
+		<option value="">Visi</option>
+<?php foreach ($results['groups']['results'] as $group) { ?>
+		<option value="<?php echo $group->id ?>"<?php echo !empty($_GET['group']) && $group->id == $_GET['group'] ? 'selected="selected"' : NULL ?>><?php echo $group->title ?></option>
+<?php } ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+	    <div class="col-sm-offset-3 col-sm-9">
+	      <button type="submit" class="btn btn-primary">Filtruoti</button>
+	    </div>
+	  </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="col-xs-12">
+  <label>Įrašų: <?php echo $results['users']['totalRows'] ?></label>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -14,7 +47,7 @@
     </thead>
 
     <tbody>
-<?php foreach ($results['users'] as $user) { ?>
+<?php foreach ($results['users']['results'] as $user) { ?>
       <tr>
 	<td class="col-lg-2 col-xs-1 hidden-xs hidden-sm">
           <a href="index.php?action=user&amp;view=View&amp;id=<?php echo $user->id ?>">
@@ -41,6 +74,9 @@
 <?php if ($this->HasPermission() || (!empty($_SESSION['user']['id']) && $_SESSION['user']['id'] == $user->id)) { ?>
 	<td>
  	  <a class="btn btn-xs btn-default" href="index.php?action=user&amp;view=Edit&amp;id=<?php echo $user->id ?>">Redaguoti</a>
+<?php  if ($user->catid == 29) { ?>
+ 	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;user_id=<?php echo $user->id ?>">Skraidymų knygelė</a>
+<?php  } ?>
 	</td>
 <?php } ?>
       </tr>
