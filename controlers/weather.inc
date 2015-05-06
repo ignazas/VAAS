@@ -37,7 +37,7 @@ class WeatherControler extends BaseControler {
 
     $location = 'meteo_valkininkai';
     $file = $this->GetMeteoImage();
-    $this->prognosis = '/' . CATALOG . "/uploads/$location.png";
+    $this->prognosis = (CATALOG != '' ? '/' . CATALOG : NULL) . "/uploads/$location.png";
 
     $content = file_get_contents('http://www.weatherlink.com/user/eyvp/index.php?view=summary&headers=0');
     if (!empty($content)) {
