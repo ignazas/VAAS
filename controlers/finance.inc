@@ -129,7 +129,7 @@ class FinanceControler extends BaseControler {
       $filters[] = "(u.name LIKE $escaped OR u.username LIKE $escaped OR u.email LIKE $escaped)";
     }
     if (!empty($_GET['group']) && is_numeric($_GET['group']))
-      $filters[] = 'ud.catid=' . (int)$_GET['group'];
+      $filters[] = 'cd.catid=' . (int)$_GET['group'];
     if (isset($_GET['instructor']) && is_numeric($_GET['instructor']))
       $filters[] = 'u.instructor=' . (int)$_GET['instructor'];
 
