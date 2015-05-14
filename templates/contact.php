@@ -23,8 +23,8 @@ include "templates/include/top-menu.php";
 				Tinklalapis: http://www.sklandymas.lt<br />
 			</div>
 			<div class="col-md-8">
-			<h3>VAAS priežiūra</h3>
-			Ignas, +370 614 36408, ignas@igfe.eu
+			<h3></h3>
+			
 			</div>
 		</div>
 
