@@ -106,7 +106,7 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         $output = '<div>';
         if (!empty($label))
           $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
-        $output .= '<span><i class="glyphicon glyphicon-' . (empty($value) ? 'minus' : 'plus') . '"></i></span>';
+        $output .= '<span><i class="glyphicon glyphicon-' . (empty($value) ? 'remove' : 'ok') . '"></i></span>';
 
         $output .= '</div>';
         break;
