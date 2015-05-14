@@ -19,8 +19,10 @@ if (UserHelper::logged_in()) {
       die('Unknown action');
 }
 else {
-  if (isset($_GET['action']) && $_GET['action'] == 'on')
+  if (!empty($_GET['action']) && $_GET['action'] == 'on')
     Index::on();
+  else if (!empty($_GET['action']) && $_GET['action'] == 'ajax' && !empty($_GET['method']) && $_GET['method'] == 'login')
+    Index::ajax();
   else
     Index::svecias();
 }
