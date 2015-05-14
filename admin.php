@@ -134,12 +134,12 @@ function addDay() {
 	$exploded_date = explode("-", $day);
 	if(substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
 	$exploded_date[1] += 1;
-
 	$destination = !empty($_GET['destination']) ? $_GET['destination'] : ("index.php?action=calendar&month=" . $exploded_date[1] . "&year=" . $exploded_date[0]);
   if (headers_sent() === false)
     header("Location: $destination", true, 302);
   else
-    echo '<meta http-equiv="Location" content="' . $url . '"><script>window.location="'.$url.'";</script>';
+    echo '<meta http-equiv="Location" content="'.$destination.'"><script>window.location="'.$destination.'";</script>';
+  echo 'test';
   die();
 }
 
