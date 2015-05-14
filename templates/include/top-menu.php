@@ -28,7 +28,9 @@ $admin = UserHelper::has_permission();
               <ul class="dropdown-menu">
 		<li <?php if ($action=="flight") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=flight" title="Skrydžiai"><i class="glyphicon glyphicon-list-alt"></i> Skrydžiai</a></li>
 		<li <?php if ($action=="analysis"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=analysis" title="Analizė"><i class="glyphicon glyphicon-book"></i> Analizė</a></li>
+<?php  if (UserHelper::is_student()) { ?>
 		<li <?php if ($action=="practice") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=practice" title="Skrydžių praktika"><i class="glyphicon glyphicon-list-alt"></i> Skrydžių praktika</a></li>
+<?php  } ?>
               </ul>
             </li>
 

@@ -26,6 +26,13 @@ class UserHelper {
     return FALSE;
   }
 
+  public static function is_student($user = NULL) {
+    $catid = empty($user)
+      ? (UserHelper::logged_in() && !empty($_SESSION['user']['catid']) ? $_SESSION['user']['catid'] : 0)
+      : $user->catid;
+    return in_array($catid, array(29, 19));
+  }
+
   public static function logged_in() {
     UserHelper::init_session();
     return !empty($_SESSION['user']);
