@@ -7,6 +7,7 @@
     <?php echo theme('display', 'usertype', 'Vartotojo tipas', $user) ?>
     <?php echo theme('display', 'registerDate', 'Užsiregistravo', $user) ?>
     <?php echo theme('display', 'lastvisitDate', 'Paskutinis apsilankymas', $user) ?>
+    <?php echo theme('display_checkbox', 'instructor', 'Instruktorius', $user) ?>
     <?php echo theme('display_percent', 'discount', 'Nuolaida', $user) ?>
   </div>
   <div class="col-md-4">
@@ -22,6 +23,9 @@
 
 <?php if (UserHelper::has_permission() || (!empty($_SESSION['user']['id']) && $_SESSION['user']['id'] == $user->id)) { ?>
 <div class="buttons">
-  <a href="index.php?action=user&amp;view=Edit&amp;id=<?php echo $user->id ?>" class="btn btn-sm btn-primary">Redaguoti</a>
+  <a class="btn btn-sm btn-primary" href="index.php?action=user&amp;view=Edit&amp;id=<?php echo $user->id ?>">Redaguoti</a>
+<?php  if (UserHelper::has_permission()) { ?>
+  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti įrašą <?php echo $user->name ?>?')" href="index.php?action=user&amp;view=Delete&amp;id=<?php echo $user->id ?>">Pašalinti</a>
+<?php  } ?>
 </div>
 <?php } ?>

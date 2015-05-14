@@ -15,7 +15,7 @@
         <?php echo $event->event_time ?>
         <?php echo $event->event_type != 'registracija' ? $event->event_desc : $event->event_title ?>
 <?php if (!empty($event->user->avatar)) { ?>
-        <img src="<?php echo '/' . CATALOG . '/uploads/users/' . $event->user->avatar ?>" class="img-rounded" style="height:22px;" alt="<?php echo /*htmlentities*/($event->user->name) ?>">
+        <img src="<?php echo (CATALOG != '' ? '/' . CATALOG : NULL) . '/uploads/users/' . $event->user->avatar ?>" class="img-rounded" style="height:22px;" alt="<?php echo /*htmlentities*/($event->user->name) ?>">
 <?php } ?>
       </a>
 <?php if ($event->event_type != 'registracija') { ?>
@@ -47,7 +47,7 @@
         <?php echo $event->event_time ?>
         <?php echo $event->event_type != 'registracija' ? $event->event_desc : $event->event_title ?>
 <?php if (!empty($event->user->avatar)) { ?>
-        <img src="<?php echo '/' . CATALOG . '/uploads/users/' . $event->user->avatar ?>" class="img-rounded" style="height:22px;" alt="<?php echo /*htmlentities*/($event->user->name) ?>">
+        <img src="<?php echo (CATALOG != '' ? '/' . CATALOG : NULL) . '/uploads/users/' . $event->user->avatar ?>" class="img-rounded" style="height:22px;" alt="<?php echo /*htmlentities*/($event->user->name) ?>">
 <?php } ?>
       </a>
     </li>

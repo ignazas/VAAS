@@ -13,7 +13,7 @@
       <p class="summary"><?php echo htmlspecialchars( $article->summary )?>...</p>
       <div align="right"><p><a href="index.php?action=article&amp;view=View&amp;articleId=<?php echo $article->id?>">[Skaityti daugiau]</a></p></div>
 
-<?php if (UserHelper::has_permission()) { ?>
+<?php if (UserHelper::has_permission('publish')) { ?>
       <div class="buttons">
 	<a href="index.php?action=article&amp;view=Notify&amp;id=<?php echo $article->id ?>&amp;receivers=flying_today" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-envelope"></i> Skr. šiandien</a>
  	<a href="index.php?action=article&amp;view=Notify&amp;id=<?php echo $article->id ?>&amp;receivers=flying_tomorrow" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-envelope"></i> Skr. rytoj</a>

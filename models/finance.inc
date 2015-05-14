@@ -94,10 +94,10 @@ class Finance
   * @param string Optional column by which to order the articles (default="publicationDate DESC")
   * @return Array|false A two-element array : results => array, a list of Finance objects; totalRows => Total number of articles
   */
-  public static function getList($numRows=1000000, $fromRow=0) {
+  public static function getList($numRows=1000000, $fromRow=0, $order="u.name", $filter = NULL) {
     require_once dirname(__FILE__) . '/user.inc';
 
-    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS d.*, u.*, cd.user_id FROM vak_contxtd_debt d INNER JOIN jos_contxtd_details cd ON cd.id=d.contact_id INNER JOIN jos_users u ON cd.user_id=u.id LIMIT $fromRow, $numRows");
+    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS d.*, u.*, cd.user_id FROM vak_contxtd_debt d INNER JOIN jos_contxtd_details cd ON cd.id=d.contact_id INNER JOIN jos_users u ON cd.user_id=u.id WHERE u.deleted IS NULL" . (!empty($filter) ? " AND " . $filter : NULL) . " ORDER BY $order LIMIT $fromRow, $numRows");
 
     $list = array();
     while ($row = $st->fetch()) {

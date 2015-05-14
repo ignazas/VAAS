@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/finance.inc';
+require_once dirname(__FILE__) . '/../models/user_group.inc';
 
 class FinanceControler extends BaseControler {
   private $model;
@@ -122,8 +123,20 @@ class FinanceControler extends BaseControler {
   public function ItemList() {
     $this->view = dirname(__FILE__) . '/../views/finance/item-list.php';
 
-    $data = Finance::getList();
-    $results = array('finances' => $data['results'], 'totalRows' => $data['totalRows']);
+    $filters = array();
+    if (!empty($_GET['search'])) {
+      $escaped = DB::escape('%' . $_GET['search'] . '%');
+      $filters[] = "(u.name LIKE $escaped OR u.username LIKE $escaped OR u.email LIKE $escaped)";
+    }
+    if (!empty($_GET['group']) && is_numeric($_GET['group']))
+      $filters[] = 'ud.catid=' . (int)$_GET['group'];
+    if (isset($_GET['instructor']) && is_numeric($_GET['instructor']))
+      $filters[] = 'u.instructor=' . (int)$_GET['instructor'];
+
+    $results = array(
+      'finances' => Finance::getList(1000000, 0, 'u.name', implode(' AND ', $filters)),
+      'groups' => UserGroup::getList(),
+    );
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }

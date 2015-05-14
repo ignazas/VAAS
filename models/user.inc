@@ -12,6 +12,7 @@ class User {
     public $registerDate;
     public $lastvisitDate;
     public $discount;
+    public $instructor;
 
     public $contact_id;
     public $telephone1;
@@ -38,6 +39,7 @@ class User {
     if (isset($data['registerDate'])) $this->registerDate = $data['registerDate'];
     if (isset($data['lastvisitDate'])) $this->lastvisitDate = $data['lastvisitDate'];
     if (isset($data['discount'])) $this->discount = $data['discount'];
+    if (isset($data['instructor'])) $this->instructor = $data['instructor'];
 
     if (isset($data['contact_id'])) $this->contact_id = $data['contact_id'];
     if (isset($data['telephone1'])) $this->telephone1 = $data['telephone1'];
@@ -82,7 +84,7 @@ class User {
                 FROM jos_users u
                 LEFT JOIN jos_contxtd_details ud ON u.id = ud.user_id
                 WHERE
-                    u.username = :username OR u.email = :username", array(':username' => $username));
+                    u.deleted IS NULL AND (u.username = :username OR u.email = :username)", array(':username' => $username));
             if (!empty($data))
               return new User($data);
         }
@@ -95,14 +97,13 @@ class User {
             $query_context = NULL;
             foreach ($values as $key => $value) {
                 if (in_array($key, array('name', 'username', 'email', 'password', 'usertype', 'block', 'sendEmail',
-                      'gid', 'registerDate', 'lastvisitDate', 'activation', 'params', 'discount'))) {
+                      'gid', 'registerDate', 'lastvisitDate', 'activation', 'params', 'discount', 'instructor'))) {
                   $query_user .= (!empty($query_user) ? ',' : NULL) . "`$key`='" . $value . "'";
                   if ($key == 'email') $query_context .= (!empty($query_context) ? ',' : NULL) . "`email_to`='" . $value . "'";
                 }
                 else
                   $query_context .= (!empty($query_context) ? ',' : NULL) . "`$key`='" . $value . "'";
             }
-
             if ($query_user)
                 DB::query("UPDATE `jos_users` SET $query_user WHERE `id`=:id", array(':id' => $id));
 
@@ -126,7 +127,7 @@ class User {
                        u.*,
                        ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position, ud.id 'contact_id', ud.catid
                      FROM jos_users u LEFT OUTER JOIN jos_contxtd_details ud ON u.id=ud.user_id
-                     " . (!empty($filter) ? "WHERE " . $filter : NULL) . "
+                     WHERE deleted IS NULL" . (!empty($filter) ? " AND " . $filter : NULL) . "
                      ORDER BY $order LIMIT $numRows");
 
     $list = array();
@@ -148,12 +149,13 @@ class User {
     // Does the User object already have an ID?
     if ( !is_null( $this->id ) ) trigger_error ( "User::insert(): Attempt to insert an User object that already has its ID property set (to $this->id).", E_USER_ERROR );
 
-    $this->id = DB::insert("INSERT INTO jos_users (name, username, usertype, password, email, registerDate, params) VALUES (:name, :username, :usertype, :password, :email, " . DB::date_as_string(time()) . ", '')", array(
+    $this->id = DB::insert("INSERT INTO jos_users (name, username, usertype, password, email, registerDate, params, instructor) VALUES (:name, :username, :usertype, :password, :email, " . DB::date_as_string(time()) . ", '', :instructor)", array(
                   ':name' => $this->name,
                   ':username' => $this->username,
                   ':usertype' => $this->usertype,
                   ':password' => $this->password,
                   ':email' => $this->email,
+                  ':instructor' => empty($this->instructor) ? 0 : 1,
                 ));
 
     $this->contact_id = DB::insert("INSERT INTO jos_contxtd_details (name, user_id, telephone1, telephone2, website, avatar, birthdate, email_to, con_position, params, catid) VALUES (:name, :user_id, :telephone1, :telephone2, :website, :avatar, " . DB::date_as_string($this->birthdate) . ", :email_to, :con_position, '', NULL)", array(
@@ -168,5 +170,16 @@ class User {
       ));
 
     return !empty($this->id);
+  }
+
+  /**
+  * Deletes the current user object from the database.
+  */
+  public function delete() {
+    // Does the user object have an ID?
+    if ( is_null( $this->id ) ) trigger_error ( "User::delete(): Attempt to delete an User object that does not have its id property set.", E_USER_ERROR );
+
+    // Delete the User
+    DB::query("UPDATE `jos_users` SET `deleted`=" . DB::date_as_string(time()) . " WHERE id = :id LIMIT 1", array(":id" => $this->id));
   }
 }

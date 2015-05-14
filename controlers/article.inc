@@ -31,7 +31,7 @@ class ArticleControler extends BaseControler {
   }
 
   public function Edit() {
-    if (!$this->HasPermission())
+    if (!$this->HasPermission('publish'))
       $this->Transfer();
 
     $this->view = dirname(__FILE__) . '/../views/article/edit.php';
@@ -73,7 +73,7 @@ class ArticleControler extends BaseControler {
   }
 
   public function NewItem() {
-    if (!$this->HasPermission())
+    if (!$this->HasPermission('publish'))
       $this->Transfer();
 
     $this->view = dirname(__FILE__) . '/../views/article/edit.php';
@@ -110,7 +110,7 @@ class ArticleControler extends BaseControler {
   }
 
   public function Delete() {
-    if (!$this->HasPermission())
+    if (!$this->HasPermission('publish'))
       $this->Transfer();
 
     if (empty($_GET['articleId']) && !empty($_GET['id'])) $_GET['articleId'] = $_GET['id'];
@@ -142,7 +142,7 @@ class ArticleControler extends BaseControler {
   }
 
   public function Notify() {
-    if (!$this->HasPermission())
+    if (!$this->HasPermission('publish'))
       $this->Transfer();
 
     $article = Article::getById((int)(empty($_GET['articleId']) && !empty($_GET['id']) ? $_GET['id'] : $_GET['articleId']));

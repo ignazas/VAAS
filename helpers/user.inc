@@ -1,14 +1,25 @@
 <?php
 class UserHelper {
+  public static function has_role($role) {
+    $roles = !empty($_SESSION['user']['usertype']) ? explode(',', $_SESSION['user']['usertype']) : array('Registered');
+    return in_array($role, $roles);
+  }
+
   public static function has_permission($permission = 'administer') {
     $roles = !empty($_SESSION['user']['usertype']) ? explode(',', $_SESSION['user']['usertype']) : array('Registered');
 
+    if (in_array('Super Administrator', $roles))
+      return TRUE;
+
     switch ($permission) {
       case 'administer':
-        $result = array_intersect($roles, array('Administrator', 'Super Administrator'));
+        $result = array_intersect($roles, array('Administrator'));
         return !empty($result);
       case 'day_tag':
-        $result = array_intersect($roles, array('Administrator', 'Super Administrator', 'Planner'));
+        $result = array_intersect($roles, array('Administrator', 'Planner'));
+        return !empty($result);
+      case 'publish':
+        $result = array_intersect($roles, array('Administrator', 'Publisher'));
         return !empty($result);
     }
 

@@ -44,6 +44,15 @@ function theme($type, $name, $label, $entity, $values=NULL) {
             $output .= '<label class="control-label" for="' . $name . '">' . $label . '</label> ';
           $output .= '<input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . $value . '"/></div>';
           break;
+        case 'checkbox':
+          $output = '<div class="checkbox' . (Messages::has_error($name) ? ' err' : NULL) . '">';
+          if (!empty($label))
+            $output .= '<label class="control-label" for="' . $name . '">' . $label . ' ';
+          $output .= '<input type="' . $type . '" id="' . $name . '" name="' . $name . '"' . (empty($value) ? NULL : ' checked="checked"') . '/>';
+          if (!empty($label))
+            $output .= '</label>';
+          $output .= '</div>';
+          break;
         case 'decimal':
           $output = '<div';
           if (Messages::has_error($name))
@@ -87,6 +96,17 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         if (!empty($label))
           $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
         $output .= '<span>' . date("H:i", is_numeric($value) ? mktime(0, 0, $value) : strtotime($value)) . '</span>';
+
+        $output .= '</div>';
+        break;
+      case 'display_checkbox':
+        if (!isset($value) || $value === '')
+          break;
+
+        $output = '<div>';
+        if (!empty($label))
+          $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+        $output .= '<span><i class="glyphicon glyphicon-' . (empty($value) ? 'minus' : 'plus') . '"></i></span>';
 
         $output .= '</div>';
         break;

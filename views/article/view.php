@@ -13,7 +13,7 @@
     <div class="panel-body">
       <p>Čia yra talpinama visa vidinė informacija klubo nariams.</p>
       <p>Visi šie pranešimai buvo automatiškai išsiųsti nariams el. paštu.</p>
-<?php if (UserHelper::has_permission()) { ?>
+<?php if (UserHelper::has_permission('publish')) { ?>
       <div class="buttons">
 	<a href="index.php?action=article&amp;view=Edit&amp;id=<?php echo $results['article']->id ?>" class="btn btn-sm btn-primary">Redaguoti</a>
 

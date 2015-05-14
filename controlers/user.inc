@@ -165,7 +165,18 @@ class UserControler extends BaseControler {
 
     $edit = array();
 
-    if ($user && $_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $roles = '';
+      foreach ($_POST as $key => $value) {
+        if (strpos($key, 'usertype|') === 0 && !empty($value)) {
+          $v = explode('|', $key);
+          if (!empty($v[1]))
+            $roles .= (empty($roles) ? NULL : ',') . str_replace('_', ' ', $v[1]);
+        }
+      }
+      $edit['usertype'] = $roles;
+      $edit['instructor'] = empty($_POST['instructor']) ? 0 : 1;
+
       if ($this::Validate($user)) {
         if (!empty($_POST['password']) && !empty($_POST['new_password_1'])) {
           $edit['password'] = md5($_POST['new_password_1']);
@@ -197,6 +208,12 @@ class UserControler extends BaseControler {
         //return $this->Index();
       }
     }
+    else {
+      foreach (explode(',', $user->usertype) as $usertype) {
+        if (!empty($usertype))
+          $edit['usertype|' . str_replace(' ', '_', $usertype)] = 1;
+      }
+    }
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }
@@ -221,12 +238,39 @@ class UserControler extends BaseControler {
   public function ItemList() {
     $this->view = dirname(__FILE__) . '/../views/user/item-list.php';
 
+    $filters = array();
+    if (!empty($_GET['search'])) {
+      $escaped = DB::escape('%' . $_GET['search'] . '%');
+      $filters[] = "(u.name LIKE $escaped OR u.username LIKE $escaped OR u.email LIKE $escaped)";
+    }
+    if (!empty($_GET['group']) && is_numeric($_GET['group']))
+      $filters[] = 'ud.catid=' . (int)$_GET['group'];
+    if (isset($_GET['instructor']) && is_numeric($_GET['instructor']))
+      $filters[] = 'u.instructor=' . (int)$_GET['instructor'];
+
     $results = array(
-      'users' => User::getList(1000000, 'u.name', !empty($_GET['group']) && is_numeric($_GET['group']) ? 'ud.catid=' . $_GET['group'] : NULL),
+      'users' => User::getList(1000000, 'u.name', implode(' AND ', $filters)),
       'groups' => UserGroup::getList(),
     );
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }
 
+  public function Delete() {
+    if (!$this->HasPermission())
+      $this->Transfer();
+
+    $id = !empty($_GET['id']) ? $_GET['id'] : NULL;
+    if (empty($id) || !($user = $this->user_model->Get($id))) {
+      Messages::set_message("Vartotojas nerastas.", 'errors');
+    }
+    else {
+      //log it
+      log_event("Admin", "UserDeleted", 'user id: ' . $user->id);
+
+      $user->delete();
+      Messages::set_message("Vartotojas $user->name pašalintas.");
+    }
+	  $this->Transfer(NULL, 'ItemList');
+  }
 }
