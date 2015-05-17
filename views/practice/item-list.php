@@ -66,7 +66,7 @@ foreach ( $results['practice']['results'] as $practice) {
 <?php  if (isset($results['practice_data'][$practice->id])) { ?>
 <?php echo theme('display', 'count', NULL, NULL, $results['practice_data'][$practice->id]) ?> / <?php echo theme('display_hhmm', 'time', NULL, NULL, $results['practice_data'][$practice->id]) ?>
 <?php  } ?>
-          <a class="btn btn-sm btn-primary" href="index.php?action=practice&amp;view=NewData&amp;user_id=<?php echo $results['user']->id ?>&amp;practice_id=<?php echo $practice->id ?>">Pridėti</a>
+          <a class="btn btn-sm btn-primary" href="index.php?action=practice&amp;view=NewComment&amp;user_id=<?php echo $results['user']->id ?>&amp;practice_id=<?php echo $practice->id ?>">Pridėti</a>
 	</td>
 <?php } ?>
 	<td>
@@ -82,5 +82,5 @@ foreach ( $results['practice']['results'] as $practice) {
 <?php } ?>
 
   <br />
-  <a class="btn btn-sm btn-primary" href="index.php?action=practice&amp;view=NewData&amp;user_id=<?php echo $results[user]->id ?>">Pridėti naują skrydį</a>
+  <a class="btn btn-sm btn-primary" href="index.php?action=practice&amp;view=NewComment&amp;user_id=<?php echo $results[user]->id ?>">Pridėti naują komentarą</a>
 </div>

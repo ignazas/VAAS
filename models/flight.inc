@@ -85,19 +85,19 @@ class Flight
     if (!is_null($this->record_id)) trigger_error ( "Flight::insert(): Attempt to insert an Flight object that does have its record_id property set (to $this->record_id).", E_USER_ERROR );
 
     // Insert the Flight
-    $st = DB::query("INSERT INTO flights (date, airplane_id, instructor, payer, task, amount, price, service_id, duration)
+    $this->record_id = DB::insert("INSERT INTO flights (date, airplane_id, instructor, payer, task, amount, price, service_id, duration)
     VALUES (" . DB::date_as_string($this->date) . ", :airplane_id, :instructor, :payer, :task, :amount, :price, :service_id, :duration)", array(
         ":airplane_id" => $this->airplane_id,
-        ":instructor" => $this->instructor,
+        ":instructor" => DB::null_if_empty($this->instructor),
         ":payer" => $this->payer,
-        ":task" => $this->task,
-        ":amount" => $this->amount,
-        ":price" => $this->price,
-        ":service_id" => $this->service_id,
-        ":duration" => $this->duration,
+        ":task" => DB::null_if_empty($this->task),
+        ":amount" => DB::null_if_empty($this->amount),
+        ":price" => DB::null_if_empty($this->price),
+        ":service_id" => DB::null_if_empty($this->service_id),
+        ":duration" => DB::null_if_empty($this->duration),
     ));
 
-    return $st->rowCount();
+    return !empty($this->record_id);
   }
 
   /**
@@ -110,13 +110,13 @@ class Flight
     // Update the Flight
     $st = DB::query("UPDATE flights SET date=" . DB::date_as_string($this->date) . ", airplane_id=:airplane_id, instructor=:instructor, payer=:payer, task=:task, amount=:amount, price=:price, service_id=:service_id, duration=:duration WHERE record_id = :record_id", array(
         ":airplane_id" => $this->airplane_id,
-        ":instructor" => $this->instructor,
+        ":instructor" => DB::null_if_empty($this->instructor),
         ":payer" => $this->payer,
-        ":task" => $this->task,
-        ":amount" => $this->amount,
-        ":price" => $this->price,
-        ":service_id" => $this->service_id,
-        ":duration" => $this->duration,
+        ":task" => DB::null_if_empty($this->task),
+        ":amount" => DB::null_if_empty($this->amount),
+        ":price" => DB::null_if_empty($this->price),
+        ":service_id" => DB::null_if_empty($this->service_id),
+        ":duration" => DB::null_if_empty($this->duration),
         ":record_id" => $this->record_id,
       ));
 

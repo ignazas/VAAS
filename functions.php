@@ -62,6 +62,15 @@ function theme($type, $name, $label, $entity, $values=NULL) {
             $output .= '<label class="control-label" for="' . $name . '">' . $label . '</label> ';
           $output .= '<input class="form-control" type="number" step="any" pattern="[0-9]+([\,|\.][0-9]+)?" id="' . $name . '" name="' . $name . '" value="' . $value . '"/></div>';
           break;
+        case 'textarea':
+          $output = '<div';
+          if (Messages::has_error($name))
+            $output .= ' class="err"';
+          $output .= '>';
+          if (!empty($label))
+            $output .= '<label class="control-label" for="' . $name . '">' . $label . '</label> ';
+          $output .= '<textarea class="form-control" id="' . $name . '" name="' . $name . '">' . $value . '</textarea></div>';
+          break;
       case 'display_avatar':
         $output = '<div';
         if (Messages::has_error($name))

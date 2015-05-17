@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/flight.inc';
+require_once dirname(__FILE__) . '/../models/practice_data.inc';
 
 class FlightControler extends BaseControler {
   private $view;
@@ -52,8 +53,38 @@ class FlightControler extends BaseControler {
     return empty($messages);
   }
 
+  private function ValidateData($data) {
+    if (empty($data['date'])) {
+      Messages::form_error('date', "Data negali būti tuščia.");
+    }
+
+    if (empty($data['practice_id'])) {
+      Messages::form_error('practice_id', "Praktika turi būti pasirinkta.");
+    }
+
+    if (empty($data['user_id'])) {
+      Messages::form_error('user_id', "Mokinys turi būti nurodytas.");
+    }
+
+    if (!empty($data['count'])) {
+      if (empty($data['aircraft_id'])) {
+        Messages::form_error('aircraft_id', "Sklandytuvas turi būti pasirinktas.");
+      }
+    }
+    //else {
+    //  Messages::form_error('count', "Skrydžių kiekis turi būti nurodytas.");
+    //}
+
+    if (empty($data['time'])) {
+      Messages::form_error('time', "Skrydžių laikas turi būti nurodytas.");
+    }
+
+    $messages = Messages::get_messages('errors', false);
+    return empty($messages);
+  }
+
   public function NewItem() {
-    if (!$this->HasPermission())
+    if (!$this->HasPermission('Flight Manager'))
       $this->Transfer();
 
     $this->view = dirname(__FILE__) . '/../views/flight/new.php';
@@ -77,8 +108,31 @@ class FlightControler extends BaseControler {
             if (isset($_value[$key]))
               $data[$_key] = $_value[$key];
           }
-          $flight->storeFormValues($data);
+          $data['task'] = $data['practice'];
+          $data['duration'] = $data['time'];
 
+          $practice_data = NULL;
+          if (!empty($data['practice'])) {
+            $data['user_id'] = $data['payer'];
+            $data['instructor_id'] = $data['instructor'];
+            $data['practice_id'] = $data['practice'];
+            $data['aircraft_id'] = $data['airplane_id'];
+            $data['count'] = $data['amount'];
+            //$data['time'] = $data['time'];
+            $data['comments'] = '';
+
+            $practice_data = new PracticeData($data);
+            if (empty($practice_data->date))
+              $practice_data->date = date('Y-m-d');
+
+            if (!$this->ValidateData($data)) {
+              Messages::set_message("Klaida išsaugant praktikos reikšmes.", 'errors');
+              $fail[] = $key;
+              continue;
+            }
+          }
+
+          $flight->storeFormValues($data);
           if ($flight->insert()) {
             //create payment
             $finance = NULL;
@@ -92,6 +146,21 @@ class FlightControler extends BaseControler {
 
               log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
                 (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($diff) ? '; price charged: ' . $flight->price : NULL)));
+            }
+
+            if (!empty($practice_data)) {
+              if ($practice_data->insert()) {
+                //log it
+                log_event("Admin", "PracticeDataCreated", $practice_data->id);
+                Messages::set_message("Praktikos įrašas sukurtas.");
+
+                $flight->task = $practice_data->id;
+                $flight->update();
+              }
+              else {
+                Messages::set_message("Klaida išsaugant praktikos reikšmes.", 'errors');
+                $fail[] = $key;
+              }
             }
 
             //log it
@@ -134,7 +203,7 @@ class FlightControler extends BaseControler {
   }
 
   public function Delete() {
-    if (!$this->HasPermission())
+    if (!$this->HasPermission('Flight Manager'))
       $this->Transfer();
 
     if (empty($_GET['record_id']) && !empty($_GET['id'])) $_GET['record_id'] = $_GET['id'];
@@ -156,6 +225,13 @@ class FlightControler extends BaseControler {
           (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($diff) ? '; price charged: ' . $flight->price : NULL)));
       }
 
+      if (!empty($flight->task)) {
+        $practice_data = new PracticeData(array('id' => $flight->task));
+        $practice_data->delete();
+        //log it
+        log_event("Admin", "PracticeDataDeleted", 'task id: ' . $flight->task);
+      }
+
       $flight->delete();
 
       //log it
@@ -168,7 +244,7 @@ class FlightControler extends BaseControler {
   }
 
   public function Edit() {
-    if (!$this->HasPermission())
+    if (!$this->HasPermission('Flight Manager'))
       $this->Transfer();
 
     $this->view = dirname(__FILE__) . '/../views/flight/edit.php';

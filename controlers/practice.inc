@@ -14,6 +14,36 @@ class PracticeControler extends BaseControler {
     $this->view = dirname(__FILE__) . '/../templates/practice.php';
   }
 
+  private function ValidateComment() {
+    if (empty($_POST['date'])) {
+      Messages::form_error('date', "Data negali būti tuščia.");
+    }
+
+    if (empty($_POST['practice_id'])) {
+      Messages::form_error('practice_id', "Praktika turi būti pasirinkta.");
+    }
+
+    if (empty($_POST['user_id'])) {
+      Messages::form_error('user_id', "Mokinys turi būti nurodytas.");
+    }
+
+    if (!empty($_POST['count'])) {
+      if (empty($_POST['aircraft_id'])) {
+        Messages::form_error('aircraft_id', "Sklandytuvas turi būti pasirinktas.");
+      }
+    }
+    //else {
+    //  Messages::form_error('count', "Skrydžių kiekis turi būti nurodytas.");
+    //}
+
+    //if (empty($_POST['time'])) {
+    //  Messages::form_error('time', "Skrydžių laikas turi būti nurodytas.");
+    //}
+
+    $messages = Messages::get_messages('errors', false);
+    return empty($messages);
+  }
+
   private function ValidateData() {
     if (empty($_POST['date'])) {
       Messages::form_error('date', "Data negali būti tuščia.");
@@ -44,20 +74,20 @@ class PracticeControler extends BaseControler {
     return empty($messages);
   }
 
-  public function NewData() {
+  public function NewComment() {
     $_GET['id'] = NULL;
-    return $this->EditData();
+    return $this->EditComment();
   }
 
-  public function EditData() {
-    //if (!$this->HasPermission())
+  public function EditComment() {
+    //if (!$this->HasPermission('Flight Manager'))
     //  $this->Transfer();
 
-    $this->view = dirname(__FILE__) . '/../views/practice_data/edit.php';
+    $this->view = dirname(__FILE__) . '/../views/practice_data/edit-comment.php';
 
     $results = array(
-      'pageTitle' => "New Practice Data",
-      'formAction' => "newPracticeData",
+      'pageTitle' => "New Practice Data Comment",
+      'formAction' => "newPracticeDataComment",
     );
 
     $practice_data = NULL;
@@ -71,10 +101,11 @@ class PracticeControler extends BaseControler {
       // User has posted the article edit form: save the practice_data changes
       $results['practice_data'] = $practice_data;
 
-      if ($this->ValidateData()) {
+      if ($this->ValidateComment()) {
         $practice_data->storeFormValues($_POST);
-	if (!empty($practice_data->time))
-            $practice_data->time *= 60;
+        $practice_data->time = 0;
+        //if (!empty($practice_data->time))
+        //  $practice_data->time *= 60;
         if (!empty($practice_data->id)) {
           if ($practice_data->update()) {
             //log it
@@ -112,7 +143,96 @@ class PracticeControler extends BaseControler {
     $results['practice_data'] = $practice_data;
 
     // User has not posted the practice data edit form yet: display the form
-    if ($this->HasPermission()) {
+    if ($this->HasPermission('Flight Manager')) {
+      $results['users'] = User::getList();
+    }
+    else {
+      $user_id = UserHelper::get_id();
+      if (!empty($practice_data->id) && $practice_data->user_id != $user_id) {
+        $this->Transfer(NULL, 'ItemList');
+      }
+      else {
+        $practice_data->user_id == $user_id;
+        $results['users'] = array ( "results" => array(User::Get($user_id)), "totalRows" => 1 );
+      }
+    }
+    $results['instructors'] = User::getList(1000000, 'u.name', 'u.instructor=1');
+
+    include dirname(__FILE__) . '/../views/_layout.php';
+  }
+
+  public function NewData() {
+    $_GET['id'] = NULL;
+    return $this->EditData();
+  }
+
+  public function EditData() {
+    if (!$this->HasPermission('Flight Manager'))
+      $this->Transfer();
+
+    $this->view = dirname(__FILE__) . '/../views/practice_data/edit.php';
+
+    $results = array(
+      'pageTitle' => "New Practice Data",
+      'formAction' => "newPracticeData",
+    );
+
+    $practice_data = NULL;
+    if (empty($_GET['id']) || !($practice_data = PracticeData::getById($_GET['id']))) {
+      //can not add new - only edit!
+      $this->Transfer();
+
+      $practice_data = new PracticeData($_GET);
+      if (empty($practice_data->date))
+        $practice_data->date = date('Y-m-d');
+    }
+
+    if (isset($_POST['saveChanges'])) {
+      // User has posted the article edit form: save the practice_data changes
+      $results['practice_data'] = $practice_data;
+
+      if ($this->ValidateData()) {
+        $practice_data->storeFormValues($_POST);
+        if (!empty($practice_data->time))
+          $practice_data->time *= 60;
+        if (!empty($practice_data->id)) {
+          if ($practice_data->update()) {
+            //log it
+            log_event("Admin", "PracticeDataUpdated", $practice_data->id);
+            Messages::set_message("Pakeitimai išsaugoti.");
+
+            $this->Transfer(NULL, 'DataItemList');
+          }
+          else {
+            Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
+          }
+        }
+        else {
+          $practice_data->id = NULL;
+          if ($practice_data->insert()) {
+            //log it
+            log_event("Admin", "PracticeDataCreated", $practice_data->id);
+            Messages::set_message("Pakeitimai išsaugoti.");
+
+            $this->Transfer(NULL, 'ItemList');
+          }
+          else {
+            Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
+          }
+        }
+      }
+    }
+    elseif (isset($_POST['cancel'])) {
+      // User has cancelled their edits: return to the practice list
+      $this->Transfer(NULL, 'ItemList');
+    }
+
+    $results['aircrafts'] = Aircraft::getList();
+    $results['practices'] = Practice::getList();
+    $results['practice_data'] = $practice_data;
+
+    // User has not posted the practice data edit form yet: display the form
+    if ($this->HasPermission('Flight Manager')) {
       $results['users'] = User::getList();
     }
     else {
@@ -131,7 +251,7 @@ class PracticeControler extends BaseControler {
   }
 
   public function DeleteData() {
-    if (!$this->HasPermission())
+    if (!$this->HasPermission('Flight Manager'))
       $this->Transfer();
 
     if (empty($_GET['id']) || !($practice_data = PracticeData::getById($_GET['id']))) {
@@ -180,7 +300,7 @@ class PracticeControler extends BaseControler {
   public function DataItemList() {
     $this->view = dirname(__FILE__) . '/../views/practice_data/item-list.php';
 
-    if ($this->HasPermission()) {
+    if ($this->HasPermission('Flight Manager')) {
       $user_id = NULL;;
     }
     else {

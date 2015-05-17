@@ -21,10 +21,12 @@
 	  <?php echo theme('display', 'date', NULL, $practice) ?>
 	</td>
 	<td>
-	  <?php echo theme('display', 'no', NULL, $practice->practice) ?> / <?php echo theme('display', 'title', NULL, $practice->practice) ?>
+    <?php echo theme('display', 'title', NULL, NULL, array('title' => $practice->practice->phase_no . (!empty($practice->practice->no) ? '.' . $practice->practice->no : NULL) . '. ' . $practice->practice->title)) ?>
 	</td>
 	<td class="estimate">
+<?php if (!empty($practice->count) || !empty($practice->time)) { ?>
 	  <?php echo theme('display', 'count', NULL, $practice) ?> / <?php echo theme('display_hhmm', 'time', NULL, $practice) ?>
+<?php } ?>
 	</td>
 	<td class="estimate">
 	  <?php echo theme('display', 'name', NULL, $practice->user) ?>

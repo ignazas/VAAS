@@ -150,3 +150,7 @@ table.practice td.estimate {
 table.practice td > div {
   display: inline-block;
 }
+
+#flight-add .payer {
+  max-width: 200px;
+}

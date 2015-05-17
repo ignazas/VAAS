@@ -12,8 +12,8 @@
 	  <th class="user student">Pilotas/Pratimas</th>
 	  <th class="user instructor">Instruktorius</th>
 	  <th class="glider">Orlaivis</th>
-	  <th class="quantity">Kiekis/Laikas</th>
-	  <th class="price">Kaina, Lt</th>
+	  <th class="quantity">Kiekis/Laikas,&#160;min</th>
+	  <th class="price">Kaina,&#160;Lt</th>
 	  <th></th>
 	</tr>
       </thead>

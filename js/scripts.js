@@ -58,7 +58,7 @@ window.flightEntity = {
 
 	//student
 	var selectStudent = $('<select />').addClass('user').append($('<option value=""></option>'));
-	$.each(window.flightEntity.getUsers(), function(id, user) { selectStudent.append($('<option></option>').val(id).text(user['name'])) });
+	$.each(window.flightEntity.getUsers(), function(id, user) { selectStudent.append($('<option></option>').val(user['id']).text(user['name'])) });
 	var cell = addCell(row, selectStudent, 'payer');
 	options && options.payer && selectStudent.val(options.payer);
 
@@ -70,10 +70,8 @@ window.flightEntity = {
 
 	//instructor
 	var selectPilot = $('<select />').addClass('user').append($('<option value=""></option>'));
-	var instructors = $.grep(window.flightEntity.getUsers(), function(u) {
-	    return u.instructor == 1;
-	});
-	$.each(instructors, function(id, user) { selectPilot.append($('<option></option>').val(id).text(user['name'])) });
+	var instructors = $.grep(window.flightEntity.getUsers(), function(u) { return u.instructor == 1; });
+	$.each(instructors, function(id, user) { selectPilot.append($('<option></option>').val(user['id']).text(user['name'])) });
 	addCell(row, selectPilot, 'instructor');
 	options && options.instructor && selectPilot.val(options.instructor);
 

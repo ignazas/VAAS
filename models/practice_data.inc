@@ -60,9 +60,12 @@ class PracticeData
   * @param string Optional column by which to order the articles (default="publicationDate DESC")
   * @return Array|false A two-element array : results => array, a list of PracticeData objects; totalRows => Total number of articles
   */
-  public static function getList($user_id = NULL, $numRows=1000000, $order = NULL) {
+  public static function getList($user_id = NULL, $numRows=1000000, $order = 'date', $where = NULL) {
+    if (!empty($user_id))
+      $where = "`user_id`=$user_id" . (empty($where) ? NULL : " AND $where");
+
     $st = DB::query("SELECT SQL_CALC_FOUND_ROWS * FROM practice_data" .
-          (!empty($user_id) ? " WHERE `user_id`=$user_id" : NULL) .
+          (!empty($where) ? " WHERE $where" : NULL) .
           (!empty($numRows) ? " LIMIT $numRows" : NULL) .
           (!empty($order) ? (' ORDER BY ' . ltrim($order, '-+') . ($order[0] == '-' ? ' DESC' : ' ASC')) : NULL));
 
