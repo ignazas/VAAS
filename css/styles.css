@@ -115,7 +115,12 @@ table .add:active, table .show_day:active, table .add_day:active {
 
 #flight-add table.table td, #flight-add table.table th {
 }
+
 #flight-add table .price {
+}
+
+#flight-add table .amount.time {
+  width: 120px;
 }
 
 ul.list-group > li {

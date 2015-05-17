@@ -5,6 +5,18 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
 function MM_openBrWindow(theURL,winName,features) { //v2.0
   window.open(theURL,winName,features);
 }
+window._ = {
+    toArray: function(obj) {
+	if ($.isArray(obj)) //object to array
+	    return obj;
+	else if ($.isPlainObject(obj)) //object to array
+	    return $.map(obj, function(el) { return el; });
+	else if (obj)
+	    return [obj];
+	else
+	    return [];
+    }
+};
 window.flightEntity = {
     rows: function(form) {
 	return $('.line', form);
@@ -13,10 +25,15 @@ window.flightEntity = {
 	return !$('input[name^=price]', row).filter(function() { return $(this).val(); }).length;
     }
     , addRow: function(form, options) {
+	var addElement = function(c, el, className) {
+	    c.append(el.attr('name', className + '[' + window.flightEntity.rows(form).length + ']')).addClass(className);
+	    return el;
+	};
 	var addCell = function(r, el, className) {
-	    r.append(
-		$('<td></td>').append(el.attr('name', className + '[' + window.flightEntity.rows(form).length + ']')).addClass(className)
-	    );
+	    var cell = $('<td></td>');
+	    addElement(cell, el, className);
+	    r.append(cell);
+	    return cell;
 	};
 
 	var row = $('<tr></tr>').addClass('line');
@@ -42,12 +59,21 @@ window.flightEntity = {
 	//student
 	var selectStudent = $('<select />').addClass('user').append($('<option value=""></option>'));
 	$.each(window.flightEntity.getUsers(), function(id, user) { selectStudent.append($('<option></option>').val(id).text(user['name'])) });
-	addCell(row, selectStudent, 'payer');
+	var cell = addCell(row, selectStudent, 'payer');
 	options && options.payer && selectStudent.val(options.payer);
+
+	//practices
+	var selectPractice = $('<select />').addClass('practice').append($('<option value=""></option>'));
+	$.each(window.flightEntity.getPractices(), function(i, practice) { selectPractice.append($('<option></option>').val(practice['id']).text(practice['name'])) });
+	addElement(cell, selectPractice, 'practice');
+	options && options.practice && selectPractice.val(options.practice);
 
 	//instructor
 	var selectPilot = $('<select />').addClass('user').append($('<option value=""></option>'));
-	$.each(window.flightEntity.getUsers(), function(id, user) { selectPilot.append($('<option></option>').val(id).text(user['name'])) });
+	var instructors = $.grep(window.flightEntity.getUsers(), function(u) {
+	    return u.instructor == 1;
+	});
+	$.each(instructors, function(id, user) { selectPilot.append($('<option></option>').val(id).text(user['name'])) });
 	addCell(row, selectPilot, 'instructor');
 	options && options.instructor && selectPilot.val(options.instructor);
 
@@ -59,8 +85,13 @@ window.flightEntity = {
 
 	//qty
 	var qty = $('<input type="number" />').addClass('quantity');
-	addCell(row, qty.val(1), 'amount');
+	cell = addCell(row, qty.val(1), 'amount');
 	options && options.amount && qty.val(options.amount);
+
+	//time
+	var time = $('<input type="number" />').addClass('quantity');
+	addElement(cell, time.val(1), 'time');
+	options && options.time && time.val(options.amount);
 
 	//price
 	var price = $('<input type="number" />');
@@ -100,11 +131,25 @@ window.flightEntity = {
 		'type': 'POST',
 		async: false,
 		'success': function (resp) {
-		    window.flightEntity._users = $.parseJSON(resp);
+		    window.flightEntity._users = window._.toArray($.parseJSON(resp));
 		}
 	    });
 	}
 	return window.flightEntity._users;
+    }
+    , getPractices: function() {
+	if (!window.flightEntity._practices) {
+	    $.ajax({
+		'url': 'index.php?action=ajax&method=practices',
+		'data': {},
+		'type': 'POST',
+		async: false,
+		'success': function (resp) {
+		    window.flightEntity._practices = window._.toArray($.parseJSON(resp));
+		}
+	    });
+	}
+	return window.flightEntity._practices;
     }
     , getServices: function() {
 	if (!window.flightEntity._services) {
@@ -114,7 +159,7 @@ window.flightEntity = {
 		'type': 'POST',
 		async: false,
 		'success': function (resp) {
-		    window.flightEntity._services = $.parseJSON(resp);
+		    window.flightEntity._services = window._.toArray($.parseJSON(resp));
 		}
 	    });
 	}
@@ -128,7 +173,7 @@ window.flightEntity = {
 		'type': 'POST',
 		async: false,
 		'success': function (resp) {
-		    window.flightEntity._aircrafts = $.parseJSON(resp);
+		    window.flightEntity._aircrafts = window._.toArray($.parseJSON(resp));
 		}
 	    });
 	}

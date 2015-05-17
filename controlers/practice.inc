@@ -125,7 +125,7 @@ class PracticeControler extends BaseControler {
         $results['users'] = array ( "results" => array(User::Get($user_id)), "totalRows" => 1 );
       }
     }
-    $results['instructors'] = User::getList();
+    $results['instructors'] = User::getList(1000000, 'u.name', 'u.instructor=1');
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }

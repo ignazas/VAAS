@@ -3,6 +3,7 @@ require_once dirname(__FILE__) . '/../../models/service.inc';
 $services = Service::getList();
 require_once dirname(__FILE__) . '/../../models/user.inc';
 $users = User::getList();
+$instructors = User::getList(1000000, 'u.name', '`instructor`=1');
 require_once dirname(__FILE__) . '/../../models/aircraft.inc';
 $airplanes = Aircraft::getList();
 ?>
@@ -40,7 +41,7 @@ $airplanes = Aircraft::getList();
       <label class="control-label" for="instructor">Instruktorius</label>
       <select name="instructor" id="instructor" class="form-control">
 	<option value=""></option>
-<?php foreach ($users['results'] as $user) { ?>
+<?php foreach ($instructors['results'] as $user) { ?>
 	<option value="<?php echo $user->id ?>"<?php echo (!empty($_POST['instructor']) && $_POST['instructor'] == $user->id) || (!empty($results['flight']->instructor) && $results['flight']->instructor == $user->id) ? ' selected="selected"' : NULL ?>><?php echo $user->name ?></option>
 <?php } ?>
       </select>

@@ -76,7 +76,7 @@ class Practice
   * @param string Optional column by which to order the articles (default="publicationDate DESC")
   * @return Array|false A two-element array : results => array, a list of Practice objects; totalRows => Total number of articles
   */
-  public static function getList( $numRows=1000000, $order = NULL) {
+  public static function getList( $numRows=1000000, $order = 'weight') {
     $st = DB::query("SELECT SQL_CALC_FOUND_ROWS * FROM practice" .
           (!empty($order) ? (' ORDER BY ' . ltrim($order, '-+') . ($order[0] == '-' ? ' DESC' : ' ASC')) : ' ORDER BY `weight`') .
           (!empty($numRows) ? " LIMIT $numRows" : NULL));
