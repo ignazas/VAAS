@@ -7,14 +7,18 @@
     <table class="table">
       <thead>
 	<tr>
-	  <th class="date">Data</th>
+	  <th class="date" rowspan="2">Data</th>
 	  <th class="service">Paslauga</th>
-	  <th class="user student">Pilotas/Pratimas</th>
-	  <th class="user instructor">Instruktorius</th>
+	  <th class="user student">Pilotas</th>
 	  <th class="glider">Orlaivis</th>
-	  <th class="quantity">Kiekis/Laikas,&#160;min</th>
+	  <th class="quantity">Kiekis</th>
+	  <th rowspan="2"></th>
+	</tr>
+	<tr>
+	  <th class="service">Pratimas</th>
+	  <th class="instructor">Instruktorius</th>
+	  <th class="time">Laikas</th>
 	  <th class="price">Kaina,&#160;€</th>
-	  <th></th>
 	</tr>
       </thead>
       <tbody>
@@ -22,7 +26,7 @@
     </table>
 
     <label class="control-label" for="singlebutton"></label>
-	<button id="submit" name="saveChanges" name="saveChanges" class="btn btn-primary">Įtraukti</button>
+	<button id="submit" name="saveChanges" name="saveChanges" class="btn btn-primary">Saugoti</button>
 	<a href="#" class="add" class="btn">Pridėti eilutę</a>
     </div>
   </fieldset>

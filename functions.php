@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__) . '/config.php';
 require_once dirname(__FILE__) . '/helpers/db.inc';
+require_once dirname(__FILE__) . '/helpers/date.inc';
 
 function log_event($user, $event, $param) {
     DB::query("INSERT INTO log(user, event, param) VALUES (:user,:event,:param)", array(
@@ -34,7 +35,6 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         case 'email':
         case 'number':
         case 'date':
-        case 'time':
         case 'password':
           $output = '<div';
           if (Messages::has_error($name))
@@ -43,6 +43,15 @@ function theme($type, $name, $label, $entity, $values=NULL) {
           if (!empty($label))
             $output .= '<label class="control-label" for="' . $name . '">' . $label . '</label> ';
           $output .= '<input class="form-control" type="' . $type . '" id="' . $name . '" name="' . $name . '" value="' . $value . '"/></div>';
+          break;
+        case 'time':
+          $output = '<div';
+          if (Messages::has_error($name))
+            $output .= ' class="err"';
+          $output .= '>';
+          if (!empty($label))
+            $output .= '<label class="control-label" for="' . $name . '">' . $label . '</label> ';
+          $output .= '<input class="form-control" type="text" id="' . $name . '" name="' . $name . '" value="' . DateHelper::time_as_string($value) . '"/></div>';
           break;
         case 'checkbox':
           $output = '<div class="checkbox' . (Messages::has_error($name) ? ' err' : NULL) . '">';

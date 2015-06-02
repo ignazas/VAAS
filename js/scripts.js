@@ -47,7 +47,7 @@ window.flightEntity = {
 	if (day < 10) day = "0" + day;
 	var today = year + "-" + month + "-" + day;
 	var date = $('<input type="date" />').val(today);
-	addCell(row, date, 'date');
+	addCell(row, date, 'date').attr('rowspan', 2);
 	options && options.date && date.val(options.date);
 
 	//service
@@ -62,19 +62,6 @@ window.flightEntity = {
 	var cell = addCell(row, selectStudent, 'payer');
 	options && options.payer && selectStudent.val(options.payer);
 
-	//practices
-	var selectPractice = $('<select />').addClass('practice').append($('<option value=""></option>'));
-	$.each(window.flightEntity.getPractices(), function(i, practice) { selectPractice.append($('<option></option>').val(practice['id']).text(practice['name'])) });
-	addElement(cell, selectPractice, 'practice');
-	options && options.practice && selectPractice.val(options.practice);
-
-	//instructor
-	var selectPilot = $('<select />').addClass('user').append($('<option value=""></option>'));
-	var instructors = $.grep(window.flightEntity.getUsers(), function(u) { return u.instructor == 1; });
-	$.each(instructors, function(id, user) { selectPilot.append($('<option></option>').val(user['id']).text(user['name'])) });
-	addCell(row, selectPilot, 'instructor');
-	options && options.instructor && selectPilot.val(options.instructor);
-
 	//glider
 	var selectGlider = $('<select />').addClass('glider').append($('<option value=""></option>'));
 	$.each(window.flightEntity.getAircrafts(), function(i, glider) { selectGlider.append($('<option></option>').val(glider['id']).text(glider['name'])) });
@@ -86,18 +73,33 @@ window.flightEntity = {
 	cell = addCell(row, qty.val(1), 'amount');
 	options && options.amount && qty.val(options.amount);
 
+	//actions
+	addCell(row, $('<a href="#"></a>').addClass('btn btn-xs btn-danger remove').text('Pašalinti'), '').attr('rowspan', 2);
+
+	var row2 = $('<tr></tr>').addClass('line line-2');
+
+	//practices
+	var selectPractice = $('<select />').addClass('practice').append($('<option value=""></option>'));
+	$.each(window.flightEntity.getPractices(), function(i, practice) { selectPractice.append($('<option></option>').val(practice['id']).text(practice['name'])) });
+	addCell(row2, selectPractice, 'practice');
+	options && options.practice && selectPractice.val(options.practice);
+
+	//instructor
+	var selectPilot = $('<select />').addClass('user').append($('<option value=""></option>'));
+	var instructors = $.grep(window.flightEntity.getUsers(), function(u) { return u.instructor == 1; });
+	$.each(instructors, function(id, user) { selectPilot.append($('<option></option>').val(user['id']).text(user['name'])) });
+	addCell(row2, selectPilot, 'instructor');
+	options && options.instructor && selectPilot.val(options.instructor);
+
 	//time
 	var time = $('<input type="number" />').addClass('quantity');
-	addElement(cell, time.val(1), 'time');
+	addCell(row2, time.val(1), 'time');
 	options && options.time && time.val(options.amount);
 
 	//price
 	var price = $('<input type="number" />');
-	addCell(row, price, 'price');
+	addCell(row2, price, 'price');
 	options && options.price && price.val(options.price);
-
-	//actions
-	addCell(row, $('<a href="#"></a>').addClass('btn btn-xs btn-danger remove').text('Pašalinti'), '');
 
 	$('table tbody', form).append(row);
 
@@ -111,12 +113,16 @@ window.flightEntity = {
 	});
     }
     , deleteRow: function(form, row) {
+	row.parent('tr').next().remove();
 	row.remove();
 	window.flightEntity.updateNames(form);
     }
     , updateNames: function(form) {
 	$('.line', form).each(function(i, el){
 	    $('[name]', el).each(function(_i, _el) {
+		$(_el).attr('name', $(_el).attr('name').replace(/\[\d+\]$/, '[' + i + ']'));
+	    });
+	    $('[name]', $(el).next()).each(function(_i, _el) {
 		$(_el).attr('name', $(_el).attr('name').replace(/\[\d+\]$/, '[' + i + ']'));
 	    });
 	});

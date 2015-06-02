@@ -103,9 +103,7 @@ class PracticeControler extends BaseControler {
 
       if ($this->ValidateComment()) {
         $practice_data->storeFormValues($_POST);
-        $practice_data->time = 0;
-        //if (!empty($practice_data->time))
-        //  $practice_data->time *= 60;
+        $practice_data->time = DateHelper::time_as_string($practice_data->time);
         if (!empty($practice_data->id)) {
           if ($practice_data->update()) {
             //log it
@@ -193,8 +191,7 @@ class PracticeControler extends BaseControler {
 
       if ($this->ValidateData()) {
         $practice_data->storeFormValues($_POST);
-        if (!empty($practice_data->time))
-          $practice_data->time *= 60;
+        $practice_data->time = DateHelper::time_as_string($practice_data->time);
         if (!empty($practice_data->id)) {
           if ($practice_data->update()) {
             //log it

@@ -3,6 +3,7 @@
 require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/flight.inc';
 require_once dirname(__FILE__) . '/../models/practice_data.inc';
+require_once dirname(__FILE__) . '/../helpers/date.inc';
 
 class FlightControler extends BaseControler {
   private $view;
@@ -109,7 +110,7 @@ class FlightControler extends BaseControler {
               $data[$_key] = $_value[$key];
           }
           $data['task'] = $data['practice'];
-          $data['duration'] = $data['time'];
+          $data['duration'] = DateHelper::time_as_float($data['time']);
 
           $practice_data = NULL;
           if (!empty($data['practice'])) {
@@ -118,7 +119,7 @@ class FlightControler extends BaseControler {
             $data['practice_id'] = $data['practice'];
             $data['aircraft_id'] = $data['airplane_id'];
             $data['count'] = $data['amount'];
-            //$data['time'] = $data['time'];
+            //$data['time'] = DateHelper::time_as_float($data['time']);
             $data['comments'] = '';
 
             $practice_data = new PracticeData($data);
