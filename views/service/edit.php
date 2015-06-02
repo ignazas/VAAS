@@ -17,7 +17,7 @@
       <input id="description" name="description" class="form-control" maxlength="256" type="text" value="<?php echo $results['service']->description ?>">
     </div>
     <div class="form-group">
-      <label for="amount">Kaina, Lt</label>
+      <label for="amount">Kaina,&#160;€</label>
       <input id="amount" name="amount" class="form-control" type="number" value="<?php echo $results['service']->amount ?>">
     </div>
     <div class="checkbox form-group">

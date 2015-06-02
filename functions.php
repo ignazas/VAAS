@@ -123,7 +123,7 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         $output = '<div>';
         if (!empty($label))
           $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
-        $output .= '<span>' . (empty($value) ? 0 : $value) . ' Lt</span>';
+        $output .= '<span>' . (empty($value) ? 0 : $value) . ' €</span>';
         $output .= '</div>';
         break;
       case 'display_url':

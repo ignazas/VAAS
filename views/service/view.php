@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-md-8">
     <?php echo theme('display', 'title', 'Pavadinimas', $results['service']) ?>
-    <?php echo theme('display', 'amount', 'Kaina, Lt', $results['service']) ?>
+    <?php echo theme('display', 'amount', 'Kaina, €', $results['service']) ?>
     <?php echo theme('display', 'discount_disabled', 'Nuolaidos netaikomos', $results['service']) ?>
     <?php echo theme('display', 'description', 'Aprašymas', $results['service']) ?>
     <br />

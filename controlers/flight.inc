@@ -218,7 +218,7 @@ class FlightControler extends BaseControler {
         $finance->flight_fee = floatval($finance->flight_fee) + $flight->price;
         $finance->update();
 
-        Messages::set_message("Mokėtojui gražinta suma: $flight->price Lt.");
+        Messages::set_message("Mokėtojui gražinta suma: $flight->price €.");
 
         //log it
         log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
@@ -280,7 +280,7 @@ class FlightControler extends BaseControler {
                   $finance->flight_fee = floatval($finance->flight_fee) - $diff;
                   $finance->update();
 
-                  Messages::set_message($diff > 0 ? "Mokėtojui papildomai nuskaityta: $diff Lt." : "Mokėtojui sugražinta: ".(-$diff)." Lt.");
+                  Messages::set_message($diff > 0 ? "Mokėtojui papildomai nuskaityta: $diff €." : "Mokėtojui sugražinta: ".(-$diff)." €.");
 
                   //log it
                   log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
@@ -293,7 +293,7 @@ class FlightControler extends BaseControler {
                   $finance = Finance::getByUserId($payer_before_update);
                   $finance->flight_fee = floatval($finance->flight_fee) + $price_before_update;
                   $finance->update();
-                  Messages::set_message("Buvusiam mokėtojui sugražintas apmokėta suma: $price_before_update Lt.");
+                  Messages::set_message("Buvusiam mokėtojui sugražintas apmokėta suma: $price_before_update €.");
 
                   //log it
                   log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
@@ -305,7 +305,7 @@ class FlightControler extends BaseControler {
                   $finance = Finance::getByUserId($flight->payer);
                   $finance->flight_fee = floatval($finance->flight_fee) - $flight->price;
                   $finance->update();
-                  Messages::set_message("Naujam mokėtojui nuskaityta suma: $flight->price Lt.");
+                  Messages::set_message("Naujam mokėtojui nuskaityta suma: $flight->price €.");
 
                   //log it
                   log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .

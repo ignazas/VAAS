@@ -13,7 +13,7 @@
 	  <th class="user instructor">Instruktorius</th>
 	  <th class="glider">Orlaivis</th>
 	  <th class="quantity">Kiekis/Laikas,&#160;min</th>
-	  <th class="price">Kaina,&#160;Lt</th>
+	  <th class="price">Kaina,&#160;€</th>
 	  <th></th>
 	</tr>
       </thead>
