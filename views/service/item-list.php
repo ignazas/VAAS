@@ -30,7 +30,7 @@
 	</td>
 	<td>
 <?php if (!empty($service->amount_unit)) { ?>
-	  <?php echo theme('display_money', 'amount_unit', NULL, $service) ?>/<?php echo theme('display', 'unit', NULL, $service) ?>
+    <?php echo theme('display', 'amount_unit_title', NULL, $service, array('amount_unit_title' => $service->amount_unit . '/' . $service->unit )) ?>
 <?php } ?>
 	</td>
 	<td>
