@@ -9,6 +9,9 @@ class Service
   public $discount_disabled = null;
   public $amount = null;
   public $description = null;
+  public $is_flight = null;
+  public $unit = null;
+  public $amount_unit = null;
 
   /**
   * Sets the object's properties using the values in the supplied array
@@ -21,6 +24,9 @@ class Service
     if (isset($data['discount_disabled'])) $this->discount_disabled = $data['discount_disabled'];
     if (isset($data['amount'])) $this->amount = (double)$data['amount'];
     if (isset($data['description'])) $this->description = $data['description'];
+    if (isset($data['is_flight'])) $this->is_flight = $data['is_flight'];
+    if (isset($data['unit'])) $this->unit = $data['unit'];
+    if (isset($data['amount_unit'])) $this->amount_unit = intval($data['amount_unit']);
   }
 
   /**
@@ -80,10 +86,13 @@ class Service
     if ( !is_null( $this->id ) ) trigger_error ( "Service::insert(): Attempt to insert a Service object that already has its ID property set (to $this->id).", E_USER_ERROR );
 
     // Insert the Article
-    $this->id = DB::insert("INSERT INTO `services` (`title`, `discount_disabled`, `amount`, `description`) VALUES (:title, " . (empty($this->discount_disabled) ? 0 : 1) . ", :amount, :description)", array(
+    $this->id = DB::insert("INSERT INTO `services` (`title`, `discount_disabled`, `amount`, `description`, `is_flight`, `unit`, `amount_unit`) VALUES (:title, " . (empty($this->discount_disabled) ? 0 : 1) . ", :amount, :description, :is_flight, :unit, :amount_unit)", array(
         ":title" => $this->title,
         ":amount" => $this->amount,
         ":description" => $this->description,
+        ":is_flight" => DB::null_if_empty($this->is_flight),
+        ":unit" => DB::null_if_empty($this->unit),
+        ":amount_unit" => DB::null_if_empty($this->amount_unit),
     ));
 
     return !empty($this->id);
@@ -97,10 +106,13 @@ class Service
     if ( is_null( $this->id ) ) trigger_error ( "Service::update(): Attempt to update a Service object that does not have its ID property set.", E_USER_ERROR );
 
     // Update the Service
-    $st = DB::query("UPDATE `services` SET `title`=:title, `discount_disabled`=" . (empty($this->discount_disabled) ? 0 : 1) . ", `amount`=:amount, `description`=:description WHERE id = :id", array(
+    $st = DB::query("UPDATE `services` SET `title`=:title, `discount_disabled`=" . (empty($this->discount_disabled) ? 0 : 1) . ", `amount`=:amount, `description`=:description, `is_flight`=:is_flight, unit=:unit, amount_unit=:amount_unit WHERE id = :id", array(
         ":title" => $this->title,
         ":amount" => $this->amount,
         ":description" => $this->description,
+        ":is_flight" => DB::null_if_empty($this->is_flight),
+        ":unit" => DB::null_if_empty($this->unit),
+        ":amount_unit" => DB::null_if_empty($this->amount_unit),
         ":id" => $this->id,
       ));
 

@@ -35,14 +35,17 @@ class ServiceControler extends BaseControler {
       'pageTitle' => "Naujas paslauga",
     );
 
+    $edit = array();
     if (isset($_POST['saveChanges'])) {
       // User has posted the article edit form: save the article changes
       $service = new Service();
       $results['service'] = $service;
+      $edit = $_POST;
 
       if ($this->Validate()) {
         $service->storeFormValues($_POST);
         if (isset($service->amount)) $service->amount = round($service->amount * 1);
+        if (isset($service->amount_unit)) $service->amount_unit = round($service->amount_unit * 1);
         if ($service->insert()) {
           //log it
           log_event("Admin", "ServiceCreated", $service->id);
@@ -53,6 +56,7 @@ class ServiceControler extends BaseControler {
         }
         else {
           if (isset($service->amount)) $service->amount = round($service->amount / 1);
+          if (isset($service->amount_unit)) $service->amount_unit = round($service->amount_unit / 1);
           Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
         }
       }
@@ -92,6 +96,7 @@ class ServiceControler extends BaseControler {
       'pageTitle' => "Edit Service",
     );
 
+    $edit = array();
     if (isset($_POST['saveChanges'])) {
       // User has posted the service edit form: save the service changes
       if (!($service = Service::getById($_POST['id']))) {
@@ -101,9 +106,12 @@ class ServiceControler extends BaseControler {
       }
       else {
         $results['service'] = $service;
+        $edit = $_POST;
+
         if ($this->Validate()) {
           $service->storeFormValues($_POST);
           if (isset($service->amount)) $service->amount = round($service->amount * 1);
+          if (isset($service->amount_unit)) $service->amount_unit = round($service->amount_unit * 1);
           if ($service->update()) {
             //log it
             log_event("Admin", "ServiceEdited", $_POST['id']);
@@ -113,6 +121,7 @@ class ServiceControler extends BaseControler {
           }
           else {
             if (isset($service->amount)) $service->amount = round($service->amount / 1);
+            if (isset($service->amount_unit)) $service->amount_unit = round($service->amount_unit / 1);
             Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
           }
         }
@@ -143,6 +152,7 @@ class ServiceControler extends BaseControler {
     if ($_GET["id"]) {
       $service = Service::getById($_GET["id"]);
       if (isset($service->amount)) $service->amount = round($service->amount / 1);
+      if (isset($service->amount_unit)) $service->amount_unit = round($service->amount_unit / 1);
       $results = array('service' => $service);
     }
 

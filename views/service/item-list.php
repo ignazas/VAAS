@@ -3,32 +3,41 @@
   <table class="table table-striped">
     <thead>
       <tr>
-	<th>#</th>
+	<th>Skrydis</th>
 	<th>Pavadinimas</th>
 	<th>Nuolaidos netaikomos</th>
 	<th>Kaina</th>
+	<th>Papildoma kaina</th>
 	<th>Aprašymas</th>
+	<th></th>
+	<th></th>
       </tr>
     </thead>
 	<tbody>
 <?php foreach ( $results['services'] as $service) { ?>
       <tr>
 	<td>
-	  <a href="admin.php?action=service&amp;view=View&amp;id=<?php echo $service->id ?>"><?php echo $service->id ?></a>
+	  <?php echo !empty($service->is_flight) ? '<i class="glyphicon glyphicon-ok"></i>' : '' ?>
 	</td>
 	<td>
 	  <?php echo $service->title ?>
 	</td>
 	<td>
-    <?php echo $service->discount_disabled == 1 ? '<i class="glyphicon glyphicon-ok"></i>' : '' ?>
+	  <?php echo $service->discount_disabled == 1 ? '<i class="glyphicon glyphicon-ok"></i>' : '' ?>
 	</td>
 	<td>
-    <?php echo theme('display_money', 'amount', NULL, $service) ?>
+	  <?php echo theme('display_money', 'amount', NULL, $service) ?>
+	</td>
+	<td>
+<?php if (!empty($service->amount_unit)) { ?>
+	  <?php echo theme('display_money', 'amount_unit', NULL, $service) ?>/<?php echo theme('display', 'unit', NULL, $service) ?>
+<?php } ?>
 	</td>
 	<td>
 	  <?php echo $service->description ?>
 	</td>
 	<td>
+ 	  <a class="btn btn-xs btn-default" href="admin.php?action=service&amp;view=View&amp;id=<?php echo $service->id ?>">Peržiūrėti</a>
  	  <a class="btn btn-xs btn-default" href="admin.php?action=service&amp;view=Edit&amp;id=<?php echo $service->id ?>">Redaguoti</a>
 	</td>
 	<td>

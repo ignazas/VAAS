@@ -17,8 +17,19 @@
       <input id="description" name="description" class="form-control" maxlength="256" type="text" value="<?php echo $results['service']->description ?>">
     </div>
     <div class="form-group">
+      <?php echo theme('checkbox', 'is_flight', 'Ar skrydis', $results['service'], $edit) ?>
+    </div>
+    <div class="form-group">
       <label for="amount">Kaina,&#160;€</label>
       <input id="amount" name="amount" class="form-control" type="number" value="<?php echo $results['service']->amount ?>">
+    </div>
+    <div class="form-group">
+      <label for="unit">Kainos papildomi vienetai</label>
+      <input id="unit" name="unit" class="form-control" type="text" value="<?php echo $results['service']->unit ?>">
+    </div>
+    <div class="form-group">
+      <label for="amount_unit">Papildoma kaina už vienetą,&#160;€</label>
+      <input id="amount_unit" name="amount_unit" class="form-control" type="number" value="<?php echo $results['service']->amount_unit ?>">
     </div>
     <div class="checkbox form-group">
       <label for="discount_disabled">
