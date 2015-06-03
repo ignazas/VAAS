@@ -13,3 +13,17 @@ ALTER TABLE `jos_users`
 
 ALTER TABLE `jos_users`
       ADD `instructor_id` int(3) NULL;
+
+ALTER TABLE `services`
+      MODIFY `discount_disabled` tinyint(1) NOT NULL DEFAULT 0;
+
+ALTER TABLE `services`
+      CHANGE COLUMN `discount_disabled` `is_discount` tinyint(1) NOT NULL DEFAULT 1;
+
+ALTER TABLE `vak_aircrafts`
+      ADD `deleted` date NULL;
+
+ALTER TABLE `flights`
+      MODIFY `duration` float NULL,
+      MODIFY `amount` float NULL,
+      MODIFY `price` float NULL;

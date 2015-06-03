@@ -96,6 +96,7 @@ table .add:active, table .show_day:active, table .add_day:active {
 }
 #flight-add table.table .date input[type=date] {
   line-height: 100%;
+  width: 140px;
 }
 #flight-add table.table .service select {
   min-width: 100px;
@@ -121,6 +122,18 @@ table .add:active, table .show_day:active, table .add_day:active {
 
 #flight-add table .amount.time {
   width: 120px;
+}
+
+#flight-add table .actions {
+  width: 76px;
+}
+
+#flight-add table select {
+  min-width: 150px;
+}
+
+#flight-add table.table td input.amount_unit {
+  width: 50px;
 }
 
 ul.list-group > li {

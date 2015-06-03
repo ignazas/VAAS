@@ -9,15 +9,15 @@
 
     <!-- Text input-->
     <div class="form-group">
+      <?php echo theme('checkbox', 'is_flight', 'Ar skrydis', $results['service'], $edit) ?>
+    </div>
+    <div class="form-group">
       <label for="title">Pavadinimas</label>
       <input id="title" name="title" class="form-control" type="text" maxlength="256" value="<?php echo $results['service']->title ?>">
     </div>
     <div class="form-group">
       <label for="description">Aprašymas</label>
       <input id="description" name="description" class="form-control" maxlength="256" type="text" value="<?php echo $results['service']->description ?>">
-    </div>
-    <div class="form-group">
-      <?php echo theme('checkbox', 'is_flight', 'Ar skrydis', $results['service'], $edit) ?>
     </div>
     <div class="form-group">
       <label for="amount">Kaina,&#160;€</label>
@@ -32,8 +32,8 @@
       <input id="amount_unit" name="amount_unit" class="form-control" type="number" value="<?php echo $results['service']->amount_unit ?>">
     </div>
     <div class="checkbox form-group">
-      <label for="discount_disabled">
-	<input id="discount_disabled" name="discount_disabled" type="checkbox" value="1" <?php if (!empty($results['service']->discount_disabled)) echo 'checked="checked"' ?>> Nuolaida netaikoma
+      <label for="is_discount">
+	    <input id="is_discount" name="is_discount" type="checkbox" value="1" <?php if (!empty($results['service']->is_discount)) echo 'checked="checked"' ?>> Nuolaida taikoma
       </label>
     </div>
 

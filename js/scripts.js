@@ -53,8 +53,24 @@ window.flightEntity = {
 	//service
 	var selectService = $('<select />').addClass('service').append($('<option value=""></option>'));
 	$.each(window.flightEntity.getServices(), function(i, service) { selectService.append($('<option></option>').val(service['id']).text(service['title'])) });
-	addCell(row, selectService, 'service_id');
+	var cell = addCell(row, selectService, 'service_id');
+	var selectUnitAmount = addElement(cell, $('<input type="number" />'), 'amount_unit').addClass('amount_unit');
+	cell.append($('<span></span>').addClass('service_unit').html(''));
+	var updateService = function(el) {
+	    var thisCell = $(el).parent('td')[0];
+	    var elements = $.grep(window.flightEntity.getServices(), function(el) { return el.id == selectService.val(); });
+	    if (elements.length > 0 && elements[0].amount_unit) {
+		selectUnitAmount.show();
+		$('span.service_unit', thisCell).html(' * ' + elements[0].unit).show();
+	    } else {
+		selectUnitAmount.hide();
+		$('span.service_unit', thisCell).html('').hide();
+	    }
+	};
 	options && options.service_id && selectService.val(options.service_id);
+	options && options.amount_unit && selectUnitAmount.val(options.amount_unit);
+	selectService.change(updateService);
+	updateService(selectService);
 
 	//student
 	var selectStudent = $('<select />').addClass('user').append($('<option value=""></option>'));
@@ -65,16 +81,13 @@ window.flightEntity = {
 	//glider
 	var selectGlider = $('<select />').addClass('glider').append($('<option value=""></option>'));
 	$.each(window.flightEntity.getAircrafts(), function(i, glider) { selectGlider.append($('<option></option>').val(glider['id']).text(glider['name'])) });
-	addCell(row, selectGlider, 'airplane_id');
+	addCell(row, selectGlider, 'airplane_id').attr('colspan', 2);
 	options && options.airplane_id && selectGlider.val(options.airplane_id);
 
-	//qty
-	var qty = $('<input type="number" />').addClass('quantity');
-	cell = addCell(row, qty.val(1), 'amount');
-	options && options.amount && qty.val(options.amount);
-
-	//actions
-	addCell(row, $('<a href="#"></a>').addClass('btn btn-xs btn-danger remove').text('Pašalinti'), '').attr('rowspan', 2);
+	//price
+	var price = $('<input type="number" />');
+	addCell(row, price, 'price');
+	options && options.price && price.val(options.price);
 
 	var row2 = $('<tr></tr>').addClass('line line-2');
 
@@ -91,30 +104,39 @@ window.flightEntity = {
 	addCell(row2, selectPilot, 'instructor');
 	options && options.instructor && selectPilot.val(options.instructor);
 
-	//time
-	var time = $('<input type="number" />').addClass('quantity');
-	addCell(row2, time.val(1), 'time');
-	options && options.time && time.val(options.amount);
+	//qty
+	var qty = $('<input type="number" />').addClass('quantity');
+	cell = addCell(row2, qty.val(1), 'amount');
+	options && options.amount && qty.val(options.amount);
 
-	//price
-	var price = $('<input type="number" />');
-	addCell(row2, price, 'price');
-	options && options.price && price.val(options.price);
+	//time
+	var time = $('<input type="text" />').addClass('quantity');
+	addCell(row2, time.val(1), 'time');
+	options && options.time && time.val(options.time);
+
+	//actions
+	addCell(row2, $('<a href="#"></a>').addClass('btn btn-xs btn-danger remove').text('Pašalinti'), '');
 
 	$('table tbody', form).append(row);
+	$('table tbody', form).append(row2);
 
-	jQuery($('select', form)).chosen({placeholder_text_single: 'Pasirinkite...', no_results_text: 'Nėra rezultatų', allow_single_deselect: true});
-	jQuery(selectService.add(qty).add(selectStudent)).on('change keyup', function() {
+	jQuery($('select', form)).chosen({placeholder_text_single: 'Pasirinkite...', no_results_text: 'Nėra rezultatų', allow_single_deselect: true, search_contains: true});
+	jQuery(selectService.add(qty).add(selectStudent).add(selectUnitAmount)).on('change keyup', function() {
 	    var elements = $.grep(window.flightEntity.getServices(), function(el) { return el.id == selectService.val(); });
 	    var user = selectStudent.val() && window.flightEntity.getUsers()[selectStudent.val()];
 	    if (elements.length > 0) {
-		price.val((elements[0].amount || 0) * (qty.val() || 1) * ((elements[0].discount_disabled && elements[0].discount_disabled != '0') || !user ? 1 : (100 - user['discount']) / 100));
+		price.val((qty.val() || 1) *
+			  ((elements[0].amount || 0) *
+			  ((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 - user['discount']) / 100) +
+			  (elements[0].amount_unit || 0) *
+			  (selectUnitAmount.is(':visible') && selectUnitAmount.val() || 0))
+			 );
 	    }
 	});
     }
     , deleteRow: function(form, row) {
-	row.parent('tr').next().remove();
-	row.remove();
+	$(row).prev().remove();
+	$(row).remove();
 	window.flightEntity.updateNames(form);
     }
     , updateNames: function(form) {
@@ -311,12 +333,24 @@ jQuery(document).ready(function($) {
     jQuery($('select')).chosen({placeholder_text_single: 'Pasirinkite...', no_results_text: 'Nėra rezultatų', allow_single_deselect: true, search_contains: true});
 
 
-	jQuery('form#flight-edit select#service, form#flight-edit select#payer, form#flight-edit #amount').on('change keyup', function() {
-	    var elements = $('form#flight-edit select#service_id option:selected');
-	    var user = $('form#flight-edit select#payer option:selected');
-	    var qty = $('form#flight-edit #amount');
-	    if (elements.length && user.length && qty.length) {
-		$('form#flight-edit #price').val((elements.attr('amount') || 0) * (qty.val() || 1) * ((elements.attr('discount_disabled') && elements.attr('discount_disabled') != '0') || !user.val() ? 1 : (100 - user.attr('discount')) / 100));
-	    }
-	});
+    jQuery('form#flight-edit select#service, form#flight-edit select#payer, form#flight-edit #amount, form#flight-edit .amount_unit').on('change keyup', function() {
+	var row = $(this).parent('tr')[0];
+	row = $(row).add(row.hasClass('line2') ? $(row).prev() : $(row).next());
+	var selectService = $('select.service', row);
+	var selectStudent = $('select.user', row);
+	var price = $('.price input', row);
+	var qty = $('.amount input.quantity', row);
+	var selectUnitAmount = $('input.amount_unit', row);
+
+	var elements = $.grep(window.flightEntity.getServices(), function(el) { return el.id == selectService.val(); });
+	var user = selectStudent.val() && window.flightEntity.getUsers()[selectStudent.val()];
+	if (elements.length > 0) {
+	    price.val((qty.val() || 1) *
+		      ((elements[0].amount || 0) *
+		      ((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 - user['discount']) / 100) +
+		      (elements[0].amount_unit || 0) *
+		      (selectUnitAmount.is(':visible') && selectUnitAmount.val() || 0))
+		     );
+	}
+    });
 });

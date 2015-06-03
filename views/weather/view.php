@@ -79,3 +79,7 @@ if (empty($value))
 <a class="btn btn-default" href="http://meteo.lt/skaitmenine_prog_lt_zem.php?skpt=lt_vej" target="_blank">Vėjas</a>
 <a class="btn btn-default" href="http://meteo.lt/radaro_inf.php" target="_blank">Radaro informacija</a>
 <?php } ?>
+
+<h2>Sat24.com</h2>
+<?php $date = time()/*-60*60*23*/ - 60*60*3 - 5*60; $date = $date - ($date % (60*5)); ?>
+<a href="http://sat24.com"><img id="sat24" class="img-responsive" src="http://sat24.com/image2.ashx?region=eu&time=<?php echo date('YmdHi', $date) ?>&type=sat5min&ir=false" alt="Sat24 orai" /></a>

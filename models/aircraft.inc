@@ -84,9 +84,11 @@ class Aircraft
   * @param string Optional column by which to order the articles (default="publicationDate DESC")
   * @return Array|false A two-element array : results => array, a list of Aircraft objects; totalRows => Total number of articles
   */
-  public static function getList( $numRows=1000000, $order="reg_num" ) {
-    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS * FROM vak_aircrafts
-            ORDER BY $order LIMIT $numRows");
+  public static function getList($numRows=1000000, $order="reg_num", $filter = NULL) {
+    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS *
+                     FROM vak_aircrafts
+                     WHERE deleted IS NULL" . (!empty($filter) ? " AND " . $filter : NULL) . "
+                     ORDER BY $order LIMIT $numRows");
 
     $list = array();
     while ($row = $st->fetch()) {
@@ -107,7 +109,7 @@ class Aircraft
     if (!is_null($this->id)) trigger_error ( "Aircraft::insert(): Attempt to insert an Aircraft object that does have its id property set (to $this->id).", E_USER_ERROR );
 
     // Insert the Aircraft
-    $st = DB::query("INSERT INTO vak_aircrafts (`name`, `reg_num`, `manuf_date`, `serial_num`, `first_pilot`, `second_pilot`, `third_pilot`, `remarks`, `moh_date`, `time_since_new`, `flights_since_new`, `time_since_mo`, `flights_since_mo`, `time_left`, `flights_left`, `time_last_year`, `flights_last_year`, `coa_expiry_date`, `civ_insur_expiry_date`, `kasko_insur_expiry_date`) VALUES (:name, :reg_num, :manuf_date, :serial_num, :first_pilot, :second_pilot, :third_pilot, :remarks, " . DB::date_as_string($this->moh_date) . ", :time_since_new, :flights_since_new, :time_since_mo, :flights_since_mo, :time_left, :flights_left, :time_last_year, :flights_last_year, " . DB::date_as_string($this->coa_expiry_date) . ", " . DB::date_as_string($this->civ_insur_expiry_date) . ", " . DB::date_as_string($this->kasko_insur_expiry_date) . ")", array(
+    $this->id = DB::insert("INSERT INTO vak_aircrafts (`name`, `reg_num`, `manuf_date`, `serial_num`, `first_pilot`, `second_pilot`, `third_pilot`, `remarks`, `moh_date`, `time_since_new`, `flights_since_new`, `time_since_mo`, `flights_since_mo`, `time_left`, `flights_left`, `time_last_year`, `flights_last_year`, `coa_expiry_date`, `civ_insur_expiry_date`, `kasko_insur_expiry_date`) VALUES (:name, :reg_num, :manuf_date, :serial_num, :first_pilot, :second_pilot, :third_pilot, :remarks, " . DB::date_as_string($this->moh_date) . ", :time_since_new, :flights_since_new, :time_since_mo, :flights_since_mo, :time_left, :flights_left, :time_last_year, :flights_last_year, " . DB::date_as_string($this->coa_expiry_date) . ", " . DB::date_as_string($this->civ_insur_expiry_date) . ", " . DB::date_as_string($this->kasko_insur_expiry_date) . ")", array(
             ':name' => $this->name,
             ':reg_num' => $this->reg_num,
             ':manuf_date' => $this->manuf_date,
@@ -126,7 +128,7 @@ class Aircraft
             ':flights_last_year' => DB::null_if_empty($this->flights_last_year),
           ));
 
-    return $st->rowCount();
+    return !empty($this->id);
   }
 
   /**
@@ -156,7 +158,7 @@ class Aircraft
             ':id' => $this->id,
       ));
 
-    return $st->rowCount();
+    return TRUE;
   }
 
   /**
@@ -167,6 +169,7 @@ class Aircraft
     if (is_null($this->id)) trigger_error("Aircraft::delete(): Attempt to delete an Aircraft object that does not have its ID property set.", E_USER_ERROR );
 
     // Delete the Aircraft
-    DB::query( "DELETE FROM vak_aircrafts WHERE id = :id LIMIT 1", array(":id" => $this->id));
+    DB::query("UPDATE `vak_aircrafts` SET `deleted`=" . DB::date_as_string(time()) . " WHERE id = :id LIMIT 1", array(":id" => $this->id));
+    //DB::query( "DELETE FROM vak_aircrafts WHERE id = :id LIMIT 1", array(":id" => $this->id));
   }
 }

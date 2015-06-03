@@ -45,7 +45,7 @@
 	</td>
 <?php if ($this->HasPermission()) { ?>
 	<td>
- 	  <a class="btn btn-xs btn-default" href="admin.php?action=aircraft&amp;view=Edit&amp;callsign=<?php echo $aircraft->id ?>">Redaguoti</a>
+ 	  <a class="btn btn-xs btn-default" href="admin.php?action=aircraft&amp;view=Edit&amp;id=<?php echo $aircraft->id ?>">Redaguoti</a>
 	</td>
 	<td>
  	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti orlaivį <?php echo $aircraft->reg_num ?>?')" href="admin.php?action=aircraft&amp;view=Delete&amp;id=<?php echo $aircraft->id ?>">Pašalinti</a>

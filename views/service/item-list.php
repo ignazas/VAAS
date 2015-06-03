@@ -5,7 +5,7 @@
       <tr>
 	<th>Skrydis</th>
 	<th>Pavadinimas</th>
-	<th>Nuolaidos netaikomos</th>
+	<th>Nuolaida taikoma</th>
 	<th>Kaina</th>
 	<th>Papildoma kaina</th>
 	<th>Aprašymas</th>
@@ -23,14 +23,14 @@
 	  <?php echo $service->title ?>
 	</td>
 	<td>
-	  <?php echo $service->discount_disabled == 1 ? '<i class="glyphicon glyphicon-ok"></i>' : '' ?>
+	  <?php echo $service->is_discount == 1 ? '<i class="glyphicon glyphicon-ok"></i>' : '' ?>
 	</td>
 	<td>
 	  <?php echo theme('display_money', 'amount', NULL, $service) ?>
 	</td>
 	<td>
 <?php if (!empty($service->amount_unit)) { ?>
-    <?php echo theme('display', 'amount_unit_title', NULL, $service, array('amount_unit_title' => $service->amount_unit . '/' . $service->unit )) ?>
+    <?php echo theme('display', 'amount_unit_title', NULL, $service, array('amount_unit_title' => $service->amount_unit . '€/' . $service->unit )) ?>
 <?php } ?>
 	</td>
 	<td>

@@ -30,7 +30,7 @@ class FlightControler extends BaseControler {
         }
       }
       foreach ($_POST['price'] as $key => $value) {
-        if (empty($value) || !is_numeric($value)) {
+        if (!empty($value) && !is_numeric($value)) {
           Messages::form_error('price[' . $key . ']', "Kaina negali būti tuščia arba ne skaičius.");
         }
       }
@@ -97,8 +97,6 @@ class FlightControler extends BaseControler {
 
     if (isset($_POST['saveChanges'])) {
       // User has posted the article edit form: save the article changes
-      $flight = new Flight();
-      $results['flight'] = $flight;
 
       if ($this->Validate()) {
         $success = array();
@@ -133,6 +131,7 @@ class FlightControler extends BaseControler {
             }
           }
 
+          $flight = new Flight();
           $flight->storeFormValues($data);
           if ($flight->insert()) {
             //create payment
@@ -143,7 +142,7 @@ class FlightControler extends BaseControler {
               $finance->flight_fee = floatval($finance->flight_fee) - $flight->price;
               $finance->update();
 
-              Messages::set_message("Mokėtojui nuskaityta suma: $flight->price.");
+              Messages::set_message("Mokėtojui nuskaityta suma: $flight->price €.");
 
               log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
                 (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($diff) ? '; price charged: ' . $flight->price : NULL)));
@@ -359,8 +358,9 @@ class FlightControler extends BaseControler {
   public function ItemList() {
     $this->view = dirname(__FILE__) . '/../views/flight/item-list.php';
 
-    $data = Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : NULL);
-    $results = array('flights' => $data['results'], 'totalRows' => $data['totalRows']);
+    $results = array(
+      'flights' => Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : NULL),
+    );
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }

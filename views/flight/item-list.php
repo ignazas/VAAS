@@ -28,6 +28,7 @@ foreach ($data['results'] as $airplane)
 	<th>Keleivis/Pirkėjas</th>
 	<th>Instruktorius</th>
 	<th>Kiekis</th>
+	<th>Trukmė</th>
 <?php if ($this->HasPermission()) { ?>
 	<th style="width:60px;"></th>
 	<th style="width:69px;"></th>
@@ -35,7 +36,7 @@ foreach ($data['results'] as $airplane)
       </tr>
     </thead>
 	<tbody>
-<?php foreach ( $results['flights'] as $flight) { ?>
+<?php foreach ( $results['flights']['results'] as $flight) { ?>
 
 
       <tr>
@@ -59,6 +60,9 @@ foreach ($data['results'] as $airplane)
 	</td>
 	<td>
 	  <?php echo theme('display', 'amount', NULL, $flight) ?>
+	</td>
+	<td>
+    <?php echo theme('display_time', 'time', NULL, $flight, array('time' => !empty($flight->duration) ? floatval($flight->duration) : NULL)) ?>
 	</td>
 <?php   if ($this->HasPermission()) { ?>
 	<td>

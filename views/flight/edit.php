@@ -22,7 +22,7 @@ $airplanes = Aircraft::getList();
       <select name="service_id" id="service_id" class="form-control">
 	<option value=""></option>
 <?php foreach ($services['results'] as $service) { ?>
-	<option amount="<?php echo $service->amount ?>" discount_disabled="<?php echo $service->discount_disabled ?>" value="<?php echo $service->id ?>"<?php echo (!empty($_POST['service_id']) && $_POST['service_id'] == $service->id) || (!empty($results['flight']->service_id) && $results['flight']->service_id == $service->id) ? ' selected="selected"' : NULL ?>><?php echo $service->title ?></option>
+	<option amount="<?php echo $service->amount ?>" is_discount="<?php echo $service->is_discount ?>" value="<?php echo $service->id ?>"<?php echo (!empty($_POST['service_id']) && $_POST['service_id'] == $service->id) || (!empty($results['flight']->service_id) && $results['flight']->service_id == $service->id) ? ' selected="selected"' : NULL ?>><?php echo $service->title ?></option>
 <?php } ?>
       </select>
     </div>
@@ -59,6 +59,11 @@ $airplanes = Aircraft::getList();
 
     <div class="form-group">
       <?php echo theme('number', 'amount', 'Kiekis', $results['flight'], $_POST) ?>
+    </div>
+
+    <div class="form-group">
+      <?php $d = isset($_POST['duration']) ? $_POST['duration'] : (isset($results['flight']->duration) ? floatval($results['flight']->duration) : NULL); ?>
+      <?php echo theme('time', 'duration', 'Trukmė', $results['flight'], array('duration' => $d)) ?>
     </div>
 
     <div class="form-group">

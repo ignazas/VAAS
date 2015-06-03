@@ -4,21 +4,21 @@
     <!-- Form Name -->
     <legend>Įtraukti skrydį</legend>
 
-    <table class="table">
+    <table class="table table-bordered table-hover">
       <thead>
 	<tr>
 	  <th class="date" rowspan="2">Data</th>
 	  <th class="service">Paslauga</th>
 	  <th class="user student">Pilotas</th>
-	  <th class="glider">Orlaivis</th>
-	  <th class="quantity">Kiekis</th>
-	  <th rowspan="2"></th>
+	  <th class="glider" colspan="2">Orlaivis</th>
+	  <th class="price">Kaina,&#160;€</th>
 	</tr>
 	<tr>
 	  <th class="service">Pratimas</th>
 	  <th class="instructor">Instruktorius</th>
+	  <th class="quantity">Kiekis</th>
 	  <th class="time">Laikas</th>
-	  <th class="price">Kaina,&#160;€</th>
+	  <th class="actions"></th>
 	</tr>
       </thead>
       <tbody>
@@ -43,6 +43,7 @@ jQuery(document).ready(function($) {
     , instructor: '<?php echo isset($_POST['instructor'][$key]) ? $_POST['instructor'][$key] : NULL ?>'
     , airplane_id: '<?php echo isset($_POST['airplane_id'][$key]) ? $_POST['airplane_id'][$key] : NULL ?>'
     , amount: '<?php echo isset($_POST['amount'][$key]) ? $_POST['amount'][$key] : NULL ?>'
+    , amount_unit: '<?php echo isset($_POST['amount_unit'][$key]) ? $_POST['amount_unit'][$key] : NULL ?>'
     , time: '<?php echo isset($_POST['time'][$key]) ? $_POST['time'][$key] : NULL ?>'
     , price: '<?php echo isset($_POST['price'][$key]) ? $_POST['price'][$key] : NULL ?>'
   });

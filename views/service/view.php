@@ -2,16 +2,14 @@
 
 <div class="row">
   <div class="col-md-8">
+    <?php echo theme('display_checkbox', 'is_flight', 'Ar skrydis', $results['service']) ?>
     <?php echo theme('display', 'title', 'Pavadinimas', $results['service']) ?>
     <?php echo theme('display', 'amount', 'Kaina, €', $results['service']) ?>
-    <?php echo theme('display', 'discount_disabled', 'Nuolaidos netaikomos', $results['service']) ?>
-    <?php echo theme('display', 'description', 'Aprašymas', $results['service']) ?>
-    <?php echo theme('display_checkbox', 'is_flight', 'Ar skrydis', $results['service']) ?>
 <?php if (!empty($results['service']->amount_unit)) { ?>
-    <?php //echo theme('display_money', 'amount_title', NULL, $service) ?>/<?php echo theme('display', 'unit', NULL, $service) ?>
-    <?php //echo theme('display', 'unit', 'Vienetas', $results['service']) ?>
-    <?php echo theme('display', 'amount_unit_title', 'Kaina už vienetą', $results['service'], array('amount_unit_title' => $results['service']->amount_unit . '/' . $results['service']->unit )) ?>
+    <?php echo theme('display', 'amount_unit_title', 'Papildoma kaina už vienetą', $results['service'], array('amount_unit_title' => $results['service']->amount_unit . '€/' . $results['service']->unit )) ?>
 <?php } ?>
+    <?php echo theme('display', 'description', 'Aprašymas', $results['service']) ?>
+<?php echo theme('display_checkbox', 'is_discount', 'Nuolaida taikoma', $results['service']) ?>
     <br />
   </div>
 

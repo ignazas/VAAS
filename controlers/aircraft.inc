@@ -46,6 +46,7 @@ class AircraftControler extends BaseControler {
 
       if ($this->Validate()) {
         $aircraft->storeFormValues($_POST);
+        $aircraft->id = empty($aircraft->id) ? NULL : $aircraft->id;
         if ($aircraft->insert()) {
           //log it
           log_event("Admin", "AircraftCreated", $aircraft->id);
