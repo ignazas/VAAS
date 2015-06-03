@@ -10,3 +10,6 @@ ALTER TABLE `jos_users`
       ADD `licenseValidTill` date NULL,
       ADD `healthNo` varchar(20) NULL,
       ADD `healthValidTill` date NULL;
+
+ALTER TABLE `jos_users`
+      ADD `instructor_id` int(3) NULL;

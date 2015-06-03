@@ -151,6 +151,9 @@ class UserControler extends BaseControler {
       }
     }
 
+    if (UserHelper::is_student($user))
+      $instructors = User::getList(1000000, 'u.name', 'u.instructor=1');
+
     include dirname(__FILE__) . '/../views/_layout.php';
   }
 
@@ -182,7 +185,7 @@ class UserControler extends BaseControler {
           $edit['password'] = md5($_POST['new_password_1']);
         }
 
-        foreach (array('name', 'email', 'telephone1', 'website', 'discount', 'licenseNo', 'licenseValidTill', 'healthNo', 'healthValidTill') as $key) {
+        foreach (array('name', 'email', 'telephone1', 'website', 'discount', 'licenseNo', 'licenseValidTill', 'healthNo', 'healthValidTill', 'instructor_id') as $key) {
           if (isset($_POST[$key]) && $user->{$key} != $_POST[$key])
             $edit[$key] = $_POST[$key];
         }
@@ -215,6 +218,9 @@ class UserControler extends BaseControler {
       }
     }
 
+    if (UserHelper::is_student($user))
+      $instructors = User::getList(1000000, 'u.name', 'u.instructor=1');
+
     include dirname(__FILE__) . '/../views/_layout.php';
   }
 
@@ -225,8 +231,12 @@ class UserControler extends BaseControler {
   public function View() {
 
     $id = !empty($_GET['id']) ? $_GET['id'] : (!empty($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL);
-    if (!empty($id) && ($user = $this->user_model->Get($id)) && !empty($user))
+    if (!empty($id) && ($user = $this->user_model->Get($id)) && !empty($user)) {
+      if (!empty($user->instructor_id))
+        $user->practice_instructor = User::Get($user->instructor_id);
+
       $this->view = dirname(__FILE__) . '/../views/user/view.php';
+    }
     else {
       $this->view = NULL;
       Messages::set_message('Vartotojas nerastas');

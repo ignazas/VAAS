@@ -21,6 +21,9 @@
       <?php echo theme('display_date_only', 'licenseValidTill', 'Licencija galioja iki', $user) ?>
       <?php echo theme('display', 'healthNo', 'Sveikatos paž. numeris', $user) ?>
       <?php echo theme('display_date_only', 'healthValidTill', 'Sveikatos paž. galioja iki', $user) ?>
+<?php  if (UserHelper::is_student($user) && !empty($user->practice_instructor)) { ?>
+      <?php echo theme('display', 'name', 'Instruktorius', $user->practice_instructor) ?>
+<?php } ?>
     </fieldset>
   </div>
 </div>
