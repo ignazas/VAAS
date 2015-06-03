@@ -94,7 +94,8 @@
 	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti įrašą <?php echo $user->name ?>?')" href="index.php?action=user&amp;view=Delete&amp;id=<?php echo $user->id ?>">Pašalinti</a>
 <?php  } ?>
 <?php  if (UserHelper::is_student($user)) { ?>
- 	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;user_id=<?php echo $user->id ?>">Skraidymų knygelė</a>
+ 	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;user_id=<?php echo $user->id ?>">Mokymo programos vykdymas</a>
+ 	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;view=DataItemList&amp;user_id=<?php echo $user->id ?>">Eigos lapas</a>
 <?php  } ?>
 	</td>
 <?php } ?>

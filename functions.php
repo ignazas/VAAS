@@ -201,6 +201,19 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         $output .= '<span>' . $value . '</span>';
         $output .= '</div>';
         break;
+      case 'display_date_only':
+        if (!isset($value) || $value === '')
+          break;
+
+        if (!is_string($value))
+          $value = date('Y-m-d', $value);
+
+        $output = '<div>';
+        if (!empty($label))
+          $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
+        $output .= '<span>' . $value . '</span>';
+        $output .= '</div>';
+        break;
       default:
         break;
     }

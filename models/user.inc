@@ -13,6 +13,10 @@ class User {
     public $lastvisitDate;
     public $discount;
     public $instructor;
+    public $licenseNo;
+    public $licenseValidTill;
+    public $healthNo;
+    public $healthValidTill;
 
     public $contact_id;
     public $telephone1;
@@ -40,6 +44,10 @@ class User {
     if (isset($data['lastvisitDate'])) $this->lastvisitDate = $data['lastvisitDate'];
     if (isset($data['discount'])) $this->discount = $data['discount'];
     if (isset($data['instructor'])) $this->instructor = $data['instructor'];
+    if (isset($data['licenseNo'])) $this->licenseNo = $data['licenseNo'];
+    if (isset($data['licenseValidTill'])) $this->licenseValidTill = $data['licenseValidTill'];
+    if (isset($data['healthNo'])) $this->healthNo = $data['healthNo'];
+    if (isset($data['healthValidTill'])) $this->healthValidTill = $data['healthValidTill'];
 
     if (isset($data['contact_id'])) $this->contact_id = $data['contact_id'];
     if (isset($data['telephone1'])) $this->telephone1 = $data['telephone1'];
@@ -96,13 +104,16 @@ class User {
             $query_user = NULL;
             $query_context = NULL;
             foreach ($values as $key => $value) {
-                if (in_array($key, array('name', 'username', 'email', 'password', 'usertype', 'block', 'sendEmail',
-                      'gid', 'registerDate', 'lastvisitDate', 'activation', 'params', 'discount', 'instructor'))) {
-                  $query_user .= (!empty($query_user) ? ',' : NULL) . "`$key`='" . $value . "'";
-                  if ($key == 'email') $query_context .= (!empty($query_context) ? ',' : NULL) . "`email_to`='" . $value . "'";
-                }
-                else
-                  $query_context .= (!empty($query_context) ? ',' : NULL) . "`$key`='" . $value . "'";
+              if (in_array($key, array('name', 'username', 'email', 'password', 'usertype', 'block', 'sendEmail',
+                    'gid', 'registerDate', 'lastvisitDate', 'activation', 'params', 'discount', 'instructor'))) {
+                $query_user .= (!empty($query_user) ? ',' : NULL) . "`$key`='" . $value . "'";
+                if ($key == 'email') $query_context .= (!empty($query_context) ? ',' : NULL) . "`email_to`='" . $value . "'";
+              }
+              else if (in_array($key, array('licenseNo', 'licenseValidTill', 'healthNo', 'healthValidTill'))) {
+                $query_user .= (!empty($query_user) ? ',' : NULL) . "`$key`=" . DB::date_as_string($value);
+              }
+              else
+                $query_context .= (!empty($query_context) ? ',' : NULL) . "`$key`='" . $value . "'";
             }
             if ($query_user)
                 DB::query("UPDATE `jos_users` SET $query_user WHERE `id`=:id", array(':id' => $id));
@@ -149,13 +160,15 @@ class User {
     // Does the User object already have an ID?
     if ( !is_null( $this->id ) ) trigger_error ( "User::insert(): Attempt to insert an User object that already has its ID property set (to $this->id).", E_USER_ERROR );
 
-    $this->id = DB::insert("INSERT INTO jos_users (name, username, usertype, password, email, registerDate, params, instructor) VALUES (:name, :username, :usertype, :password, :email, " . DB::date_as_string(time()) . ", '', :instructor)", array(
+    $this->id = DB::insert("INSERT INTO jos_users (name, username, usertype, password, email, registerDate, params, instructor, licenseNo, licenseValidTill, healthNo, healthValidTill) VALUES (:name, :username, :usertype, :password, :email, " . DB::date_as_string(time()) . ", '', :instructor, :licenseNo, " . DB::date_as_string($this->licenseValidTill) . ", :healthNo, " . DB::date_as_string($this->healthValidTill) . ")", array(
                   ':name' => $this->name,
                   ':username' => $this->username,
                   ':usertype' => $this->usertype,
                   ':password' => $this->password,
                   ':email' => $this->email,
                   ':instructor' => empty($this->instructor) ? 0 : 1,
+                  ':licenseNo' => $this->licenseNo,
+                  ':healthNo' => $this->healthNo,
                 ));
 
     $this->contact_id = DB::insert("INSERT INTO jos_contxtd_details (name, user_id, telephone1, telephone2, website, avatar, birthdate, email_to, con_position, params, catid) VALUES (:name, :user_id, :telephone1, :telephone2, :website, :avatar, " . DB::date_as_string($this->birthdate) . ", :email_to, :con_position, '', NULL)", array(

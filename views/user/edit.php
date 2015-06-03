@@ -31,8 +31,12 @@
 <?php if (UserHelper::has_permission()) { ?>
                     <?php echo theme('number', 'discount', 'Nuolaida, %', $user, $edit) ?>
 <?php } else { ?>
-                    <?php echo theme('display_checkbox', 'instructor', 'Instruktorius', $user, $edit) ?>
+                    <?php echo theme('display', 'discount', 'Nuolaida, %', $user, $edit) ?>
 <?php } ?>
+                    <?php echo theme('text', 'licenseNo', 'Licencijos numeris', $user, $edit) ?>
+                    <?php echo theme('date', 'licenseValidTill', 'Licencija galioja iki', $user, $edit) ?>
+                    <?php echo theme('text', 'healthNo', 'Sveikatos paž. numeris', $user, $edit) ?>
+                    <?php echo theme('date', 'healthValidTill', 'Sveikatos paž. galioja iki', $user, $edit) ?>
                 </fieldset>
 		</div>
 		<div class="col-md-4">

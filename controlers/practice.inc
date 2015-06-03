@@ -298,10 +298,10 @@ class PracticeControler extends BaseControler {
     $this->view = dirname(__FILE__) . '/../views/practice_data/item-list.php';
 
     if ($this->HasPermission('Flight Manager')) {
-      $user_id = NULL;;
+      $user_id = empty($_GET['user_id']) ? NULL : $_GET['user_id'];
     }
     else {
-      $user_id = UserHelper::get_id();
+      $user_id = empty($_GET['user_id']) ? UserHelper::get_id() : $_GET['user_id'];
     }
     $data = PracticeData::getList($user_id, !empty($_GET['order']) ? $_GET['order'] : NULL);
     foreach ($data['results'] as $practice) {

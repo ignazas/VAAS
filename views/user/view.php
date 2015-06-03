@@ -17,6 +17,10 @@
       <?php echo theme('display_email', 'email', 'El. paštas', $user) ?>
       <?php echo theme('display_phone', 'telephone1', 'Telefonas', $user) ?>
       <?php echo theme('display_url', 'website', 'Interneto svetainė', $user) ?>
+      <?php echo theme('display', 'licenseNo', 'Licencijos numeris', $user) ?>
+      <?php echo theme('display_date_only', 'licenseValidTill', 'Licencija galioja iki', $user) ?>
+      <?php echo theme('display', 'healthNo', 'Sveikatos paž. numeris', $user) ?>
+      <?php echo theme('display_date_only', 'healthValidTill', 'Sveikatos paž. galioja iki', $user) ?>
     </fieldset>
   </div>
 </div>
