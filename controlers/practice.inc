@@ -333,6 +333,8 @@ class PracticeControler extends BaseControler {
     require_once dirname(__FILE__) . '/../models/user.inc';
     require_once dirname(__FILE__) . '/../models/aircraft.inc';
     require_once dirname(__FILE__) . '/../models/flight.inc';
+    require_once dirname(__FILE__) . '/../models/practice.inc';
+    require_once dirname(__FILE__) . '/../models/practice_data.inc';
 
     // New Word Document
     $PHPWord = new PHPWord();
@@ -365,24 +367,47 @@ class PracticeControler extends BaseControler {
     $document->setValue('E_MONTH', date('m', strtotime($e_date)));
     $document->setValue('E_DAY', date('d', strtotime($e_date)));
 
-    $document->setValue('1_TOTAL', '');
-    $document->setValue('1_KONTR', '');
-    $document->setValue('1_SAV', '');
-    $document->setValue('2_TOTAL', '');
-    $document->setValue('2_KONTR', '');
-    $document->setValue('2_SAV', '');
-    $document->setValue('3_TOTAL', '');
-    $document->setValue('3_KONTR', '');
-    $document->setValue('3_SAV', '');
-    $document->setValue('4_TOTAL', '');
-    $document->setValue('4_KONTR', '');
-    $document->setValue('4_SAV', '');
+    $practice_data = PracticeData::getDetailedStatistic($user_id);
 
-    $document->setValue('TOTAL', '');
-    $document->setValue('TOTAL_WITH_INSTRUCTOR', '');
-    $document->setValue('TOTAL_SAV', '');
-    $document->setValue('TOTAL_LANDING_FIELD', '');
-    $document->setValue('TOTAL_LAST_YEAR', '');
+    $phases = array();
+    $total = 0;
+    $total_with_instructor = 0;
+    $total_sav = 0;
+    $total_landing_field = 0;
+    foreach ($practice_data as $data) {
+      if (!isset($phases[$data->phase_no]['total'])) $phases[$data->phase_no]['total'] = 0;
+      if (!isset($phases[$data->phase_no]['kontr'])) $phases[$data->phase_no]['kontr'] = 0;
+      if (!isset($phases[$data->phase_no]['sav'])) $phases[$data->phase_no]['sav'] = 0;
+
+      if (!empty($data->with_instructor) &&
+        ($data->phase_no == 1 && $data->no == 11) ||
+        ($data->phase_no == 2 && $data->no == 17))
+        $phases[$data->phase_no]['kontr'] += DateHelper::time_as_float($data->time);
+      else if (empty($data->with_instructor))
+        $phases[$data->phase_no]['sav'] += DateHelper::time_as_float($data->time);
+      $phases[$data->phase_no]['total'] += DateHelper::time_as_float($data->time);
+
+      $total += DateHelper::time_as_float($data->time);
+      $total_with_instructor += empty($data->with_instructor) ? 0 : DateHelper::time_as_float($data->time);
+      $total_sav += !empty($data->with_instructor) ? 0 : DateHelper::time_as_float($data->time);
+      if ($data->phase_no == 2 && $data->no == 14)
+        $total_landing_field += DateHelper::time_as_float($data->time);
+    }
+
+    $document->setValue('1_TOTAL', empty($phases[1]['total']) ? 0 : DateHelper::time_as_string($phases[1]['total']));
+    $document->setValue('1_KONTR', empty($phases[1]['kontr']) ? 0 : DateHelper::time_as_string($phases[1]['kontr']));
+    $document->setValue('1_SAV', empty($phases[1]['sav']) ? 0 : DateHelper::time_as_string($phases[1]['sav']));
+    $document->setValue('2_TOTAL', empty($phases[2]['total']) ? 0 : DateHelper::time_as_string($phases[2]['total']));
+    $document->setValue('2_KONTR', empty($phases[2]['kontr']) ? 0 : DateHelper::time_as_string($phases[2]['kontr']));
+    $document->setValue('2_SAV', empty($phases[2]['sav']) ? 0 : DateHelper::time_as_string($phases[2]['sav']));
+
+    $document->setValue('TOTAL', DateHelper::time_as_string($total));
+    $document->setValue('TOTAL_WITH_INSTRUCTOR', DateHelper::time_as_string($total_with_instructor));
+    $document->setValue('TOTAL_SAV', DateHelper::time_as_string($total_sav));
+    $document->setValue('TOTAL_LANDING_FIELD', $total_landing_field);
+
+    $lastYearTime = PracticeData::timeInLastYear($user_id);
+    $document->setValue('TOTAL_LAST_YEAR', DateHelper::time_as_string($lastYearTime));
 
     $document->setValue('DATE', date('Y-m-d'));
 

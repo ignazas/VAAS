@@ -82,13 +82,39 @@ class PracticeData
 
   public static function getStatistic($user_id = NULL) {
     $user_id = is_numeric($user_id) ? (int)$user_id : 0;
-    $st = DB::query("SELECT `practice_id`, SUM(`count`) count, SUM(`time`) time FROM `practice_data` WHERE `user_id`=$user_id GROUP BY `practice_id`");
+    $st = DB::query("SELECT `practice_id`, SUM(`count`) count, SUM(time_to_sec(`time`) / 60.0) time FROM `practice_data` WHERE `user_id`=$user_id GROUP BY `practice_id`");
 
     $list = array();
     while ($row = $st->fetch()) {
       $list[$row['practice_id']] = array('practice_id' => $row['practice_id'], 'count' => $row['count'], 'time' => $row['time']);
     }
     return $list;
+  }
+
+  public static function getDetailedStatistic($user_id = NULL) {
+    $user_id = is_numeric($user_id) ? (int)$user_id : 0;
+    $st = DB::query("SELECT p.`phase_no`, p.`no`, CASE WHEN d.`instructor_id` IS NULL THEN 0 ELSE 1 END `with_instructor`, SUM(d.`count`) count, SUM(time_to_sec(d.`time`) / 60.0) time FROM `practice_data` d INNER JOIN `practice` p ON p.`id`=d.`practice_id` WHERE d.`user_id`=$user_id GROUP BY p.`phase_no`, p.`no`, CASE WHEN d.`instructor_id` IS NULL THEN 0 ELSE 1 END");
+
+    $list = array();
+    while ($row = $st->fetch()) {
+      $list[] = (object)array(
+        'phase_no' => $row['phase_no'],
+        'no' => $row['no'],
+        'with_instructor' => $row['with_instructor'],
+        'count' => intval($row['count']),
+        'time' => empty($row['time']) ? 0.0 : floatval($row['time']),
+     );
+    }
+    return $list;
+  }
+
+  public static function timeInLastYear($user_id = NULL) {
+    $user_id = is_numeric($user_id) ? (int)$user_id : 0;
+    $st = DB::query("SELECT SUM(time_to_sec(d.`time`) / 60.0) time FROM `practice_data` d WHERE d.`user_id`=$user_id AND d.`date` >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)");
+    if ($row = $st->fetch() && !empty($row['time']))
+      return floatval($row['time']);
+
+    return 0.0;
   }
 
   /**
