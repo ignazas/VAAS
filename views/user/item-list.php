@@ -96,6 +96,7 @@
 <?php  if (UserHelper::is_student($user)) { ?>
  	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;user_id=<?php echo $user->id ?>">Mokymo programos vykdymas</a>
  	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;view=DataItemList&amp;user_id=<?php echo $user->id ?>">Eigos lapas</a>
+ 	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;view=Download&amp;user_id=<?php echo $user->id ?>">Mokymo ataskaita</a>
 <?php  } ?>
 	</td>
 <?php } ?>

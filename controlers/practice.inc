@@ -323,20 +323,8 @@ class PracticeControler extends BaseControler {
     if (!$this->HasPermission('Flight Manager'))
       $this->Transfer();
 
-    throw new Exception('Not implemented');
-
-    $date = empty($_GET['date']) ? date('Y-m-d') : $_GET['date'];
-    $filters = array();
-
-    $escaped = DB::escape($_GET['date']);
-    $filters[] = "date = $escaped";
-
-    $flights = Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : '-date', implode(' AND ', $filters));
-    $flights['results'];
-    $flights['totalRows'];
-
-    $source = dirname(__FILE__) . '/../templates/word/practice.docx';
-    $newFile = dirname(__FILE__) . "/../uploads/flights/practice " . date('Y-m-d') . '.docx';
+    $source = dirname(__FILE__) . '/../templates/word/Mokymo ataskaita.docx';
+    $newFile = dirname(__FILE__) . "/../uploads/flights/Mokymo ataskaita " . date('Y-m-d') . '.docx';
 
     require_once dirname(__FILE__) . '/../libraries/PHPWord.php';
     require_once dirname(__FILE__) . '/../helpers/date.inc';
@@ -344,53 +332,59 @@ class PracticeControler extends BaseControler {
     require_once dirname(__FILE__) . '/../models/service.inc';
     require_once dirname(__FILE__) . '/../models/user.inc';
     require_once dirname(__FILE__) . '/../models/aircraft.inc';
+    require_once dirname(__FILE__) . '/../models/flight.inc';
 
     // New Word Document
     $PHPWord = new PHPWord();
 
     $document = $PHPWord->loadTemplate($source);
 
-    $total_count = 0;
-    $total_time = 0;
-    if (!empty($flights['totalRows'])) {
-      $document->cloneRow('AIRCRAFT_TYPE', $flights['totalRows']);
+    $user_id = empty($_GET['user_id']) ? UserHelper::get_id() : $_GET['user_id'];
+    $user = User::Get($user_id);
 
-      $i = 0;
-      foreach ($flights['results'] as $flight) {
-        $i++;
+    $document->setValue('PILOT', $user->name);
 
-        $task = empty($flight->service_id) ? NULL : Service::getById($flight->service_id);
-        $pilot = empty($flight->payer) ? NULL : User::Get($flight->payer);
-        $instructor = empty($flight->instructor) ? NULL : User::Get($flight->instructor);
-        $aircraft = empty($flight->airplane_id) ? NULL : Aircraft::getById($flight->airplane_id);
+    $document->setValue('LICENSE_NO', $user->licenseNo);
+    $document->setValue('LICENSE_VALID_TILL', empty($user->licenseValidTill)
+      ? ''
+      : (!is_string($user->licenseValidTill) ? date('Y-m-d', $user->licenseValidTill) : $user->licenseValidTill));
+    $document->setValue('HEALTH_NO', $user->healthNo);
+    $document->setValue('HEALTH_VALID_TILL',  empty($user->healthValidTill)
+      ? ''
+      : (!is_string($user->healthValidTill) ? date('Y-m-d', $user->healthValidTill) : $user->healthValidTill));
 
-        $document->setValue('AIRCRAFT_TYPE#'.$i, empty($aircraft) ? '' : $aircraft->name);
-        $document->setValue('AIRCRAFT_REGISTRATION_NO#'.$i, empty($aircraft) ? '' : $aircraft->reg_num);
-        $document->setValue('PILOT#'.$i, empty($pilot) ? '' : $pilot->name);
-        $document->setValue('INSTRUCTOR#'.$i, empty($instructor) ? '' : $instructor->name);
-        $document->setValue('TASK#'.$i, empty($task) ? '' : $task->title);
-        $document->setValue('FLIGHT_COUNT#'.$i, $flight->amount);
-        $document->setValue('FLIGHT_TIME#'.$i, DateHelper::time_as_string($flight->duration));
+    $first_flight = Flight::getList(1, 'date', 'payer=' . $user_id);
+    $s_date = empty($first_flight['results']) ? date('Y-m-d') : $first_flight['results'][0]->date;
+    $document->setValue('S_YEAR', date('Y', strtotime($s_date)));
+    $document->setValue('S_MONTH', date('m', strtotime($s_date)));
+    $document->setValue('S_DAY', date('d', strtotime($s_date)));
 
-        $total_count += $flight->amount;
-        $total_time += DateHelper::time_as_float($flight->duration);
-      }
-    } else {
-        $document->setValue('AIRCRAFT_TYPE', '');
-        $document->setValue('AIRCRAFT_REGISTRATION_NO', '');
-        $document->setValue('PILOT', '');
-        $document->setValue('INSTRUCTOR', '');
-        $document->setValue('TASK', '');
-        $document->setValue('FLIGHT_COUNT', '');
-        $document->setValue('FLIGHT_TIME', '');
-    }
+    $last_flight = Flight::getList(1, '-date', 'payer=' . $user_id);
+    $e_date = empty($last_flight['results']) ? date('Y-m-d') : $last_flight['results'][0]->date;
+    $document->setValue('E_YEAR', date('Y', strtotime($e_date)));
+    $document->setValue('E_MONTH', date('m', strtotime($e_date)));
+    $document->setValue('E_DAY', date('d', strtotime($e_date)));
 
-    $document->setValue('TOTAL_FLIGHTS', $total_count);
-    $document->setValue('TOTAL_TIME', DateHelper::time_as_string($total_time));
+    $document->setValue('1_TOTAL', '');
+    $document->setValue('1_KONTR', '');
+    $document->setValue('1_SAV', '');
+    $document->setValue('2_TOTAL', '');
+    $document->setValue('2_KONTR', '');
+    $document->setValue('2_SAV', '');
+    $document->setValue('3_TOTAL', '');
+    $document->setValue('3_KONTR', '');
+    $document->setValue('3_SAV', '');
+    $document->setValue('4_TOTAL', '');
+    $document->setValue('4_KONTR', '');
+    $document->setValue('4_SAV', '');
 
-    $document->setValue('YEAR', date('Y', strtotime($date)));
-    $document->setValue('MONTH', date('m', strtotime($date)));
-    $document->setValue('DAY', date('d', strtotime($date)));
+    $document->setValue('TOTAL', '');
+    $document->setValue('TOTAL_WITH_INSTRUCTOR', '');
+    $document->setValue('TOTAL_SAV', '');
+    $document->setValue('TOTAL_LANDING_FIELD', '');
+    $document->setValue('TOTAL_LAST_YEAR', '');
+
+    $document->setValue('DATE', date('Y-m-d'));
 
     $document->save($newFile);
 
