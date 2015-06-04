@@ -52,7 +52,10 @@ window.flightEntity = {
 
 	//service
 	var selectService = $('<select />').addClass('service').append($('<option value=""></option>'));
-	$.each(window.flightEntity.getServices(), function(i, service) { selectService.append($('<option></option>').val(service['id']).text(service['title'])) });
+	$.each(window.flightEntity.getServices(), function(i, service) {
+	    if (service['is_flight'])
+		selectService.append($('<option></option>').val(service['id']).text(service['title']))
+	});
 	var cell = addCell(row, selectService, 'service_id');
 	var selectUnitAmount = addElement(cell, $('<input type="number" />'), 'amount_unit').addClass('amount_unit');
 	cell.append($('<span></span>').addClass('service_unit').html(''));
@@ -111,7 +114,7 @@ window.flightEntity = {
 
 	//time
 	var time = $('<input type="text" />').addClass('quantity');
-	addCell(row2, time.val(1), 'time');
+	addCell(row2, time, 'time');
 	options && options.time && time.val(options.time);
 
 	//actions

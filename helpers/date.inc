@@ -5,11 +5,14 @@ class DateHelper {
       return NULL;
 
     if (is_float($time))
-      return intval(floor($time)) . ':' . round(60 * ($time - floor($time)));
+      return intval(floor($time)) . ':' . str_pad(round(60 * ($time - floor($time))), 2, '0', STR_PAD_LEFT);
 
     if (is_string($time))
       $time = str_replace(array(',', '.', ':', ';'), ':', $time);
-    return $time;
+
+    $value = explode(':', $time);
+
+    return str_pad($value[0], 2, '0', STR_PAD_LEFT) . ':' . str_pad(!empty($value[1]) ? $value[1] : '', 2, '0', STR_PAD_LEFT);
   }
 
   public static function time_as_float($time) {

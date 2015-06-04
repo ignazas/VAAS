@@ -63,9 +63,12 @@ class Service
   * @param string Optional column by which to order the articles (default="date DESC")
   * @return Array|false A two-element array : results => array, a list of Article objects; totalRows => Total number of articles
   */
-  public static function getList( $numRows=1000000, $order="title DESC" ) {
-    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS * FROM `services`
-            ORDER BY $order LIMIT $numRows");
+  public static function getList($numRows=1000000, $order="title", $filter = NULL) {
+    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS *
+                     FROM `services`
+                     WHERE 1=1" . (!empty($filter) ? " AND " . $filter : NULL) . "
+                     ORDER BY " . ltrim($order, '-+') . ($order[0] == '-' ? ' DESC' : ' ASC') . "
+                     LIMIT $numRows");
 
     $list = array();
     while ( $row = $st->fetch() ) {
@@ -108,7 +111,6 @@ class Service
     // Does the Service object have an ID?
     if ( is_null( $this->id ) ) trigger_error ( "Service::update(): Attempt to update a Service object that does not have its ID property set.", E_USER_ERROR );
 
-    Messages::dpm($this);
     // Update the Service
     $st = DB::query("UPDATE `services` SET `title`=:title, `is_discount`=:is_discount, `amount`=:amount, `description`=:description, `is_flight`=:is_flight, unit=:unit, amount_unit=:amount_unit WHERE id = :id", array(
         ":title" => $this->title,

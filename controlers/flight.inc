@@ -263,6 +263,8 @@ class FlightControler extends BaseControler {
       }
       else {
         $results['flight'] = $flight;
+        $_POST['duration'] = DateHelper::time_as_float($_POST['duration']);
+
         if ($this->Validate()) {
           $price_before_update = empty($flight->price) ? 0 : $flight->price;
           $payer_before_update = empty($flight->payer) ? NULL : $flight->payer;
@@ -324,6 +326,15 @@ class FlightControler extends BaseControler {
             Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
           }
         }
+
+        require_once dirname(__FILE__) . '/../models/service.inc';
+        $services = Service::getList(1000000, 'title', 'is_flight=1');
+        require_once dirname(__FILE__) . '/../models/user.inc';
+        $users = User::getList();
+        $instructors = User::getList(1000000, 'u.name', '`instructor`=1');
+        require_once dirname(__FILE__) . '/../models/aircraft.inc';
+        $airplanes = Aircraft::getList();
+
         include dirname(__FILE__) . '/../views/_layout.php';
       }
     }
@@ -335,6 +346,15 @@ class FlightControler extends BaseControler {
     else if (!empty($_GET['id'])) {
       // User has not posted the flight edit form yet: display the form
       $results['flight'] = Flight::getById($_GET['id']);
+
+      require_once dirname(__FILE__) . '/../models/service.inc';
+      $services = Service::getList(1000000, 'title', 'is_flight=1');
+      require_once dirname(__FILE__) . '/../models/user.inc';
+      $users = User::getList();
+      $instructors = User::getList(1000000, 'u.name', '`instructor`=1');
+      require_once dirname(__FILE__) . '/../models/aircraft.inc';
+      $airplanes = Aircraft::getList();
+
       include dirname(__FILE__) . '/../views/_layout.php';
     }
   }
@@ -378,7 +398,7 @@ class FlightControler extends BaseControler {
       $results['users'][$user->id] = $user;
 
     require_once dirname(__FILE__) . '/../models/service.inc';
-    $data = Service::getList();
+    $data = Service::getList(1000000, 'title', 'is_flight=1');
     $results['services'] = array();
     foreach ($data['results'] as $service)
       $results['services'][$service->id] = $service;

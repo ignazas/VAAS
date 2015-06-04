@@ -1,13 +1,3 @@
-<?php
-require_once dirname(__FILE__) . '/../../models/service.inc';
-$services = Service::getList();
-require_once dirname(__FILE__) . '/../../models/user.inc';
-$users = User::getList();
-$instructors = User::getList(1000000, 'u.name', '`instructor`=1');
-require_once dirname(__FILE__) . '/../../models/aircraft.inc';
-$airplanes = Aircraft::getList();
-?>
-
 <form id="flight-edit" class="form-horizontal" action="" method="POST" role="form">
   <input type="hidden" name="id" value="<?php echo $results['flight']->record_id ?>" />
   <fieldset>
