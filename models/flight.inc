@@ -63,11 +63,17 @@ class Flight
   * @param string Optional column by which to order the articles (default="publicationDate DESC")
   * @return Array|false A two-element array : results => array, a list of Flight objects; totalRows => Total number of articles
   */
-  public static function getList( $numRows=1000000, $order = NULL) {
-    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS * FROM flights" . (!empty($numRows) ? " LIMIT $numRows" : NULL) . (!empty($order) ? (' ORDER BY ' . ltrim($order, '-+') . ($order[0] == '-' ? ' DESC' : ' ASC')) : NULL));
+  public static function getList( $numRows=1000000, $order = '-date', $filter = NULL) {
+    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS *
+                     FROM flights
+                     WHERE 1=1" . (!empty($filter) ? " AND " . $filter : NULL) . "
+                     " . (empty($order) ? NULL : "ORDER BY " . ltrim($order, '-+') . ($order[0] == '-' ? ' DESC' : ' ASC')) .
+          (!empty($numRows) ? " LIMIT $numRows" : NULL));
 
     $list = array();
     while ($row = $st->fetch()) {
+      if (!empty($row['duration']) && gettype($row['duration']) === 'string')
+        $row['duration'] = floatval($row['duration']);
       $list[] = new Flight($row);
     }
 

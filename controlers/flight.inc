@@ -358,10 +358,129 @@ class FlightControler extends BaseControler {
   public function ItemList() {
     $this->view = dirname(__FILE__) . '/../views/flight/item-list.php';
 
+    if (!isset($_GET['date']))
+      $_GET['date'] = date('Y-m-d');
+
+    $filters = array();
+    if (!empty($_GET['date'])) {
+      $escaped = DB::escape($_GET['date']);
+      $filters[] = "date = $escaped";
+    }
+
     $results = array(
-      'flights' => Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : NULL),
+      'flights' => Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : '-date', implode(' AND ', $filters)),
     );
 
+    require_once dirname(__FILE__) . '/../models/user.inc';
+    $data = User::getList();
+    $results['users'] = array();
+    foreach ($data['results'] as $user)
+      $results['users'][$user->id] = $user;
+
+    require_once dirname(__FILE__) . '/../models/service.inc';
+    $data = Service::getList();
+    $results['services'] = array();
+    foreach ($data['results'] as $service)
+      $results['services'][$service->id] = $service;
+
+    require_once dirname(__FILE__) . '/../models/aircraft.inc';
+    $data = Aircraft::getList();
+    $results['airplanes'] = array();
+    foreach ($data['results'] as $airplane)
+      $results['airplanes'][$airplane->id] = $airplane;
+
+    include dirname(__FILE__) . '/../views/_layout.php';
+  }
+
+  public function Download() {
+    if (!$this->HasPermission('Flight Manager'))
+      $this->Transfer();
+
+    $date = empty($_GET['date']) ? date('Y-m-d') : $_GET['date'];
+    $filters = array();
+
+    $escaped = DB::escape($_GET['date']);
+    $filters[] = "date = $escaped";
+
+    $flights = Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : '-date', implode(' AND ', $filters));
+    $flights['results'];
+    $flights['totalRows'];
+
+    $source = dirname(__FILE__) . '/../templates/word/chronometrazas.docx';
+    $newFile = dirname(__FILE__) . "/../uploads/flights/chronometrazas " . date('Y-m-d') . '.docx';
+
+    require_once dirname(__FILE__) . '/../libraries/PHPWord.php';
+    require_once dirname(__FILE__) . '/../helpers/date.inc';
+
+    require_once dirname(__FILE__) . '/../models/service.inc';
+    require_once dirname(__FILE__) . '/../models/user.inc';
+    require_once dirname(__FILE__) . '/../models/aircraft.inc';
+
+    // New Word Document
+    $PHPWord = new PHPWord();
+
+    $document = $PHPWord->loadTemplate($source);
+
+    $total_count = 0;
+    $total_time = 0;
+    if (!empty($flights['totalRows'])) {
+      $document->cloneRow('AIRCRAFT_TYPE', $flights['totalRows']);
+
+      $i = 0;
+      foreach ($flights['results'] as $flight) {
+        $i++;
+
+        $task = empty($flight->service_id) ? NULL : Service::getById($flight->service_id);
+        $pilot = empty($flight->payer) ? NULL : User::Get($flight->payer);
+        $instructor = empty($flight->instructor) ? NULL : User::Get($flight->instructor);
+        $aircraft = empty($flight->airplane_id) ? NULL : Aircraft::getById($flight->airplane_id);
+
+        $document->setValue('AIRCRAFT_TYPE#'.$i, empty($aircraft) ? '' : $aircraft->name);
+        $document->setValue('AIRCRAFT_REGISTRATION_NO#'.$i, empty($aircraft) ? '' : $aircraft->reg_num);
+        $document->setValue('PILOT#'.$i, empty($pilot) ? '' : $pilot->name);
+        $document->setValue('INSTRUCTOR#'.$i, empty($instructor) ? '' : $instructor->name);
+        $document->setValue('TASK#'.$i, empty($task) ? '' : $task->title);
+        $document->setValue('FLIGHT_COUNT#'.$i, $flight->amount);
+        $document->setValue('FLIGHT_TIME#'.$i, DateHelper::time_as_string($flight->duration));
+
+        $total_count += $flight->amount;
+        $total_time += DateHelper::time_as_float($flight->duration);
+      }
+    } else {
+        $document->setValue('AIRCRAFT_TYPE', '');
+        $document->setValue('AIRCRAFT_REGISTRATION_NO', '');
+        $document->setValue('PILOT', '');
+        $document->setValue('INSTRUCTOR', '');
+        $document->setValue('TASK', '');
+        $document->setValue('FLIGHT_COUNT', '');
+        $document->setValue('FLIGHT_TIME', '');
+    }
+
+    $document->setValue('TOTAL_FLIGHTS', $total_count);
+    $document->setValue('TOTAL_TIME', DateHelper::time_as_string($total_time));
+
+    $document->setValue('YEAR', date('Y', strtotime($date)));
+    $document->setValue('MONTH', date('m', strtotime($date)));
+    $document->setValue('DAY', date('d', strtotime($date)));
+
+    $document->save($newFile);
+
+    if (file_exists($newFile)) {
+      header('Content-Description: File Transfer');
+      header('Content-Type: application/octet-stream');
+      header('Content-Disposition: attachment; filename='.basename($newFile));
+      header('Expires: 0');
+      header('Cache-Control: must-revalidate');
+      header('Pragma: public');
+      header('Content-Length: ' . filesize($newFile));
+      flush();
+      readfile($newFile);
+
+      unlink($newFile);
+      exit;
+    }
+
+    Messages::set_message('Nepavyko sugeneruoti failo');
     include dirname(__FILE__) . '/../views/_layout.php';
   }
 }

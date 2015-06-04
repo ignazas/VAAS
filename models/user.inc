@@ -141,7 +141,8 @@ class User {
                        ud.telephone1, ud.telephone2, ud.website, ud.avatar, ud.birthdate, ud.email_to, ud.con_position, ud.id 'contact_id', ud.catid
                      FROM jos_users u LEFT OUTER JOIN jos_contxtd_details ud ON u.id=ud.user_id
                      WHERE deleted IS NULL" . (!empty($filter) ? " AND " . $filter : NULL) . "
-                     ORDER BY $order LIMIT $numRows");
+                     ORDER BY " . ltrim($order, '-+') . ($order[0] == '-' ? ' DESC' : ' ASC') . "
+                     LIMIT $numRows");
 
     $list = array();
     while ( $row = $st->fetch() ) {
