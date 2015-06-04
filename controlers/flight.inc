@@ -403,8 +403,6 @@ class FlightControler extends BaseControler {
     $filters[] = "date = $escaped";
 
     $flights = Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : '-date', implode(' AND ', $filters));
-    $flights['results'];
-    $flights['totalRows'];
 
     $source = dirname(__FILE__) . '/../templates/word/chronometrazas.docx';
     $newFile = dirname(__FILE__) . "/../uploads/flights/chronometrazas " . date('Y-m-d') . '.docx';
