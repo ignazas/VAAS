@@ -14,14 +14,15 @@ function log_event($user, $event, $param) {
 }
 
 function load_controller($name) {
-    if (file_exists(dirname(__FILE__) . "/controlers/$name.inc")) {
-        require_once dirname(__FILE__) . "/controlers/$name.inc";
-        if ($class = new ReflectionClass(ucwords($name).'Controler')) {
-            if(session_id() == '') session_start();
-            return $class->newInstanceArgs();
-        }
+  $filename = strtolower($name);
+  if (file_exists(dirname(__FILE__) . "/controlers/$filename.inc")) {
+    require_once dirname(__FILE__) . "/controlers/$filename.inc";
+    if ($class = new ReflectionClass(ucwords($name).'Controler')) {
+      if(session_id() == '') session_start();
+      return $class->newInstanceArgs();
     }
-    return FALSE;
+  }
+  return FALSE;
 }
 
 function theme($type, $name, $label, $entity, $values=NULL) {
