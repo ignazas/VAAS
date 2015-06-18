@@ -1,5 +1,10 @@
 <?php
 class UserHelper {
+  private static function redirect($url) {
+    require_once dirname(__FILE__) . '/../controlers/base.inc';
+    BaseControler::Redirect($url);
+  }
+
   public static function has_role($role) {
     $roles = !empty($_SESSION['user']['usertype']) ? explode(',', $_SESSION['user']['usertype']) : array('Registered');
     return in_array($role, $roles);
@@ -89,8 +94,7 @@ class UserHelper {
     UserHelper::init_session();
     if (!UserHelper::logged_in()) {
       if ($redirect === TRUE) {
-        header("Location: index.php?action=svecias");
-        die("Redirecting to login.php");
+        UserHelper::redirect("index.php?action=svecias");
       }
       else {
         header("HTTP/1.1 401 Unauthorized");
