@@ -31,7 +31,6 @@
   <table class="table table-striped">
     <thead>
       <tr>
-	<th>#</th>
 	<th><?php echo order_link('date', 'index.php?action=flight&view=ItemList', 'Data') ?></th>
 	<th>Orlaivis</th>
 	<th>Paslauga</th>
@@ -39,6 +38,7 @@
 	<th>Instruktorius</th>
 	<th>Kiekis</th>
 	<th>Trukmė</th>
+	<th style="width:60px;"></th>
 <?php if ($this->HasPermission()) { ?>
 	<th style="width:60px;"></th>
 	<th style="width:69px;"></th>
@@ -50,9 +50,6 @@
 
 
       <tr>
-	<td>
-	  <a href="admin.php?action=flight&amp;view=View&amp;id=<?php echo $flight->record_id ?>"><?php echo $flight->record_id ?></a>
-	</td>
 	<td>
 	  <?php echo theme('display', 'date', NULL, $flight) ?>
 	</td>
@@ -74,7 +71,10 @@
 	<td>
     <?php echo theme('display_time', 'time', NULL, $flight, array('time' => !empty($flight->duration) ? floatval($flight->duration) : NULL)) ?>
 	</td>
-<?php   if ($this->HasPermission()) { ?>
+	<td>
+	  <a class="btn btn-xs btn-default" href="admin.php?action=flight&amp;view=View&amp;id=<?php echo $flight->record_id ?>">Peržiūrėti</a>
+	</td>
+<?php   if ($this->HasPermission('Flight Manager') || ($flight->payer == UserHelper::get_id())) { ?>
 	<td>
  	  <a class="btn btn-xs btn-default" href="admin.php?action=flight&amp;view=Edit&amp;id=<?php echo $flight->record_id ?>">Redaguoti</a>
 	</td>
@@ -88,7 +88,9 @@
 <?php } ?>
 	</tbody>
   </table>
+<?php   if ($this->HasPermission('Flight Manager')) { ?>
   <br />
   <a class="btn btn-sm btn-primary" href="index.php?action=flight&amp;view=NewItem">Pridėti naują skrydį</a>
   <a class="btn btn-sm btn-default" href="index.php?action=flight&amp;view=Download&amp;date=<?php echo !empty($_GET['date']) ? $_GET['date'] : NULL ?>">Parsisiųsti</a>
+<?php   } ?>
 </div>

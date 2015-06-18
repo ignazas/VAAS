@@ -213,6 +213,25 @@ window.flightEntity = {
 jQuery(document).ready(function($) {
     $("a[rel='popover']").popover({});
 
+    $('.practice .approve').click(function(event) {
+	var el = $(this);
+        $.ajax({
+	    'url': 'index.php?action=practice&view=Approve&json=1&value=' + (el.is(':checked') ? 1 : 0) + '&id=' + el.attr('pid'),
+	    'data': '',
+	    'type': 'GET',
+	    'success': function (resp) {
+		if (resp) {
+		} else {
+		    if (el.is(':checked'))
+			el.removeAttr('checked');
+		    else
+			el.attr('checked', true);
+		    alert('Negalima pakeisti patvirtinimo');
+		}
+	    }
+        });
+    });
+
     $('#reminder').click(function(event){
 	event.preventDefault();
 

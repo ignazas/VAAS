@@ -12,6 +12,7 @@ class PracticeData
   public $count = null;
   public $time = null;
   public $comments = null;
+  public $approved = null;
 
   /**
   * Sets the object's properties using the values in the supplied array
@@ -28,6 +29,7 @@ class PracticeData
     if (isset($data['count'])) $this->count = $data['count'];
     if (isset($data['time'])) $this->time = $data['time'];
     if (isset($data['comments'])) $this->comments = $data['comments'];
+    if (isset($data['approved'])) $this->approved = empty($data['approved']) ? 0 : 1;
   }
 
   /**
@@ -126,9 +128,9 @@ class PracticeData
 
     // Insert the PracticeData
     $this->id = DB::insert("INSERT INTO practice_data (
- `user_id`, `instructor_id`, `practice_id`, `aircraft_id`, `date`, `count`, `time`, `comments`)
+ `user_id`, `instructor_id`, `practice_id`, `aircraft_id`, `date`, `count`, `time`, `comments`, `approved`)
     VALUES (
- :user_id, :instructor_id, :practice_id, :aircraft_id, :date, :count, :time, :comments)", array(
+ :user_id, :instructor_id, :practice_id, :aircraft_id, :date, :count, :time, :comments, :approved)", array(
         ":user_id" => (int)$this->user_id,
         ":instructor_id" => (int)$this->instructor_id,
         ":practice_id" => (int)$this->practice_id,
@@ -137,6 +139,7 @@ class PracticeData
         ":count" => (int)$this->count,
         ":time" => $this->time,
         ":comments" => $this->comments,
+        ":approved" => empty($this->approved) ? 0 : 1,
     ));
 
     return !empty($this->id);
@@ -150,7 +153,7 @@ class PracticeData
     if (is_null($this->id)) trigger_error ( "PracticeData::update(): Attempt to update an PracticeData object that does not have its id property set.", E_USER_ERROR );
 
     // Update the PracticeData
-    $st = DB::query("UPDATE practice_data SET `user_id`=:user_id, `instructor_id`=:instructor_id, `practice_id`=:practice_id, `aircraft_id`=:aircraft_id, `date`=:date, `count`=:count, `time`=:time, `comments`=:comments WHERE id = :id", array(
+    $st = DB::query("UPDATE practice_data SET `user_id`=:user_id, `instructor_id`=:instructor_id, `practice_id`=:practice_id, `aircraft_id`=:aircraft_id, `date`=:date, `count`=:count, `time`=:time, `comments`=:comments, `approved`=:approved WHERE id = :id", array(
         ":user_id" => (int)$this->user_id,
         ":instructor_id" => (int)$this->instructor_id,
         ":practice_id" => (int)$this->practice_id,
@@ -159,9 +162,9 @@ class PracticeData
         ":count" => (int)$this->count,
         ":time" => $this->time,
         ":comments" => $this->comments,
+        ":approved" => empty($this->approved) ? 0 : 1,
         ":id" => (int)$this->id,
       ));
-
     return TRUE;//$st->rowCount();
   }
 

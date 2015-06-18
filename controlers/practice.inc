@@ -79,6 +79,20 @@ class PracticeControler extends BaseControler {
     return $this->EditComment();
   }
 
+  public function Approve() {
+    $user_id = UserHelper::get_id();
+    if (!empty($_GET['id'])) {
+      $practice_data = PracticeData::getById($_GET['id']);
+    }
+
+    if (empty($practice_data) || !$this->HasPermission('Flight Manager') && $user_id != $practice_data->instructor_id)
+      return FALSE;
+
+    $practice_data->approved = empty($_GET['value']) ? 0 : 1;
+
+    return $practice_data->update();
+  }
+
   public function EditComment() {
     //if (!$this->HasPermission('Flight Manager'))
     //  $this->Transfer();
@@ -303,6 +317,7 @@ class PracticeControler extends BaseControler {
     else {
       $user_id = empty($_GET['user_id']) ? UserHelper::get_id() : $_GET['user_id'];
     }
+    $user = User::Get(UserHelper::get_id());
     $data = PracticeData::getList($user_id, !empty($_GET['order']) ? $_GET['order'] : NULL);
     foreach ($data['results'] as $practice) {
         $practice->user = User::Get($practice->user_id);

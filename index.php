@@ -13,8 +13,11 @@ if (UserHelper::logged_in()) {
     $view = isset($_GET['view']) ? $_GET['view'] : 'Index';
     if (method_exists('Index', $action))
       Index::$action();
-    else if (($controller = load_controller($action)) && method_exists($controller, $view))
-      $controller->{$view}();
+    else if (($controller = load_controller($action)) && method_exists($controller, $view)) {
+      $result = $controller->{$view}();
+      if (!empty($_GET['json']))
+        echo json_encode($result);
+    }
     else
       die('Unknown action');
 }

@@ -10,6 +10,7 @@
 	<th>Instruktorius</th>
 	<th>Sklandytuvas</th>
 	<th>Komentarai</th>
+	<th>Patvirtintas</th>
 	<th style="width:60px;"></th>
 	<th style="width:69px;"></th>
       </tr>
@@ -40,8 +41,17 @@
 	<td>
 	  <?php echo theme('display', 'comments', NULL, $practice) ?>
 	</td>
+	<td style="text-align: center;">
+<?php if ($this->HasPermission('Flight Manager') || (!empty($user->instructor) && $practice->instructor_id == $user->id)) { ?>
+           <input class="approve" type="checkbox"<?php echo empty($practice->approved) ? NULL : ' checked="checked"' ?> pid="<?php echo $practice->id ?>"/>
+<?php } else { ?>
+	  <?php echo theme('display_checkbox', 'approved', NULL, $practice) ?>
+<?php } ?>
+	</td>
 	<td>
+<?php if ($this->HasPermission('Flight Manager') || $practice->user->id == $user_id && empty($practice->approved)) { ?>
  	  <a class="btn btn-xs btn-default" href="admin.php?action=practice&amp;view=EditData&amp;id=<?php echo $practice->id ?>">Redaguoti</a>
+<?php } ?>
 	</td>
 	<td>
  	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti įrašą <?php echo $practice->id ?>?')" href="admin.php?action=practice&amp;view=DeleteData&amp;id=<?php echo $practice->id ?>">Pašalinti</a>
