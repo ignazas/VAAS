@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $action = isset($_GET['action']) ? $_GET['action'] : (isset($action) ? $action : NULL);
 if ($action == "practice" && isset($_GET['view']) && $_GET['view'] == "DataItemList")
     $action = "practice_data";

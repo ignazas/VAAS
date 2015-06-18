@@ -1,4 +1,3 @@
-﻿
 	<div id="footer">
 		<div class="container">
         	<p class="text-muted">2014, Vilniaus Aeroklubas</p>
