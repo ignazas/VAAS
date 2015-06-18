@@ -6,33 +6,22 @@ require_once dirname(__FILE__) . "/config.php";
 require_once dirname(__FILE__) . '/helpers/db.inc';
 require_once dirname(__FILE__) . "/functions.php";
 
-if (UserHelper::logged_in()) {
-  $action = isset( $_GET['action'] ) ? str_replace('admin/', '', $_GET['action']) : "";
-  $view = isset($_GET['view']) ? $_GET['view'] : 'Index';
-  if (function_exists($action))
-    $action();
-  else {
-    switch ( $action ) {
-      case 'deleteBooking': delete_booking($_GET['bookingId']); break;
-      default:
-        if (($controller = load_controller($action)) && method_exists($controller, $view))
-          $controller->{$view}();
-        else {
-          $controller = load_controller('Article');
-          $controller->AdminItemList();
-        }
-        break;
-    }
-  }
-}
+$action = isset( $_GET['action'] ) ? str_replace('admin/', '', $_GET['action']) : "";
+$view = isset($_GET['view']) ? $_GET['view'] : 'Index';
+if (function_exists($action))
+  $action();
 else {
-  require "helpers/route.inc";
-  if (!empty($_GET['action']) && $_GET['action'] == 'on')
-    Index::on();
-  else if (!empty($_GET['action']) && $_GET['action'] == 'ajax' && !empty($_GET['method']) && $_GET['method'] == 'login')
-    Index::ajax();
-  else
-    Index::svecias();
+  switch ( $action ) {
+    case 'deleteBooking': delete_booking($_GET['bookingId']); break;
+    default:
+      if (($controller = load_controller($action)) && method_exists($controller, $view))
+        $controller->{$view}();
+      else {
+        $controller = load_controller('Article');
+        $controller->AdminItemList();
+      }
+      break;
+  }
 }
 
 function bookings() {
