@@ -43,12 +43,12 @@
        <input id="insurance_fee" name="insurance_fee" class="form-control input-md" type="number" step="any" pattern="[0-9]+([\,|\.][0-9]+)?" value="<?php echo $results['finance']->insurance_fee ?>">
      </div>
    </div>
-   <div class="form-group">
+   <!-- <div class="form-group">
      <label class="col-sm-2 control-label" for="casco_fee">Kasko mokestis</label>
      <div class="col-sm-10">
        <input id="casco_fee" name="casco_fee" class="form-control input-md" type="number" step="any" pattern="[0-9]+([\,|\.][0-9]+)?" value="<?php echo $results['finance']->casco_fee ?>">
      </div>
-   </div>
+   </div> -->
    <div class="form-group">
      <label class="col-sm-2 control-label" for="debt_fee">Už 2%</label>
      <div class="col-sm-10">

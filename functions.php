@@ -144,7 +144,9 @@ function theme($type, $name, $label, $entity, $values=NULL) {
         $output = '<div>';
         if (!empty($label))
           $output .= '<label for="' . $name . '"><b>' . $label . ':</b></label> ';
-        $output .= '<span>' . (empty($value) ? 0 : $value) . ' €</span>';
+	$currency_date = (isset($values['date']) ? $values['date'] : (isset($entity->date) ? $entity->date : NULL));
+	$currency = (!empty($currency_date) && strtotime($currency_date) < mktime(0, 0, 0, 1, 1, 2015)) ? 'Lt' : '€';
+        $output .= '<span>' . (empty($value) ? 0 : $value) . ' ' . $currency . '</span>';
         $output .= '</div>';
         break;
       case 'display_url':
