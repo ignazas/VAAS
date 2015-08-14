@@ -4,6 +4,7 @@ require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/flight.inc';
 require_once dirname(__FILE__) . '/../models/practice_data.inc';
 require_once dirname(__FILE__) . '/../helpers/date.inc';
+require_once dirname(__FILE__) . '/../models/user.inc';
 
 class FlightControler extends BaseControler {
   private $view;
@@ -142,7 +143,8 @@ class FlightControler extends BaseControler {
               $finance->flight_fee = floatval($finance->flight_fee) - $flight->price;
               $finance->update();
 
-              Messages::set_message("Mokėtojui nuskaityta suma: $flight->price €.");
+			  $user = User::Get($flight->payer);
+              Messages::set_message("$user->name nuskaityta suma: $flight->price €.");
 
               log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
                 (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($diff) ? '; price charged: ' . $flight->price : NULL)));
@@ -218,7 +220,8 @@ class FlightControler extends BaseControler {
         $finance->flight_fee = floatval($finance->flight_fee) + $flight->price;
         $finance->update();
 
-        Messages::set_message("Mokėtojui gražinta suma: $flight->price €.");
+		$user = User::Get($flight->payer);
+        Messages::set_message("$user->name gražinta suma: $flight->price €.");
 
         //log it
         log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
@@ -282,7 +285,8 @@ class FlightControler extends BaseControler {
                   $finance->flight_fee = floatval($finance->flight_fee) - $diff;
                   $finance->update();
 
-                  Messages::set_message($diff > 0 ? "Mokėtojui papildomai nuskaityta: $diff €." : "Mokėtojui sugražinta: ".(-$diff)." €.");
+                  $user = User::Get($flight->payer);
+                  Messages::set_message($diff > 0 ? "$user->name papildomai nuskaityta: $diff €." : "$user->name sugražinta: ".(-$diff)." €.");
 
                   //log it
                   log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
@@ -295,7 +299,8 @@ class FlightControler extends BaseControler {
                   $finance = Finance::getByUserId($payer_before_update);
                   $finance->flight_fee = floatval($finance->flight_fee) + $price_before_update;
                   $finance->update();
-                  Messages::set_message("Buvusiam mokėtojui sugražintas apmokėta suma: $price_before_update €.");
+                  $user = User::Get($flight->payer);
+                  Messages::set_message("Buvusiam mokėtojui $user->name sugražinta apmokėta suma: $price_before_update €.");
 
                   //log it
                   log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
@@ -307,7 +312,8 @@ class FlightControler extends BaseControler {
                   $finance = Finance::getByUserId($flight->payer);
                   $finance->flight_fee = floatval($finance->flight_fee) - $flight->price;
                   $finance->update();
-                  Messages::set_message("Naujam mokėtojui nuskaityta suma: $flight->price €.");
+                  $user = User::Get($flight->payer);
+                  Messages::set_message("Naujam mokėtojui $user->name nuskaityta suma: $flight->price €.");
 
                   //log it
                   log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
@@ -329,7 +335,6 @@ class FlightControler extends BaseControler {
 
         require_once dirname(__FILE__) . '/../models/service.inc';
         $services = Service::getList(1000000, 'title', 'is_flight=1');
-        require_once dirname(__FILE__) . '/../models/user.inc';
         $users = User::getList();
         $instructors = User::getList(1000000, 'u.name', '`instructor`=1');
         require_once dirname(__FILE__) . '/../models/aircraft.inc';

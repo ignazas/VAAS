@@ -81,28 +81,28 @@
 	    <a href="index.php?action=user&amp;id=<?php echo $finance->user->id ?>"><?php echo $finance->user->name ?></a>
 	  </td>
 	  <td title="Likutis" class="<?php echo empty($balance) ? 'warning' : ($balance < 0 ? 'danger' : 'success') ?>">
- 	    <?php echo $balance ?>
+      <?php echo theme('display_money', 'balance', NULL, (object)array('balance' => $balance, 'date' => !empty($finance->date) ? $finance->date : NULL)) ?>
 	  </td>
 	  <td title="Skrydžiai">
-	    <?php echo theme('display', 'flight_fee', NULL, $finance) ?>
+	    <?php echo theme('display_money', 'flight_fee', NULL, $finance) ?>
 	  </td>
 	  <td title="Nario">
-	    <?php echo theme('display', 'member_fee', NULL, $finance) ?>
+	    <?php echo theme('display_money', 'member_fee', NULL, $finance) ?>
 	  </td>
 	  <td title="Namelis">
-	    <?php echo theme('display', 'house_fee', NULL, $finance) ?>
+	    <?php echo theme('display_money', 'house_fee', NULL, $finance) ?>
 	  </td>
 	  <td title="Elektra">
-	    <?php echo theme('display', 'electricity_fee', NULL, $finance) ?>
+	    <?php echo theme('display_money', 'electricity_fee', NULL, $finance) ?>
 	  </td>
 	  <td title="Draudimas">
-	    <?php echo theme('display', 'insurance_fee', NULL, $finance) ?>
+	    <?php echo theme('display_money', 'insurance_fee', NULL, $finance) ?>
 	  </td>
 	  <td title="2%">
-	    <?php echo theme('display', 'debt_fee', NULL, $finance) ?>
+	    <?php echo theme('display_money', 'debt_fee', NULL, $finance) ?>
 	  </td>
 	  <td title="Darbai">
-	    <?php echo theme('display', 'labor_fee', NULL, $finance) ?>
+	    <?php echo theme('display_money', 'labor_fee', NULL, $finance) ?>
 	  </td>
 	  <td title="Komentarai">
  	    <?php echo theme('display', 'fee_notes', NULL, $finance) ?>

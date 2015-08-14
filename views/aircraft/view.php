@@ -12,9 +12,9 @@
     <?php echo theme('display', 'time_since_new', 'Praskrista iš viso', $results['aircraft']) ?>
     <?php echo theme('display', 'flights_since_new', 'Skrydžių kiekis iš viso', $results['aircraft']) ?>
 
-    <?php echo theme('display', 'moh_date', 'MOH', $results['aircraft']) ?>
-    <?php echo theme('display', 'time_since_mo', 'Laikas nuo MO', $results['aircraft']) ?>
-    <?php echo theme('display', 'flights_since_mo', 'Skrydžių nuo MO', $results['aircraft']) ?>
+    <!--<?php echo theme('display', 'moh_date', 'MOH', $results['aircraft']) ?>-->
+    <!--<?php echo theme('display', 'time_since_mo', 'Laikas nuo MO', $results['aircraft']) ?>-->
+    <!--<?php echo theme('display', 'flights_since_mo', 'Skrydžių nuo MO', $results['aircraft']) ?>-->
 
     <?php echo theme('display', 'time_left', 'Laiko liko', $results['aircraft']) ?>
     <?php echo theme('display', 'flights_left', 'Skrydžių liko', $results['aircraft']) ?>
@@ -22,7 +22,7 @@
     <?php echo theme('display', 'time_last_year', 'Praskrista pernai', $results['aircraft']) ?>
     <?php echo theme('display', 'flights_last_year', 'Skrydžių kiekis pernai', $results['aircraft']) ?>
 
-    <?php echo theme('display_date', 'coa_expiry_date', 'COA baigiasi', $results['aircraft']) ?>
+    <?php echo theme('display_date', 'coa_expiry_date', 'Tinkamumas baigiasi', $results['aircraft']) ?>
     <?php echo theme('display_date', 'civ_insur_expiry_date', 'Civilinis draudimas baigiasi', $results['aircraft']) ?>
     <?php echo theme('display_date', 'kasko_insur_expiry_date', 'Kasko draudimas baigiasi', $results['aircraft']) ?>
 

@@ -26,7 +26,7 @@ class Service
     if (isset($data['description'])) $this->description = $data['description'];
     if (isset($data['is_flight'])) $this->is_flight = empty($data['is_flight']) ? 0 : 1;
     if (isset($data['unit'])) $this->unit = $data['unit'];
-    if (isset($data['amount_unit'])) $this->amount_unit = intval($data['amount_unit']);
+    if (isset($data['amount_unit'])) $this->amount_unit = (double)$data['amount_unit'];
   }
 
   /**

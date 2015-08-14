@@ -8,11 +8,11 @@
     <?php echo theme('display_money', 'house_fee', 'Patalpų mokestis', $results['finance']) ?>
     <?php echo theme('display_money', 'electricity_fee', 'Elektros mokestis', $results['finance']) ?>
     <?php echo theme('display_money', 'insurance_fee', 'Draudimas', $results['finance']) ?>
-    <?php echo theme('display_money', 'casco_fee', 'Kasko mokestis', $results['finance']) ?>
+    <!--<?php echo theme('display_money', 'casco_fee', 'Kasko mokestis', $results['finance']) ?>-->
     <?php echo theme('display_money', 'debt_fee', 'Už 2%', $results['finance']) ?>
     <?php echo theme('display', 'fee_notes', 'Komentarai', $results['finance']) ?>
     <?php $finance = $results['finance']; $balance = (intval($finance->entry_fee)+intval($finance->member_fee)+intval($finance->labor_fee)+intval($finance->house_fee)+intval($finance->electricity_fee)+intval($finance->airworthiness_fee)+intval($finance->insurance_fee)+intval($finance->casco_fee)+intval($finance->flight_fee)+intval($finance->debt_fee)); ?>
-    <?php echo theme('display', 'balance', 'Balansas', (object)array('balance' => $balance)) ?>
+    <?php echo theme('display_money', 'balance', 'Balansas', (object)array('balance' => $balance, 'date' => !empty($results['finance']->date) ? $results['finance']->date : NULL)) ?>
   </div>
 
   <div class="col-md-4">
@@ -66,7 +66,7 @@
 	  <!-- <td><?php echo theme('display_money', 'casco_fee', NULL, $row) ?></td> -->
 	  <td><?php echo theme('display_money', 'debt_fee', NULL, $row) ?></td>
     <?php $finance = $row; $balance = (intval($finance->entry_fee)+intval($finance->member_fee)+intval($finance->labor_fee)+intval($finance->house_fee)+intval($finance->electricity_fee)+intval($finance->airworthiness_fee)+intval($finance->insurance_fee)+intval($finance->casco_fee)+intval($finance->flight_fee)+intval($finance->debt_fee)); ?>
-    <td><?php echo theme('display', 'balance', NULL, (object)array('balance' => $balance)) ?></td>
+    <td><?php echo theme('display_money', 'balance', NULL, (object)array('balance' => $balance, 'date' => $finance->date)) ?></td>
 	  <td><?php echo theme('display', 'fee_notes', NULL, $row) ?></td>
 	  <td><?php echo theme('display', 'fee_updated', NULL, $row) ?></td>
         </tr>

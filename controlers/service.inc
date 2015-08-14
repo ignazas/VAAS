@@ -44,8 +44,6 @@ class ServiceControler extends BaseControler {
 
       if ($this->Validate()) {
         $service->storeFormValues($_POST);
-        if (isset($service->amount)) $service->amount = round($service->amount * 1);
-        if (isset($service->amount_unit)) $service->amount_unit = round($service->amount_unit * 1);
         if ($service->insert()) {
           //log it
           log_event("Admin", "ServiceCreated", $service->id);
@@ -55,8 +53,6 @@ class ServiceControler extends BaseControler {
           //return $this->ItemList();
         }
         else {
-          if (isset($service->amount)) $service->amount = round($service->amount / 1);
-          if (isset($service->amount_unit)) $service->amount_unit = round($service->amount_unit / 1);
           Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
         }
       }
@@ -110,8 +106,6 @@ class ServiceControler extends BaseControler {
 
         if ($this->Validate()) {
           $service->storeFormValues($_POST);
-          if (isset($service->amount)) $service->amount = round($service->amount * 1);
-          if (isset($service->amount_unit)) $service->amount_unit = round($service->amount_unit * 1);
           if ($service->update()) {
             //log it
             log_event("Admin", "ServiceEdited", $_POST['id']);
@@ -120,8 +114,6 @@ class ServiceControler extends BaseControler {
             //return $this->ItemList();
           }
           else {
-            if (isset($service->amount)) $service->amount = round($service->amount / 1);
-            if (isset($service->amount_unit)) $service->amount_unit = round($service->amount_unit / 1);
             Messages::set_message("Klaida išsaugant reikšmes.", 'errors');
           }
         }
@@ -136,7 +128,6 @@ class ServiceControler extends BaseControler {
     else if (!empty($_GET['id'])) {
       // User has not posted the service edit form yet: display the form
       $service = Service::getById($_GET['id']);
-      if (isset($service->amount)) $service->amount = round($service->amount / 1);
       $results['service'] = $service;
       include dirname(__FILE__) . '/../views/_layout.php';
     }
@@ -151,8 +142,6 @@ class ServiceControler extends BaseControler {
 
     if ($_GET["id"]) {
       $service = Service::getById($_GET["id"]);
-      if (isset($service->amount)) $service->amount = round($service->amount / 1);
-      if (isset($service->amount_unit)) $service->amount_unit = round($service->amount_unit / 1);
       $results = array('service' => $service);
     }
 

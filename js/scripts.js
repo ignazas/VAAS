@@ -39,7 +39,14 @@ window.flightEntity = {
 	var row = $('<tr></tr>').addClass('line');
 
 	//date
-	var date = new Date();
+	var dates = $('table tbody tr td.date input[type=date]', form);
+	var date = null;
+	if (dates.length > 0)
+	    date = new Date(dates.last().val());
+	else {
+	    date = new Date();
+	    date.setDate(date.getDate() - 1);
+	}
 	var day = date.getDate();
 	var month = date.getMonth() + 1;
 	var year = date.getFullYear();

@@ -19,9 +19,9 @@
     <?php echo theme('decimal', 'time_since_new', 'Praskrista iš viso', $results['aircraft'], $edit) ?>
     <?php echo theme('decimal', 'flights_since_new', 'Skrydžių kiekis iš viso', $results['aircraft'], $edit) ?>
 
-    <?php echo theme('date', 'moh_date', 'MOH', $results['aircraft'], $edit) ?>
-    <?php echo theme('decimal', 'time_since_mo', 'Laikas nuo MO', $results['aircraft'], $edit) ?>
-    <?php echo theme('decimal', 'flights_since_mo', 'Skrydžių nuo MO', $results['aircraft'], $edit) ?>
+    <!--<?php echo theme('date', 'moh_date', 'MOH', $results['aircraft'], $edit) ?>-->
+    <!--<?php echo theme('decimal', 'time_since_mo', 'Laikas nuo MO', $results['aircraft'], $edit) ?>-->
+    <!--<?php echo theme('decimal', 'flights_since_mo', 'Skrydžių nuo MO', $results['aircraft'], $edit) ?>-->
 
     <?php echo theme('decimal', 'time_left', 'Laiko liko', $results['aircraft'], $edit) ?>
     <?php echo theme('decimal', 'flights_left', 'Skrydžių liko', $results['aircraft'], $edit) ?>
@@ -29,7 +29,7 @@
     <?php echo theme('decimal', 'time_last_year', 'Praskrista pernai', $results['aircraft'], $edit) ?>
     <?php echo theme('decimal', 'flights_last_year', 'Skrydžių kiekis pernai', $results['aircraft'], $edit) ?>
 
-    <?php echo theme('date', 'coa_expiry_date', 'COA baigiasi', $results['aircraft'], $edit) ?>
+    <?php echo theme('date', 'coa_expiry_date', 'Tinkamumas baigiasi', $results['aircraft'], $edit) ?>
     <?php echo theme('date', 'civ_insur_expiry_date', 'Civilinis draudimas baigiasi', $results['aircraft'], $edit) ?>
     <?php echo theme('date', 'kasko_insur_expiry_date', 'Kasko draudimas baigiasi', $results['aircraft'], $edit) ?>
 
