@@ -88,6 +88,22 @@ class AircraftControler extends BaseControler {
 	  $this->Transfer(NULL, 'ItemList');
   }
 
+  public function Restore() {
+    if (!$this->HasPermission())
+      $this->Transfer();
+
+    if (empty($_GET['id']) || !($aircraft = Aircraft::getById($_GET['id']))) {
+      Messages::set_message("Orlaivis nerastas.", 'errors');
+    }
+    else {
+      $aircraft->restore();
+      log_event("Admin", "AircraftRestored", $_GET['id']);
+
+      Messages::set_message("Orlaivis sugražintas.");
+    }
+	  $this->Transfer(NULL, 'ItemList');
+  }
+
   public function Edit() {
     if (!$this->HasPermission())
       $this->Transfer();
@@ -152,7 +168,19 @@ class AircraftControler extends BaseControler {
   public function ItemList() {
     $this->view = dirname(__FILE__) . '/../views/aircraft/item-list.php';
 
-    $data = Aircraft::getList();
+    $filters = array();
+    if (!empty($_GET['search'])) {
+      $escaped = DB::escape('%' . $_GET['search'] . '%');
+      $filters[] = "(name LIKE $escaped OR reg_num LIKE $escaped OR serial_num LIKE $escaped)";
+    }
+    if (isset($_GET['deleted']) && $_GET['deleted'] == 'all') {
+    }
+    else if (isset($_GET['deleted']) && $_GET['deleted'] == 1)
+      $filters[] = 'deleted IS NOT NULL';
+    else
+      $filters[] = 'deleted IS NULL';
+
+    $data = Aircraft::getList(1000000, "reg_num", implode(' AND ', $filters));
     $results = array('aircrafts' => $data['results'], 'totalRows' => $data['totalRows']);
 
     include dirname(__FILE__) . '/../views/_layout.php';

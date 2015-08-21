@@ -1,6 +1,7 @@
 <div class="page-header"><h1>Orlaivis</h1></div>
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-8<?php echo !empty($results['aircraft']->deleted) ? " bg-danger" : NULL?>">
+    <?php echo !empty($results['aircraft']->deleted) ? theme('display', 'reg_num', 'Ištrintas', $results['aircraft']) : NULL ?>
     <?php echo theme('display', 'reg_num', 'Registracijos numeris', $results['aircraft']) ?>
     <?php echo theme('display', 'name', 'Modelis', $results['aircraft']) ?>
     <?php echo theme('display', 'serial_num', 'Serijinis numeris', $results['aircraft']) ?>
@@ -36,11 +37,14 @@
 	<h3 class="panel-title">Info</h3>
       </div>
       <div class="panel-body">
-	<p>Čia yra talpinama orlaivių informacija.</p>
-
 <?php if (UserHelper::has_permission()) { ?>
         <div class="buttons">
 	  <a href="index.php?action=aircraft&amp;view=Edit&amp;id=<?php echo $results['aircraft']->id ?>" class="btn btn-sm btn-primary">Redaguoti</a>
+<?php   if (!empty($results['aircraft']->deleted)) { ?>
+	  <a href="index.php?action=aircraft&amp;view=Restore&amp;id=<?php echo $results['aircraft']->id ?>" class="btn btn-success">Sugražinti</a>
+<?php   } else { ?>
+ 	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti orlaivį <?php echo $results['aircraft']->reg_num ?>?')" href="admin.php?action=aircraft&amp;view=Delete&amp;id=<?php echo $results['aircraft']->id ?>">Pašalinti</a>
+<?php   } ?>
 	</div>
 <?php } ?>
       </div>

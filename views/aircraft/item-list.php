@@ -1,5 +1,44 @@
 <div class="page-header"><h1>Orlaiviai</h1></div>
+
 <div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Filtrai</h3>
+    </div>
+    <div class="panel-body">
+      <div id="addDay">
+	<form role="form" method="get" action="" class="col-xs-12 form-horizontal">
+	  <input type="hidden" name="action" value="aircraft" />
+	  <input type="hidden" name="view" value="ItemList" />
+	  <div class="form-group">
+	    <label for="status" class="col-sm-3 control-label">Paieška</label>
+	    <div class="col-sm-9">
+	      <input type="text" name="search" class="form-control" value="<?php echo !empty($_GET['search']) ? $_GET['search'] : NULL ?>" />
+            </div>
+          </div>
+	  <div class="form-group">
+	    <label for="deleted" class="col-sm-3 control-label">Ištrintas</label>
+	    <div class="col-sm-9">
+	      <select name="deleted" class="form-control">
+		<option value="all"<?php echo isset($_GET['deleted'])&&$_GET['deleted']=='all'?' selected="selected"':NULL ?>>Visi</option>
+		<option value="1"<?php echo isset($_GET['deleted'])&&$_GET['deleted']==1?' selected="selected"':NULL ?>>Tik ištrinti</option>
+		<option value="0"<?php echo !isset($_GET['deleted'])||$_GET['deleted']==0?' selected="selected"':NULL ?>>Tik neištrinti</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+	    <div class="col-sm-offset-3 col-sm-9">
+	      <button type="submit" class="btn btn-primary">Filtruoti</button>
+	    </div>
+	  </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <label>Įrašų: <?php echo $results['totalRows'] ?></label>
   <table class="table table-striped">
     <thead>
       <tr>

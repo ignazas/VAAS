@@ -24,6 +24,7 @@ class Aircraft
   public $coa_expiry_date = null;
   public $civ_insur_expiry_date = null;
   public $kasko_insur_expiry_date = null;
+  public $deleted = null;
 
   /**
   * Sets the object's properties using the values in the supplied array
@@ -52,6 +53,7 @@ class Aircraft
     if (isset($data['coa_expiry_date'])) $this->coa_expiry_date = $data['coa_expiry_date'];
     if (isset($data['civ_insur_expiry_date'])) $this->civ_insur_expiry_date = $data['civ_insur_expiry_date'];
     if (isset($data['kasko_insur_expiry_date'])) $this->kasko_insur_expiry_date = $data['kasko_insur_expiry_date'];
+    if (isset($data['deleted'])) $this->deleted = $data['deleted'];
   }
 
   /**
@@ -84,10 +86,10 @@ class Aircraft
   * @param string Optional column by which to order the articles (default="publicationDate DESC")
   * @return Array|false A two-element array : results => array, a list of Aircraft objects; totalRows => Total number of articles
   */
-  public static function getList($numRows=1000000, $order="reg_num", $filter = NULL) {
+  public static function getList($numRows=1000000, $order="reg_num", $filter = "deleted IS NULL") {
     $st = DB::query("SELECT SQL_CALC_FOUND_ROWS *
                      FROM vak_aircrafts
-                     WHERE deleted IS NULL" . (!empty($filter) ? " AND " . $filter : NULL) . "
+                     " . (!empty($filter) ? "WHERE " . $filter : NULL) . "
                      ORDER BY $order LIMIT $numRows");
 
     $list = array();
@@ -171,5 +173,16 @@ class Aircraft
     // Delete the Aircraft
     DB::query("UPDATE `vak_aircrafts` SET `deleted`=" . DB::date_as_string(time()) . " WHERE id = :id LIMIT 1", array(":id" => $this->id));
     //DB::query( "DELETE FROM vak_aircrafts WHERE id = :id LIMIT 1", array(":id" => $this->id));
+  }
+
+  /**
+  * Deletes the current Aircraft object from the database.
+  */
+  public function restore() {
+    // Does the Aircraft object have an ID?
+    if (is_null($this->id)) trigger_error("Aircraft::restore(): Attempt to restore an Aircraft object that does not have its ID property set.", E_USER_ERROR );
+
+    // Restore the Aircraft
+    DB::query("UPDATE `vak_aircrafts` SET `deleted`=NULL WHERE id = :id LIMIT 1", array(":id" => $this->id));
   }
 }
