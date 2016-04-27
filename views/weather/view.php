@@ -75,9 +75,9 @@ if (empty($value))
   <li>Raudona linija rodo oro temperatūrą 2 m aukštyje. Mėlyna linija pavaizduota rasos taško temperatūra. Temperatūros skalė yra kairėje pusėje (matavimo vienetai - <sup>o</sup>C).</li>
   <li>Pilka linija rodo slėgį jūros lygyje. Slėgio skalė yra kairėje pusėje (matavimo vienetai - hPa).</li>
 </ol>
-<a class="btn btn-default" href="http://meteo.lt/skaitmenine_prog_lt_zem.php?skpt=lt_krit" target="_blank">Krituliai</a>
-<a class="btn btn-default" href="http://meteo.lt/skaitmenine_prog_lt_zem.php?skpt=lt_vej" target="_blank">Vėjas</a>
-<a class="btn btn-default" href="http://meteo.lt/radaro_inf.php" target="_blank">Radaro informacija</a>
+<a class="btn btn-default" href="http://old.meteo.lt/skaitmenine_prog_lt_zem.php?skpt=lt_krit" target="_blank">Krituliai</a>
+<a class="btn btn-default" href="http://old.meteo.lt/skaitmenine_prog_lt_zem.php?skpt=lt_vej" target="_blank">Vėjas</a>
+<a class="btn btn-default" href="http://old.meteo.lt/radaro_inf.php" target="_blank">Radaro informacija</a>
 <?php } ?>
 
 <h2>Sat24.com</h2>
