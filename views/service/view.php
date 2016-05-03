@@ -8,8 +8,10 @@
 <?php if (!empty($results['service']->amount_unit)) { ?>
     <?php echo theme('display', 'amount_unit_title', 'Papildoma kaina už vienetą', $results['service'], array('amount_unit_title' => $results['service']->amount_unit . '€/' . $results['service']->unit )) ?>
 <?php } ?>
+    <?php echo theme('display_checkbox', 'is_price_for_duration', 'Ar kaina už skrydžio laiką', $results['service']) ?>
+    <?php echo theme('display_time', 'default_duration', 'Trukmė pagal nutylėjimą', $results['service'], array('default_duration' => !empty($results['service']->default_duration) ? floatval($results['service']->default_duration) : NULL)) ?>
     <?php echo theme('display', 'description', 'Aprašymas', $results['service']) ?>
-<?php echo theme('display_checkbox', 'is_discount', 'Nuolaida taikoma', $results['service']) ?>
+    <?php echo theme('display_checkbox', 'is_discount', 'Nuolaida taikoma', $results['service']) ?>
     <br />
   </div>
 

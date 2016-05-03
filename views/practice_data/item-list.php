@@ -50,11 +50,13 @@
 	</td>
 	<td>
 <?php if ($this->HasPermission('Flight Manager') || $practice->user->id == $user_id && empty($practice->approved)) { ?>
- 	  <a class="btn btn-xs btn-default" href="admin.php?action=practice&amp;view=EditData&amp;id=<?php echo $practice->id ?>">Redaguoti</a>
+ 	  <a class="btn btn-xs btn-default" href="admin.php?action=practice&amp;view=EditComment&amp;id=<?php echo $practice->id ?>">Redaguoti</a>
 <?php } ?>
 	</td>
 	<td>
+<?php if ($this->HasPermission('Flight Manager') || $practice->user->id == $user_id && empty($practice->approved)) { ?>
  	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti įrašą <?php echo $practice->id ?>?')" href="admin.php?action=practice&amp;view=DeleteData&amp;id=<?php echo $practice->id ?>">Pašalinti</a>
+<?php } ?>
 	</td>
       </tr>
 

@@ -32,13 +32,13 @@ class PracticeControler extends BaseControler {
         Messages::form_error('aircraft_id', "Sklandytuvas turi būti pasirinktas.");
       }
     }
-    //else {
-    //  Messages::form_error('count', "Skrydžių kiekis turi būti nurodytas.");
-    //}
+    else {
+      Messages::form_error('count', "Skrydžių kiekis turi būti nurodytas.");
+    }
 
-    //if (empty($_POST['time'])) {
-    //  Messages::form_error('time', "Skrydžių laikas turi būti nurodytas.");
-    //}
+    if (empty($_POST['time'])) {
+      Messages::form_error('time', "Skrydžių laikas turi būti nurodytas.");
+    }
 
     $messages = Messages::get_messages('errors', false);
     return empty($messages);
@@ -262,13 +262,14 @@ class PracticeControler extends BaseControler {
   }
 
   public function DeleteData() {
-    if (!$this->HasPermission('Flight Manager'))
-      $this->Transfer();
-
     if (empty($_GET['id']) || !($practice_data = PracticeData::getById($_GET['id']))) {
       Messages::set_message("Skrydžio įrašas nerastas.", 'errors');
     }
     else {
+      $user_id = UserHelper::get_id();
+      if (!$this->HasPermission('Flight Manager') && ($practice_data->user_id != $user_id || !empty($practice->approved)))
+        $this->Transfer();
+      
       $practice_data->delete();
 
       //log it

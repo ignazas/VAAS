@@ -15,20 +15,18 @@
       <select name="practice_id" id="practice_id" class="form-control">
 	<option value=""></option>
 <?php foreach ($results['practices']['results'] as $practice) { ?>
-	<option value="<?php echo $practice->id ?>"<?php echo (!empty($_POST['practice_id']) && $_POST['practice_id'] == $practice->id) || (!empty($results['practice_data']->practice_id) && $results['practice_data']->practice_id == $practice->id) ? ' selected="selected"' : NULL ?>><?php echo $practice->title ?></option>
+	<option data-length-float="<?php echo DateHelper::time_as_float(empty($practice->flight_with_instructor_time) ? $practice->flight_individual_time : $practice->flight_with_instructor_time) ?>" data-length-string="<?php echo DateHelper::time_as_string(empty($practice->flight_with_instructor_time) ? $practice->flight_individual_time : $practice->flight_with_instructor_time) ?>" value="<?php echo $practice->id ?>"<?php echo (!empty($_POST['practice_id']) && $_POST['practice_id'] == $practice->id) || (!empty($results['practice_data']->practice_id) && $results['practice_data']->practice_id == $practice->id) ? ' selected="selected"' : NULL ?>><?php echo $practice->title ?></option>
 <?php } ?>
       </select>
     </div>
 
-<?php /*
     <div class="form-group">
       <?php echo theme('number', 'count', 'Skrydžių kiekis', $results['practice_data'], $_POST) ?>
     </div>
 
     <div class="form-group">
-      <?php echo theme('number', 'time', 'Laikas, min', $results['practice_data'], $_POST) ?>
+      <?php echo theme('time', 'time', 'Laikas, min', $results['practice_data'], $_POST) ?>
     </div>
-*/ ?>
 
     <div class="form-group">
       <label class="control-label" for="aircraft_id">Sklandytuvas</label>

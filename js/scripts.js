@@ -63,7 +63,7 @@ window.flightEntity = {
 	    if (service['is_flight'])
 		selectService.append($('<option></option>').val(service['id']).text(service['title']))
 	});
-	var cell = addCell(row, selectService, 'service_id');
+	var cell = addCell(row, selectService, 'service_id').attr('rowspan', 2);
 	var selectUnitAmount = addElement(cell, $('<input type="number" />'), 'amount_unit').addClass('amount_unit');
 	cell.append($('<span></span>').addClass('service_unit').html(''));
 	var updateService = function(el) {
@@ -102,10 +102,10 @@ window.flightEntity = {
 	var row2 = $('<tr></tr>').addClass('line line-2');
 
 	//practices
-	var selectPractice = $('<select />').addClass('practice').append($('<option value=""></option>'));
-	$.each(window.flightEntity.getPractices(), function(i, practice) { selectPractice.append($('<option></option>').val(practice['id']).text(practice['name'])) });
-	addCell(row2, selectPractice, 'practice');
-	options && options.practice && selectPractice.val(options.practice);
+	//var selectPractice = $('<select />').addClass('practice').append($('<option value=""></option>'));
+	//$.each(window.flightEntity.getPractices(), function(i, practice) { selectPractice.append($('<option></option>').val(practice['id']).text(practice['name'])) });
+	//addCell(row2, selectPractice, 'practice');
+	//options && options.practice && selectPractice.val(options.practice);
 
 	//instructor
 	var selectPilot = $('<select />').addClass('user').append($('<option value=""></option>'));
@@ -135,12 +135,27 @@ window.flightEntity = {
 	    var elements = $.grep(window.flightEntity.getServices(), function(el) { return el.id == selectService.val(); });
 	    var user = selectStudent.val() && window.flightEntity.getUsers()[selectStudent.val()];
 	    if (elements.length > 0) {
-		price.val((qty.val() || 1) *
-			  ((elements[0].amount || 0) *
-			  ((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 - user['discount']) / 100) +
-			  (elements[0].amount_unit || 0) *
-			  (selectUnitAmount.is(':visible') && selectUnitAmount.val() || 0))
-			 );
+		if (elements[0].default_duration) {
+		    if (!time.val() || $(this)[0] == qty[0] || $(this)[0] == selectService[0]) {
+			var t = (qty.val() || 1) * elements[0].default_duration;
+			var head = Math.floor(t);
+			var tail = t - head;
+			t = head + ':' + ("00" + Math.round(tail * 60)).substr(-2, 2);
+			time.val(t);
+		    }
+		}
+		var amount = elements[0].is_price_for_duration
+		    ? ((time.val().replace(',', '.').replace(':', '.') || 0.6) * 100 / 60)
+		    : (qty.val() || 1);
+
+		price.val(
+		    Math.round(100 *
+			       amount *
+			       ((elements[0].amount || 0) *
+				((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 - user['discount']) / 100) +
+				(elements[0].amount_unit || 0) *
+				(selectUnitAmount.is(':visible') && selectUnitAmount.val() || 0))
+			      ) / 100);
 	    }
 	});
     }
@@ -359,7 +374,7 @@ jQuery(document).ready(function($) {
 	    event.preventDefault();
 	});
 
-    jQuery($('select')).chosen({placeholder_text_single: 'Pasirinkite...', no_results_text: 'Nėra rezultatų', allow_single_deselect: true, search_contains: true});
+    jQuery('select').chosen({placeholder_text_single: 'Pasirinkite...', no_results_text: 'Nėra rezultatų', allow_single_deselect: true, search_contains: true});
 
 
     jQuery('form#flight-edit select#service, form#flight-edit select#payer, form#flight-edit #amount, form#flight-edit .amount_unit').on('change keyup', function() {
@@ -368,18 +383,47 @@ jQuery(document).ready(function($) {
 	var selectService = $('select.service', row);
 	var selectStudent = $('select.user', row);
 	var price = $('.price input', row);
+	var time = $('.time input', row);
 	var qty = $('.amount input.quantity', row);
 	var selectUnitAmount = $('input.amount_unit', row);
 
 	var elements = $.grep(window.flightEntity.getServices(), function(el) { return el.id == selectService.val(); });
 	var user = selectStudent.val() && window.flightEntity.getUsers()[selectStudent.val()];
 	if (elements.length > 0) {
-	    price.val((qty.val() || 1) *
-		      ((elements[0].amount || 0) *
-		      ((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 - user['discount']) / 100) +
-		      (elements[0].amount_unit || 0) *
-		      (selectUnitAmount.is(':visible') && selectUnitAmount.val() || 0))
-		     );
+	    if (elements[0].default_duration) {
+		if (!time.val() || $(this)[0] == qty[0] || $(this)[0] == selectService[0]) {
+		    var t = (qty.val() || 1) * elements[0].default_duration;
+		    var head = Math.floor(t);
+		    var tail = t - head;
+		    t = head + ':' + ("00" + Math.round(tail * 60)).substr(-2, 2);
+		    time.val(t);
+		}
+	    }
+	    var amount = elements[0].is_price_for_duration
+		? ((time.val().replace(',', '.').replace(':', '.') || 0.6) * 100 / 60)
+		: (qty.val() || 1);
+	    
+	    price.val(
+		Math.round(100 *
+			   amount *
+			   ((elements[0].amount || 0) *
+			    ((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 - user['discount']) / 100) +
+			    (elements[0].amount_unit || 0) *
+			    (selectUnitAmount.is(':visible') && selectUnitAmount.val() || 0))
+			  ) / 100);
+	}
+    });
+
+    jQuery('#practice-edit #practice_id, #practice-edit #count').change(function(){
+	//var length = $(this).find(':selected').attr('data-length-string');
+	var length = jQuery('#practice-edit #practice_id').find(':selected').attr('data-length-float');
+	var count = jQuery('#practice-edit #count').val() || 1;
+	if (length) {
+	    var s = count * length;
+	    var full = Math.round(s);
+	    var rest = s - full;
+	    length = full + ':' + ("00" + Math.round(rest * 60)).substr(-2, 2) ;
+	    $('#practice-edit #time').val(length);
 	}
     });
 });

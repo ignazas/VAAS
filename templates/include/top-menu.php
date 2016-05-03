@@ -29,7 +29,8 @@ $admin = UserHelper::has_permission();
 		<li <?php if ($action=="flight") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=flight" title="Skrydžiai"><i class="glyphicon glyphicon-list-alt"></i> Skrydžiai</a></li>
 		<li <?php if ($action=="analysis"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=analysis" title="Analizė"><i class="glyphicon glyphicon-book"></i> Analizė</a></li>
 <?php  if (UserHelper::is_student()) { ?>
-		<li <?php if ($action=="practice") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=practice" title="Skrydžių praktika"><i class="glyphicon glyphicon-list-alt"></i> Skrydžių praktika</a></li>
+		<li <?php if ($action=="practice") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=practice" title="Skrydžių praktikos lapas"><i class="glyphicon glyphicon-list-alt"></i> Skrydžių praktikos lapas</a></li>
+                <li <?php if ($action=="practice_data") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=practice&amp;view=DataItemList" title="Praktikos atlikimas"><i class="glyphicon glyphicon-list"></i> Praktikos atlikimas</a></li>
 <?php  } ?>
               </ul>
             </li>

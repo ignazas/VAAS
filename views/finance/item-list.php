@@ -1,4 +1,4 @@
-<div class="page-header"><h1>Skrydžių redagavimas</h1></div>
+<div class="page-header"><h1>Finansų redagavimas</h1></div>
 
 <div class="col-md-12">
   <div class="panel panel-default">

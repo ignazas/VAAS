@@ -8,6 +8,8 @@
 	<th>Nuolaida taikoma</th>
 	<th>Kaina</th>
 	<th>Papildoma kaina</th>
+	<th>Ar kaina už skrydžio laiką</th>
+	<th>Trukmė pagal nutylėjimą</th>
 	<th>Aprašymas</th>
 	<th></th>
 	<th></th>
@@ -32,6 +34,12 @@
 <?php if (!empty($service->amount_unit)) { ?>
     <?php echo theme('display', 'amount_unit_title', NULL, $service, array('amount_unit_title' => $service->amount_unit . '€/' . $service->unit )) ?>
 <?php } ?>
+	</td>
+	<td>
+	  <?php echo !empty($service->is_price_for_duration) ? '<i class="glyphicon glyphicon-ok"></i>' : '' ?>
+	</td>
+	<td>
+      <?php echo theme('display_time', 'default_duration', NULL, $service, array('default_duration' => !empty($service->default_duration) ? floatval($service->default_duration) : NULL)) ?>
 	</td>
 	<td>
 	  <?php echo $service->description ?>

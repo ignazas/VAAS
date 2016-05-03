@@ -41,9 +41,10 @@ class ServiceControler extends BaseControler {
       $service = new Service();
       $results['service'] = $service;
       $edit = $_POST;
+      $edit['default_duration'] = DateHelper::time_as_float($edit['default_duration']);
 
       if ($this->Validate()) {
-        $service->storeFormValues($_POST);
+        $service->storeFormValues($edit);
         if ($service->insert()) {
           //log it
           log_event("Admin", "ServiceCreated", $service->id);
@@ -103,12 +104,13 @@ class ServiceControler extends BaseControler {
       else {
         $results['service'] = $service;
         $edit = $_POST;
+        $edit['default_duration'] = DateHelper::time_as_float($edit['default_duration']);
 
         if ($this->Validate()) {
-          $service->storeFormValues($_POST);
+          $service->storeFormValues($edit);
           if ($service->update()) {
             //log it
-            log_event("Admin", "ServiceEdited", $_POST['id']);
+            log_event("Admin", "ServiceEdited", $service->id);
             Messages::set_message("Pakeitimai išsaugoti.");
             $this->Transfer(NULL, 'ItemList');
             //return $this->ItemList();

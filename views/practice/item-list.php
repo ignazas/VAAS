@@ -64,7 +64,7 @@ foreach ( $results['practice']['results'] as $practice) {
 <?php if (!empty($results['user'])) { ?>
 	<td class="<?php echo empty($results['practice_data'][$practice->id]['count']) && empty($results['practice_data'][$practice->id]['time']) ? 'danger' : ($results['practice_data'][$practice->id]['count'] < $practice->flight_with_instructor_count + $practice->flight_individual_count ? 'warning' : 'success') ?>">
 <?php  if (isset($results['practice_data'][$practice->id])) { ?>
-<?php echo theme('display', 'count', NULL, NULL, $results['practice_data'][$practice->id]) ?> / <?php echo theme('display_hhmm', 'time', NULL, NULL, $results['practice_data'][$practice->id]) ?>
+<?php echo theme('display', 'count', NULL, NULL, $results['practice_data'][$practice->id]) ?> / <?php echo theme('display', 'time', NULL, NULL, array('time' => DateHelper::time_as_string(1*$results['practice_data'][$practice->id]['time']))) ?>
 <?php  } ?>
           <a class="btn btn-sm btn-primary" href="index.php?action=practice&amp;view=NewComment&amp;user_id=<?php echo $results['user']->id ?>&amp;practice_id=<?php echo $practice->id ?>">Pridėti</a>
 	</td>

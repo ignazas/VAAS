@@ -31,6 +31,13 @@
       <label for="amount_unit">Papildoma kaina už vienetą,&#160;€</label>
       <input id="amount_unit" name="amount_unit" class="form-control" type="number" step="any" value="<?php echo $results['service']->amount_unit ?>">
     </div>
+    <div class="form-group">
+      <?php echo theme('checkbox', 'is_price_for_duration', 'Ar kaina už skrydžio laiką', $results['service'], $edit) ?>
+    </div>
+    <div class="form-group"<?php if (!$this->HasPermission('Flight Manager') && !$isOwner) echo ' disabled="disabled"'; ?>>
+      <?php $d = isset($_POST['default_duration']) ? $_POST['default_duration'] : (isset($results['service']->default_duration) ? floatval($results['service']->default_duration) : NULL); ?>
+      <?php echo theme('time', 'default_duration', 'Trukmė pagal nutylėjimą', $results['service'], array('default_duration' => $d)) ?>
+    </div>
     <div class="checkbox form-group">
       <label for="is_discount">
 	    <input id="is_discount" name="is_discount" type="checkbox" value="1" <?php if (!empty($results['service']->is_discount)) echo 'checked="checked"' ?>> Nuolaida taikoma

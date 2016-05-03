@@ -8,13 +8,13 @@
       <thead>
 	<tr>
 	  <th class="date" rowspan="2">Data</th>
-	  <th class="service">Paslauga</th>
+	  <th class="service" rowspan="2">Paslauga</th>
 	  <th class="user student">Pilotas</th>
 	  <th class="glider" colspan="2">Orlaivis</th>
 	  <th class="price">Kaina,&#160;€</th>
 	</tr>
 	<tr>
-	  <th class="service">Pratimas</th>
+	  <!-- <th class="service">Pratimas</th> -->
 	  <th class="instructor">Instruktorius</th>
 	  <th class="quantity">Kiekis</th>
 	  <th class="time">Laikas</th>

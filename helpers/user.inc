@@ -35,7 +35,7 @@ class UserHelper {
     $catid = empty($user)
       ? (UserHelper::logged_in() && !empty($_SESSION['user']['catid']) ? $_SESSION['user']['catid'] : 0)
       : $user->catid;
-    return in_array($catid, array(29, 19));
+    return in_array($catid, array(29, 19, 64));
   }
 
   public static function logged_in() {
