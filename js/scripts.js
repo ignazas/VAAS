@@ -145,17 +145,17 @@ window.flightEntity = {
 		    }
 		}
 		var amount = elements[0].is_price_for_duration
-		    ? ((time.val().replace(',', '.').replace(':', '.') || 0.6) * 100 / 60)
+		    ? window.flightEntity.getTimeAsFloat(time.val())
 		    : (qty.val() || 1);
 
 		price.val(
-		    Math.round(100 *
+		    Math.ceil(
 			       amount *
 			       ((elements[0].amount || 0) *
 				((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 - user['discount']) / 100) +
 				(elements[0].amount_unit || 0) *
 				(selectUnitAmount.is(':visible') && selectUnitAmount.val() || 0))
-			      ) / 100);
+			      ));
 	    }
 	});
     }
@@ -229,6 +229,14 @@ window.flightEntity = {
 	    });
 	}
 	return window.flightEntity._aircrafts;
+    }
+    , getTimeAsFloat: function(time) {
+	var t = time.replace(',', '.').replace(':', '.') || 0;
+	var parts = (t + '').split('.');
+	var value = parseInt(parts[parts.length - 1]) / 60;
+	if (parts.length == 2)
+	    value += parseInt(parts[0]);
+	return value;
     }
 };
 
@@ -400,17 +408,17 @@ jQuery(document).ready(function($) {
 		}
 	    }
 	    var amount = elements[0].is_price_for_duration
-		? ((time.val().replace(',', '.').replace(':', '.') || 0.6) * 100 / 60)
+		? window.flightEntity.getTimeAsFloat(time.val())
 		: (qty.val() || 1);
 	    
 	    price.val(
-		Math.round(100 *
+		Math.ceil(
 			   amount *
 			   ((elements[0].amount || 0) *
 			    ((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 - user['discount']) / 100) +
 			    (elements[0].amount_unit || 0) *
 			    (selectUnitAmount.is(':visible') && selectUnitAmount.val() || 0))
-			  ) / 100);
+			  ));
 	}
     });
 

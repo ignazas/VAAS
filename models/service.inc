@@ -62,6 +62,13 @@ class Service
     return NULL;
   }
 
+  public static function get_instructor_salary() {
+    $st = DB::query("SELECT * FROM `services` WHERE `description` LIKE '[[instructor_salary]]'");
+    if ($row = $st->fetch())
+        return new Service($row);
+    return NULL;
+  }
+
   /**
   * Returns all (or a range of) Article objects in the DB
   *
