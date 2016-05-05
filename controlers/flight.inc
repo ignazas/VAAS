@@ -159,7 +159,7 @@ class FlightControler extends BaseControler {
                 if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
                   $price = $instructorSalary->amount * $flight->duration;
                 }
-                else if (!empty($flight->amount)) {
+                else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
                   $price = $instructorSalary->amount * $flight->amount;
                 }
                 if (!empty($price))
@@ -266,7 +266,7 @@ class FlightControler extends BaseControler {
           if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
             $price = $instructorSalary->amount * $flight->duration;
           }
-          else if (!empty($flight->amount)) {
+          else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
             $price = $instructorSalary->amount * $flight->amount;
           }
           if (!empty($price))
@@ -389,7 +389,7 @@ class FlightControler extends BaseControler {
                   if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
                     $price = $instructorSalary->amount * $flight->duration;
                   }
-                  else if (!empty($flight->amount)) {
+                  else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
                     $price = $instructorSalary->amount * $flight->amount;
                   }
                   if (!empty($price))
@@ -415,7 +415,7 @@ class FlightControler extends BaseControler {
                   if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
                     $price = $instructorSalary->amount * $flight->duration;
                   }
-                  else if (!empty($flight->amount)) {
+                  else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
                     $price = $instructorSalary->amount * $flight->amount;
                   }
                   if (!empty($price))
