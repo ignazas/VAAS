@@ -131,7 +131,7 @@ window.flightEntity = {
 	$('table tbody', form).append(row2);
 
 	jQuery($('select', form)).chosen({placeholder_text_single: 'Pasirinkite...', no_results_text: 'Nėra rezultatų', allow_single_deselect: true, search_contains: true});
-	jQuery(selectService.add(qty).add(selectStudent).add(selectUnitAmount)).on('change keyup', function() {
+	jQuery(selectService.add(qty).add(selectStudent).add(selectUnitAmount).add(time)).on('change keyup', function() {
 	    var elements = $.grep(window.flightEntity.getServices(), function(el) { return el.id == selectService.val(); });
 	    var user = selectStudent.val() && window.flightEntity.getUsers()[selectStudent.val()];
 	    if (elements.length > 0) {
@@ -385,7 +385,7 @@ jQuery(document).ready(function($) {
     jQuery('select').chosen({placeholder_text_single: 'Pasirinkite...', no_results_text: 'Nėra rezultatų', allow_single_deselect: true, search_contains: true});
 
 
-    jQuery('form#flight-edit select#service, form#flight-edit select#payer, form#flight-edit #amount, form#flight-edit .amount_unit').on('change keyup', function() {
+    jQuery('form#flight-edit select#service, form#flight-edit select#payer, form#flight-edit #amount, form#flight-edit .amount_unit, form#flight-edit .time').on('change keyup', function() {
 	var row = $(this).parent('tr')[0];
 	row = $(row).add(row.hasClass('line2') ? $(row).prev() : $(row).next());
 	var selectService = $('select.service', row);
