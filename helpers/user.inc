@@ -87,7 +87,11 @@ class UserHelper {
   }
 
   public static function init_session() {
-    if (session_id() == '') session_start();
+    if (session_id() == '') {
+        $lifetime=604800;
+        session_start();
+        setcookie(session_name(),session_id(),time()+$lifetime);
+    }
     $_SESSION['last_access'] = time();
   }
 
