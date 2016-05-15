@@ -88,6 +88,7 @@ class UserHelper {
 
   public static function init_session() {
     if (session_id() == '') session_start();
+    $_SESSION['last_access'] = time();
   }
 
   public static function check_access($redirect=TRUE) {
