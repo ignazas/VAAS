@@ -54,7 +54,7 @@
 	  <?php echo theme('display', 'date', NULL, $flight) ?>
 	</td>
 	<td>
-	  <?php echo !empty($results['airplanes'][$flight->airplane_id]) ? $results['airplanes'][$flight->airplane_id]->name : NULL ?>
+	  <?php echo !empty($results['airplanes'][$flight->airplane_id]) ? ($results['airplanes'][$flight->airplane_id]->name . ' (' . $results['airplanes'][$flight->airplane_id]->reg_num . ')') : NULL ?>
 	</td>
 	<td>
 	  <?php echo !empty($results['services'][$flight->service_id]) ? $results['services'][$flight->service_id]->title : NULL ?>
