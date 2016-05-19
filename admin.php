@@ -108,7 +108,7 @@ function addDay() {
       require_once dirname(__FILE__) . '/models/user.inc';
       $data = User::getList();
       foreach ($data['results'] as $user) {
-        $receivers[] = !empty($user->email_to) ? $user->email_to : $user->email;
+        $receivers[] = $user->email;
       }
       break;
     case 'flying':
@@ -116,7 +116,7 @@ function addDay() {
       $data = CalendarEvent::getByDate($day);
       foreach ($data['results'] as $event) {
         if (!empty($event->user))
-          $receivers[] = !empty($event->user->email_to) ? $event->user->email_to : $event->user->email;
+          $receivers[] = $event->user->email;
       }
       break;
     case 'me':
@@ -125,7 +125,7 @@ function addDay() {
       if (!empty($uid)) {
         require_once dirname(__FILE__) . '/models/user.inc';
         $user = User::Get($uid);
-        $receivers[] = !empty($user->email_to) ? $user->email_to : $user->email;
+        $receivers[] = $user->email;
       }
       break;
   }
