@@ -36,14 +36,14 @@ class UserControler extends BaseControler {
         Messages::form_error('password', "Naujas slaptažodis negali būti tuščias.");
     }
 
-	if (isset($_POST['discount'])) {
-		if (!is_numeric($_POST['discount'])) {
-			Messages::form_error('discount', "Antkainis turi būti skaitinė.");
-		}
-		else if ((int)$_POST['discount'] < 0 || (int)$_POST['discount'] > 100) {
-			Messages::form_error('discount', "Antkainis turi būti tarp 0% ir 100%.");
-		}
-	}
+    if (isset($_POST['discount'])) {
+        if (!is_numeric($_POST['discount'])) {
+            Messages::form_error('discount', "Antkainis turi būti skaitinė.");
+        }
+        else if ((int)$_POST['discount'] < 0 || (int)$_POST['discount'] > 100) {
+            Messages::form_error('discount', "Antkainis turi būti tarp 0% ir 100%.");
+        }
+    }
 
     $messages = Messages::get_messages('errors', false);
     return empty($messages);
