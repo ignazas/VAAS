@@ -133,7 +133,7 @@ window.flightEntity = {
 	jQuery($('select', form)).chosen({placeholder_text_single: 'Pasirinkite...', no_results_text: 'Nėra rezultatų', allow_single_deselect: true, search_contains: true});
 	jQuery(selectService.add(qty).add(selectStudent).add(selectUnitAmount).add(time)).on('change keyup', function() {
 	    var elements = $.grep(window.flightEntity.getServices(), function(el) { return el.id == selectService.val(); });
-	    var user = selectStudent.val() && window.flightEntity.getUsers()[selectStudent.val()];
+	    var user = selectStudent.val() && $.grep(window.flightEntity.getUsers(), function(el) { return el.id == selectStudent.val(); })[0];
 	    if (elements.length > 0) {
 		if (elements[0].default_duration) {
 		    if (!time.val() || $(this)[0] == qty[0] || $(this)[0] == selectService[0]) {
@@ -152,7 +152,7 @@ window.flightEntity = {
 		    Math.ceil(
 			       amount *
 			       ((elements[0].amount || 0) *
-				((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 - user['discount']) / 100) +
+				((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 + parseInt(user['discount'])) / 100) +
 				(elements[0].amount_unit || 0) *
 				(selectUnitAmount.is(':visible') && selectUnitAmount.val() || 0))
 			      ));
@@ -396,7 +396,7 @@ jQuery(document).ready(function($) {
 	var selectUnitAmount = $('input.amount_unit', row);
 
 	var elements = $.grep(window.flightEntity.getServices(), function(el) { return el.id == selectService.val(); });
-	var user = selectStudent.val() && window.flightEntity.getUsers()[selectStudent.val()];
+	var user = selectStudent.val() && $.grep(window.flightEntity.getUsers(), function(el) { return el.id == selectStudent.val(); })[0];
 	if (elements.length > 0) {
 	    if (elements[0].default_duration) {
 		if (!time.val() || $(this)[0] == qty[0] || $(this)[0] == selectService[0]) {
@@ -415,7 +415,7 @@ jQuery(document).ready(function($) {
 		Math.ceil(
 			   amount *
 			   ((elements[0].amount || 0) *
-			    ((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 - user['discount']) / 100) +
+			    ((!elements[0].is_discount || elements[0].is_discount == '0') || !user ? 1 : (100 + parseInt(user['discount'])) / 100) +
 			    (elements[0].amount_unit || 0) *
 			    (selectUnitAmount.is(':visible') && selectUnitAmount.val() || 0))
 			  ));

@@ -14,6 +14,17 @@
                     <?php echo theme('checkbox', 'usertype|Registered', 'Registruotas', $user, $edit) ?>
                     <?php echo theme('checkbox', 'usertype|Planner', 'Planuotojas', $user, $edit) ?>
                     <?php echo theme('checkbox', 'instructor', 'Instruktorius', $user, $edit) ?>
+                    <?php //echo theme('', 'catid', 'Kategorija', $user, $edit) ?>
+    <div class="form-group">
+      <label class="control-label" for="catid">Kategorija</label>
+      <select name="catid" id="catid" class="form-control">
+	<option value=""></option>
+<?php foreach ($categories['results'] as $cat) { ?>
+	<option value="<?php echo $cat->id ?>"<?php echo (!empty($_POST['catid']) && $_POST['catid'] == $cat->id) || (!empty($user->catid) && $user->catid == $cat->id) ? ' selected="selected"' : NULL ?>><?php echo $cat->title ?></option>
+<?php } ?>
+      </select>
+    </div>
+
 <?php } else { ?>
                     <?php echo theme('display', 'usertype', 'Vartotojo tipas', $user, $edit) ?>
 <?php } ?>
@@ -29,9 +40,9 @@
                     <?php echo theme('text', 'telephone1', 'Telefonas', $user, $edit) ?>
                     <?php echo theme('url', 'website', 'Interneto svetainė', $user, $edit) ?>
 <?php if (UserHelper::has_permission()) { ?>
-                    <?php echo theme('number', 'discount', 'Nuolaida, %', $user, $edit) ?>
+                    <?php echo theme('number', 'discount', 'Antkainis, %', $user, $edit) ?>
 <?php } else { ?>
-                    <?php echo theme('display', 'discount', 'Nuolaida, %', $user, $edit) ?>
+                    <?php echo theme('display', 'discount', 'Antkainis, %', $user, $edit) ?>
 <?php } ?>
                     <?php echo theme('text', 'licenseNo', 'Licencijos numeris', $user, $edit) ?>
                     <?php echo theme('date', 'licenseValidTill', 'Licencija galioja iki', $user, $edit) ?>

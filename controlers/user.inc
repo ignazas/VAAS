@@ -3,6 +3,8 @@
 require_once dirname(__FILE__) . '/base.inc';
 require_once dirname(__FILE__) . '/../models/user.inc';
 require_once dirname(__FILE__) . '/../models/user_group.inc';
+require_once dirname(__FILE__) . '/../models/category.inc';
+
 
 class UserControler extends BaseControler {
   private $user_model;
@@ -34,12 +36,14 @@ class UserControler extends BaseControler {
         Messages::form_error('password', "Naujas slaptažodis negali būti tuščias.");
     }
 
-    if (!isset($_POST['discount']) || !is_numeric($_POST['discount'])) {
-        Messages::form_error('discount', "Nuolaida turi būti skaitinė.");
-    }
-    else if ((int)$_POST['discount'] < 0 || (int)$_POST['discount'] > 100) {
-        Messages::form_error('discount', "Nuolaida turi būti tarp 0% ir 100%.");
-    }
+	if (isset($_POST['discount'])) {
+		if (!is_numeric($_POST['discount'])) {
+			Messages::form_error('discount', "Antkainis turi būti skaitinė.");
+		}
+		else if ((int)$_POST['discount'] < 0 || (int)$_POST['discount'] > 100) {
+			Messages::form_error('discount', "Antkainis turi būti tarp 0% ir 100%.");
+		}
+	}
 
     $messages = Messages::get_messages('errors', false);
     return empty($messages);
@@ -154,6 +158,8 @@ class UserControler extends BaseControler {
     if (UserHelper::is_student($user))
       $instructors = User::getList(1000000, 'u.name', 'u.instructor=1');
 
+    $categories = Category::getList(1000000, 'name');
+
     include dirname(__FILE__) . '/../views/_layout.php';
   }
 
@@ -220,6 +226,8 @@ class UserControler extends BaseControler {
 
     if (UserHelper::is_student($user))
       $instructors = User::getList(1000000, 'u.name', 'u.instructor=1');
+
+    $categories = Category::getList(1000000, 'name');
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }
