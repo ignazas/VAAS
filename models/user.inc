@@ -107,7 +107,7 @@ class User {
             $query_context = NULL;
             foreach ($values as $key => $value) {
               if (in_array($key, array('name', 'username', 'email', 'password', 'usertype', 'block', 'sendEmail',
-                    'gid', 'registerDate', 'lastvisitDate', 'activation', 'params', 'discount', 'instructor', 'instructor_id', 'catid'))) {
+                    'gid', 'registerDate', 'lastvisitDate', 'activation', 'params', 'discount', 'instructor', 'instructor_id'))) {
                 $query_user .= (!empty($query_user) ? ',' : NULL) . "`$key`='" . $value . "'";
                 if ($key == 'email') $query_context .= (!empty($query_context) ? ',' : NULL) . "`email_to`='" . $value . "'";
               }
@@ -163,7 +163,7 @@ class User {
     // Does the User object already have an ID?
     if ( !is_null( $this->id ) ) trigger_error ( "User::insert(): Attempt to insert an User object that already has its ID property set (to $this->id).", E_USER_ERROR );
 
-    $this->id = DB::insert("INSERT INTO jos_users (name, username, usertype, password, email, registerDate, params, instructor, instructor_id, licenseNo, licenseValidTill, healthNo, healthValidTill, catid) VALUES (:name, :username, :usertype, :password, :email, " . DB::date_as_string(time()) . ", '', :instructor, :instructor_id, :licenseNo, " . DB::date_as_string($this->licenseValidTill) . ", :healthNo, " . DB::date_as_string($this->healthValidTill) . ", :catid)", array(
+    $this->id = DB::insert("INSERT INTO jos_users (name, username, usertype, password, email, registerDate, params, instructor, instructor_id, licenseNo, licenseValidTill, healthNo, healthValidTill) VALUES (:name, :username, :usertype, :password, :email, " . DB::date_as_string(time()) . ", '', :instructor, :instructor_id, :licenseNo, " . DB::date_as_string($this->licenseValidTill) . ", :healthNo, " . DB::date_as_string($this->healthValidTill) . ", :catid)", array(
                   ':name' => $this->name,
                   ':username' => $this->username,
                   ':usertype' => $this->usertype,
@@ -173,7 +173,6 @@ class User {
                   ':instructor_id' => $this->instructor_id,
                   ':licenseNo' => $this->licenseNo,
                   ':healthNo' => $this->healthNo,
-	 	    ':catid' => $this->catid,
                 ));
 
     $this->contact_id = DB::insert("INSERT INTO jos_contxtd_details (name, user_id, telephone1, telephone2, website, avatar, birthdate, email_to, con_position, params, catid) VALUES (:name, :user_id, :telephone1, :telephone2, :website, :avatar, " . DB::date_as_string($this->birthdate) . ", :email_to, :con_position, '', NULL)", array(
@@ -185,6 +184,7 @@ class User {
         ':email_to' => $this->email_to,
         ':con_position' => $this->con_position,
         ':user_id' => $this->id,
+        ':catid' => $this->catid,
       ));
 
     return !empty($this->id);

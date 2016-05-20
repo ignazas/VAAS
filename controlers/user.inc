@@ -191,7 +191,7 @@ class UserControler extends BaseControler {
           $edit['password'] = md5($_POST['new_password_1']);
         }
 
-        foreach (array('name', 'email', 'telephone1', 'website', 'discount', 'licenseNo', 'licenseValidTill', 'healthNo', 'healthValidTill', 'instructor_id') as $key) {
+        foreach (array('name', 'email', 'telephone1', 'website', 'discount', 'licenseNo', 'licenseValidTill', 'healthNo', 'healthValidTill', 'instructor_id', 'catid') as $key) {
           if (isset($_POST[$key]) && $user->{$key} != $_POST[$key])
             $edit[$key] = $_POST[$key];
         }
