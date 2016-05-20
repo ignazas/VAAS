@@ -1,6 +1,6 @@
 	<div id="footer">
 		<div class="container">
-        	<p class="text-muted">2014, Vilniaus Aeroklubas</p>
+           <p class="text-muted">2014<?php if (2014 < date('Y')) echo ' - ' . date('Y'); ?>, Vilniaus Aeroklubas</p>
       	</div>
     </div>
 	<!-- Bootstrap core JavaScript
