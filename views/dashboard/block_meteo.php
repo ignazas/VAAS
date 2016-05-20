@@ -16,6 +16,6 @@ if (!file_exists($file) || round(abs(time() - filemtime($file)) / 60, 2) > 30) {
 <?php if (file_exists($file)) { ?>
 <div class="row">
   <h2>Orų prognozė</h2>
-  <a href="index.php?action=weather"><img class="img-responsive" src="<?php echo CATALOG != '' ? '/' . CATALOG : NULL ?>/uploads/meteo_valkininkai.png" alt="Skaitmeninė Valkininkų orų prognozė" /><a>
+  <a href="index.php?action=weather"><img class="img-responsive" src="<?php echo CATALOG != '' ? '/' . CATALOG : NULL ?>/uploads/meteo_valkininkai.png" alt="Skaitmeninė Valkininkų orų prognozė" /></a>
 </div>
 <?php } ?>
