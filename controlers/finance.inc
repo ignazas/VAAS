@@ -98,6 +98,10 @@ class FinanceControler extends BaseControler {
       $results['finance'] = Finance::getByUserId($_GET['id']);
       require_once dirname(__FILE__) . '/../models/user.inc';
       $results['finance']->user = User::Get($_GET['id']);
+      
+      if ($this->HasPermission() || (UserHelper::get_id() == $results['finance']->user->id))
+        $results['journal'] = Finance::get_payments($results['finance']->contact_id);
+	
       include dirname(__FILE__) . '/../views/_layout.php';
     }
   }
