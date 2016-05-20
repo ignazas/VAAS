@@ -386,13 +386,12 @@ jQuery(document).ready(function($) {
 
 
     jQuery('form#flight-edit select#service, form#flight-edit select#payer, form#flight-edit #amount, form#flight-edit .amount_unit, form#flight-edit .time').on('change keyup', function() {
-	var row = $(this).parent('tr')[0];
-	row = $(row).add(row.hasClass('line2') ? $(row).prev() : $(row).next());
+	var row = $(this).parent('#flight-edit')[0];
 	var selectService = $('select.service', row);
 	var selectStudent = $('select.user', row);
 	var price = $('.price input', row);
 	var time = $('.time input', row);
-	var qty = $('.amount input.quantity', row);
+	var qty = $('.amount input', row);
 	var selectUnitAmount = $('input.amount_unit', row);
 
 	var elements = $.grep(window.flightEntity.getServices(), function(el) { return el.id == selectService.val(); });

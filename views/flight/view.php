@@ -29,8 +29,8 @@ if (isset($results['flight']->airplane_id)) {
     <?php echo theme('display', 'title', 'Paslauga', $service) ?>
     <?php echo theme('display', 'name', 'Instruktorius', $instructor) ?>
     <?php echo theme('display', 'name', 'Mokinys/Mokėtojas', $payer) ?>
-    <?php echo theme('display', 'task', 'Užduotis', $results['flight']) ?>
-    <?php echo theme('display', 'duration', 'Trukmė', $results['flight']) ?>
+    <?php //echo theme('display', 'task', 'Užduotis', $results['flight']) ?>
+    <?php echo theme('display_time', 'time', 'Trukmė', $results['flight'], array('time' => !empty($results['flight']->duration) ? floatval($results['flight']->duration) : NULL)) ?>
     <?php echo theme('display', 'amount', 'Kiekis', $results['flight']) ?>
     <?php echo theme('display_money', 'price', 'Suma', $results['flight']) ?>
     <br />

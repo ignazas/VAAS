@@ -10,6 +10,7 @@
 	<th>Papildoma kaina</th>
 	<th>Ar kaina už skrydžio laiką</th>
 	<th>Trukmė pagal nutylėjimą</th>
+	<th>Mokestis instruktoriui</th>
 	<th>Aprašymas</th>
 	<th></th>
 	<th></th>
@@ -40,6 +41,9 @@
 	</td>
 	<td>
       <?php echo theme('display_time', 'default_duration', NULL, $service, array('default_duration' => !empty($service->default_duration) ? floatval($service->default_duration) : NULL)) ?>
+	</td>
+	<td>
+      <?php echo theme('display_money', 'price_for_instructor', NULL, $service) ?>
 	</td>
 	<td>
 	  <?php echo $service->description ?>

@@ -6,6 +6,8 @@ require_once dirname(__FILE__) . '/../helpers/user.inc';
 $info = CalendarEvent::get($_GET['id']);
 
 $time_array = split(":", str_replace(array('.', ','), ':', $info->event_time));
+if (count($time_array) == 1)
+    array_push($time_array, '00');
 ?>
 
 <a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a>

@@ -34,6 +34,10 @@
     <div class="form-group">
       <?php echo theme('checkbox', 'is_price_for_duration', 'Ar kaina už skrydžio laiką', $results['service'], $edit) ?>
     </div>
+    <div class="form-group">
+      <label for="amount">Mokestis instruktoriui,&#160;€</label>
+      <input id="price_for_instructor" name="price_for_instructor" class="form-control" type="number" step="any" value="<?php echo $results['service']->price_for_instructor ?>">
+    </div>
     <div class="form-group"<?php if (!$this->HasPermission('Flight Manager') && !$isOwner) echo ' disabled="disabled"'; ?>>
       <?php $d = isset($_POST['default_duration']) ? $_POST['default_duration'] : (isset($results['service']->default_duration) ? floatval($results['service']->default_duration) : NULL); ?>
       <?php echo theme('time', 'default_duration', 'Trukmė pagal nutylėjimą', $results['service'], array('default_duration' => $d)) ?>

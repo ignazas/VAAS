@@ -65,7 +65,9 @@ class Flight
   */
   public static function getList( $numRows=1000000, $order = '-date', $filter = NULL) {
     $st = DB::query("SELECT SQL_CALC_FOUND_ROWS *
-                     FROM flights
+                     FROM flights f
+                     LEFT OUTER JOIN jos_users u ON f.payer=u.id
+                     LEFT OUTER JOIN jos_users i ON f.instructor=i.id
                      WHERE 1=1" . (!empty($filter) ? " AND " . $filter : NULL) . "
                      " . (empty($order) ? NULL : "ORDER BY " . ltrim($order, '-+') . ($order[0] == '-' ? ' DESC' : ' ASC')) .
           (!empty($numRows) ? " LIMIT $numRows" : NULL));

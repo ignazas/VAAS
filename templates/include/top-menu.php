@@ -26,7 +26,7 @@ $admin = UserHelper::has_permission();
             <li class="<?php if (in_array($action, array("flight", "analysis", "practice"))){echo 'active';} ?> dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Skrydžiai"><i class="glyphicon glyphicon-list-alt"></i><span class="hidden-md hidden-sm">  Skrydžiai</span> <b class="caret"></b></a>
               <ul class="dropdown-menu">
-		<li <?php if ($action=="flight") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=flight" title="Skrydžiai"><i class="glyphicon glyphicon-list-alt"></i> Skrydžiai</a></li>
+		<li <?php if ($action=="flight") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=flight&amp;view=ItemList&amp;date=&amp;search=<?php echo empty($_SESSION['user']['name']) ? NULL : $_SESSION['user']['name'] ?>" title="Mano skrydžiai"><i class="glyphicon glyphicon-list-alt"></i> Mano skrydžiai</a></li>
 		<li <?php if ($action=="analysis"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=analysis" title="Analizė"><i class="glyphicon glyphicon-book"></i> Analizė</a></li>
 <?php  if (UserHelper::is_student()) { ?>
 		<li <?php if ($action=="practice") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=practice" title="Skrydžių praktikos lapas"><i class="glyphicon glyphicon-list-alt"></i> Skrydžių praktikos lapas</a></li>

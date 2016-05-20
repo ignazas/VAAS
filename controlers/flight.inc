@@ -154,13 +154,13 @@ class FlightControler extends BaseControler {
 
             if (!empty($flight->instructor)){
               $instructor = User::Get($flight->instructor);
-              $instructorSalary = Service::get_instructor_salary();
-              if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->amount)) {
+              $instructorSalary = empty($flight->service_id) ? NULL : Service::getById($flight->service_id);
+              if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->price_for_instructor)) {
                 if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
-                  $price = $instructorSalary->amount * $flight->duration;
+                  $price = $instructorSalary->price_for_instructor * $flight->duration;
                 }
                 else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
-                  $price = $instructorSalary->amount * $flight->amount;
+                  $price = $instructorSalary->price_for_instructor * $flight->amount;
                 }
                 if (!empty($price))
                   $price = round($price);
@@ -261,13 +261,13 @@ class FlightControler extends BaseControler {
 
       if (!empty($flight->instructor)){
         $instructor = User::Get($flight->instructor);
-        $instructorSalary = Service::get_instructor_salary();
-        if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->amount)) {
+        $instructorSalary = empty($flight->service_id) ? NULL : Service::getById($flight->service_id);
+        if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->price_for_instructor)) {
           if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
-            $price = $instructorSalary->amount * $flight->duration;
+            $price = $instructorSalary->price_for_instructor * $flight->duration;
           }
           else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
-            $price = $instructorSalary->amount * $flight->amount;
+            $price = $instructorSalary->price_for_instructor * $flight->amount;
           }
           if (!empty($price))
             $price = round($price);
@@ -384,13 +384,13 @@ class FlightControler extends BaseControler {
 
               if ($flight->instructor != $instructor_before_update) {
                 $instructor = User::Get($instructor_before_update);
-                $instructorSalary = Service::get_instructor_salary();
-                if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->amount)) {
+                $instructorSalary = empty($flight->service_id) ? NULL : Service::getById($flight->service_id);
+                if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->price_for_instructor)) {
                   if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
-                    $price = $instructorSalary->amount * $flight->duration;
+                    $price = $instructorSalary->price_for_instructor * $flight->duration;
                   }
                   else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
-                    $price = $instructorSalary->amount * $flight->amount;
+                    $price = $instructorSalary->price_for_instructor * $flight->amount;
                   }
                   if (!empty($price))
                     $price = round($price);
@@ -410,13 +410,13 @@ class FlightControler extends BaseControler {
               
               if (!empty($flight->instructor)){
                 $instructor = User::Get($flight->instructor);
-                $instructorSalary = Service::get_instructor_salary();
-                if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->amount)) {
+                $instructorSalary = empty($flight->service_id) ? NULL : Service::getById($flight->service_id);
+                if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->price_for_instructor)) {
                   if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
-                    $price = $instructorSalary->amount * $flight->duration;
+                    $price = $instructorSalary->price_for_instructor * $flight->duration;
                   }
                   else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
-                    $price = $instructorSalary->amount * $flight->amount;
+                    $price = $instructorSalary->price_for_instructor * $flight->amount;
                   }
                   if (!empty($price))
                     $price = round($price);
@@ -500,6 +500,10 @@ class FlightControler extends BaseControler {
       $_GET['date'] = date('Y-m-d');
 
     $filters = array();
+    if (!empty($_GET['search'])) {
+      $escaped = DB::escape('%' . $_GET['search'] . '%');
+      $filters[] = "(u.name LIKE $escaped OR u.username LIKE $escaped OR u.email LIKE $escaped OR i.name LIKE $escaped OR i.username LIKE $escaped OR i.email LIKE $escaped)";
+    }
     if (!empty($_GET['date'])) {
       $escaped = DB::escape($_GET['date']);
       $filters[] = "date = $escaped";

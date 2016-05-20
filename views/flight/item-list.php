@@ -16,6 +16,12 @@
 	      <input type="date" name="date" class="form-control" value="<?php echo !empty($_GET['date']) ? $_GET['date'] : NULL ?>" />
             </div>
           </div>
+	  <div class="form-group">
+	    <label for="status" class="col-sm-3 control-label">Paieška</label>
+	    <div class="col-sm-9">
+	      <input type="text" name="search" class="form-control" value="<?php echo !empty($_GET['search']) ? $_GET['search'] : NULL ?>" />
+            </div>
+          </Div>
           <div class="form-group">
 	    <div class="col-sm-offset-3 col-sm-9">
 	      <button type="submit" class="btn btn-primary">Filtruoti</button>

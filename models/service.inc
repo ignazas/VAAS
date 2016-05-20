@@ -14,6 +14,7 @@ class Service
   public $amount_unit = null;
   public $default_duration = null;
   public $is_price_for_duration = null;
+  public $price_for_instructor = null;
 
   /**
   * Sets the object's properties using the values in the supplied array
@@ -31,6 +32,7 @@ class Service
     if (isset($data['amount_unit'])) $this->amount_unit = (double)$data['amount_unit'];
     if (isset($data['default_duration'])) $this->default_duration = $data['default_duration'];
     if (isset($data['is_price_for_duration'])) $this->is_price_for_duration = empty($data['is_price_for_duration']) ? 0 : 1;
+    if (isset($data['price_for_instructor'])) $this->price_for_instructor = $data['price_for_instructor'];
   }
 
   /**
@@ -57,13 +59,6 @@ class Service
   */
   public static function getById($id) {
     $st = DB::query("SELECT * FROM `services` WHERE `id` = :id", array(":id" => $id));
-    if ($row = $st->fetch())
-        return new Service($row);
-    return NULL;
-  }
-
-  public static function get_instructor_salary() {
-    $st = DB::query("SELECT * FROM `services` WHERE `description` LIKE '[[instructor_salary]]'");
     if ($row = $st->fetch())
         return new Service($row);
     return NULL;
@@ -104,7 +99,7 @@ class Service
     if ( !is_null( $this->id ) ) trigger_error ( "Service::insert(): Attempt to insert a Service object that already has its ID property set (to $this->id).", E_USER_ERROR );
 
     // Insert the Article
-    $this->id = DB::insert("INSERT INTO `services` (`title`, `is_discount`, `amount`, `description`, `is_flight`, `unit`, `amount_unit`, `default_duration`, `is_price_for_duration`) VALUES (:title, :is_discount, :amount, :description, :is_flight, :unit, :amount_unit, :default_duration, :is_price_for_duration)", array(
+    $this->id = DB::insert("INSERT INTO `services` (`title`, `is_discount`, `amount`, `description`, `is_flight`, `unit`, `amount_unit`, `default_duration`, `is_price_for_duration`, `price_for_instructor`) VALUES (:title, :is_discount, :amount, :description, :is_flight, :unit, :amount_unit, :default_duration, :is_price_for_duration, :price_for_instructor)", array(
         ":title" => $this->title,
         ":amount" => $this->amount,
         ":description" => $this->description,
@@ -114,6 +109,7 @@ class Service
         ":amount_unit" => DB::null_if_empty($this->amount_unit),
 	":default_duration" => DB::null_if_empty($this->default_duration),
         ":is_price_for_duration" => empty($this->is_price_for_duration) ? 0 : 1,
+	":price_for_instructor" => $this->price_for_instructor,
     ));
 
     return !empty($this->id);
@@ -127,7 +123,7 @@ class Service
     if ( is_null( $this->id ) ) trigger_error ( "Service::update(): Attempt to update a Service object that does not have its ID property set.", E_USER_ERROR );
 
     // Update the Service
-    $st = DB::query("UPDATE `services` SET `title`=:title, `is_discount`=:is_discount, `amount`=:amount, `description`=:description, `is_flight`=:is_flight, unit=:unit, amount_unit=:amount_unit, `default_duration`=:default_duration, `is_price_for_duration`=:is_price_for_duration WHERE id = :id", array(
+    $st = DB::query("UPDATE `services` SET `title`=:title, `is_discount`=:is_discount, `amount`=:amount, `description`=:description, `is_flight`=:is_flight, unit=:unit, amount_unit=:amount_unit, `default_duration`=:default_duration, `is_price_for_duration`=:is_price_for_duration, `price_for_instructor`=:price_for_instructor WHERE id = :id", array(
         ":title" => $this->title,
         ":amount" => $this->amount,
         ":description" => $this->description,
@@ -137,6 +133,7 @@ class Service
         ":amount_unit" => DB::null_if_empty($this->amount_unit),
 	":default_duration" => DB::null_if_empty($this->default_duration),
         ":is_price_for_duration" => empty($this->is_price_for_duration) ? 0 : 1,
+	":price_for_instructor" => $this->price_for_instructor,
         ":id" => $this->id,
       ));
 
