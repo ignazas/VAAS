@@ -63,8 +63,10 @@
      </div>
    </div>
    <div class="form-group">
-     <label class="control-label" for="fee_notes">Komentarai</label>
-     <textarea id="fee_notes" name="fee_notes" class="form-control input-md"><?php echo $results['finance']->fee_notes ?></textarea>
+     <label class="col-sm-2" for="fee_notes">Komentarai</label>
+     <div class="col-sm-10">
+       <input type="text" id="fee_notes" name="fee_notes" class="form-control input-md" value="<?php echo $results['finance']->fee_notes ?>" />
+     </div>
    </div>
    <div class="form-group">
      <label class="control-label" for="singlebutton"></label>
