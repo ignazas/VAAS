@@ -1,6 +1,4 @@
   <link href="css/cal.css" rel="stylesheet" type="text/css">
-  <div id="registracija"></div>
-  <div id="registruotis"></div>
 
 <div class="row">
 
@@ -17,6 +15,9 @@
 <?php if (!empty($event->user->avatar)) { ?>
         <img src="<?php echo (CATALOG != '' ? '/' . CATALOG : NULL) . '/uploads/users/' . $event->user->avatar ?>" class="img-rounded" style="height:22px;" alt="<?php echo /*htmlentities*/($event->user->name) ?>">
 <?php } ?>
+	<?php if ($event->event_type == 'registracija') { ?>
+	<em title="<?php echo $event->event_desc ?>"><?php echo $event->event_desc ?></em>
+        <?php } ?>
       </a>
 <?php if ($event->event_type != 'registracija') { ?>
         <span class="badge"><?php echo $event->event_type ?></span>
@@ -48,7 +49,10 @@
         <?php echo $event->event_type != 'registracija' ? $event->event_desc : $event->event_title ?>
 <?php if (!empty($event->user->avatar)) { ?>
         <img src="<?php echo (CATALOG != '' ? '/' . CATALOG : NULL) . '/uploads/users/' . $event->user->avatar ?>" class="img-rounded" style="height:22px;" alt="<?php echo /*htmlentities*/($event->user->name) ?>">
-<?php } ?>
+	<?php } ?>
+	<?php if ($event->event_type == 'registracija') { ?>
+	<em title="<?php echo $event->event_desc ?>"><?php echo $event->event_desc ?></em>
+        <?php } ?>
       </a>
     </li>
     <?php } } else { echo "<li class=\"list-group-item\">Registracijų nėra.</li>";} ?>
@@ -68,3 +72,6 @@
 </div>
 
 </div>
+
+<div id="registracija"></div>
+<div id="registruotis"></div>

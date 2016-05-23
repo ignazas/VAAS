@@ -34,6 +34,24 @@ class Index {
       require( TEMPLATE_PATH . "/booking.php" );
     }
 
+    public static function updateBooking() {
+      if (!empty($_GET['bookingId']) && is_numeric($_GET['bookingId']) && !empty($_GET['time'])) {
+        $time_array = split(":", str_replace(array('.', ','), ':', $_GET['time']));
+        if (count($time_array) == 1)
+          array_push($time_array, '00');
+        $time = implode(':', $time_array);
+        DB::query("UPDATE calendar_events SET event_time='$time' WHERE event_id = " . intval($_GET['bookingId']));
+        Messages::set_message('Laikas atnaujintas');
+
+        $destination = !empty($_GET['destination']) ? $_GET['destination'] : "index.php";
+        if (headers_sent() === false)
+          header("Location: $destination", true, 302);
+        else
+          echo '<meta http-equiv="Location" content="'.$destination.'"><script>window.location="'.$destination.'";</script>';
+        die();
+      }
+    }
+
     public static function my_bookings() {
       require_once dirname(__FILE__) . '/../models/calendar_event.inc';
 

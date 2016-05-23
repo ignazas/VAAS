@@ -12,16 +12,26 @@ if (count($time_array) == 1)
 
 <a class="b-close"><i class="glyphicon glyphicon-remove-circle"></i></a>
 
-<h2 class="eventwhen col-xs-12"><? echo date("Y-m-d H:i", mktime($time_array['0'],$time_array['1'],0,$info->event_month,$info->event_day,$info->event_year)); ?></h2>
+<h2 class="eventwhen col-xs-12"><?php echo date("Y-m-d H:i", mktime($time_array['0'],$time_array['1'],0,$info->event_month,$info->event_day,$info->event_year)); ?></h2>
 
 <div class="col-xs-12" style="width:480px;margin-bottom:30px;">
 
 <?php if (!empty($info->user)) { ?>
+<form action="index.php" method="get">
   <div class="col-md-6 col-sm-12">
     <?php echo theme('display', 'name', '', $info->user) ?>
     <?php echo theme('display_email', 'email', '', $info->user) ?>
     <?php echo theme('display_phone', 'telephone1', '', $info->user) ?>
     <?php echo theme('display_url', 'website', '', $info->user) ?>
+
+    <?php if (UserHelper::get_id() == $info->user->id) { ?>
+    <div class="form-group">
+      <label for="time" class="col-sm-12 control-label">Keisti atvykimo laiką</label>
+      <div class="col-sm-12">
+	<input type="time" class="form-control" name="time" id="time" value="<?php echo "$time_array[0]:$time_array[1]" ?>">
+      </div>
+    </div>
+    <?php } ?>
   </div>
   <div class="col-md-6 col-sm-12<?php if (empty($info->user->avatar)) echo ' hidden-sm hidden-xs hidden-md'?>">
     <?php echo theme('display_avatar', 'avatar', $info->user->name, $info->user) ?>
@@ -43,8 +53,15 @@ if (count($time_array) == 1)
 <?php USerHelper::init_session() ?>
 <?php if (strtotime($info->event_date) >= strtotime(date('Y-m-d')) && !empty($_SESSION['user']['id']) && $_SESSION['user']['id'] == $info->user->id) { ?>
   <div class="buttons">
-    <a class="delete btn btn-danger" onclick="return confirm('Ar tikrai norite atsisakyti registracijos?')" href="index.php?action=deleteBooking&amp;bookingId=<?php echo $info->event_id ?>&amp;destination=index.php%3Faction%3Dcalendar%26year%3D<?php echo $info->event_year ?>%26month%3D<?php echo $info->event_month+1 ?>"><i class="glyphicon glyphicon-minus"></i> Atsisakyti</a>
+    <?php if (UserHelper::get_id() == $info->user->id) { ?>
+      <input type="hidden" name="action" value="updateBooking" />
+      <input type="hidden" name="bookingId" value="<?php echo $info->event_id ?>" />
+      <input type="hidden" name="destination" value="index.php" />
+      <button class="btn">Išsaugoti</button>
+    <?php } ?>
+    <a class="delete btn btn-danger" onclick="return confirm('Ar tikrai norite atsisakyti registracijos?')" href="index.php?action=deleteBooking&amp;bookingId=<?php echo $info->event_id ?>&amp;destination=index.php"><i class="glyphicon glyphicon-minus"></i> Atsisakyti</a>
   </div>
 <?php } ?>
 
+</form>
 </div>
