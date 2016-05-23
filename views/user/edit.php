@@ -35,7 +35,11 @@
                 <fieldset>
                     <legend>Pagrindinė informacija:</legend>
                     <?php echo empty($user->id) ? theme('text', 'username', 'Vartotojo vardas', $user) : NULL ?>
+<?php if (UserHelper::has_permission()) { ?>
                     <?php echo theme('text', 'name', 'Vardas', $user, $edit) ?>
+<?php } else { ?>
+                    <?php echo theme('display', 'name', 'Vardas', $user, $edit) ?>
+<?php } ?>
                     <?php echo theme('email', 'email', 'El. paštas', $user, $edit) ?>
                     <?php echo theme('text', 'telephone1', 'Telefonas', $user, $edit) ?>
                     <?php echo theme('url', 'website', 'Interneto svetainė', $user, $edit) ?>
