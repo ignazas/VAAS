@@ -13,14 +13,14 @@
 	  <div class="form-group">
 	    <label for="status" class="col-sm-3 control-label">Data</label>
 	    <div class="col-sm-9">
-	      <div class="input-group date" id="date" name="date">
-                <input type"text" name="date" class="form-control" />
+	      <div class="input-group" id="date_datepicker">
+                <input type="text" name="date" id="date" class="form-control" />
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
 		<script type="text/javascript">
 		  $(function () {
-                    $('#date').datetimepicker({locale:'lt', format: 'YYYY-MM-DD', defaultDate: '<?php echo !empty($_GET["date"]) ? $_GET["date"] : NULL ?>'});
+                    $('#date_datepicker').datetimepicker({locale:'lt', format: 'YYYY-MM-DD', defaultDate: '<?php echo !empty($_GET["date"]) ? $_GET["date"] : NULL ?>'});
 		  });
 		</script>
               </div>
