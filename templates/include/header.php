@@ -8,6 +8,7 @@
     <title>Vilniaus Aeroklubas</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
     <link href="css/sticky-footer.css" rel="stylesheet">
     <link href="css/popup.css" rel="stylesheet" type="text/css">

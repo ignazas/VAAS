@@ -13,7 +13,17 @@
 	  <div class="form-group">
 	    <label for="status" class="col-sm-3 control-label">Data</label>
 	    <div class="col-sm-9">
-	      <input type="date" name="date" class="form-control" value="<?php echo !empty($_GET['date']) ? $_GET['date'] : NULL ?>" />
+	      <div class="input-group date" id="date" name="date">
+                <input type"text" name="date" class="form-control" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+		<script type="text/javascript">
+		  $(function () {
+                    $('#date').datetimepicker({locale:'lt', format: 'YYYY-MM-DD', defaultDate: '<?php echo !empty($_GET["date"]) ? $_GET["date"] : NULL ?>'});
+		  });
+		</script>
+              </div>
             </div>
           </div>
 	  <div class="form-group">
