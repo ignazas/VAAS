@@ -26,16 +26,10 @@ foreach ($query_result as $info) {
 }
 
 // gaunam partvirtintas ir atmestas datas
-
-$query_result = DB::query("SELECT * FROM days ORDER BY day");
-
+$query_result = DB::query("SELECT * FROM days WHERE day >= '$year-$month-01' AND day < DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) ORDER BY day");
 foreach ($query_result as $diena) {
-	$dienos[$diena['day']]['data'] = $diena['day'];
-	$dienos[$diena['day']]['status'] = $diena['status'];
-	$dienos[$diena['day']]['reason'] = $diena['reason'];
-	$dienos[$diena['day']]['confirmed'] = $diena['confirmed'];
+	$dienos[$diena['day']][] = $diena;
 }
-
 
 $todays_date = date("j");
 $todays_month = date("n");
@@ -163,8 +157,15 @@ $spec_events = array("šventė", "talka", "kita", "svečiai");
 					}
 				}
 			}
-			if (isset($dienos[$langelio_data]['reason'])){
-				echo "<div class=\"" . $dienos[$langelio_data]['status'] . "\" align=\"center\">" . $dienos[$langelio_data]['reason'] . "</div>";
+			if (!empty($dienos[$langelio_data])){
+                foreach ($dienos[$langelio_data] as $diena) {
+                    echo
+                        "<div class=\"" . $diena['status'] . "\" align=\"center\">" .
+                        ($current_date >= $today && UserHelper::has_permission('day_tag') ? '<a class="add_day" href="?day=' . $langelio_data . '&amp;status=' . $diena['status'] . '" style="color:inherit;">' : NULL) .
+                        $diena['reason'] .
+                        ($current_date >= $today && UserHelper::has_permission('day_tag') ? '</a>' : NULL) .
+                        "</div>";
+                }
 			}
 ?>
 			    </div>

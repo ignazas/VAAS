@@ -4,13 +4,12 @@ require_once dirname(__FILE__) . '/../helpers/user.inc';
 
 UserHelper::check_access(FALSE);
 
-$o = DB::fetch_object("SELECT status FROM days WHERE day = :day LIMIT 1", array(':day' => $_GET['day']));
+$o = DB::fetch_object("SELECT status, reason FROM days WHERE day = :day AND :status IS NOT NULL AND status=:status LIMIT 1", array(':day' => $_GET['day'], ':status' => empty($_GET['status']) ? NULL : $_GET['status']));
 $current_status = isset($o->status) ? $o->status : 'nevyksta';
 
 $statuses = array(
       "nevyksta"=>'Nevyksta',
       "vyksta"=>'Vyksta',
-      "delete"=>'[Šalinti žymą]',
 );
 ?>
 
@@ -32,7 +31,7 @@ $statuses = array(
   <div class="form-group">
     <label for="reason" class="col-sm-3 control-label">Pastaba</label>
     <div class="col-sm-9">
-      <textarea class="form-control" rows="3" name="reason" id="reason"><?php echo !empty($_POST['reason']) ? $_POST['reason'] : '' ?></textarea>
+      <textarea class="form-control" rows="3" name="reason" id="reason"><?php echo !empty($_POST['reason']) ? $_POST['reason'] : !empty($o->reason) ? $o->reason : NULL ?></textarea>
     </div>
   </div>
   <div class="form-group">
@@ -67,9 +66,11 @@ $statuses = array(
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
       <button type="submit" name="action" id="action" class="btn btn-primary" value="addDay">Žymėti</button>
+      <button type="submit" name="action" id="action" class="btn btn-primary btn-danger" value="deleteDay">Naikinti</button>
     </div>
   </div>
 
   <input type="hidden" name="day" value="<?php echo $_GET['day']; ?>"/>
-  <input type="hidden" name="confirmed" value="<?php $_SESSION['user']['name']; ?>"/>
+  <input type="hidden" name="confirmed" value="<?php echo $_SESSION['user']['name']; ?>"/>
+  <input type="hidden" name="destination" value="<?php echo $_SERVER['HTTP_REFERER'] ?>"/>
 </form>

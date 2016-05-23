@@ -69,14 +69,19 @@ function deleteDay() {
     if ( is_null( $day ) ) trigger_error ( "Attempt to delete a Day that does not have its ID property set.", E_USER_ERROR );
 
     // Delete the Day setting
-    $st = DB::query("DELETE FROM days WHERE day = :day LIMIT 1", array(":day" => $day));
+    $st = DB::query("DELETE FROM days WHERE day = :day AND :status IS NOT NULL AND status=:status", array(':day' => $day, ':status' => empty($_GET['status']) ? NULL : $_GET['status'])); //delete old event for that day
     log_event("Admin", "DayDeleted", $day);
 
     $exploded_date = explode("-", $day);
 	if (substr($exploded_date[1],0,1)=="0") {$exploded_date[1] = substr($exploded_date[1],1);};
 	$exploded_date[1] += 1;
 
-    header( "Location: admin.php?action=admin/working_days&status=dayDeleted&month=" . $exploded_date[1] . "&year=" . $exploded_date[0] );
+	$destination = !empty($_GET['destination']) ? $_GET['destination'] : ("admin.php?action=admin/working_days&status=dayDeleted&month=$exploded_date[1]&year=$exploded_date[0]");
+  if (headers_sent() === false)
+    header("Location: $destination", true, 302);
+  else
+    echo '<meta http-equiv="Location" content="'.$destination.'"><script>window.location="'.$destination.'";</script>';
+  die();
 }
 
 function addDay() {
@@ -87,7 +92,7 @@ function addDay() {
   $send_mail = isset($_GET['mail']) ? $_GET['mail'] : NULL;
 
   // Add day status
-  $st = DB::query("DELETE FROM days WHERE day = :day", array(':day' => $day)); //delete old event for that day
+  $st = DB::query("DELETE FROM days WHERE day = :day AND :status IS NOT NULL AND status=:status", array(':day' => $day, ':status' => empty($_GET['status']) ? NULL : $_GET['status'])); //delete old event for that day
   if($status=='delete') {
     log_event("Admin", "DayDeleted", $day);
   }
@@ -139,28 +144,25 @@ function addDay() {
     header("Location: $destination", true, 302);
   else
     echo '<meta http-equiv="Location" content="'.$destination.'"><script>window.location="'.$destination.'";</script>';
-  echo 'test';
   die();
 }
 
 function working_days() {
-    $st = DB::query("SELECT * FROM days ORDER by day DESC");
-    $workingDays = array();
+  $st = DB::query("SELECT * FROM days ORDER by day DESC");
+  $workingDays = array();
 
-    while ( $row = $st->fetch() ) {
-    	$workingDays['days'][$row['day']]['day'] = $row['day'];
-		$workingDays['days'][$row['day']]['status'] = $row['status'];
-		$workingDays['days'][$row['day']]['confirmed'] = $row['confirmed'];
-		$workingDays['days'][$row['day']]['reason'] = $row['reason'];
-    }
-	if ( isset( $_GET['error'] ) ) {
-	if ( $_GET['error'] == "dayNotFound" ) $workingDays['errorMessage'] = "Diena nerasta.";
+  while ( $row = $st->fetch() ) {
+    $workingDays['days'][$row['day']][] = $row;
+  }
+    
+  if ( isset( $_GET['error'] ) ) {
+    if ( $_GET['error'] == "dayNotFound" ) $workingDays['errorMessage'] = "Diena nerasta.";
   }
 
   if ( isset( $_GET['status'] ) ) {
     if ( $_GET['status'] == "changesSaved" ) $workingDays['statusMessage'] = "Pakeitimai išsaugoti.";
     if ( $_GET['status'] == "dayDeleted" ) $workingDays['statusMessage'] = "Dienos žyma pašalinta.";
-	if ( $_GET['status'] == "dayAdded" ) $workingDays['statusMessage'] = "Dienos žyma pridėta.";
+    if ( $_GET['status'] == "dayAdded" ) $workingDays['statusMessage'] = "Dienos žyma pridėta.";
   }
 
 	require( TEMPLATE_PATH . "/admin/working_days.php" );
