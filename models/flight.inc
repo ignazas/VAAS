@@ -64,7 +64,7 @@ class Flight
   * @return Array|false A two-element array : results => array, a list of Flight objects; totalRows => Total number of articles
   */
   public static function getList( $numRows=1000000, $order = '-date', $filter = NULL) {
-    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS *
+    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS f.*
                      FROM flights f
                      LEFT OUTER JOIN jos_users u ON f.payer=u.id
                      LEFT OUTER JOIN jos_users i ON f.instructor=i.id
