@@ -276,11 +276,19 @@ function get_day_letter($date) {
 }
 
 function order_link($name=NULL, $url=NULL, $title=NULL) {
-  $order = isset($_GET['order']) ? ($_GET['order'] == $name ? 'asc' : 'desc') : NULL;
-
+  $ordercol = isset($_GET['order']) ? ($_GET['order'][0] == '+' || $_GET['order'][0] == '-' ? substr($_GET['order'], 1) : $_GET['order']) : NULL;
+  $order = $ordercol == $name ? ($_GET['order'][0] != '-' ? 'asc' : 'desc') : NULL;
+  
+  $params = array();
+  foreach ($_GET as $key => $value) {
+      $params[$key] = $value;
+  }
+  $params['order'] = $order == 'asc' ? "-$name" : $name;
+  $params = http_build_query($params);
+  
   $output = NULL;
   if (!empty($url)) {
-    $output .= '<a href="' . htmlspecialchars($url . (strpos($url, '?') ? '&' : '?') . 'order=' . urlencode($order != 'desc' ? "-$name" : $name)) . '">';
+    $output .= '<a href="' . htmlspecialchars($url . (strpos($url, '?') ? '&' : '?') . $params) . '">';
   }
   if (!empty($title))
     $output .= $title;

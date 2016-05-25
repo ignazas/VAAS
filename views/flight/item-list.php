@@ -1,6 +1,15 @@
+<?php
+$airplanes = array();
+foreach ($results['flights']['results'] as $flight) {
+  if (empty($airplanes[$flight->airplane_id])) $airplanes[$flight->airplane_id] = array('duration' => 0, 'amount' => 0);
+  $airplanes[$flight->airplane_id]['duration'] += $flight->duration;
+  $airplanes[$flight->airplane_id]['amount'] += $flight->amount;
+}
+?>
+
 <div class="page-header"><h1>Skrydžiai</h1></div>
 
-<div class="col-md-12">
+<div class="col-md-8">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Filtrai</h3>
@@ -20,10 +29,10 @@
                 </span>
 		<script type="text/javascript">
 		  $(function () {
-                    $('#date_datepicker').datetimepicker({locale:'lt', format: 'YYYY-MM-DD', defaultDate: '<?php echo !empty($_GET["date"]) ? $_GET["date"] : NULL ?>'});
+                  $('#date_datepicker').datetimepicker({locale:'lt', format: 'YYYY-MM-DD', defaultDate: '<?php echo !empty($_GET["date"]) ? $_GET["date"] : NULL ?>'});
 		  });
 		</script>
-              </div>
+	      </div>
             </div>
           </div>
 	  <div class="form-group">
@@ -31,7 +40,18 @@
 	    <div class="col-sm-9">
 	      <input type="text" name="search" class="form-control" value="<?php echo !empty($_GET['search']) ? $_GET['search'] : NULL ?>" />
             </div>
-          </Div>
+          </div>
+	  <div class="form-group">
+	    <label for="status" class="col-sm-3 control-label">Lėktuvas</label>
+	    <div class="col-sm-9">
+	      <select name="aircraft" class="form-control">
+		<option value="">Visi</option>
+<?php foreach ($results['airplanes'] as $aircraftid => $aircraft) { ?>
+		<option value="<?php echo $aircraft->id ?>"<?php echo !empty($_GET['aircraft']) && $aircraft->id == $_GET['aircraft'] ? 'selected="selected"' : NULL ?>><?php echo $aircraft->name ?> ( <?php echo $aircraft->reg_num ?>)</option>
+<?php } ?>
+              </select>
+            </div>
+          </div>
           <div class="form-group">
 	    <div class="col-sm-offset-3 col-sm-9">
 	      <button type="submit" class="btn btn-primary">Filtruoti</button>
@@ -43,17 +63,38 @@
   </div>
 </div>
 
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Orlaivių laikai pagal filtrus</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+<?php foreach ($airplanes as $planeid => $data) { ?>
+        <li class="list-group-item">
+	  <?php echo (!empty($results['airplanes'][$planeid]) ? ($results['airplanes'][$planeid]->name . ' (' . $results['airplanes'][$planeid]->reg_num . ')') : NULL) ?>:
+	  <?php echo !empty($data['amount']) ? floatval($data['amount']) : NULL ?>
+	  /
+	  <?php echo DateHelper::time_as_string(!empty($data['duration']) ? floatval($data['duration']) : NULL) ?>
+	</li>
+<?php } ?>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <div class="col-md-12">
+  <label>Įrašų: <?php echo $results['flights']['totalRows'] ?></label>
   <table class="table table-striped">
     <thead>
       <tr>
-	<th><?php echo order_link('date', 'index.php?action=flight&view=ItemList', 'Data') ?></th>
-	<th>Orlaivis</th>
-	<th>Paslauga</th>
-	<th>Keleivis/Pirkėjas</th>
-	<th>Instruktorius</th>
-	<th>Kiekis</th>
-	<th>Trukmė</th>
+	<th style="width:90px;"><?php echo order_link('date', "index.php", 'Data') ?></th>
+	<th><?php echo order_link('a.name', "index.php", 'Orlaivis') ?></th>
+	<th><?php echo order_link('s.title', "index.php", 'Paslauga') ?></th>
+	<th><?php echo order_link('u.name', "index.php", 'Keleivis/Pirkėjas') ?></th>
+	<th><?php echo order_link('i.name', "index.php", 'Instruktorius') ?></th>
+	<th><?php echo order_link('f.amount', "index.php", 'Kiekis') ?></th>
+	<th><?php echo order_link('f.duration', "index.php", 'Trukmė') ?></th>
 	<th style="width:60px;"></th>
 <?php if ($this->HasPermission()) { ?>
 	<th style="width:60px;"></th>
@@ -85,7 +126,7 @@
 	  <?php echo theme('display', 'amount', NULL, $flight) ?>
 	</td>
 	<td>
-    <?php echo theme('display_time', 'time', NULL, $flight, array('time' => !empty($flight->duration) ? floatval($flight->duration) : NULL)) ?>
+	  <?php echo theme('display_time', 'time', NULL, $flight, array('time' => !empty($flight->duration) ? floatval($flight->duration) : NULL)) ?>
 	</td>
 	<td>
 	  <a class="btn btn-xs btn-default" href="admin.php?action=flight&amp;view=View&amp;id=<?php echo $flight->record_id ?>">Peržiūrėti</a>

@@ -68,6 +68,8 @@ class Flight
                      FROM flights f
                      LEFT OUTER JOIN jos_users u ON f.payer=u.id
                      LEFT OUTER JOIN jos_users i ON f.instructor=i.id
+                     LEFT OUTER JOIN vak_aircrafts a ON f.airplane_id=a.id
+                     LEFT OUTER JOIN services s ON f.service_id=s.id
                      WHERE 1=1" . (!empty($filter) ? " AND " . $filter : NULL) . "
                      " . (empty($order) ? NULL : "ORDER BY " . ltrim($order, '-+') . ($order[0] == '-' ? ' DESC' : ' ASC')) .
           (!empty($numRows) ? " LIMIT $numRows" : NULL));

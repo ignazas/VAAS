@@ -508,6 +508,11 @@ class FlightControler extends BaseControler {
       $escaped = DB::escape($_GET['date']);
       $filters[] = "date = $escaped";
     }
+    if (!empty($_GET['aircraft']) && is_numeric($_GET['aircraft'])) {
+      $escaped = intval($_GET['aircraft']);
+      $filters[] = "a.id = $escaped";
+    }
+    
 
     $results = array(
       'flights' => Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : '-date', implode(' AND ', $filters)),
