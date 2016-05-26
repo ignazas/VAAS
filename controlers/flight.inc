@@ -549,7 +549,7 @@ class FlightControler extends BaseControler {
     $escaped = DB::escape($_GET['date']);
     $filters[] = "date = $escaped";
 
-    $flights = Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : '-date', implode(' AND ', $filters));
+    $flights = Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : '-a.name, a.reg_num, a.id, f.date, f.record_id', implode(' AND ', $filters));
 
     $source = dirname(__FILE__) . '/../templates/word/chronometrazas.docx';
     $newFile = dirname(__FILE__) . "/../uploads/flights/chronometrazas " . date('Y-m-d') . '.docx';
@@ -569,10 +569,37 @@ class FlightControler extends BaseControler {
     $total_count = 0;
     $total_time = 0;
     if (!empty($flights['totalRows'])) {
-      $document->cloneRow('AIRCRAFT_TYPE', $flights['totalRows']);
+      $linecount = 0;
+      $id = NULL;
+      foreach ($flights['results'] as $flight) {
+        $linecount++;
+        if (!empty($id) && $id != $flight->airplane_id) {
+          $linecount++;
+        }
+        $id = $flight->airplane_id;
+      }
+      $linecount++;
+      
+      $document->cloneRow('AIRCRAFT_TYPE', $linecount);
 
+      $plane_count = 0;
+      $plane_time = 0;
       $i = 0;
       foreach ($flights['results'] as $flight) {
+        if (!empty($aircraft) && $aircraft->id != $flight->airplane_id) {
+          $i++;
+          //plane changed - print total sum
+          $document->setValue('AIRCRAFT_TYPE#'.$i, '');
+          $document->setValue('AIRCRAFT_REGISTRATION_NO#'.$i, '');
+          $document->setValue('PILOT#'.$i, '');
+          $document->setValue('INSTRUCTOR#'.$i, '');
+          $document->setValue('TASK#'.$i, 'Iš viso:');
+          $document->setValue('FLIGHT_COUNT#'.$i, $plane_count);
+          $document->setValue('FLIGHT_TIME#'.$i, DateHelper::time_as_string($plane_time));
+          
+          $plane_count = 0;
+          $plane_time = 0;
+        }
         $i++;
 
         $task = empty($flight->service_id) ? NULL : Service::getById($flight->service_id);
@@ -590,6 +617,21 @@ class FlightControler extends BaseControler {
 
         $total_count += $flight->amount;
         $total_time += DateHelper::time_as_float($flight->duration);
+
+        $plane_count += $flight->amount;
+        $plane_time += DateHelper::time_as_float($flight->duration);
+      }
+
+      if (!empty($aircraft) && (!empty($plane_time) || !empty($plane_count))) {
+        $i++;
+        //plane changed - print total sum
+        $document->setValue('AIRCRAFT_TYPE#'.$i, '');
+        $document->setValue('AIRCRAFT_REGISTRATION_NO#'.$i, '');
+        $document->setValue('PILOT#'.$i, '');
+        $document->setValue('INSTRUCTOR#'.$i, '');
+        $document->setValue('TASK#'.$i, 'Iš viso:');
+        $document->setValue('FLIGHT_COUNT#'.$i, $plane_count);
+        $document->setValue('FLIGHT_TIME#'.$i, DateHelper::time_as_string($plane_time));
       }
     } else {
         $document->setValue('AIRCRAFT_TYPE', '');
