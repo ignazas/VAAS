@@ -30,6 +30,12 @@ class BaseControler {
       unset($params['code']);
     }
 
+    if (empty($params['skip_destination']) || $params['skip_destination'] != TRUE) {
+      $destination = $this->Destination();
+      if (!empty($destination))
+        $this->Redirect($destination, $code);
+    }
+
     $q = NULL;
     if (!empty($params) && is_array($params))
       $q = '&' . http_build_query($params, '', '&');
@@ -59,5 +65,13 @@ class BaseControler {
     else
       echo '<meta http-equiv="Location" content="' . $url . '"><script>window.location="'.$url.'";</script>';
     die();
+  }
+
+  static public function Referrer() {
+    return !empty($_POST['destination']) ? $_POST['destination'] : $_SERVER['HTTP_REFERER'];
+  }
+
+  static public function Destination() {
+    return !empty($_POST['destination']) ? $_POST['destination'] : NULL;
   }
 }

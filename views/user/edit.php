@@ -1,29 +1,30 @@
-	<div class="page-header"><h1>Vartotojo nustatymai</h1></div>
-      	<div class="row">
+<div class="page-header"><h1>Vartotojo nustatymai</h1></div>
+<div class="row">
 
-        <form action="" method="post" id="user_edit" enctype= "multipart/form-data">
-	<div class="col-md-4">
-        <img src="<?php echo empty($user->avatar) ? 'images/users/avatar.jpg' : "uploads/users/$user->avatar" ?>" style="width: 150px; height: 150px;" class="img-thumbnail" alt="150x150 Foto">
-        <input type="file" name="avatar" id="avatar" value="Įkelti" /><br />
+  <form action="" method="post" id="user_edit" enctype= "multipart/form-data">
+    <input type="hidden" name="destination" value="<?php echo $this->Referrer() ?>" />
+    <div class="col-md-4">
+      <img src="<?php echo empty($user->avatar) ? 'images/users/avatar.jpg' : "uploads/users/$user->avatar" ?>" style="width: 150px; height: 150px;" class="img-thumbnail" alt="150x150 Foto">
+      <input type="file" name="avatar" id="avatar" value="Įkelti" /><br />
 <?php if (UserHelper::has_permission()) { ?>
-                    <?php echo theme('display', 'usertype', 'Vartotojo tipas', $user, $edit) ?>
-                    <?php echo theme('checkbox', 'usertype|Super_Administrator', 'Super Administratorius', $user, $edit) ?>
-                    <?php echo theme('checkbox', 'usertype|Administrator', 'Administratorius', $user, $edit) ?>
-                    <?php echo theme('checkbox', 'usertype|Flight_Manager', 'Skydžių administratorius', $user, $edit) ?>
-                    <?php echo theme('checkbox', 'usertype|Publisher', 'Naujienų rašytojas', $user, $edit) ?>
-                    <?php echo theme('checkbox', 'usertype|Registered', 'Registruotas', $user, $edit) ?>
-                    <?php echo theme('checkbox', 'usertype|Planner', 'Planuotojas', $user, $edit) ?>
-                    <?php echo theme('checkbox', 'instructor', 'Instruktorius', $user, $edit) ?>
-                    <?php //echo theme('', 'catid', 'Kategorija', $user, $edit) ?>
-    <div class="form-group">
-      <label class="control-label" for="catid">Kategorija</label>
-      <select name="catid" id="catid" class="form-control">
-	<option value=""></option>
-<?php foreach ($categories['results'] as $cat) { ?>
-	<option value="<?php echo $cat->id ?>"<?php echo (!empty($_POST['catid']) && $_POST['catid'] == $cat->id) || (!empty($user->catid) && $user->catid == $cat->id) ? ' selected="selected"' : NULL ?>><?php echo $cat->title ?></option>
-<?php } ?>
-      </select>
-    </div>
+      <?php echo theme('display', 'usertype', 'Vartotojo tipas', $user, $edit) ?>
+      <?php echo theme('checkbox', 'usertype|Super_Administrator', 'Super Administratorius', $user, $edit) ?>
+      <?php echo theme('checkbox', 'usertype|Administrator', 'Administratorius', $user, $edit) ?>
+      <?php echo theme('checkbox', 'usertype|Flight_Manager', 'Skydžių administratorius', $user, $edit) ?>
+      <?php echo theme('checkbox', 'usertype|Publisher', 'Naujienų rašytojas', $user, $edit) ?>
+      <?php echo theme('checkbox', 'usertype|Registered', 'Registruotas', $user, $edit) ?>
+      <?php echo theme('checkbox', 'usertype|Planner', 'Planuotojas', $user, $edit) ?>
+      <?php echo theme('checkbox', 'instructor', 'Instruktorius', $user, $edit) ?>
+      <?php //echo theme('', 'catid', 'Kategorija', $user, $edit) ?>
+      <div class="form-group">
+	<label class="control-label" for="catid">Kategorija</label>
+	<select name="catid" id="catid" class="form-control">
+	  <option value=""></option>
+<?php   foreach ($categories['results'] as $cat) { ?>
+	  <option value="<?php echo $cat->id ?>"<?php echo (!empty($_POST['catid']) && $_POST['catid'] == $cat->id) || (!empty($user->catid) && $user->catid == $cat->id) ? ' selected="selected"' : NULL ?>><?php echo $cat->title ?></option>
+<?php   } ?>
+        </select>
+</div>
 
 <?php } else { ?>
                     <?php echo theme('display', 'usertype', 'Vartotojo tipas', $user, $edit) ?>

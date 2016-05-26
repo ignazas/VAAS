@@ -2,6 +2,7 @@
 
 <form id="flight-edit" class="form-horizontal" action="" method="POST" role="form">
   <input type="hidden" name="id" value="<?php echo $results['flight']->record_id ?>" />
+  <input type="hidden" name="destination" value="<?php echo $this->Referrer() ?>" />
   <fieldset>
     <legend>Redaguoti skrydį</legend>
 
