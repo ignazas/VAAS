@@ -4,6 +4,7 @@
   <form role="form" action="" method="post">
     <input type="hidden" name="articleId" value="<?php echo $results['article']->id ?>"/>
     <input type="hidden" name="publicationDate" id="publicationDate" value="<?php echo date("Y-m-d");?>"><br />
+    <input type="hidden" name="destination" value="<?php echo $this->Referrer() ?>" />
 
     <div class="form-group">
       <label for="title">Pavadinimas</label>
@@ -29,7 +30,7 @@
       <h3 class="panel-title">Administravimas</h3>
     </div>
     <div class="panel-body">
-      <p><a href="admin.php?action=Article&amp;view=Delete&amp;articleId=<?php echo $results['article']->id ?>" onclick="return confirm('Ar tikrai norite pašalinti pranešimą?')">Pašalinti pranešimą.</a></p>
+      <p><a class="btn btn-xs btn-danger" href="admin.php?action=Article&amp;view=Delete&amp;articleId=<?php echo $results['article']->id ?>" onclick="return confirm('Ar tikrai norite pašalinti pranešimą?')">Pašalinti</a></p>
     </div>
   </div>
 </div>
