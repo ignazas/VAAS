@@ -23,7 +23,7 @@ class FlightControler extends BaseControler {
       }
       foreach ($_POST['payer'] as $key => $value) {
         if (empty($value)) {
-          Messages::form_error('payer[' . $key . ']', "Mokinys/Pirkėjas negali būti tuščias.");
+          Messages::form_error('payer[' . $key . ']', "Pilotas negali būti tuščias.");
         }
       }
       foreach ($_POST['airplane_id'] as $key => $value) {
@@ -42,7 +42,7 @@ class FlightControler extends BaseControler {
         Messages::form_error('date', "Data negali būti tuščia.");
       }
       if (empty($_POST['payer'])) {
-        Messages::form_error('payer', "Mokinys/Pirkėjas negali būti tuščias.");
+        Messages::form_error('payer', "Pilotas negali būti tuščias.");
       }
       if (empty($_POST['airplane_id'])) {
         Messages::form_error('airplane_id', "Orlaivis negali būti nenurodytas.");
@@ -66,7 +66,7 @@ class FlightControler extends BaseControler {
     }
 
     if (empty($data['user_id'])) {
-      Messages::form_error('user_id', "Mokinys turi būti nurodytas.");
+      Messages::form_error('user_id', "Pilotas turi būti nurodytas.");
     }
 
     if (!empty($data['count'])) {

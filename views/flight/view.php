@@ -26,9 +26,9 @@ if (isset($results['flight']->airplane_id)) {
   <div class="col-md-8">
     <?php echo theme('display', 'date', 'Data', $results['flight']) ?>
     <?php echo theme('display', 'name', 'Orlaivis', $airplane, array('name' => $airplane->name . ' (' . $airplane->reg_num . ')')) ?>
-    <?php echo theme('display', 'title', 'Paslauga', $service) ?>
+    <?php echo theme('display', 'title', 'Skrydis', $service) ?>
     <?php echo theme('display', 'name', 'Instruktorius', $instructor) ?>
-    <?php echo theme('display', 'name', 'Mokinys/Mokėtojas', $payer) ?>
+    <?php echo theme('display', 'name', 'Pilotas', $payer) ?>
     <?php //echo theme('display', 'task', 'Užduotis', $results['flight']) ?>
     <?php echo theme('display_time', 'time', 'Trukmė', $results['flight'], array('time' => !empty($results['flight']->duration) ? floatval($results['flight']->duration) : NULL)) ?>
     <?php echo theme('display', 'amount', 'Kiekis', $results['flight']) ?>

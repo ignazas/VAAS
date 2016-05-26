@@ -90,8 +90,8 @@ foreach ($results['flights']['results'] as $flight) {
       <tr>
 	<th style="width:90px;"><?php echo order_link('date', "index.php", 'Data') ?></th>
 	<th><?php echo order_link('a.name', "index.php", 'Orlaivis') ?></th>
-	<th><?php echo order_link('s.title', "index.php", 'Paslauga') ?></th>
-	<th><?php echo order_link('u.name', "index.php", 'Keleivis/Pirkėjas') ?></th>
+	<th><?php echo order_link('s.title', "index.php", 'Skrydis') ?></th>
+	<th><?php echo order_link('u.name', "index.php", 'Pilotas') ?></th>
 	<th><?php echo order_link('i.name', "index.php", 'Instruktorius') ?></th>
 	<th><?php echo order_link('f.amount', "index.php", 'Kiekis') ?></th>
 	<th><?php echo order_link('f.duration', "index.php", 'Trukmė') ?></th>

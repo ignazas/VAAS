@@ -10,7 +10,7 @@
     </div>
 
     <div class="form-group">
-      <label class="control-label" for="service">Paslauga</label>
+      <label class="control-label" for="service">Skrydis</label>
       <select name="service_id" id="service" class="form-control service"<?php if (!$this->HasPermission('Flight Manager')) echo ' disabled="disabled"'; ?>>
 	<option value=""></option>
 <?php foreach ($services['results'] as $service) { ?>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="form-group">
-      <label class="control-label" for="payer">Mokinys/Pirkėjas</label>
+      <label class="control-label" for="payer">Pilotas</label>
       <select name="payer" id="payer" class="form-control user"<?php if (!$this->HasPermission('Flight Manager')) echo ' disabled="disabled"'; ?>>
 	<option value=""></option>
 <?php foreach ($users['results'] as $user) { ?>

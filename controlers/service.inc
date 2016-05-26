@@ -32,7 +32,7 @@ class ServiceControler extends BaseControler {
     $this->view = dirname(__FILE__) . '/../views/service/edit.php';
 
     $results = array(
-      'pageTitle' => "Naujas paslauga",
+      'pageTitle' => "Nauja paslauga",
     );
 
     $edit = array();

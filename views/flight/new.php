@@ -8,7 +8,7 @@
       <thead>
 	<tr>
 	  <th class="date" rowspan="2">Data</th>
-	  <th class="service" rowspan="2">Paslauga</th>
+	  <th class="service" rowspan="2">Skrydis</th>
 	  <th class="user student">Pilotas</th>
 	  <th class="glider" colspan="2">Orlaivis</th>
 	  <th class="price">Kaina,&#160;€</th>
