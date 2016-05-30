@@ -57,7 +57,8 @@ class UserControler extends BaseControler {
         //print_r($_FILES["avatar"]);
         die("Error: " . $_FILES["avatar"]["error"]);
       }
-
+      
+      $id = !empty($_GET['id']) ? $_GET['id'] : (!empty($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL);
       $filename = $id . '-' . $_FILES['avatar']['name'];
       if (function_exists('imagecreatefromstring')) {
         $MAX_WIDTH = 150;
