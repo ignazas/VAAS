@@ -31,5 +31,17 @@ tinymce.init({
     image_advtab: true,
 });
     </script>
+
+<?php if (UserHelper::logged_in()) { ?>
+<script type="text/javascript">
+var _urq = _urq || [];
+_urq.push(['initSite', 'c8b1fc13-8b14-4a07-b399-c12617d3f826']);
+(function() {
+var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true;
+ur.src = ('https:' == document.location.protocol ? 'https://cdn.userreport.com/userreport.js' : 'http://cdn.userreport.com/userreport.js');
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur, s);
+})();
+</script>
+<?php } ?>
   </body>
 </html>
