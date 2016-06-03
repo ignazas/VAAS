@@ -32,7 +32,13 @@ if (isset($results['flight']->airplane_id)) {
     <?php //echo theme('display', 'task', 'Užduotis', $results['flight']) ?>
     <?php echo theme('display_time', 'time', 'Trukmė', $results['flight'], array('time' => !empty($results['flight']->duration) ? floatval($results['flight']->duration) : NULL)) ?>
     <?php echo theme('display', 'amount', 'Kiekis', $results['flight']) ?>
+<?php if (!empty($service->unit)) { ?>
+    <?php echo theme('display', 'amount_unit', 'Papildomai mokėta už <span class="service_unit" style="">' . $service->unit . '</span>', $results['flight']) ?>
+<?php } ?>
     <?php echo theme('display_money', 'price', 'Suma', $results['flight']) ?>
+<? if (!empty($instructor)) { ?>
+    <?php echo theme('display_money', 'price_instructor', 'Instruktoriui', $results['flight']) ?>
+<?php } ?>
     <br />
   </div>
 

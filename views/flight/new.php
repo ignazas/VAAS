@@ -1,36 +1,91 @@
-<form id="flight-add" class="form-horizontal" action="" method="POST">
-  <fieldset>
+<?php if (!empty($results['flights']['results'])) { ?>
+<div class="col-md-12">
+  <label>Įrašų: <?php echo $results['flights']['totalRows'] ?></label>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th style="width:90px;"><?php echo order_link('date', "index.php", 'Data') ?></th>
+	<th><?php echo order_link('a.name', "index.php", 'Orlaivis') ?></th>
+	<th><?php echo order_link('s.title', "index.php", 'Skrydis') ?></th>
+	<th><?php echo order_link('u.name', "index.php", 'Pilotas') ?></th>
+	<th><?php echo order_link('i.name', "index.php", 'Instruktorius') ?></th>
+	<th><?php echo order_link('f.amount', "index.php", 'Kiekis') ?></th>
+	<th><?php echo order_link('f.duration', "index.php", 'Trukmė') ?></th>
+	<th><?php echo order_link('f.price', "index.php", 'Nuskaityta') ?></th>
+	<th style="width:60px;"></th>
+      </tr>
+    </thead>
+    <tbody>
+<?php foreach ( $results['flights']['results'] as $flight) { ?>
+      <tr>
+	<td>
+	  <?php echo theme('display', 'date', NULL, $flight) ?>
+	</td>
+	<td>
+	  <?php echo !empty($results['airplanes'][$flight->airplane_id]) ? ($results['airplanes'][$flight->airplane_id]->name . ' (' . $results['airplanes'][$flight->airplane_id]->reg_num . ')') : NULL ?>
+	</td>
+	<td>
+	  <?php echo !empty($results['services'][$flight->service_id]) ? $results['services'][$flight->service_id]->title : NULL ?>
+	</td>
+	<td>
+	  <?php echo !empty($results['users'][$flight->payer]) ? $results['users'][$flight->payer]->name : NULL ?>
+	</td>
+	<td>
+	  <?php echo !empty($results['users'][$flight->instructor]) ? $results['users'][$flight->instructor]->name : NULL ?>
+	</td>
+	<td>
+	  <?php echo theme('display', 'amount', NULL, $flight) ?>
+	</td>
+	<td>
+	  <?php echo theme('display_time', 'time', NULL, $flight, array('time' => !empty($flight->duration) ? floatval($flight->duration) : NULL)) ?>
+	</td>
+	<td>
+	  <?php echo theme('display_money', 'price', NULL, $flight) ?>
+	</td>
+	<td>
+	  <a class="btn btn-xs btn-default" href="admin.php?action=flight&amp;view=View&amp;id=<?php echo $flight->record_id ?>">Peržiūrėti</a>
+	</td>
+      </tr>
+<?php } ?>
+    </tbody>
+  </table>
+</div>
+<?php } ?>
 
-    <!-- Form Name -->
-    <legend>Įtraukti skrydį</legend>
+<div class="col-md-12">
+  <form id="flight-add" class="form-horizontal" action="" method="POST">
+    <fieldset>
 
-    <table class="table table-bordered table-hover">
-      <thead>
-	<tr>
-	  <th class="date" rowspan="2">Data</th>
-	  <th class="service" rowspan="2">Skrydis</th>
-	  <th class="user student">Pilotas</th>
-	  <th class="glider" colspan="2">Orlaivis</th>
-	  <th class="price">Kaina,&#160;€</th>
-	</tr>
-	<tr>
-	  <!-- <th class="service">Pratimas</th> -->
-	  <th class="instructor">Instruktorius</th>
-	  <th class="quantity">Kiekis</th>
-	  <th class="time">Laikas</th>
-	  <th class="actions"></th>
-	</tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+      <!-- Form Name -->
+      <legend>Įtraukti skrydį</legend>
 
-    <label class="control-label" for="singlebutton"></label>
-	<button id="submit" name="saveChanges" name="saveChanges" class="btn btn-primary">Saugoti</button>
-	<a href="#" class="add" class="btn">Pridėti eilutę</a>
-    </div>
-  </fieldset>
-</form>
+      <table class="table table-bordered table-hover">
+	<thead>
+	  <tr>
+	    <th class="date" rowspan="2">Data</th>
+	    <th class="service" rowspan="2">Skrydis</th>
+	    <th class="user student">Pilotas</th>
+	    <th class="glider" colspan="2">Orlaivis</th>
+	    <th class="price">Kaina,&#160;€</th>
+	  </tr>
+	  <tr>
+	    <!-- <th class="service">Pratimas</th> -->
+	    <th class="instructor">Instruktorius</th>
+	    <th class="quantity">Kiekis</th>
+	    <th class="time">Laikas</th>
+	    <th class="actions"></th>
+	  </tr>
+	</thead>
+	<tbody>
+	</tbody>
+      </table>
+
+      <label class="control-label" for="singlebutton"></label>
+      <button id="submit" name="saveChanges" name="saveChanges" class="btn btn-primary">Saugoti</button>
+      <a href="#" class="add" class="btn">Pridėti eilutę</a>
+    </fieldset>
+  </form>
+</div>
 
 <script language="javascript">
 jQuery(document).ready(function($) {
@@ -54,3 +109,4 @@ jQuery(document).ready(function($) {
     window.flightEntity.addRow($('form#flight-add'));
 });
 </script>
+

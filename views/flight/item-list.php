@@ -96,6 +96,9 @@ foreach ($results['flights']['results'] as $flight) {
 	<th><?php echo order_link('f.amount', "index.php", 'Kiekis') ?></th>
 	<th><?php echo order_link('f.duration', "index.php", 'Trukmė') ?></th>
 	<th><?php echo order_link('f.price', "index.php", 'Nuskaityta') ?></th>
+<?php   if ($this->HasPermission('Flight Manager')) { ?>
+	<th><?php echo order_link('f.price_instructor', "index.php", 'Instruktoriui') ?></th>
+<?php   } ?>
 	<th style="width:60px;"></th>
 <?php if ($this->HasPermission()) { ?>
 	<th style="width:60px;"></th>
@@ -130,6 +133,11 @@ foreach ($results['flights']['results'] as $flight) {
 	<td>
 	  <?php echo theme('display_money', 'price', NULL, $flight) ?>
 	</td>
+<?php   if ($this->HasPermission('Flight Manager')) { ?>
+	<td>
+	  <?php echo theme('display_money', 'price_instructor', NULL, $flight) ?>
+	</td>
+<?php   } ?>
 	<td>
 	  <a class="btn btn-xs btn-default" href="admin.php?action=flight&amp;view=View&amp;id=<?php echo $flight->record_id ?>">Peržiūrėti</a>
 	</td>

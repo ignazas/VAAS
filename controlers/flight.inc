@@ -6,6 +6,7 @@ require_once dirname(__FILE__) . '/../models/practice_data.inc';
 require_once dirname(__FILE__) . '/../helpers/date.inc';
 require_once dirname(__FILE__) . '/../models/user.inc';
 require_once dirname(__FILE__) . '/../models/service.inc';
+require_once dirname(__FILE__) . '/../models/finance.inc';
 
 class FlightControler extends BaseControler {
   private $view;
@@ -152,30 +153,15 @@ class FlightControler extends BaseControler {
                 (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($flight->price) ? '; price added: ' . (-$flight->price) : NULL)));
             }
 
-            if (!empty($flight->instructor)){
-              $instructor = User::Get($flight->instructor);
-              $instructorSalary = empty($flight->service_id) ? NULL : Service::getById($flight->service_id);
-              if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->price_for_instructor)) {
-                if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
-                  $price = $instructorSalary->price_for_instructor * $flight->duration;
-                }
-                else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
-                  $price = $instructorSalary->price_for_instructor * $flight->amount;
-                }
-                if (!empty($price))
-                  $price = round($price);
-
-                if (!empty($price)) {
-                  $finance = Finance::getByUserId($flight->instructor);
-                  $finance->flight_fee = floatval($finance->flight_fee) + $price;
-                  $finance->fee_notes = "Už $flight->date skrydžio instruktavimą.";
-                  $finance->update();
-                  Messages::set_message("Priskaityta suma instruktoriui $instructor->name už skrydžius: $price €.");
-                
-                  log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
-                    (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($price) ? '; price added: ' . $price : NULL)));
-                }
-              }
+            if (!empty($flight->price_instructor)){
+              $finance = Finance::getByUserId($flight->instructor);
+              $finance->flight_fee = floatval($finance->flight_fee) + $flight->price_instructor;
+              $finance->fee_notes = "Už $flight->date skrydžio instruktavimą.";
+              $finance->update();
+              Messages::set_message("Priskaityta suma instruktoriui $instructor->name už skrydžius: $flight->price_instructor €.");
+              
+              log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
+                (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($flight->price_instructor) ? '; price added: ' . $flight->price_instructor : NULL)));
             }
             
             if (!empty($practice_data)) {
@@ -217,7 +203,6 @@ class FlightControler extends BaseControler {
           $this->Transfer(NULL, 'ItemList');
         }
       }
-      include dirname(__FILE__) . '/../views/_layout.php';
     }
     elseif (isset($_POST['cancel'])) {
       // User has cancelled their edits: return to the flight list
@@ -228,8 +213,34 @@ class FlightControler extends BaseControler {
       // User has not posted the flight edit form yet: display the form
       $results['flight'] = new Flight(array('callsign' => ''));
 
-      include dirname(__FILE__) . '/../views/_layout.php';
     }
+
+    //filter all todays flights
+    $filters = array();
+    $escaped = DB::escape(date('Y-m-d'));
+    $filters[] = "date = $escaped";
+    $results['flights'] = Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : '-u.name', implode(' AND ', $filters));
+      
+    require_once dirname(__FILE__) . '/../models/user.inc';
+    $data = User::getList();
+    $results['users'] = array();
+    foreach ($data['results'] as $user)
+      $results['users'][$user->id] = $user;
+
+    require_once dirname(__FILE__) . '/../models/service.inc';
+    $data = Service::getList(1000000, 'title', 'is_flight=1');
+    $results['services'] = array();
+    foreach ($data['results'] as $service)
+      $results['services'][$service->id] = $service;
+
+    require_once dirname(__FILE__) . '/../models/aircraft.inc';
+    $data = Aircraft::getList();
+    $results['airplanes'] = array();
+    foreach ($data['results'] as $airplane)
+      $results['airplanes'][$airplane->id] = $airplane;
+
+
+    include dirname(__FILE__) . '/../views/_layout.php';
   }
 
   public function Delete() {
@@ -259,30 +270,15 @@ class FlightControler extends BaseControler {
           (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($flight->price) ? '; price added: ' . $flight->price : NULL)));
       }
 
-      if (!empty($flight->instructor)){
-        $instructor = User::Get($flight->instructor);
-        $instructorSalary = empty($flight->service_id) ? NULL : Service::getById($flight->service_id);
-        if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->price_for_instructor)) {
-          if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
-            $price = $instructorSalary->price_for_instructor * $flight->duration;
-          }
-          else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
-            $price = $instructorSalary->price_for_instructor * $flight->amount;
-          }
-          if (!empty($price))
-            $price = round($price);
-          
-          if (!empty($price)) {
-            $finance = Finance::getByUserId($flight->instructor);
-            $finance->flight_fee = floatval($finance->flight_fee) - $price;
-            $finance->fee_notes = "Už $flight->date skrydžio instruktavimą.";
-            $finance->update();
-            Messages::set_message("Susigražinta suma už skrydžius iš instruktoriaus $instructor->name: $price €.");
+      if (!empty($flight->price_instructor)){
+        $finance = Finance::getByUserId($flight->instructor);
+        $finance->flight_fee = floatval($finance->flight_fee) - $flight->price_instructor;
+        $finance->fee_notes = "Už $flight->date skrydžio instruktavimą.";
+        $finance->update();
+        Messages::set_message("Susigražinta suma už skrydžius iš instruktoriaus $instructor->name: $flight->price_instructor €.");
             
-            log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
-              (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($price) ? '; price added: ' . (-$price) : NULL)));
-          }
-        }
+        log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
+          (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($flight->price_instructor) ? '; price added: ' . (-$flight->price_instructor) : NULL)));
       }
 
       if (!empty($flight->task)) {
@@ -329,109 +325,66 @@ class FlightControler extends BaseControler {
           $price_before_update = empty($flight->price) ? 0 : $flight->price;
           $payer_before_update = empty($flight->payer) ? NULL : $flight->payer;
           $instructor_before_update = empty($flight->instructor) ? NULL : $flight->instructor;
+          $instructor_price_before_update = empty($flight->price_instructor) ? 0 : $flight->price_instructor;
           $flight->storeFormValues($_POST);
           if ($flight->update()) {
             $diff = 0;
             $finance = NULL;
-            if ($flight->price != $price_before_update) {
-              require_once dirname(__FILE__) . '/../models/finance.inc';
-              if ($payer_before_update == $flight->payer) {
-                $diff = ((empty($flight->price) ? 0 : $flight->price) - $price_before_update);
-                if (!empty($diff)) {
-                  //charge difference
-                  $finance = Finance::getByUserId($flight->payer);
-                  $finance->flight_fee = floatval($finance->flight_fee) - $diff;
-                  $finance->fee_notes = "Už $flight->date skrydį.";
-                  $finance->update();
 
-                  $user = User::Get($flight->payer);
-                  Messages::set_message($diff > 0 ? "Papildomai nuskaityta už atnaujintą skrydį iš piloto $user->name: $diff €." : "Susigražinta permokėta suma už atnaujintą skrydį pilotui $user->name: ".(-$diff)." €.");
-
-                  //log it
-                  log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
-                    (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($diff) ? '; price changed: ' . $diff : NULL)));
-                }
-              }
-              else {
-                //return money
-                if (!empty($payer_before_update) && !empty($price_before_update)) {
-                  $finance = Finance::getByUserId($payer_before_update);
-                  $finance->flight_fee = floatval($finance->flight_fee) + $price_before_update;
-                  $finance->fee_notes = "Už $flight->date skrydį.";
-                  $finance->update();
-                  $user = User::Get($flight->payer);
-                  Messages::set_message("Buvusiam mokėtojui $user->name sugražinta apmokėta suma: $price_before_update €.");
-
-                  //log it
-                  log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
-                    (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($price_before_update) ? '; price returned: ' . $price_before_update : NULL)));
-                }
-
-                //take money
-                if (!empty($flight->payer) && !empty($flight->price)) {
-                  $finance = Finance::getByUserId($flight->payer);
-                  $finance->flight_fee = floatval($finance->flight_fee) - $flight->price;
-                  $finance->fee_notes = "Už $flight->date skrydį.";
-                  $finance->update();
-                  $user = User::Get($flight->payer);
-                  Messages::set_message("Pilotui $user->name nuskaityta suma už skrydį: $flight->price €.");
-
-                  //log it
-                  log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
-                    (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($flight->price) ? '; price charged: ' . $flight->price : NULL)));
-                }
+            //return money
+            if ($payer_before_update != $flight->payer || $price_before_update != $flight->price) {
+              if (!empty($payer_before_update) && !empty($price_before_update)) {
+                $finance = Finance::getByUserId($payer_before_update);
+                $finance->flight_fee = floatval($finance->flight_fee) + $price_before_update;
+                $finance->fee_notes = "Už $flight->date skrydį.";
+                $finance->update();
+                $user = User::Get($flight->payer);
+                Messages::set_message("Buvusiam mokėtojui $user->name sugražinta apmokėta suma: $price_before_update €.");
+              
+                //log it
+                log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
+                  (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($price_before_update) ? '; price returned: ' . $price_before_update : NULL)));
               }
 
-              if ($flight->instructor != $instructor_before_update) {
+              //take money
+              if (!empty($flight->payer) && !empty($flight->price)) {
+                $finance = Finance::getByUserId($flight->payer);
+                $finance->flight_fee = floatval($finance->flight_fee) - $flight->price;
+                $finance->fee_notes = "Už $flight->date skrydį.";
+                $finance->update();
+                $user = User::Get($flight->payer);
+                Messages::set_message("Pilotui $user->name nuskaityta suma už skrydį: $flight->price €.");
+              
+                //log it
+                log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
+                  (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($flight->price) ? '; price charged: ' . $flight->price : NULL)));
+              }
+            }
+
+            if ($flight->instructor != $instructor_before_update || $flight->price_instructor != $instructor_price_before_update) {
+              //if instructor changed - get back money from first instructor
+              if (!empty($instructor_before_update) && !empty($instructor_price_before_update)) {
                 $instructor = User::Get($instructor_before_update);
-                $instructorSalary = empty($flight->service_id) ? NULL : Service::getById($flight->service_id);
-                if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->price_for_instructor)) {
-                  if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
-                    $price = $instructorSalary->price_for_instructor * $flight->duration;
-                  }
-                  else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
-                    $price = $instructorSalary->price_for_instructor * $flight->amount;
-                  }
-                  if (!empty($price))
-                    $price = round($price);
-                  
-                  if (!empty($price)) {
-                    $finance = Finance::getByUserId($flight->instructor);
-                    $finance->flight_fee = floatval($finance->flight_fee) - $price;
-                    $finance->fee_notes = "Už $flight->date skrydžio instruktavimą.";
-                    $finance->update();
-                    Messages::set_message("Susigražinta suma už skrydžius iš instruktoriaus $instructor->name: $price €.");
-                    
-                    log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
-                      (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($price) ? '; price added: ' . (-$price) : NULL)));
-                  }
-                }
+                $finance = Finance::getByUserId($instructor_before_update);
+                $finance->flight_fee = floatval($finance->flight_fee) - $instructor_price_before_update;
+                $finance->fee_notes = "Už $flight->date skrydžio instruktavimą.";
+                $finance->update();
+                Messages::set_message("Susigražinta suma už skrydžius iš instruktoriaus $instructor->name: $instructor_price_before_update €.");
+              
+                log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
+                  (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($instructor_price_before_update) ? '; price refunded: ' . (-$instructor_price_before_update) : NULL)));
               }
               
-              if (!empty($flight->instructor)){
+              if (!empty($flight->instructor) && !empty($flight->price_instructor)){
                 $instructor = User::Get($flight->instructor);
-                $instructorSalary = empty($flight->service_id) ? NULL : Service::getById($flight->service_id);
-                if (!empty($instructor) && !empty($instructorSalary) && !empty($instructorSalary->price_for_instructor)) {
-                  if ($instructorSalary->is_price_for_duration && !empty($flight->duration)) {
-                    $price = $instructorSalary->price_for_instructor * $flight->duration;
-                  }
-                  else if (!$instructorSalary->is_price_for_duration && !empty($flight->amount)) {
-                    $price = $instructorSalary->price_for_instructor * $flight->amount;
-                  }
-                  if (!empty($price))
-                    $price = round($price);
-                  
-                  if (!empty($price)) {
-                    $finance = Finance::getByUserId($flight->instructor);
-                    $finance->flight_fee = floatval($finance->flight_fee) + $price;
-                    $finance->fee_notes = "Už $flight->date skrydžio instruktavimą.";
-                    $finance->update();
-                    Messages::set_message("$instructor->name priskaityta suma už skrydžius: $price €.");
-                    
-                    log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
-                      (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($price) ? '; price added: ' . (-$price) : NULL)));
-                  }
-                }
+                $finance = Finance::getByUserId($flight->instructor);
+                $finance->flight_fee = floatval($finance->flight_fee) + $flight->price_instructor;
+                $finance->fee_notes = "Už $flight->date skrydžio instruktavimą.";
+                $finance->update();
+                Messages::set_message("$instructor->name priskaityta suma už skrydžius: $flight->price_instructor €.");
+              
+                log_event("Admin", "FinanceEdited", 'flight id: ' . $flight->record_id .
+                  (empty($finance) ? NULL : '; payment journal: ' . $finance->contact_id . (!empty($flight->price_instructor) ? '; price added: ' . ($flight->price_instructor) : NULL)));
               }
             }
 

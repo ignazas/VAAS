@@ -182,7 +182,7 @@ window.flightEntity = {
 		'type': 'POST',
 		async: false,
 		'success': function (resp) {
-		    window.flightEntity._users = window._.toArray($.parseJSON(resp));
+		    window.flightEntity._users = window._.toArray($.parseJSON(resp)).sort(function(a, b) {return a.name > b.name ? 1 : a.name < b.name ? -1 : 0; });
 		}
 	    });
 	}
@@ -196,7 +196,7 @@ window.flightEntity = {
 		'type': 'POST',
 		async: false,
 		'success': function (resp) {
-		    window.flightEntity._practices = window._.toArray($.parseJSON(resp));
+		    window.flightEntity._practices = window._.toArray($.parseJSON(resp)).sort(function(a, b) {return a.name > b.name ? 1 : a.name < b.name ? -1 : 0; });
 		}
 	    });
 	}
@@ -210,7 +210,7 @@ window.flightEntity = {
 		'type': 'POST',
 		async: false,
 		'success': function (resp) {
-		    window.flightEntity._services = window._.toArray($.parseJSON(resp));
+		    window.flightEntity._services = window._.toArray($.parseJSON(resp)).sort(function(a, b) {return a.title > b.title ? 1 : a.title < b.title ? -1 : 0; });
 		}
 	    });
 	}
@@ -224,7 +224,7 @@ window.flightEntity = {
 		'type': 'POST',
 		async: false,
 		'success': function (resp) {
-		    window.flightEntity._aircrafts = window._.toArray($.parseJSON(resp));
+		    window.flightEntity._aircrafts = window._.toArray($.parseJSON(resp)).sort(function(a, b) {return a.reg_num > b.reg_num ? 1 : a.reg_num < b.reg_num ? -1 : a.name > b.name ? 1 : a.name < b.name ? -1 : 0; });
 		}
 	    });
 	}
@@ -386,13 +386,13 @@ jQuery(document).ready(function($) {
 
 
     jQuery('form#flight-edit select#service, form#flight-edit select#payer, form#flight-edit #amount, form#flight-edit .amount_unit, form#flight-edit .time').on('change keyup', function() {
-	var row = $(this).parent('#flight-edit')[0];
+	var row = $(this).closest('#flight-edit')[0];
 	var selectService = $('select.service', row);
 	var selectStudent = $('select.user', row);
 	var price = $('.price input', row);
 	var time = $('.time input', row);
 	var qty = $('.amount input', row);
-	var selectUnitAmount = $('input.amount_unit', row);
+	var selectUnitAmount = $('.amount_unit input', row);
 
 	var elements = $.grep(window.flightEntity.getServices(), function(el) { return el.id == selectService.val(); });
 	var user = selectStudent.val() && $.grep(window.flightEntity.getUsers(), function(el) { return el.id == selectStudent.val(); })[0];

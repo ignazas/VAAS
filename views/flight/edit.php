@@ -1,4 +1,10 @@
-<?php $isOwner = $results['flight']->payer == UserHelper::get_id() ?>
+<?php
+$isOwner = $results['flight']->payer == UserHelper::get_id();
+$currentService = NULL;
+foreach ($services['results'] as $service)
+    if ($results['flight']->service_id == $service->id) $currentService = $service;
+?>
+         
 
 <form id="flight-edit" class="form-horizontal" action="" method="POST" role="form">
   <input type="hidden" name="id" value="<?php echo $results['flight']->record_id ?>" />
@@ -12,7 +18,7 @@
 
     <div class="form-group">
       <label class="control-label" for="service">Skrydis</label>
-      <select name="service_id" id="service" class="form-control service"<?php if (!$this->HasPermission('Flight Manager')) echo ' disabled="disabled"'; ?>>
+      <select name="service_id" disabled="disabled" id="service" class="form-control service"<?php if (!$this->HasPermission('Flight Manager')) echo ' disabled="disabled"'; ?>>
 	<option value=""></option>
 <?php foreach ($services['results'] as $service) { ?>
 	<option amount="<?php echo $service->amount ?>" is_discount="<?php echo $service->is_discount ?>" value="<?php echo $service->id ?>"<?php echo (!empty($_POST['service_id']) && $_POST['service_id'] == $service->id) || (!empty($results['flight']->service_id) && $results['flight']->service_id == $service->id) ? ' selected="selected"' : NULL ?>><?php echo $service->title ?></option>
@@ -53,6 +59,12 @@
     <div class="form-group amount qty"<?php if (!$this->HasPermission('Flight Manager')) echo ' disabled="disabled"'; ?>>
       <?php echo theme('number', 'amount', 'Kiekis', $results['flight'], $_POST) ?>
     </div>
+
+<?php if (!empty($currentService->unit)) { ?>
+    <div class="form-group amount_unit qty"<?php if (!$this->HasPermission('Flight Manager')) echo ' disabled="disabled"'; ?>>
+      <?php echo theme('number', 'amount_unit', 'Papildoma kaina už <span class="service_unit" style=""> * ' . $currentService->unit . '</span>', $results['flight'], $_POST) ?>
+    </div>
+<?php } ?>
 
     <div class="form-group duration time"<?php if (!$this->HasPermission('Flight Manager') && !$isOwner) echo ' disabled="disabled"'; ?>>
       <?php $d = isset($_POST['duration']) ? $_POST['duration'] : (isset($results['flight']->duration) ? floatval($results['flight']->duration) : NULL); ?>
