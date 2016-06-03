@@ -1,3 +1,5 @@
+<?php $finance = $results['finance']; $balance = (intval($finance->entry_fee)+intval($finance->member_fee)+intval($finance->labor_fee)+intval($finance->house_fee)+intval($finance->electricity_fee)+intval($finance->airworthiness_fee)+intval($finance->insurance_fee)+intval($finance->casco_fee)+intval($finance->flight_fee)+intval($finance->debt_fee)); ?>
+
 <form role="form" id="finance-edit" class="form-horizontal" action="" method="POST">
   <fieldset>
 
@@ -6,7 +8,12 @@
 
    <input type="hidden" name="contact_id" value="<?php echo $results['finance']->contact_id ?>" />
 
-   <!-- Text input-->
+   <div class="form-group">
+     <label class="col-sm-2 control-label">Balansas</label>
+     <div class="col-sm-10">
+       <?php echo theme('display_money', 'balance', NULL, (object)array('balance' => $balance, 'date' => !empty($results['finance']->date) ? $results['finance']->date : NULL)) ?>
+     </div>
+   </div>
    <div class="form-group">
      <label class="col-sm-2 control-label" for="flight_fee">Skrydžiai</label>
      <div class="col-sm-10">
@@ -56,13 +63,6 @@
      </div>
    </div>
    <div class="form-group">
-     <label class="col-sm-2 control-label">Balansas</label>
-     <div class="col-sm-10">
-       <?php $finance = $results['finance']; $balance = (intval($finance->entry_fee)+intval($finance->member_fee)+intval($finance->labor_fee)+intval($finance->house_fee)+intval($finance->electricity_fee)+intval($finance->airworthiness_fee)+intval($finance->insurance_fee)+intval($finance->casco_fee)+intval($finance->flight_fee)+intval($finance->debt_fee)); ?>
-       <?php echo theme('display_money', 'balance', NULL, (object)array('balance' => $balance, 'date' => !empty($results['finance']->date) ? $results['finance']->date : NULL)) ?>
-     </div>
-   </div>
-   <div class="form-group">
      <label class="col-sm-2" for="fee_notes">Komentarai</label>
      <div class="col-sm-10">
        <input type="text" id="fee_notes" name="fee_notes" class="form-control input-md" value="<?php echo $results['finance']->fee_notes ?>" />
@@ -85,6 +85,7 @@
     <table class="table table-striped">
       <thead>
 	<tr>
+    <th>Balansas</th>
 	  <th>Skrydžiai</th>
 	  <th>Nario mokestis</th>
 	  <th>Darbų/talkos mokestis</th>
@@ -93,14 +94,17 @@
 	  <th>Draudimas</th>
 	  <!-- <th>Kasko mokestis</th> -->
 	  <th>Už 2%</th>
-    <th>Balansas</th>
 	  <th>Komentarai</th>
 	  <th>Data</th>
 	</tr>
       </thead>
       <tbody>
 <?php  foreach ($results['journal'] as $r) { $r['date'] = $r['fee_updated']; $row = (object)$r; ?>
+    <?php $finance = $row; $balance = (intval($finance->entry_fee)+intval($finance->member_fee)+intval($finance->labor_fee)+intval($finance->house_fee)+intval($finance->electricity_fee)+intval($finance->airworthiness_fee)+intval($finance->insurance_fee)+intval($finance->casco_fee)+intval($finance->flight_fee)+intval($finance->debt_fee)); ?>
         <tr>
+	  <td title="Likutis" class="<?php echo empty($balance) ? 'warning' : ($balance < 0 ? 'danger' : 'success') ?>">
+	    <?php echo theme('display_money', 'balance', NULL, (object)array('balance' => $balance, 'date' => $finance->date)) ?>
+	  </td>
 	  <td><?php echo theme('display_money', 'flight_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display_money', 'member_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display_money', 'labor_fee', NULL, $row) ?></td>
@@ -109,8 +113,6 @@
 	  <td><?php echo theme('display_money', 'insurance_fee', NULL, $row) ?></td>
 	  <!-- <td><?php echo theme('display_money', 'casco_fee', NULL, $row) ?></td> -->
 	  <td><?php echo theme('display_money', 'debt_fee', NULL, $row) ?></td>
-    <?php $finance = $row; $balance = (intval($finance->entry_fee)+intval($finance->member_fee)+intval($finance->labor_fee)+intval($finance->house_fee)+intval($finance->electricity_fee)+intval($finance->airworthiness_fee)+intval($finance->insurance_fee)+intval($finance->casco_fee)+intval($finance->flight_fee)+intval($finance->debt_fee)); ?>
-    <td><?php echo theme('display_money', 'balance', NULL, (object)array('balance' => $balance, 'date' => $finance->date)) ?></td>
 	  <td><?php echo theme('display', 'fee_notes', NULL, $row) ?></td>
 	  <td><?php echo theme('display', 'fee_updated', NULL, $row) ?></td>
         </tr>
