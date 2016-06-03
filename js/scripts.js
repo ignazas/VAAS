@@ -45,7 +45,7 @@ window.flightEntity = {
 	    date = new Date(dates.last().val());
 	else {
 	    date = new Date();
-	    date.setDate(date.getDate() - 1);
+	    date.setDate(date.getDate());
 	}
 	var day = date.getDate();
 	var month = date.getMonth() + 1;
