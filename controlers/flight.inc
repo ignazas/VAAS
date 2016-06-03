@@ -33,8 +33,13 @@ class FlightControler extends BaseControler {
         }
       }
       foreach ($_POST['price'] as $key => $value) {
-        if (!empty($value) && !is_numeric($value)) {
+        if (!isset($value) || !is_numeric($value)) {
           Messages::form_error('price[' . $key . ']', "Kaina negali būti tuščia arba ne skaičius.");
+        }
+      }
+      foreach ($_POST['amount'] as $key => $value) {
+        if (empty($value) || !is_numeric($value)) {
+          Messages::form_error('amount[' . $key . ']', "Kiekis negali būti tuščias arba ne skaičius.");
         }
       }
     }
@@ -48,8 +53,11 @@ class FlightControler extends BaseControler {
       if (empty($_POST['airplane_id'])) {
         Messages::form_error('airplane_id', "Orlaivis negali būti nenurodytas.");
       }
-      if (empty($_POST['price']) || !is_numeric($_POST['price'])) {
+      if (!isset($_POST['price']) || !is_numeric($_POST['price'])) {
         Messages::form_error('price', "Kaina negali būti tuščia arba ne skaičius.");
+      }
+      if (empty($_POST['amount']) || !is_numeric($_POST['amount'])) {
+        Messages::form_error('amount', "Kiekis negali būti tuščias arba ne skaičius.");
       }
     }
 
