@@ -95,6 +95,7 @@ foreach ($results['flights']['results'] as $flight) {
 	<th><?php echo order_link('i.name', "index.php", 'Instruktorius') ?></th>
 	<th><?php echo order_link('f.amount', "index.php", 'Kiekis') ?></th>
 	<th><?php echo order_link('f.duration', "index.php", 'Trukmė') ?></th>
+	<th><?php echo order_link('f.price', "index.php", 'Nuskaityta') ?></th>
 	<th style="width:60px;"></th>
 <?php if ($this->HasPermission()) { ?>
 	<th style="width:60px;"></th>
@@ -104,8 +105,6 @@ foreach ($results['flights']['results'] as $flight) {
     </thead>
 	<tbody>
 <?php foreach ( $results['flights']['results'] as $flight) { ?>
-
-
       <tr>
 	<td>
 	  <?php echo theme('display', 'date', NULL, $flight) ?>
@@ -127,6 +126,9 @@ foreach ($results['flights']['results'] as $flight) {
 	</td>
 	<td>
 	  <?php echo theme('display_time', 'time', NULL, $flight, array('time' => !empty($flight->duration) ? floatval($flight->duration) : NULL)) ?>
+	</td>
+	<td>
+	  <?php echo theme('display_money', 'price', NULL, $flight) ?>
 	</td>
 	<td>
 	  <a class="btn btn-xs btn-default" href="admin.php?action=flight&amp;view=View&amp;id=<?php echo $flight->record_id ?>">Peržiūrėti</a>
