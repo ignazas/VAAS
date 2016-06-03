@@ -135,7 +135,9 @@ foreach ($results['flights']['results'] as $flight) {
 	</td>
 <?php   if ($this->HasPermission('Flight Manager')) { ?>
 	<td>
+<?php     if (!empty($flight->price_instructor)) { ?>
 	  <?php echo theme('display_money', 'price_instructor', NULL, $flight) ?>
+<?php     } ?>
 	</td>
 <?php   } ?>
 	<td>
