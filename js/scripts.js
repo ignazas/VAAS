@@ -165,8 +165,8 @@ window.flightEntity = {
 	window.flightEntity.updateNames(form);
     }
     , updateNames: function(form) {
-	$('.line', form).each(function(i, el){
-	    $('[name]', el).each(function(_i, _el) {
+	$('.line:not(.line-2)', form).each(function(i, el){
+  	    $('[name]', el).each(function(_i, _el) {
 		$(_el).attr('name', $(_el).attr('name').replace(/\[\d+\]$/, '[' + i + ']'));
 	    });
 	    $('[name]', $(el).next()).each(function(_i, _el) {
