@@ -40,6 +40,7 @@
                     <?php echo theme('text', 'name', 'Vardas', $user, $edit) ?>
 <?php } else { ?>
                     <?php echo theme('display', 'name', 'Vardas', $user, $edit) ?>
+		    <input type="hidden" name="name" value="<?php echo $user->name ?>" />
 <?php } ?>
                     <?php echo theme('email', 'email', 'El. paštas', $user, $edit) ?>
                     <?php echo theme('text', 'telephone1', 'Telefonas', $user, $edit) ?>
