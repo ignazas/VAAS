@@ -159,7 +159,7 @@ foreach ($results['flights']['results'] as $flight) {
   </table>
 <?php   if ($this->HasPermission('Flight Manager')) { ?>
   <br />
-  <a class="btn btn-sm btn-primary" href="index.php?action=flight&amp;view=NewItem">Pridėti naują skrydį</a>
+  <a class="btn btn-sm btn-primary" href="index.php?action=flight&amp;view=NewItem&amp;date=<?php echo !empty($_GET['date']) ? $_GET['date'] : NULL ?>">Pridėti naują skrydį</a>
   <a class="btn btn-sm btn-default" href="index.php?action=flight&amp;view=Download&amp;date=<?php echo !empty($_GET['date']) ? $_GET['date'] : NULL ?>">Parsisiųsti</a>
 <?php   } ?>
 </div>

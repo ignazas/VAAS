@@ -15,6 +15,20 @@ window._ = {
 	    return [obj];
 	else
 	    return [];
+    },
+    getUrlParameter: function(sParam) {
+	var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+	
+	for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+	    
+            if (sParameterName[0] === sParam) {
+		return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+	}
     }
 };
 window.flightEntity = {
@@ -44,7 +58,9 @@ window.flightEntity = {
 	if (dates.length > 0)
 	    date = new Date(dates.last().val());
 	else {
-	    date = new Date();
+	    var dateString = window._.getUrlParameter('date');
+	    if (dateString) date = new Date(Date.parse(dateString, "yyyy-MM-dd"));
+	    if (!date) date = new Date();
 	    date.setDate(date.getDate());
 	}
 	var day = date.getDate();
