@@ -224,7 +224,7 @@ window.flightEntity = {
 		'type': 'POST',
 		async: false,
 		'success': function (resp) {
-		    window.flightEntity._aircrafts = window._.toArray($.parseJSON(resp)).sort(function(a, b) {return a.reg_num > b.reg_num ? 1 : a.reg_num < b.reg_num ? -1 : a.name > b.name ? 1 : a.name < b.name ? -1 : 0; });
+		    window.flightEntity._aircrafts = window._.toArray($.parseJSON(resp)).sort(function(a, b) {return a.name > b.name ? 1 : a.name < b.name ? -1 : 0; });
 		}
 	    });
 	}
