@@ -162,6 +162,7 @@ class FlightControler extends BaseControler {
             }
 
             if (!empty($flight->price_instructor)){
+              $instructor = User::Get($flight->instructor);
               $finance = Finance::getByUserId($flight->instructor);
               $finance->flight_fee = floatval($finance->flight_fee) + $flight->price_instructor;
               $finance->fee_notes = "Už $flight->date skrydžio instruktavimą.";
@@ -279,6 +280,7 @@ class FlightControler extends BaseControler {
       }
 
       if (!empty($flight->price_instructor)){
+        $instructor = User::Get($flight->instructor);
         $finance = Finance::getByUserId($flight->instructor);
         $finance->flight_fee = floatval($finance->flight_fee) - $flight->price_instructor;
         $finance->fee_notes = "Už $flight->date skrydžio instruktavimą.";
