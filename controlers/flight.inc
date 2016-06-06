@@ -224,9 +224,11 @@ class FlightControler extends BaseControler {
 
     }
 
+    $results['date'] = !empty($_GET['date']) ? $_GET['date'] : date('Y-m-d');
+    
     //filter all todays flights
     $filters = array();
-    $escaped = DB::escape(date('Y-m-d'));
+    $escaped = DB::escape($results['date']);
     $filters[] = "date = $escaped";
     $results['flights'] = Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : '-u.name', implode(' AND ', $filters));
       
