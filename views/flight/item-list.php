@@ -29,7 +29,12 @@ foreach ($results['flights']['results'] as $flight) {
                 </span>
 		<script type="text/javascript">
 		  $(function () {
-                  $('#date_datepicker').datetimepicker({locale:'lt', format: 'YYYY-MM-DD', defaultDate: '<?php echo !empty($_GET["date"]) ? $_GET["date"] : NULL ?>'});
+              $('#date_datepicker').datetimepicker({locale:'lt', format: 'YYYY-MM-DD', defaultDate: '<?php echo !empty($_GET["date"]) ? $_GET["date"] : NULL ?>'});
+              $('#date').on("keydown", function(e){
+                  if (e.which == 13) {
+                      $(this).closest('form').submit();          
+                  }
+              });
 		  });
 		</script>
 	      </div>
