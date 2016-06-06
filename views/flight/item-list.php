@@ -93,8 +93,8 @@ foreach ($results['flights']['results'] as $flight) {
 	<th><?php echo order_link('s.title', "index.php", 'Skrydis') ?></th>
 	<th><?php echo order_link('u.name', "index.php", 'Pilotas') ?></th>
 	<th><?php echo order_link('i.name', "index.php", 'Instruktorius') ?></th>
-	<th><?php echo order_link('f.amount', "index.php", 'Kiekis') ?></th>
-	<th><?php echo order_link('f.duration', "index.php", 'Trukmė') ?></th>
+	<th><?php echo order_link('f.amount', "index.php", 'Kiekis') ?> / 
+	    <?php echo order_link('f.duration', "index.php", 'Trukmė') ?></th>
 	<th><?php echo order_link('f.price', "index.php", 'Nuskaityta') ?></th>
 <?php   if ($this->HasPermission('Flight Manager')) { ?>
 	<th><?php echo order_link('f.price_instructor', "index.php", 'Instruktoriui') ?></th>
@@ -125,10 +125,7 @@ foreach ($results['flights']['results'] as $flight) {
 	  <?php echo !empty($results['users'][$flight->instructor]) ? $results['users'][$flight->instructor]->name : NULL ?>
 	</td>
 	<td>
-	  <?php echo theme('display', 'amount', NULL, $flight) ?>
-	</td>
-	<td>
-	  <?php echo theme('display_time', 'time', NULL, $flight, array('time' => !empty($flight->duration) ? floatval($flight->duration) : NULL)) ?>
+	  <?php echo theme('display', 'amount_time', NULL, $flight, array('amount_time' => $flight->amount . (!empty($flight->duration) ? (' / ' . DateHelper::time_as_string(floatval($flight->duration))) : NULL))) ?>
 	</td>
 	<td>
 	  <?php echo theme('display_money', 'price', NULL, $flight) ?>

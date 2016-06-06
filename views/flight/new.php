@@ -1,18 +1,20 @@
 <?php if (!empty($results['flights']['results'])) { ?>
 <div class="col-md-12">
-  <label>Įrašų: <?php echo $results['flights']['totalRows'] ?></label>
+  <label><?php echo $results['date'] ?> dienos įrašų: <?php echo $results['flights']['totalRows'] ?></label>
   <table class="table table-striped">
     <thead>
       <tr>
-	<th style="width:90px;"><?php echo order_link('date', "index.php", 'Data') ?></th>
-	<th><?php echo order_link('a.name', "index.php", 'Orlaivis') ?></th>
-	<th><?php echo order_link('s.title', "index.php", 'Skrydis') ?></th>
-	<th><?php echo order_link('u.name', "index.php", 'Pilotas') ?></th>
-	<th><?php echo order_link('i.name', "index.php", 'Instruktorius') ?></th>
-	<th><?php echo order_link('f.amount', "index.php", 'Kiekis') ?></th>
-	<th><?php echo order_link('f.duration', "index.php", 'Trukmė') ?></th>
-	<th><?php echo order_link('f.price', "index.php", 'Nuskaityta') ?></th>
-	<th style="width:60px;"></th>
+	<th style="width:90px;">Data</th>
+	<th>Orlaivis</th>
+	<th>Skrydis</th>
+	<th>Pilotas</th>
+	<th>Instruktorius</th>
+	<th>Kiekis /
+	    Trukmė</th>
+	<th>Nuskaityta</th>
+<?php   if ($this->HasPermission('Flight Manager')) { ?>
+	<th>Instruktoriui</th>
+<?php   } ?>
       </tr>
     </thead>
     <tbody>
@@ -34,17 +36,18 @@
 	  <?php echo !empty($results['users'][$flight->instructor]) ? $results['users'][$flight->instructor]->name : NULL ?>
 	</td>
 	<td>
-	  <?php echo theme('display', 'amount', NULL, $flight) ?>
-	</td>
-	<td>
-	  <?php echo theme('display_time', 'time', NULL, $flight, array('time' => !empty($flight->duration) ? floatval($flight->duration) : NULL)) ?>
+	  <?php echo theme('display', 'amount_time', NULL, $flight, array('amount_time' => $flight->amount . (!empty($flight->duration) ? (' / ' . DateHelper::time_as_string(floatval($flight->duration))) : NULL))) ?>
 	</td>
 	<td>
 	  <?php echo theme('display_money', 'price', NULL, $flight) ?>
 	</td>
+<?php   if ($this->HasPermission('Flight Manager')) { ?>
 	<td>
-	  <a class="btn btn-xs btn-default" href="admin.php?action=flight&amp;view=View&amp;id=<?php echo $flight->record_id ?>">Peržiūrėti</a>
+<?php     if (!empty($flight->price_instructor)) { ?>
+	  <?php echo theme('display_money', 'price_instructor', NULL, $flight) ?>
+<?php     } ?>
 	</td>
+<?php   } ?>
       </tr>
 <?php } ?>
     </tbody>
