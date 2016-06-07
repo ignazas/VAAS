@@ -11,5 +11,5 @@
 <div class="col-md-4">
   <?php include 'block_user_search.php'; ?>
   <?php include 'block_article.php'; ?>
-  <?php include 'block_quote.php'; ?>
+  <?php //include 'block_quote.php'; ?>
 </div>
