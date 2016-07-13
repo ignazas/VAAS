@@ -59,9 +59,7 @@
 	  <th colspan="7">Mokesčiai</th>
 	  <th rowspan="2">Komentarai</th>
 	  <th rowspan="2" style="width:90px;">Atnaujinta</th>
-<?php if ($this->HasPermission()) { ?>
 	  <th rowspan="2"></th>
-<?php } ?>
 	</tr>
 	<tr>
 	  <th>Skrydžiai</th>
@@ -110,12 +108,12 @@
 	  <td title="Atnaujinta">
  	    <?php echo theme('display', 'fee_last_updated', NULL, $finance) ?>
 	  </td>
-<?php if ($this->HasPermission()) { ?>
 	  <td>
  	    <a class="btn btn-xs btn-default" href="index.php?action=finance&amp;view=View&amp;id=<?php echo $finance->contact_id ?>">Istorija</a>
+<?php if ($this->HasPermission()) { ?>
  	    <a class="btn btn-xs btn-default" href="index.php?action=finance&amp;view=Edit&amp;id=<?php echo $finance->user->id ?>">Redaguoti</a>
-	  </td>
 <?php } ?>
+	  </td>
 	</tr>
 <?php } ?>
       </tbody>
