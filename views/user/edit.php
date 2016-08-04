@@ -39,6 +39,7 @@
                     <?php echo theme('text', 'username', 'Vartotojo vardas (prisijungimas)', $user) ?>
 <?php } else { ?>
                     <?php echo theme('display', 'username', 'Vartotojo vardas (prisijungimas)', $user) ?>
+		    <input type="hidden" name="username" value="<?php echo $user->username ?>" />
 <?php } ?>
 <?php if (UserHelper::has_permission()) { ?>
                     <?php echo theme('text', 'name', 'Vardas, pavardė', $user, $edit) ?>
