@@ -35,11 +35,15 @@
             <div class="col-md-4">
                 <fieldset>
                     <legend>Pagrindinė informacija:</legend>
-                    <?php echo empty($user->id) ? theme('text', 'username', 'Vartotojo vardas', $user) : NULL ?>
-<?php if (UserHelper::has_permission()) { ?>
-                    <?php echo theme('text', 'name', 'Vardas', $user, $edit) ?>
+<?php if (empty($user->id) || UserHelper::has_permission()) { ?>
+                    <?php echo theme('text', 'username', 'Vartotojo vardas (prisijungimas)', $user) ?>
 <?php } else { ?>
-                    <?php echo theme('display', 'name', 'Vardas', $user, $edit) ?>
+                    <?php echo theme('display', 'username', 'Vartotojo vardas (prisijungimas)', $user) ?>
+<?php } ?>
+<?php if (UserHelper::has_permission()) { ?>
+                    <?php echo theme('text', 'name', 'Vardas, pavardė', $user, $edit) ?>
+<?php } else { ?>
+                    <?php echo theme('display', 'name', 'Vardas, pavardė', $user, $edit) ?>
 		    <input type="hidden" name="name" value="<?php echo $user->name ?>" />
 <?php } ?>
                     <?php echo theme('email', 'email', 'El. paštas', $user, $edit) ?>

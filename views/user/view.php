@@ -13,7 +13,7 @@
   <div class="col-md-4">
     <fieldset>
       <legend>Pagrindinė informacija:</legend>
-      <?php echo theme('display', 'name', 'Vardas', $user) ?>
+      <?php echo theme('display', 'name', 'Vardas, pavardė', $user) ?>
       <?php echo theme('display_email', 'email', 'El. paštas', $user) ?>
       <?php echo theme('display_phone', 'telephone1', 'Telefonas', $user) ?>
       <?php echo theme('display_url', 'website', 'Interneto svetainė', $user) ?>
