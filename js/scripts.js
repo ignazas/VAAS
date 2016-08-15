@@ -79,7 +79,7 @@ window.flightEntity = {
 	    if (service['is_flight'])
 		selectService.append($('<option></option>').val(service['id']).text(service['title']))
 	});
-	var cell = addCell(row, selectService, 'service_id').attr('rowspan', 2);
+	var cell = addCell(row, selectService, 'service_id');
 	var selectUnitAmount = addElement(cell, $('<input type="number" />'), 'amount_unit').addClass('amount_unit');
 	cell.append($('<span></span>').addClass('service_unit').html(''));
 	var updateService = function(el) {
@@ -122,6 +122,11 @@ window.flightEntity = {
 	//$.each(window.flightEntity.getPractices(), function(i, practice) { selectPractice.append($('<option></option>').val(practice['id']).text(practice['name'])) });
 	//addCell(row2, selectPractice, 'practice');
 	//options && options.practice && selectPractice.val(options.practice);
+
+	//comments
+	var comments = $('<input type="text" />').addClass('comments');
+	cell = addCell(row2, comments, 'comments');
+	options && options.comments && comments.val(options.comments);
 
 	//instructor
 	var selectPilot = $('<select />').addClass('user').append($('<option value=""></option>'));

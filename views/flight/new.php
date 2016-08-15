@@ -66,13 +66,14 @@
 	<thead>
 	  <tr>
 	    <th class="date" rowspan="2">Data</th>
-	    <th class="service" rowspan="2">Skrydis</th>
+	    <th class="service">Skrydis</th>
 	    <th class="user student">Pilotas</th>
 	    <th class="glider" colspan="2">Orlaivis</th>
 	    <th class="price">Kaina,&#160;€</th>
 	  </tr>
 	  <tr>
 	    <!-- <th class="service">Pratimas</th> -->
+	    <th class="comments">Komentarai</th>
 	    <th class="instructor">Instruktorius</th>
 	    <th class="quantity">Kiekis</th>
 	    <th class="time">Laikas</th>
@@ -104,6 +105,7 @@ jQuery(document).ready(function($) {
     , amount_unit: '<?php echo isset($_POST['amount_unit'][$key]) ? $_POST['amount_unit'][$key] : NULL ?>'
     , time: '<?php echo isset($_POST['time'][$key]) ? $_POST['time'][$key] : NULL ?>'
     , price: '<?php echo isset($_POST['price'][$key]) ? $_POST['price'][$key] : NULL ?>'
+    , comments: '<?php echo isset($_POST['comments'][$key]) ? $_POST['comments'][$key] : NULL ?>'
   });
 
 <?php } ?>

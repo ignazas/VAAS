@@ -104,6 +104,7 @@ foreach ($results['flights']['results'] as $flight) {
 <?php   if ($this->HasPermission('Flight Manager')) { ?>
 	<th><?php echo order_link('f.price_instructor', "index.php", 'Instruktoriui') ?></th>
 <?php   } ?>
+	<th><?php echo order_link('f.comments', "index.php", 'Komentarai') ?></th>
 	<th style="width:60px;"></th>
 <?php if ($this->HasPermission()) { ?>
 	<th style="width:60px;"></th>
@@ -142,6 +143,9 @@ foreach ($results['flights']['results'] as $flight) {
 <?php     } ?>
 	</td>
 <?php   } ?>
+	<td>
+	  <?php echo theme('display', 'comments', NULL, $flight) ?>
+	</td>
 	<td>
 	  <a class="btn btn-xs btn-default" href="admin.php?action=flight&amp;view=View&amp;id=<?php echo $flight->record_id ?>">Peržiūrėti</a>
 	</td>

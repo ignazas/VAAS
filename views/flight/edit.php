@@ -75,6 +75,10 @@ foreach ($services['results'] as $service)
       <?php echo theme('number', 'price', 'Kaina', $results['flight'], $_POST) ?>
     </div>
 
+    <div class="form-group comment">
+      <?php echo theme('text', 'comments', 'Komentarai', $results['flight'], $_POST) ?>
+    </div>
+
     <div class="buttons">
 <?php   if ($this->HasPermission('Flight Manager') || $isOwner) { ?>
       <input type="submit" class="btn btn-sm btn-primary" name="saveChanges" value="Saugoti" />
