@@ -162,6 +162,40 @@ foreach ($results['flights']['results'] as $flight) {
 
 <?php } ?>
 	</tbody>
+<?php   if ($this->HasPermission('Flight Manager') || ($flight->payer == UserHelper::get_id())) { ?>
+    <tfoot>
+<?php
+$amount = 0;
+$duration = 0.0;
+$price = 0.0;
+$price_instructor = 0.0;
+foreach ( $results['flights']['results'] as $flight) {
+  $amount += $flight->amount;
+  $duration += floatval($flight->duration);
+  $price += $flight->price;
+  $price_instructor += $flight->price_instructor;
+}
+?>
+      <tr>
+	<td style="width:90px;"></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td><?php echo theme('display', 'amount_time', NULL, NULL, array('amount_time' => $amount . (!empty($duration) ? (' / ' . DateHelper::time_as_string(floatval($duration))) : NULL))) ?></td>
+	<td><?php echo theme('display_money', 'price', NULL, NULL, array('price' => $price)) ?></td>
+<?php   if ($this->HasPermission('Flight Manager')) { ?>
+	<td><?php echo theme('display_money', 'price_instructor', NULL, NULL, array('price_instructor' => $price_instructor)) ?></td>
+<?php   } ?>
+	<td></td>
+	<td style="width:60px;"></td>
+<?php if ($this->HasPermission()) { ?>
+	<td style="width:60px;"></td>
+	<td style="width:69px;"></td>
+<?php } ?>
+      </tr>
+    </tfoot>
+<?php   } ?>
   </table>
 <?php   if ($this->HasPermission('Flight Manager')) { ?>
   <br />
