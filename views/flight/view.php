@@ -39,6 +39,7 @@ if (isset($results['flight']->airplane_id)) {
 <? if (!empty($instructor)) { ?>
     <?php echo theme('display_money', 'price_instructor', 'Instruktoriui', $results['flight']) ?>
 <?php } ?>
+    <?php echo theme('display', 'comments', 'Komentarai', $results['flight']) ?>
     <br />
   </div>
 

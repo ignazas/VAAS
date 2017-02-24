@@ -18,6 +18,7 @@ class Flight
   public $service_id = null;
   public $amount_unit = null;
   public $price_instructor = null;
+  public $comments = null;
 
   /**
   * Sets the object's properties using the values in the supplied array
@@ -52,6 +53,7 @@ class Flight
           $this->price_instructor = round($this->price_instructor);
       }
     }
+    if (isset($data['comments'])) $this->comments = $data['comments'];
   }
 
   /**
@@ -116,8 +118,8 @@ class Flight
     if (!is_null($this->record_id)) trigger_error ( "Flight::insert(): Attempt to insert an Flight object that does have its record_id property set (to $this->record_id).", E_USER_ERROR );
 
     // Insert the Flight
-    $this->record_id = DB::insert("INSERT INTO flights (date, airplane_id, instructor, payer, task, amount, price, service_id, duration, amount_unit, price_instructor)
-    VALUES (" . DB::date_as_string($this->date) . ", :airplane_id, :instructor, :payer, :task, :amount, :price, :service_id, :duration, :amount_unit, :price_instructor)", array(
+    $this->record_id = DB::insert("INSERT INTO flights (date, airplane_id, instructor, payer, task, amount, price, service_id, duration, amount_unit, price_instructor, comments)
+    VALUES (" . DB::date_as_string($this->date) . ", :airplane_id, :instructor, :payer, :task, :amount, :price, :service_id, :duration, :amount_unit, :price_instructor, :comments)", array(
         ":airplane_id" => $this->airplane_id,
         ":instructor" => DB::null_if_empty($this->instructor),
         ":payer" => $this->payer,
@@ -128,6 +130,7 @@ class Flight
         ":duration" => DB::null_if_empty($this->duration),
         ":amount_unit" => DB::null_if_empty($this->amount_unit),
         ":price_instructor" => DB::null_if_empty($this->price_instructor),
+        ":comments" => $this->comments,
     ));
 
     return !empty($this->record_id);
@@ -141,7 +144,7 @@ class Flight
     if (is_null($this->record_id)) trigger_error ( "Flight::update(): Attempt to update an Flight object that does not have its record_id property set.", E_USER_ERROR );
 
     // Update the Flight
-    $st = DB::query("UPDATE flights SET date=" . DB::date_as_string($this->date) . ", airplane_id=:airplane_id, instructor=:instructor, payer=:payer, task=:task, amount=:amount, price=:price, service_id=:service_id, duration=:duration, amount_unit=:amount_unit, price_instructor=:price_instructor WHERE record_id = :record_id", array(
+    $st = DB::query("UPDATE flights SET date=" . DB::date_as_string($this->date) . ", airplane_id=:airplane_id, instructor=:instructor, payer=:payer, task=:task, amount=:amount, price=:price, service_id=:service_id, duration=:duration, amount_unit=:amount_unit, price_instructor=:price_instructor, `comments`=:comments WHERE record_id = :record_id", array(
         ":airplane_id" => $this->airplane_id,
         ":instructor" => DB::null_if_empty($this->instructor),
         ":payer" => $this->payer,
@@ -153,6 +156,7 @@ class Flight
         ":amount_unit" => DB::null_if_empty($this->amount_unit),
         ":price_instructor" => DB::null_if_empty($this->price_instructor),
         ":record_id" => $this->record_id,
+        ":comments" => $this->comments,
       ));
 
     return TRUE;//$st->rowCount();
