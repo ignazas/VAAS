@@ -16,6 +16,9 @@ class UserControler extends BaseControler {
   }
 
   private function Validate($user) {
+    $current_user_id = !empty($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL;
+    $id = !empty($_GET['id']) ? $_GET['id'] : (!empty($_SESSION['user']['id']) ? $_SESSION['user']['id'] : NULL);
+
     if (empty($_POST['name'])) {
       Messages::form_error('name', "Vardas negali būti tuščias.");
     }
@@ -27,10 +30,8 @@ class UserControler extends BaseControler {
       if (!filter_var($_POST['website'], FILTER_VALIDATE_URL))
         Messages::form_error('website', "Internetinis adresas $_POST[website] yra neteisingas.");
     }
-    if (!empty($_POST['password']) && (!empty($_POST['new_password_1']) || !empty($_POST['new_password_2']))) {
-      if (md5($_POST['password']) != $user->password)
-        Messages::form_error('password', "Neteisintas senas slaptažodis.");
-      else if ($_POST['new_password_1'] != $_POST['new_password_2'])
+    if (($this->HasPermission() || (!empty($id) && $current_user_id == $id)) && (!empty($_POST['new_password_1']) || !empty($_POST['new_password_2']))) {
+      if ($_POST['new_password_1'] != $_POST['new_password_2'])
         Messages::form_error('password', "Įvestas naujas slaptažodis nesutampa.");
       else if (empty($_POST['new_password_1']) || empty($_POST['new_password_2']))
         Messages::form_error('password', "Naujas slaptažodis negali būti tuščias.");
@@ -121,7 +122,7 @@ class UserControler extends BaseControler {
 
     if ($user && $_SERVER['REQUEST_METHOD'] == 'POST') {
       if (empty($_POST['new_password_1']) || empty($_POST['new_password_2']) || $_POST['new_password_1'] != $_POST['new_password_2'])
-        Messages::form_error('password_1', "Slaptažodis negali būti tuščias ir turi sutapti.");
+        Messages::form_error('new_password_1', "Slaptažodis negali būti tuščias ir turi sutapti.");
 
       if ($this::Validate($user)) {
         $password = $_POST['new_password_1'];
@@ -188,8 +189,9 @@ class UserControler extends BaseControler {
       $edit['instructor'] = empty($_POST['instructor']) ? 0 : 1;
 
       if ($this::Validate($user)) {
-        if (!empty($_POST['password']) && !empty($_POST['new_password_1'])) {
+        if (!empty($_POST['new_password_1'])) {
           $edit['password'] = md5($_POST['new_password_1']);
+	        Messages::set_message("Slaptažodis vartotojui $user->name pakeistas.");
         }
 
         foreach (array('name', 'username', 'email', 'telephone1', 'website', 'discount', 'licenseNo', 'licenseValidTill', 'healthNo', 'healthValidTill', 'instructor_id', 'catid') as $key) {

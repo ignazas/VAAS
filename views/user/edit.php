@@ -39,6 +39,7 @@
                     <?php echo theme('text', 'username', 'Vartotojo vardas (prisijungimas)', $user) ?>
 <?php } else { ?>
                     <?php echo theme('display', 'username', 'Vartotojo vardas (prisijungimas)', $user) ?>
+		    <input type="hidden" name="username" value="<?php echo $user->username ?>" />
 <?php } ?>
 <?php if (UserHelper::has_permission()) { ?>
                     <?php echo theme('text', 'name', 'Vardas, pavardė', $user, $edit) ?>
@@ -73,8 +74,7 @@
 		</div>
 		<div class="col-md-4">
                 <fieldset>
-                    <legend>Slaptažodis:</legend>
-                    <?php echo !empty($user->id) ? theme('password', 'password', 'Senas', $user, array('password' => '')) : NULL ?>
+                    <legend>Slaptažodžio keitimas:</legend>
                     <?php echo theme('password', 'new_password_1', 'Naujas', $user, $edit) ?>
                     <?php echo theme('password', 'new_password_2', 'Pakartoti', $user, $edit) ?>
                 </fieldset>
