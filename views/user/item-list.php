@@ -17,7 +17,7 @@
             </div>
           </div>
 	  <div class="form-group">
-	    <label for="status" class="col-sm-3 control-label">Būsena</label>
+	    <label for="status" class="col-sm-3 control-label">Kategorija</label>
 	    <div class="col-sm-9">
 	      <select name="group" class="form-control">
 		<option value="">Visi</option>
@@ -82,8 +82,10 @@
           <?php echo theme('display', 'website', NULL, $user) ?>
 	</td>
 	<td>
-          <?php echo theme('display', 'con_position', 'Pareigos', $user) ?>
-	  <?php echo theme('display', 'usertype', 'Vartotojo tipas', $user) ?>
+          <?php /*echo theme('display', 'con_position', 'Pareigos', $user)*/ ?>
+          <?php if (!empty($user->catid)) foreach ($results['categories']['results'] as $cat) if ($cat->id == $user->catid) $user->category = $cat; ?>
+          <?php echo theme('display', 'name', 'Kategorija', $user->category) ?>
+          <?php /*echo theme('display', 'usertype', 'Vartotojo tipas', $user)*/ ?>
           <?php echo theme('display', 'registerDate', 'Užsiregistravo', $user) ?>
           <?php echo theme('display', 'lastvisitDate', 'Paskutinis apsilankymas', $user) ?>
 	</td>
@@ -93,7 +95,7 @@
 <?php  if (UserHelper::has_permission()) { ?>
 	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti įrašą <?php echo $user->name ?>?')" href="index.php?action=user&amp;view=Delete&amp;id=<?php echo $user->id ?>">Pašalinti</a>
 <?php  } ?>
-<?php  if (UserHelper::is_student($user)) { ?>
+<?php  if (FALSE && UserHelper::is_student($user)) { ?>
  	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;user_id=<?php echo $user->id ?>">Mokymo programos vykdymas</a>
  	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;view=DataItemList&amp;user_id=<?php echo $user->id ?>">Eigos lapas</a>
  	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;view=Download&amp;user_id=<?php echo $user->id ?>">Mokymo ataskaita</a>

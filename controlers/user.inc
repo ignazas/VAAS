@@ -245,6 +245,8 @@ class UserControler extends BaseControler {
     if (!empty($id) && ($user = $this->user_model->Get($id)) && !empty($user)) {
       if (!empty($user->instructor_id))
         $user->practice_instructor = User::Get($user->instructor_id);
+      if (!empty($user->catid))
+        $user->category = Category::getById($user->catid);
 
       $this->view = dirname(__FILE__) . '/../views/user/view.php';
     }
@@ -272,6 +274,7 @@ class UserControler extends BaseControler {
     $results = array(
       'users' => User::getList(1000000, 'u.name', implode(' AND ', $filters)),
       'groups' => UserGroup::getList(),
+      'categories' => Category::getList(),
     );
 
     include dirname(__FILE__) . '/../views/_layout.php';
