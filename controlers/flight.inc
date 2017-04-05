@@ -461,17 +461,23 @@ class FlightControler extends BaseControler {
   public function ItemList() {
     $this->view = dirname(__FILE__) . '/../views/flight/item-list.php';
 
-    if (!isset($_GET['date']))
-      $_GET['date'] = date('Y-m-d');
+    if (!isset($_GET['date_from']) && !isset($_GET['date_to'])) {
+      $_GET['date_from'] = date('Y-m-d');
+      $_GET['date_to'] = date('Y-m-d');
+    }
 
     $filters = array();
     if (!empty($_GET['search'])) {
       $escaped = DB::escape('%' . $_GET['search'] . '%');
       $filters[] = "(u.name LIKE $escaped OR u.username LIKE $escaped OR u.email LIKE $escaped OR i.name LIKE $escaped OR i.username LIKE $escaped OR i.email LIKE $escaped)";
     }
-    if (!empty($_GET['date'])) {
-      $escaped = DB::escape($_GET['date']);
-      $filters[] = "date = $escaped";
+    if (!empty($_GET['date_from'])) {
+      $escaped = DB::escape($_GET['date_from']);
+      $filters[] = "date >= $escaped";
+    }
+    if (!empty($_GET['date_to'])) {
+      $escaped = DB::escape($_GET['date_to']);
+      $filters[] = "date <= $escaped";
     }
     if (!empty($_GET['aircraft']) && is_numeric($_GET['aircraft'])) {
       $escaped = intval($_GET['aircraft']);
@@ -508,11 +514,25 @@ class FlightControler extends BaseControler {
     if (!$this->HasPermission('Flight Manager'))
       $this->Transfer();
 
-    $date = empty($_GET['date']) ? date('Y-m-d') : $_GET['date'];
-    $filters = array();
+	$filters = array();
 
-    $escaped = DB::escape($_GET['date']);
-    $filters[] = "date = $escaped";
+    $date = !empty($_GET['date']) ? $_GET['date'] : date('Y-m-d');
+    if (!empty($date)) {
+      $escaped = DB::escape($date);
+      $filters[] = "date = $escaped";
+    }
+
+    $date_from = !empty($_GET['date_from']) ? $_GET['date_from'] : NULL;
+    if (!empty($date_from)) {
+      $escaped = DB::escape($date_from);
+      $filters[] = "date >= $escaped";
+    }
+
+    $date_to = !empty($_GET['date_to']) ? $_GET['date_to'] : date('Y-m-d');
+    if (!empty($date_to)) {
+      $escaped = DB::escape($date_to);
+      $filters[] = "date <= $escaped";
+    }
 
     $flights = Flight::getList(NULL, !empty($_GET['order']) ? $_GET['order'] : '-a.name, a.reg_num, a.id, f.date, f.record_id', implode(' AND ', $filters));
 
@@ -611,9 +631,17 @@ class FlightControler extends BaseControler {
     $document->setValue('TOTAL_FLIGHTS', $total_count);
     $document->setValue('TOTAL_TIME', DateHelper::time_as_string($total_time));
 
-    $document->setValue('YEAR', date('Y', strtotime($date)));
-    $document->setValue('MONTH', date('m', strtotime($date)));
-    $document->setValue('DAY', date('d', strtotime($date)));
+    $document->setValue('YEAR', !empty($date) ? date('Y', strtotime($date)) : NULL);
+    $document->setValue('MONTH', !empty($date) ? date('m', strtotime($date)) : NULL);
+    $document->setValue('DAY', !empty($date) ? date('d', strtotime($date)) : NULL);
+
+    $document->setValue('YEAR_FROM', !empty($date_from) ? date('Y', strtotime($date_from)) : NULL);
+    $document->setValue('MONTH_FROM', !empty($date_from) ? date('m', strtotime($date_from)) : NULL);
+    $document->setValue('DAY_FROM', !empty($date_from) ? date('d', strtotime($date_from)) : NULL);
+
+    $document->setValue('YEAR_TO', !empty($date_to) ? date('Y', strtotime($date_to)) : NULL);
+    $document->setValue('MONTH_TO', !empty($date_to) ? date('m', strtotime($date_to)) : NULL);
+    $document->setValue('DAY_TO', !empty($date_to) ? date('d', strtotime($date_to)) : NULL);
 
     $document->save($newFile);
 

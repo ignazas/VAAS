@@ -19,18 +19,19 @@ foreach ($results['flights']['results'] as $flight) {
 	<form role="form" method="get" action="" class="col-xs-12 form-horizontal">
 	  <input type="hidden" name="action" value="flight" />
 	  <input type="hidden" name="view" value="ItemList" />
+
 	  <div class="form-group">
-	    <label for="status" class="col-sm-3 control-label">Data</label>
+	    <label for="status" class="col-sm-3 control-label">Nuo</label>
 	    <div class="col-sm-9">
-	      <div class="input-group" id="date_datepicker">
-                <input type="text" name="date" id="date" class="form-control" />
+	      <div class="input-group" id="date_from_datepicker">
+                <input type="text" name="date_from" id="date_from" class="form-control" />
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
 		<script type="text/javascript">
 		  $(function () {
-              $('#date_datepicker').datetimepicker({locale:'lt', format: 'YYYY-MM-DD', defaultDate: '<?php echo !empty($_GET["date"]) ? $_GET["date"] : NULL ?>'});
-              $('#date').on("keydown", function(e){
+              $('#date_from_datepicker').datetimepicker({locale:'lt', format: 'YYYY-MM-DD', defaultDate: '<?php echo !empty($_GET["date_from"]) ? $_GET["date_from"] : NULL ?>'});
+              $('#date_from').on("keydown", function(e){
                   if (e.which == 13) {
                       $(this).closest('form').submit();          
                   }
@@ -40,6 +41,29 @@ foreach ($results['flights']['results'] as $flight) {
 	      </div>
             </div>
           </div>
+
+      <div class="form-group">
+	    <label for="status" class="col-sm-3 control-label">Iki</label>
+	    <div class="col-sm-9">
+	      <div class="input-group" id="date_to_datepicker">
+                <input type="text" name="date_to" id="date_to" class="form-control" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+		<script type="text/javascript">
+		  $(function () {
+              $('#date_to_datepicker').datetimepicker({locale:'lt', format: 'YYYY-MM-DD', defaultDate: '<?php echo !empty($_GET["date_to"]) ? $_GET["date_to"] : NULL ?>'});
+              $('#date_to').on("keydown", function(e){
+                  if (e.which == 13) {
+                      $(this).closest('form').submit();          
+                  }
+              });
+		  });
+		</script>
+	      </div>
+            </div>
+          </div>
+
 	  <div class="form-group">
 	    <label for="status" class="col-sm-3 control-label">Paieška</label>
 	    <div class="col-sm-9">
@@ -199,7 +223,7 @@ foreach ( $results['flights']['results'] as $flight) {
   </table>
 <?php   if ($this->HasPermission('Flight Manager')) { ?>
   <br />
-  <a class="btn btn-sm btn-primary" href="index.php?action=flight&amp;view=NewItem&amp;date=<?php echo !empty($_GET['date']) ? $_GET['date'] : NULL ?>">Pridėti naują skrydį</a>
-  <a class="btn btn-sm btn-default" href="index.php?action=flight&amp;view=Download&amp;date=<?php echo !empty($_GET['date']) ? $_GET['date'] : NULL ?>">Parsisiųsti</a>
+  <a class="btn btn-sm btn-primary" href="index.php?action=flight&amp;view=NewItem&amp;date=<?php echo !empty($_GET['date_to']) ? $_GET['date_to'] : NULL ?>">Pridėti naują skrydį</a>
+  <a class="btn btn-sm btn-default" href="index.php?action=flight&amp;view=Download&amp;date=<?php echo !empty($_GET['date_to']) ? $_GET['date_to'] : NULL ?>">Parsisiųsti</a>
 <?php   } ?>
 </div>
