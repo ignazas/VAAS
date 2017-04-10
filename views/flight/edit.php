@@ -51,7 +51,7 @@ foreach ($services['results'] as $service)
       <select name="airplane_id" id="airplane_id" class="form-control airplane"<?php if (!$this->HasPermission('Flight Manager')) echo ' disabled="disabled"'; ?>>
 	<option value=""></option>
 <?php foreach ($airplanes['results'] as $airplane) { ?>
-	<option value="<?php echo $airplane->id ?>"<?php echo (!empty($_POST['airplane_id']) && $_POST['airplane_id'] == $airplane->id) || (!empty($results['flight']->airplane_id) && $results['flight']->airplane_id == $airplane->id) ? ' selected="selected"' : NULL ?>><?php echo $airplane->name ?></option>
+	<option value="<?php echo $airplane->id ?>"<?php echo (!empty($_POST['airplane_id']) && $_POST['airplane_id'] == $airplane->id) || (!empty($results['flight']->airplane_id) && $results['flight']->airplane_id == $airplane->id) ? ' selected="selected"' : NULL ?>><?php echo $airplane->name ?> (<?php echo $airplane->reg_num ?>)</option>
 <?php } ?>
       </select>
     </div>
