@@ -120,8 +120,7 @@
 <?php if ($this->HasPermission()) { ?>
 <?php
 $balance = 0.0;
-$flight_feex = 0.0;
-$member_fee = 0.0;
+$flight_fee = 0.0;
 $member_fee = 0.0;
 $house_fee = 0.0;
 $electricity_fee = 0.0;
@@ -131,7 +130,6 @@ $labor_fee = 0.0;
 foreach ( $results['finances']['results'] as $finance) {
   $balance += (intval($finance->entry_fee)+intval($finance->member_fee)+intval($finance->labor_fee)+intval($finance->house_fee)+intval($finance->electricity_fee)+intval($finance->airworthiness_fee)+intval($finance->insurance_fee)+intval($finance->casco_fee)+intval($finance->flight_fee)+intval($finance->debt_fee));
   $flight_fee += $finance->flight_fee;
-  $member_fee += $finance->member_fee;
   $member_fee += $finance->member_fee;
   $house_fee += $finance->house_fee;
   $electricity_fee += $finance->electricity_fee;
