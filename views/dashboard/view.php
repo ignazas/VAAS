@@ -13,3 +13,4 @@
   <?php include 'block_article.php'; ?>
   <?php //include 'block_quote.php'; ?>
 </div>
+<?php include 'block_cam.php'; ?>
