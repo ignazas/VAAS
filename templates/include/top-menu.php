@@ -29,9 +29,10 @@ $admin = UserHelper::has_permission();
 		<li <?php if ($action=="flight") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=flight&amp;view=ItemList&amp;date=&amp;search=<?php echo empty($_SESSION['user']['name']) ? NULL : $_SESSION['user']['name'] ?>" title="Mano skrydžiai"><i class="glyphicon glyphicon-list-alt"></i> Mano skrydžiai</a></li>
 		<li <?php if ($action=="analysis"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=analysis" title="Analizė"><i class="glyphicon glyphicon-book"></i> Analizė</a></li>
 <?php  if (UserHelper::is_student()) { ?>
-		<li <?php if ($action=="practice") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=practice" title="Skrydžių praktikos lapas"><i class="glyphicon glyphicon-list-alt"></i> Skrydžių praktikos lapas</a></li>
-                <li <?php if ($action=="practice_data") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=practice&amp;view=DataItemList" title="Praktikos atlikimas"><i class="glyphicon glyphicon-list"></i> Praktikos atlikimas</a></li>
+<!--		<li <?php if ($action=="practice") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=practice" title="Skrydžių praktikos lapas"><i class="glyphicon glyphicon-list-alt"></i> Skrydžių praktikos lapas</a></li> -->
+<!--                <li <?php if ($action=="practice_data") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=practice&amp;view=DataItemList" title="Praktikos atlikimas"><i class="glyphicon glyphicon-list"></i> Praktikos atlikimas</a></li> -->
 <?php  } ?>
+		<li><a class="" href="https://www.dropbox.com/sh/oarg4cfludjocqa/AACUxivtcI6HzGLTrBCny0gBa?dl=0" title="Dokumentai" target="_blank"><i class="glyphicon glyphicon-file"></i> Dokumentai</a></li>
               </ul>
             </li>
 
@@ -69,7 +70,7 @@ $admin = UserHelper::has_permission();
                 <li <?php if ($action=="aircraft") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=aircraft" title="Orlaiviai"><i class="glyphicon glyphicon-plane"></i> Orlaiviai</a></li>
                 <li <?php if ($action=="flight") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=flight" title="Skrydžiai"><i class="glyphicon glyphicon-list-alt"></i> Skrydžiai</a></li>
                 <li <?php if ($action=="service") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=service" title="Kainynas"><i class="glyphicon glyphicon-shopping-cart"></i> Kainynas</a></li>
-                <li <?php if ($action=="practice_data") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=practice&amp;view=DataItemList" title="Praktika"><i class="glyphicon glyphicon-list"></i> Praktika</a></li>
+<!--                <li <?php if ($action=="practice_data") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=practice&amp;view=DataItemList" title="Praktika"><i class="glyphicon glyphicon-list"></i> Praktika</a></li> -->
 <?php } ?>
               </ul>
             </li>
