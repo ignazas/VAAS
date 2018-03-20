@@ -20,7 +20,9 @@ $admin = UserHelper::has_permission();
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li <?php if ($action=="article"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=article" title="Pranešimai"><i class="glyphicon glyphicon-bell"></i><span class="hidden-md hidden-sm"> Pranešimai</span></a></li>
+<?php if ($on) { ?>
+	    <li <?php if ($action=="documents"){echo "class=\"active\"";} ?>><a class="" href="https://www.dropbox.com/sh/oarg4cfludjocqa/AACUxivtcI6HzGLTrBCny0gBa?dl=0" title="Dokumentai" target="_blank"><i class="glyphicon glyphicon-file"></i> Dokumentai</a></li>
+
             <li <?php if ($action=="finance"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=finance" title="Finansai"><i class="glyphicon glyphicon-shopping-cart"></i><span class="hidden-md hidden-sm"> Finansai</span></a></li>
 
             <li class="<?php if (in_array($action, array("flight", "analysis", "practice"))){echo 'active';} ?> dropdown">
@@ -32,7 +34,6 @@ $admin = UserHelper::has_permission();
 <!--		<li <?php if ($action=="practice") {echo "class=\"active\"";} ?>><a class="" href="index.php?action=practice" title="Skrydžių praktikos lapas"><i class="glyphicon glyphicon-list-alt"></i> Skrydžių praktikos lapas</a></li> -->
 <!--                <li <?php if ($action=="practice_data") {echo "class=\"active\"";} ?>><a class="" href="admin.php?action=practice&amp;view=DataItemList" title="Praktikos atlikimas"><i class="glyphicon glyphicon-list"></i> Praktikos atlikimas</a></li> -->
 <?php  } ?>
-		<li><a class="" href="https://www.dropbox.com/sh/oarg4cfludjocqa/AACUxivtcI6HzGLTrBCny0gBa?dl=0" title="Dokumentai" target="_blank"><i class="glyphicon glyphicon-file"></i> Dokumentai</a></li>
               </ul>
             </li>
 
@@ -46,7 +47,10 @@ $admin = UserHelper::has_permission();
               </ul>
             </li>
             <li <?php if ($action=="user" && isset($_GET['view']) && $_GET['view'] == 'ItemList'){echo "class=\"active\"";} ?>><a class="" href="index.php?action=user&amp;view=ItemList" title="Nariai"><i class="glyphicon glyphicon-user"></i><span class="hidden-md hidden-sm"> Nariai</span></a></li>
-            <li <?php if ($action=="contact"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=contact" title="Kontaktai"><i class="glyphicon glyphicon-envelope"></i><span class="hidden-md hidden-sm"> Kontaktai</span></a></li>
+
+            <li <?php if ($action=="article"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=article" title="Pranešimai"><i class="glyphicon glyphicon-bell"></i><span class="hidden"> Pranešimai</span></a></li>
+
+            <li <?php if ($action=="contact"){echo "class=\"active\"";} ?>><a class="" href="index.php?action=contact" title="Kontaktai"><i class="glyphicon glyphicon-envelope"></i><span class="hidden"> Kontaktai</span></a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
@@ -75,7 +79,8 @@ $admin = UserHelper::has_permission();
               </ul>
             </li>
 <?php } ?>
-            <li><a class="" href="index.php?action=off" title="Atsijungti"><i class="glyphicon glyphicon-log-out"></i><span class="hidden-md hidden-sm"> Atsijungti</span></a></li>
+            <li><a class="" href="index.php?action=off" title="Atsijungti"><i class="glyphicon glyphicon-log-out"></i><span class="hidden"> Atsijungti</span></a></li>
+<?php } ?>
 <?php } ?>
           </ul>
 
