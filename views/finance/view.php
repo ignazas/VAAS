@@ -4,15 +4,15 @@
 
 <div class="row">
   <div class="col-md-8">
-    <?php echo theme('display_money', 'balance', 'Balansas', (object)array('balance' => $balance, 'date' => !empty($results['finance']->date) ? $results['finance']->date : NULL)) ?>
+    <?php echo theme('display_money', 'balance', 'Likutis', (object)array('balance' => $balance, 'date' => !empty($results['finance']->date) ? $results['finance']->date : NULL)) ?>
     <?php echo theme('display_money', 'flight_fee', 'Skrydžiai', $results['finance']) ?>
     <?php echo theme('display_money', 'member_fee', 'Nario mokestis', $results['finance']) ?>
-    <?php echo theme('display_money', 'labor_fee', 'Darbų/talkos mokestis', $results['finance']) ?>
-    <?php echo theme('display_money', 'house_fee', 'Patalpų mokestis', $results['finance']) ?>
-    <?php echo theme('display_money', 'electricity_fee', 'Elektros mokestis', $results['finance']) ?>
+    <?php echo theme('display_money', 'house_fee', 'Namelis', $results['finance']) ?>
+    <?php echo theme('display_money', 'electricity_fee', 'Elektra', $results['finance']) ?>
     <?php echo theme('display_money', 'insurance_fee', 'Draudimas', $results['finance']) ?>
     <!--<?php echo theme('display_money', 'casco_fee', 'Kasko mokestis', $results['finance']) ?>-->
     <?php echo theme('display_money', 'debt_fee', 'Už 2%', $results['finance']) ?>
+    <?php echo theme('display_money', 'labor_fee', 'Darbai', $results['finance']) ?>
     <?php echo theme('display', 'fee_notes', 'Komentarai', $results['finance']) ?>
   </div>
 
@@ -42,15 +42,15 @@
     <table class="table table-striped">
       <thead>
 	<tr>
-    <th>Balansas</th>
+    <th>Likutis</th>
 	  <th>Skrydžiai</th>
 	  <th>Nario mokestis</th>
-	  <th>Darbų/talkos mokestis</th>
-	  <th>Patalpų mokestis</th>
-	  <th>Elektros mokestis</th>
+	  <th>Namelis</th>
+	  <th>Elektra</th>
 	  <th>Draudimas</th>
 	  <!-- <th>Kasko mokestis</th> -->
 	  <th>Už 2%</th>
+	  <th>Darbai</th>
 	  <th>Komentarai</th>
 	  <th>Data</th>
 	</tr>
@@ -64,12 +64,12 @@
 	  </td>
 	  <td><?php echo theme('display_money', 'flight_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display_money', 'member_fee', NULL, $row) ?></td>
-	  <td><?php echo theme('display_money', 'labor_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display_money', 'house_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display_money', 'electricity_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display_money', 'insurance_fee', NULL, $row) ?></td>
 	  <!-- <td><?php echo theme('display_money', 'casco_fee', NULL, $row) ?></td> -->
 	  <td><?php echo theme('display_money', 'debt_fee', NULL, $row) ?></td>
+	  <td><?php echo theme('display_money', 'labor_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display', 'fee_notes', NULL, $row) ?></td>
 	  <td><?php echo theme('display', 'fee_updated', NULL, $row) ?></td>
         </tr>

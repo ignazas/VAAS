@@ -63,7 +63,7 @@
 	</tr>
 	<tr>
 	  <th>Skrydžiai</th>
-	  <th>Nario</th>
+	  <th>Nario mokestis</th>
 	  <th>Namelis</th>
 	  <th>Elektra</th>
 	  <th>Draudimas</th>
@@ -84,7 +84,7 @@
 	  <td title="Skrydžiai">
 	    <?php echo theme('display_money', 'flight_fee', NULL, $finance) ?>
 	  </td>
-	  <td title="Nario">
+	  <td title="Nario mokestis">
 	    <?php echo theme('display_money', 'member_fee', NULL, $finance) ?>
 	  </td>
 	  <td title="Namelis">
@@ -147,7 +147,7 @@ foreach ( $results['finances']['results'] as $finance) {
 	  <td title="Skrydžiai">
 	    <?php echo theme('display_money', 'flight_fee', NULL, NULL, array('flight_fee' => $flight_fee)) ?>
 	  </td>
-	  <td title="Nario">
+	  <td title="Nario mokestis">
 	    <?php echo theme('display_money', 'member_fee', NULL, NULL, array('member_fee' => $member_fee)) ?>
 	  </td>
 	  <td title="Namelis">

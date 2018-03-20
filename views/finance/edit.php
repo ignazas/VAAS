@@ -9,7 +9,7 @@
    <input type="hidden" name="contact_id" value="<?php echo $results['finance']->contact_id ?>" />
 
    <div class="form-group">
-     <label class="col-sm-2 control-label">Balansas</label>
+     <label class="col-sm-2 control-label">Likutis</label>
      <div class="col-sm-10">
        <?php echo theme('display_money', 'balance', NULL, (object)array('balance' => $balance, 'date' => !empty($results['finance']->date) ? $results['finance']->date : NULL)) ?>
      </div>
@@ -27,19 +27,13 @@
      </div>
    </div>
    <div class="form-group">
-     <label class="col-sm-2 control-label" for="labor_fee">Darbų mokestis</label>
-     <div class="col-sm-10">
-       <input id="labor_fee" name="labor_fee" class="form-control input-md" type="number" step="any" pattern="[0-9]+([\,|\.][0-9]+)?" value="<?php echo $results['finance']->labor_fee ?>">
-     </div>
-   </div>
-   <div class="form-group">
-     <label class="col-sm-2 control-label" for="house_fee">Patalpų mokestis</label>
+     <label class="col-sm-2 control-label" for="house_fee">Namelis</label>
      <div class="col-sm-10">
        <input id="house_fee" name="house_fee" class="form-control input-md" type="number" step="any" pattern="[0-9]+([\,|\.][0-9]+)?" value="<?php echo $results['finance']->house_fee ?>">
      </div>
    </div>
    <div class="form-group">
-     <label class="col-sm-2 control-label" for="electricity_fee">Elektros mokestis</label>
+     <label class="col-sm-2 control-label" for="electricity_fee">Elektra</label>
      <div class="col-sm-10">
        <input id="electricity_fee" name="electricity_fee" class="form-control input-md" type="number" step="any" pattern="[0-9]+([\,|\.][0-9]+)?" value="<?php echo $results['finance']->electricity_fee ?>">
      </div>
@@ -63,7 +57,13 @@
      </div>
    </div>
    <div class="form-group">
-     <label class="col-sm-2" for="fee_notes">Komentarai</label>
+     <label class="col-sm-2 control-label" for="labor_fee">Darbai</label>
+     <div class="col-sm-10">
+       <input id="labor_fee" name="labor_fee" class="form-control input-md" type="number" step="any" pattern="[0-9]+([\,|\.][0-9]+)?" value="<?php echo $results['finance']->labor_fee ?>">
+     </div>
+   </div>
+   <div class="form-group">
+     <label class="col-sm-2 control-label" for="fee_notes">Komentarai</label>
      <div class="col-sm-10">
        <input type="text" id="fee_notes" name="fee_notes" class="form-control input-md" value="<?php echo $results['finance']->fee_notes ?>" />
      </div>
@@ -85,15 +85,15 @@
     <table class="table table-striped">
       <thead>
 	<tr>
-    <th>Balansas</th>
+    <th>Likutis</th>
 	  <th>Skrydžiai</th>
 	  <th>Nario mokestis</th>
-	  <th>Darbų/talkos mokestis</th>
-	  <th>Patalpų mokestis</th>
-	  <th>Elektros mokestis</th>
+	  <th>Namelis</th>
+	  <th>Elektra</th>
 	  <th>Draudimas</th>
 	  <!-- <th>Kasko mokestis</th> -->
 	  <th>Už 2%</th>
+	  <th>Darbai</th>
 	  <th>Komentarai</th>
 	  <th>Data</th>
 	</tr>
@@ -107,12 +107,12 @@
 	  </td>
 	  <td><?php echo theme('display_money', 'flight_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display_money', 'member_fee', NULL, $row) ?></td>
-	  <td><?php echo theme('display_money', 'labor_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display_money', 'house_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display_money', 'electricity_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display_money', 'insurance_fee', NULL, $row) ?></td>
 	  <!-- <td><?php echo theme('display_money', 'casco_fee', NULL, $row) ?></td> -->
 	  <td><?php echo theme('display_money', 'debt_fee', NULL, $row) ?></td>
+	  <td><?php echo theme('display_money', 'labor_fee', NULL, $row) ?></td>
 	  <td><?php echo theme('display', 'fee_notes', NULL, $row) ?></td>
 	  <td><?php echo theme('display', 'fee_updated', NULL, $row) ?></td>
         </tr>
