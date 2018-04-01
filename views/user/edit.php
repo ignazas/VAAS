@@ -82,7 +82,7 @@
             </div>
             <div class="buttons">
                 <input type="submit" class="btn btn-sm btn-primary" value="Saugoti" />
-                <a href="index.php?action=user" class="btn btn-sm">Atšaukti</a>
+                <a href="<?php $r = $this->Referrer(); echo isset($r) ? $r : 'index.php?action=user' ?>" class="btn btn-sm">Atšaukti</a>
             </div>
         </form>
     </div>

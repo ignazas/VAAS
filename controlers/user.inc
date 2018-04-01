@@ -295,6 +295,6 @@ class UserControler extends BaseControler {
       $user->delete();
       Messages::set_message("Vartotojas $user->name pašalintas.");
     }
-	  $this->Transfer(NULL, 'ItemList');
+    $this->Transfer(NULL, 'ItemList', $_GET);
   }
 }

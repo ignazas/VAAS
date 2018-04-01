@@ -66,12 +66,12 @@
 <?php foreach ($results['users']['results'] as $user) { ?>
       <tr>
 	<td class="col-lg-2 col-xs-1 hidden-xs hidden-sm">
-          <a href="index.php?action=user&amp;view=View&amp;id=<?php echo $user->id ?>">
+          <a href="index.php?action=user&amp;view=View&amp;id=<?php echo $user->id ?>&amp;return=<?php echo urlencode($_SERVER['REQUEST_URI']) ?>">
 	    <?php echo theme('display_avatar', 'avatar', $user->name, $user) ?>
 	  </a>
 	</td>
 	<td class="col-xs-4">
-          <a href="index.php?action=user&amp;view=View&amp;id=<?php echo $user->id ?>">
+          <a href="index.php?action=user&amp;view=View&amp;id=<?php echo $user->id ?>&amp;return=<?php echo urlencode($_SERVER['REQUEST_URI']) ?>">
 	    <?php echo theme('display', 'name', NULL, $user) ?>
 	  </a>
           <?php echo theme('display_email', 'email', NULL, $user) ?>
@@ -91,14 +91,14 @@
 	</td>
 <?php if ($this->HasPermission() || (!empty($_SESSION['user']['id']) && $_SESSION['user']['id'] == $user->id)) { ?>
 	<td>
- 	  <a class="btn btn-xs btn-default" href="index.php?action=user&amp;view=Edit&amp;id=<?php echo $user->id ?>">Redaguoti</a>
+ 	  <a class="btn btn-xs btn-default" href="index.php?action=user&amp;view=Edit&amp;id=<?php echo $user->id ?>&amp;return=<?php echo urlencode($_SERVER['REQUEST_URI']) ?>">Redaguoti</a>
 <?php  if (UserHelper::has_permission()) { ?>
-	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti įrašą <?php echo $user->name ?>?')" href="index.php?action=user&amp;view=Delete&amp;id=<?php echo $user->id ?>">Pašalinti</a>
+	  <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti įrašą <?php echo $user->name ?>?')" href="index.php?action=user&amp;view=Delete&amp;id=<?php echo $user->id ?>&amp;return=<?php echo urlencode($_SERVER['REQUEST_URI']) ?>">Pašalinti</a>
 <?php  } ?>
 <?php  if (FALSE && UserHelper::is_student($user)) { ?>
- 	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;user_id=<?php echo $user->id ?>">Mokymo programos vykdymas</a>
- 	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;view=DataItemList&amp;user_id=<?php echo $user->id ?>">Eigos lapas</a>
- 	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;view=Download&amp;user_id=<?php echo $user->id ?>">Mokymo ataskaita</a>
+ 	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;user_id=<?php echo $user->id ?>&amp;return=<?php echo urlencode($_SERVER['REQUEST_URI']) ?>">Mokymo programos vykdymas</a>
+ 	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;view=DataItemList&amp;user_id=<?php echo $user->id ?>&amp;return=<?php echo urlencode($_SERVER['REQUEST_URI']) ?>">Eigos lapas</a>
+ 	  <a class="btn btn-xs btn-default" href="index.php?action=practice&amp;view=Download&amp;user_id=<?php echo $user->id ?>&amp;return=<?php echo urlencode($_SERVER['REQUEST_URI']) ?>">Mokymo ataskaita</a>
 <?php  } ?>
 	</td>
 <?php } ?>
@@ -108,5 +108,5 @@
 
   </table>
   <br />
-  <a class="btn btn-sm btn-primary" href="index.php?action=user&amp;view=NewItem">Kurti naują naudotoją</a>
+  <a class="btn btn-sm btn-primary" href="index.php?action=user&amp;view=NewItem&amp;return=<?php echo urlencode($_SERVER['REQUEST_URI']) ?>">Kurti naują naudotoją</a>
 </div>

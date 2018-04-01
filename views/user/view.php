@@ -35,5 +35,8 @@
 <?php  if (UserHelper::has_permission()) { ?>
   <a class="btn btn-xs btn-danger" onclick="return confirm('Ar tikrai norite pašalinti įrašą <?php echo $user->name ?>?')" href="index.php?action=user&amp;view=Delete&amp;id=<?php echo $user->id ?>">Pašalinti</a>
 <?php  } ?>
+<?php  $r = $this->Referrer(); if (isset($r)) { ?>
+  <a class="btn btn-sm" href="<?php echo $r ?>">Grįžti</a>
+<?php  } ?>
 </div>
 <?php } ?>
