@@ -11,6 +11,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'reset' &&
     $edit = array();
     $user = $user_model->get_by_username($username);
 
+    if (empty($user->id)) {
+      echo 'Nežinomas naudotojas';
+    }
+    else {
     $new_password = Password::generate_password();
     $edit['password'] = md5($new_password);
 
@@ -21,6 +25,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'reset' &&
     }
     else {
         echo 'Nepavyko pakeisti slaptažodžio';
+    }
     }
 }
 else {
