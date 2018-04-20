@@ -86,8 +86,37 @@
           <?php if (!empty($user->catid)) foreach ($results['categories']['results'] as $cat) if ($cat->id == $user->catid) $user->category = $cat; ?>
           <?php echo theme('display', 'name', 'Kategorija', $user->category) ?>
           <?php /*echo theme('display', 'usertype', 'Vartotojo tipas', $user)*/ ?>
-          <?php echo theme('display', 'registerDate', 'Užsiregistravo', $user) ?>
-          <?php echo theme('display', 'lastvisitDate', 'Paskutinis apsilankymas', $user) ?>
+<?php if (!empty($user->licenseValidTill)) { ?>
+<?php   if ($user->licenseValidTill >= date('Y-m-d')) { ?>
+          <div class="-alert alert-success">
+            <?php echo theme('display_date_only', 'licenseValidTill', 'Licencija galioja iki', $user) ?>
+          </div>
+<?php   } else { ?>
+          <div class="-alert alert-danger">
+            <?php echo theme('display_date_only', 'licenseValidTill', 'Licencija galioja iki', $user) ?>
+          </div>
+<?php   } ?>
+<?php } ?>
+<?php if (!empty($user->healthValidTill)) { ?>
+<?php   if ($user->healthValidTill >= date('Y-m-d')) { ?>
+          <div class="-alert alert-success">
+            <?php echo theme('display_date_only', 'healthValidTill', 'Sveikatos paž. galioja iki', $user) ?>
+          </div>
+<?php   } else { ?>
+          <div class="-alert alert-danger">
+            <?php echo theme('display_date_only', 'healthValidTill', 'Sveikatos paž. galioja iki', $user) ?>
+          </div>
+<?php   } ?>
+<?php } ?>
+<?php if (empty($user->licenseValidTill) && empty($user->healthValidTill)) { ?>
+          <div class="-alert alert-warning">Nenurodyta, iki kada galioja licencija ir sveikatos paž.</div>
+<?php } else if (empty($user->licenseValidTill)) { ?>
+          <div class="-alert alert-warning">Nenurodyta, iki kada galioja licencija</div>
+<?php } else if (empty($user->healthValidTill)) { ?>
+          <div class="-alert alert-warning">Nenurodyta, iki kada galioja sveikatos paž.</div>
+<?php } ?>
+          <?php /*echo theme('display', 'registerDate', 'Užsiregistravo', $user)*/ ?>
+          <?php /*echo theme('display', 'lastvisitDate', 'Paskutinis apsilankymas', $user)*/ ?>
 	</td>
 <?php if ($this->HasPermission() || (!empty($_SESSION['user']['id']) && $_SESSION['user']['id'] == $user->id)) { ?>
 	<td>
