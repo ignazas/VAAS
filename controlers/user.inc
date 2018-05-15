@@ -160,7 +160,7 @@ class UserControler extends BaseControler {
     if (UserHelper::is_student($user))
       $instructors = User::getList(1000000, 'u.name', 'u.instructor=1');
 
-    $categories = Category::getList(1000000, 'name');
+    $categories = Category::getList(1000000, 'ordering, name');
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }
@@ -230,7 +230,7 @@ class UserControler extends BaseControler {
     if (UserHelper::is_student($user))
       $instructors = User::getList(1000000, 'u.name', 'u.instructor=1');
 
-    $categories = Category::getList(1000000, 'name');
+    $categories = Category::getList(1000000, 'ordering, name');
 
     include dirname(__FILE__) . '/../views/_layout.php';
   }
@@ -274,7 +274,7 @@ class UserControler extends BaseControler {
     $results = array(
       'users' => User::getList(1000000, 'u.name', implode(' AND ', $filters)),
       'groups' => UserGroup::getList(),
-      'categories' => Category::getList(),
+      'categories' => Category::getList(NULL, 'ordering, name'),
     );
 
     include dirname(__FILE__) . '/../views/_layout.php';

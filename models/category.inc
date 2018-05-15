@@ -10,7 +10,7 @@ class Category
   public $name = null;
   public $section = null;
   public $ordering = null;
-  public $image = null;
+  //public $image = null;
   //public $image_position = null;
   public $description = null;
   public $published = null;
@@ -101,7 +101,7 @@ class Category
     if ( !is_null( $this->id ) ) trigger_error ( "Category::insert(): Attempt to insert an Category object that already has its ID property set (to $this->id).", E_USER_ERROR );
 
     // Insert the Category
-    $this->id = DB::insert("INSERT INTO jos_categories ( parent_id, title, name, section, description, published, editor, access, count, params ) VALUES ( FROM_UNIXTIME(:parent_id), :title, :name, :section, :description, :published, :editor, :access, :count, :params )", array(
+    $this->id = DB::insert("INSERT INTO jos_categories ( parent_id, title, name, section, description, published, editor, access, count, params, ordering ) VALUES ( :parent_id, :title, :name, :section, :description, :published, :editor, :access, :count, :params, :ordering )", array(
         ":parent_id" => $this->parent_id,
         ":title" => $this->title,
         ":name" => $this->name,
@@ -116,6 +116,7 @@ class Category
     	":access" => $this->access,
     	":count" => $this->count,
 		":params" => $this->params,
+		":ordering" => $this->ordering,
     ));
 
     return !empty($this->id);
@@ -129,7 +130,7 @@ class Category
     if ( is_null( $this->id ) ) trigger_error ( "Category::update(): Attempt to update an Category object that does not have its ID property set.", E_USER_ERROR );
 
     // Update the Category
-    $st = DB::query("UPDATE jos_categories SET parent_id=FROM_UNIXTIME(:parent_id), title=:title, name=:name, section=:section, description=:description, published=:published, editor=:editor, access=:access, count=:count, params=:params WHERE id = :id", array(
+    $st = DB::query("UPDATE jos_categories SET parent_id=:parent_id, title=:title, name=:name, section=:section, description=:description, published=:published, editor=:editor, access=:access, count=:count, params=:params, ordering=:ordering WHERE id = :id", array(
         ":parent_id" => $this->parent_id,
         ":title" => $this->title,
         ":name" => $this->name,
@@ -144,6 +145,7 @@ class Category
     	":access" => $this->access,
     	":count" => $this->count,
 		":params" => $this->params,
+		":ordering" => $this->ordering,
         ":id" => $this->id,
       ));
 
