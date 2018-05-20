@@ -88,3 +88,16 @@ $admin = UserHelper::has_permission();
         </div><!--/.nav-collapse -->
       </div>
     </div>
+
+<?php
+require_once dirname(__FILE__) . '/../../models/user.inc';
+$user_id = UserHelper::get_id();
+$user = User::Get($user_id);
+if (empty($user->licenseValidTill) && empty($user->healthValidTill)) {
+      Messages::set_message("Nenurodyta, iki kada galioja licencija ir sveikatos paž. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
+} else if (empty($user->licenseValidTill)) {
+      Messages::set_message("Nenurodyta, iki kada galioja licencija. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
+} else if (empty($user->healthValidTill)) {
+      Messages::set_message("Nenurodyta, iki kada galioja sveikatos paž. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
+}
+?>

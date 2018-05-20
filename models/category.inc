@@ -77,8 +77,8 @@ class Category
   * @param string Optional column by which to order the jos_categories (default="parent_id DESC")
   * @return Array|false A two-element array : results => array, a list of Category objects; totalRows => Total number of jos_categories
   */
-  public static function getList( $numRows=1000000, $order="parent_id DESC" ) {
-    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(parent_id) AS parent_id FROM jos_categories
+  public static function getList( $numRows=1000000, $order="ordering, title" ) {
+    $st = DB::query("SELECT SQL_CALC_FOUND_ROWS * FROM jos_categories
             ORDER BY $order LIMIT $numRows");
 
     $list = array();

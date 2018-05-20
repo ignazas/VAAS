@@ -8,7 +8,7 @@
     <?php echo theme('display', 'registerDate', 'Užsiregistravo', $user) ?>
     <?php echo theme('display', 'lastvisitDate', 'Paskutinis apsilankymas', $user) ?>
     <?php echo theme('display_checkbox', 'instructor', 'Instruktorius', $user) ?>
-    <?php echo theme('display', 'name', 'Kategorija', $user->category) ?>
+    <?php if (isset($user->category)) echo theme('display', 'name', 'Kategorija', $user->category) ?>
     <?php echo theme('display_percent', 'discount', 'Antkainis', $user) ?>
   </div>
   <div class="col-md-4">
