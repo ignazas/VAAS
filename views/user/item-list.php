@@ -86,6 +86,7 @@
           <?php if (!empty($user->catid)) foreach ($results['categories']['results'] as $cat) if ($cat->id == $user->catid) $user->category = $cat; ?>
           <?php echo theme('display', 'name', 'Kategorija', $user->category) ?>
           <?php /*echo theme('display', 'usertype', 'Vartotojo tipas', $user)*/ ?>
+          <?php echo theme('display', 'lastvisitDate', 'Paskutinis apsilankymas', $user) ?>
 <?php if (!empty($user->licenseValidTill)) { ?>
 <?php   if ($user->licenseValidTill >= date('Y-m-d')) { ?>
           <div class="-alert alert-success">
