@@ -90,22 +90,23 @@ $admin = UserHelper::has_permission();
     </div>
 
 <?php
-require_once dirname(__FILE__) . '/../../models/user.inc';
-$user_id = UserHelper::get_id();
-$curr_user = User::Get($user_id);
+if ($on) {
+    require_once dirname(__FILE__) . '/../../models/user.inc';
+    $user_id = UserHelper::get_id();
+    $curr_user = User::Get($user_id);
 
-if (!empty($curr_user->licenseValidTill) && $curr_user->licenseValidTill < date('Y-m-d')) {
-  Messages::set_message("Licencija nebegalioja. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
-}
-if (!empty($curr_user->healthValidTill) && $curr_user->healthValidTill < date('Y-m-d')) {
-  Messages::set_message("Sveikatos paž. nebegalioja. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
-}
+    if (!empty($curr_user->licenseValidTill) && $curr_user->licenseValidTill < date('Y-m-d')) {
+        Messages::set_message("Licencija nebegalioja. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
+    }
+    if (!empty($curr_user->healthValidTill) && $curr_user->healthValidTill < date('Y-m-d')) {
+        Messages::set_message("Sveikatos paž. nebegalioja. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
+    }
 
-if (empty($curr_user->licenseValidTill) && empty($curr_user->healthValidTill)) {
-  Messages::set_message("Nenurodyta, iki kada galioja licencija ir sveikatos paž. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
-} else if (empty($curr_user->licenseValidTill)) {
-  Messages::set_message("Nenurodyta, iki kada galioja licencija. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
-} else if (empty($curr_user->healthValidTill)) {
-  Messages::set_message("Nenurodyta, iki kada galioja sveikatos paž. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
+    if (empty($curr_user->licenseValidTill) && empty($curr_user->healthValidTill)) {
+        Messages::set_message("Nenurodyta, iki kada galioja licencija ir sveikatos paž. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
+    } else if (empty($curr_user->licenseValidTill)) {
+        Messages::set_message("Nenurodyta, iki kada galioja licencija. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
+    } else if (empty($curr_user->healthValidTill)) {
+        Messages::set_message("Nenurodyta, iki kada galioja sveikatos paž. <a href=\"index.php?action=user&view=Edit\">Nurodykite</a>", 'errors');
+    }
 }
-?>

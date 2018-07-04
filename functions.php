@@ -3,6 +3,7 @@
 require_once dirname(__FILE__) . '/config.php';
 require_once dirname(__FILE__) . '/helpers/db.inc';
 require_once dirname(__FILE__) . '/helpers/date.inc';
+require_once dirname(__FILE__) . '/send_mail.php';
 
 function log_event($user, $event, $param) {
     DB::query("INSERT INTO log(user, event, param) VALUES (:user,:event,:param)", array(
@@ -235,6 +236,7 @@ function theme($type, $name, $label, $entity, $values=NULL) {
     return $output;
 }
 
+/*
 function send_mail($recipient, $title, $content) {
   require_once dirname(__FILE__) . '/helpers/messages.inc';
 
@@ -260,6 +262,7 @@ function send_mail($recipient, $title, $content) {
     Messages::set_message('Pranešimas išsiųstas: ' . $recipient);
 	}
 }
+*/
 
 function get_day_letter($date) {
   switch(date('w', $date)) {
