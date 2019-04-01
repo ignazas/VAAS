@@ -91,6 +91,7 @@ $admin = UserHelper::has_permission();
 
 <?php
 if ($on) {
+    require_once dirname(__FILE__) . '/../../helpers/messages.inc';
     require_once dirname(__FILE__) . '/../../models/user.inc';
     $user_id = UserHelper::get_id();
     $curr_user = User::Get($user_id);
